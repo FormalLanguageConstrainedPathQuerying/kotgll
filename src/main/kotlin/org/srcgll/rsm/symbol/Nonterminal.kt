@@ -12,7 +12,7 @@ class Nonterminal
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Nonterminal) return false
-        return value != other.value
+        return value == other.value
     }
 
     val hashCode: Int = value.hashCode()
