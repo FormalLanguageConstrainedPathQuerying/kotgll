@@ -6,27 +6,15 @@ import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.rsm.readRSMFromTXT
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.rsm.writeRSMToDOT
-import org.srcgll.input.IGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import java.io.*
-import org.srcgll.lexer.GeneratedLexer
-import org.srcgll.lexer.SymbolCode
-import org.srcgll.lexer.Token
 import org.srcgll.sppf.writeSPPFToDOT
-import org.srcgll.sppf.buildStringFromSPPF
 
 enum class RecoveryMode
 {
     ON,
     OFF,
-}
-
-enum class Mode
-{
-    Reachability,
-    AllPairs,
 }
 
 fun main(args : Array<String>)
@@ -63,33 +51,29 @@ fun main(args : Array<String>)
 
     val input    = File(pathToInput).readText().replace("\n","").trim()
     val grammar  = readRSMFromTXT(pathToGrammar)
-    var lexer    = GeneratedLexer(StringReader(input))
-    var token : Token<SymbolCode>
+    val inputGraph = LinearInput<Int, LinearInputLabel>()
+    val gll = GLL(grammar, inputGraph, RecoveryMode.ON)
     var vertexId = 0
 
-    val inputGraph = LinearInput<Int, LinearInputLabel>()
-
-    inputGraph.addVertex(vertexId)
     inputGraph.addStartVertex(vertexId)
-
-//    while (!lexer.yyatEOF()) {
-//        token = lexer.yylex() as Token<SymbolCode>
-//        println("(" + token.value + ")" + token.type.toString())
-//        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
-//        inputGraph.addVertex(vertexId)
-//    }
+    inputGraph.addVertex(vertexId)
 
     for (x in input) {
         inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(x.toString())), ++vertexId)
         inputGraph.addVertex(vertexId)
     }
 
-    val result  = GLL(grammar, inputGraph, recoveryMode).parse()
+    // Parse result for initial input
+    var result = gll.parse()
 
-    writeSPPFToDOT(result.first!!, "./result_sppf.dot")
-    writeRSMToDOT(grammar, "./rsm.dot")
+    writeSPPFToDOT(result.first!!, pathToOutputSPPF + "before.dot")
 
-    File(pathToOutputString).printWriter().use {
-        out -> out.println(buildStringFromSPPF(result.first!!))
-    }
+    inputGraph.addEdge(vertexId, LinearInputLabel(Terminal("a")), ++vertexId)
+    inputGraph.addVertex(vertexId)
+
+    // If new edge was added to graph - we need to recover corresponding descriptors and add them to
+    // descriptors stack and proceed with parsing them
+    result = gll.parse(vertexId - 1)
+
+    writeSPPFToDOT(result.first!!, pathToOutputSPPF + "after.dot")
 }

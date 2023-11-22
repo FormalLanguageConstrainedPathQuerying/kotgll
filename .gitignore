@@ -4,6 +4,10 @@
 # input files
 input.txt
 
+# Examples
+Example.kt
+/examples_incrementality
+
 # Output files
 output.txt
 

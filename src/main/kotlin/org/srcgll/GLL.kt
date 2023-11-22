@@ -11,6 +11,7 @@ import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.*
+import java.util.IntSummaryStatistics
 
 class GLL <VertexType, LabelType : ILabel>
 (
@@ -40,7 +41,7 @@ class GLL <VertexType, LabelType : ILabel>
         }
 
         // Continue parsing until all default descriptors processed
-        while (stack.defaultDescriptorsStackIsNotEmpty()) {
+        while (!stack.defaultDescriptorsStackIsEmpty()) {
             val curDefaultDescriptor = stack.next()
 
             parse(curDefaultDescriptor)
@@ -48,6 +49,145 @@ class GLL <VertexType, LabelType : ILabel>
 
         // If string was not parsed - process recovery descriptors until first valid parse tree is found
         // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
+        while (recovery == RecoveryMode.ON && parseResult == null) {
+            val curRecoveryDescriptor = stack.next()
+
+            parse(curRecoveryDescriptor)
+        }
+
+        return Pair(parseResult, reachableVertices)
+    }
+
+    fun parse(vertex : VertexType) : Pair<SPPFNode<VertexType>?, HashSet<VertexType>>
+    {
+        stack.recoverDescriptors(vertex)
+
+        val queue = ArrayDeque<ISPPFNode>()
+        val cycle = HashSet<ISPPFNode>()
+        val added = HashSet<ISPPFNode>()
+        var curSPPFNode : ISPPFNode? = parseResult as ISPPFNode
+
+        queue.add(curSPPFNode!!)
+        added.add(curSPPFNode!!)
+
+        while (queue.isNotEmpty()) {
+            curSPPFNode = queue.last()
+
+            when (curSPPFNode) {
+                is SymbolSPPFNode<*> -> {
+                    curSPPFNode.kids.forEach { kid ->
+                        if (!added.contains(kid)) {
+                            queue.addLast(kid)
+                            added.add(kid)
+                        }
+                    }
+                }
+                is ItemSPPFNode<*> -> {
+                    if (!cycle.contains(curSPPFNode)) {
+                        cycle.add(curSPPFNode)
+
+                        curSPPFNode.kids.forEach { kid ->
+                            if (!added.contains(kid)) {
+                                queue.addLast(kid)
+                                added.add(kid)
+                            }
+                        }
+
+                        if (queue.last() == curSPPFNode) {
+                            cycle.remove(curSPPFNode)
+                        }
+                    }
+                }
+                is PackedSPPFNode<*> -> {
+                    if (curSPPFNode.rightSPPFNode != null) {
+                        if (!added.contains(curSPPFNode.rightSPPFNode!!)) {
+                            queue.addLast(curSPPFNode.rightSPPFNode!!)
+                            added.add(curSPPFNode.rightSPPFNode!!)
+                        }
+                    }
+                    if (curSPPFNode.leftSPPFNode != null) {
+                        if (!added.contains(curSPPFNode.leftSPPFNode!!)) {
+                            queue.addLast(curSPPFNode.leftSPPFNode!!)
+                            added.add(curSPPFNode.leftSPPFNode!!)
+                        }
+                    }
+                }
+                is TerminalSPPFNode<*> -> {
+                    if (curSPPFNode.leftExtent == vertex) {
+                        break
+                    }
+                }
+            }
+
+            if (curSPPFNode == queue.last()) queue.removeLast()
+        }
+
+        queue.clear()
+        cycle.clear()
+
+        if (curSPPFNode != null && curSPPFNode is TerminalSPPFNode<*>) {
+            curSPPFNode.parents.forEach { packed ->
+                packed.parents.forEach { parent ->
+                    queue.addLast(parent)
+                    (parent as ParentSPPFNode<*>).kids.remove(curSPPFNode)
+                }
+            }
+            curSPPFNode.parents.clear()
+            (queue.last() as ParentSPPFNode<*>).kids.clear()
+        }
+
+        while (queue.isNotEmpty()) {
+            curSPPFNode = queue.last()
+
+            when (curSPPFNode) {
+                is SymbolSPPFNode<*> -> {
+                    if (curSPPFNode.kids.isEmpty()) {
+                        curSPPFNode.parents.forEach { parent ->
+                            queue.addLast(parent)
+                        }
+                        curSPPFNode.parents.clear()
+                    }
+                }
+                is ItemSPPFNode<*> -> {
+                    if (!cycle.contains(curSPPFNode)) {
+                        cycle.add(curSPPFNode)
+
+                        if (curSPPFNode.kids.isEmpty()) {
+                            curSPPFNode.parents.forEach { parent ->
+                                queue.addLast(parent)
+                            }
+                            curSPPFNode.parents.clear()
+                        }
+
+                        if (queue.last() == curSPPFNode) {
+                            cycle.remove(curSPPFNode)
+                        }
+                    }
+                }
+                is PackedSPPFNode<*> -> {
+                    curSPPFNode.parents.forEach { parent ->
+                        if ((parent as ParentSPPFNode<*>).kids.contains(curSPPFNode)) {
+                            queue.addLast(parent)
+                            parent.kids.remove(curSPPFNode)
+                        }
+                    }
+                }
+                else -> {
+                    throw  Error("Terminal node can not be parent")
+                }
+            }
+
+            if (curSPPFNode == queue.last()) queue.removeLast()
+        }
+
+        parseResult = null
+
+        while (!stack.defaultDescriptorsStackIsEmpty()) {
+            val curDefaultDescriptor = stack.next()
+
+            parse(curDefaultDescriptor)
+        }
+
         while (recovery == RecoveryMode.ON && parseResult == null) {
             val curRecoveryDescriptor = stack.next()
 
@@ -213,7 +353,7 @@ class GLL <VertexType, LabelType : ILabel>
 
     private fun handleTerminalOrEpsilonEdge
     (
-        curDescriptor : Descriptor<VertexType,>,
+        curDescriptor : Descriptor<VertexType>,
         terminal      : Terminal<*>?,
         targetEdge    : TerminalRecoveryEdge<VertexType>,
         targetState   : RSMState

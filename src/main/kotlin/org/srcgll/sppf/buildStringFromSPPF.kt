@@ -26,7 +26,7 @@ fun buildStringFromSPPF(sppfNode : ISPPFNode) : MutableList<String>
             }
             is ParentSPPFNode<*> -> {
                 if (curNode.kids.isNotEmpty()) {
-                    curNode.kids.findLast { it.rightSPPFNode != curNode && !visited.contains(it) }?.let { stack.add(it) }
+                    curNode.kids.findLast { it.rightSPPFNode != curNode && it.leftSPPFNode != curNode && !visited.contains(it) }?.let { stack.add(it) }
                     curNode.kids.forEach { visited.add(it) }
                 }
             }

@@ -14,7 +14,6 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
     val states: ArrayList<RSMState> = ArrayList()
     val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
 
-
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
 

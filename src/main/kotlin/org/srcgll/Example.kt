@@ -6,7 +6,6 @@ import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.input.Edge
 import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
-import org.srcgll.sppf.node.SPPFNode
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
@@ -35,20 +34,19 @@ class Stack : Grammar()
 
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
-        S = Term("<-()") * Term("->()")       or
-            Term("<-.") * Term("->.")         or
-            Term("use_a") * Term("def_a")     or
-            Term("use_A") * Term("def_A")     or
-            Term("use_B") * Term("def_B")     or
-            Term("use_x") * Term("def_x")     or
-            Term("<-()")  * S * Term("->()")  or
-            Term("<-.")   * S * Term("->.")   or
-            Term("use_a") * S * Term("def_a") or
-            Term("use_A") * S * Term("def_A") or
-            Term("use_B") * S * Term("def_B") or
-            Term("use_b") * S * Term("def_b") or
-            Term("use_x") * S * Term("def_x") or
-            S * S
+        S = Many(Term("<-()") * Term("->()") or
+            Term("<-.") * Term("->.")             or
+            Term("use_a") * Term("def_a")         or
+            Term("use_A") * Term("def_A")         or
+            Term("use_B") * Term("def_B")         or
+            Term("use_x") * Term("def_x")         or
+            Term("<-()")  * S * Term("->()")      or
+            Term("<-.")   * S * Term("->.")       or
+            Term("use_a") * S * Term("def_a")     or
+            Term("use_A") * S * Term("def_A")     or
+            Term("use_B") * S * Term("def_B")     or
+            Term("use_b") * S * Term("def_b")     or
+            Term("use_x") * S * Term("def_x"))
 
         // Set Starting Nonterminal
         setStart(S)
@@ -213,10 +211,8 @@ fun main() {
     val inputGraphStack    = createStackExampleGraph(startVertex)
 
     // result = (root of SPPF, set of reachable vertices)
-    val resultAnBn : Pair<SPPFNode<Int>?, HashSet<Int>> =
-        GLL(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
-    val resultStack : Pair<SPPFNode<Int>?, HashSet<Int>> =
-        GLL(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
+    val resultAnBn = GLL(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
+    val resultStack = GLL(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
 
     println("AnBn Language Grammar")
     println("Reachable vertices from vertex $startVertex : ")
