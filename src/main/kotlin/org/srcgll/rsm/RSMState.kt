@@ -1,7 +1,7 @@
-package org.srcgll.grammar
+package org.srcgll.rsm
 
-import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 
 class RSMState
 (
@@ -11,10 +11,10 @@ class RSMState
     val isFinal     : Boolean = false,
 )
 {
-    val outgoingTerminalEdges    : HashMap<Terminal<*>, HashSet<RSMState>>    = HashMap()
+    val outgoingTerminalEdges    : HashMap<Terminal<*>, HashSet<RSMState>> = HashMap()
     val outgoingNonterminalEdges : HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
-    val coveredTargetStates      : HashSet<RSMState>                                     = HashSet()
-    val errorRecoveryLabels      : HashSet<Terminal<*>>                                     = HashSet()
+    val coveredTargetStates      : HashSet<RSMState>                       = HashSet()
+    val errorRecoveryLabels      : HashSet<Terminal<*>>                    = HashSet()
 
     override fun toString() =
         "RSMState(id=$id, nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"

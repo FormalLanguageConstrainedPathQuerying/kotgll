@@ -6,14 +6,12 @@ import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.GLL
 import org.srcgll.RecoveryMode
-import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.readRSMFromTXT
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
-import org.srcgll.lexer.Token
-import org.srcgll.sppf.node.ISPPFNode
 import org.srcgll.sppf.node.SPPFNode
 import org.srcgll.sppf.writeSPPFToDOT
 import java.io.File
@@ -98,25 +96,29 @@ fun runRSMWithSPPF
 
             val inputGraph = LinearInput<Int, LinearInputLabel>()
             val lexer = GeneratedLexer(StringReader(input))
-            var token : Token<SymbolCode>
+            val gll = GLL(rsm, inputGraph, recovery = RecoveryMode.ON)
+            var token : SymbolCode
             var vertexId = 1
 
             inputGraph.addVertex(vertexId)
             inputGraph.addStartVertex(vertexId)
 
-            while (!lexer.yyatEOF()) {
-                token = lexer.yylex() as Token<SymbolCode>
-                inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token.value)), ++vertexId)
+            while (true) {
+                token = lexer.yylex() as SymbolCode
+                if (token == SymbolCode.EOF) break
+                inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
             }
 
-            var result = GLL(rsm, inputGraph, recovery = RecoveryMode.ON).parse()
+            var result = gll.parse()
+
             writeSPPFToDOT(result.first!!, "./outputFiles/${inputName}_sppf.dot")
 
             for (warmUp in 1 .. warmUpRounds)
             {
                 var result : Pair<SPPFNode<Int>?, HashSet<Int>>
+
                 val elapsedRecovery = measureNanoTime {
-                    result = GLL(rsm, inputGraph, recovery = RecoveryMode.ON).parse()
+                    result = gll.parse()
                 }
 
                 val elapsedRecoverySeconds = elapsedRecovery.toDouble() / 1_000_000_000.0

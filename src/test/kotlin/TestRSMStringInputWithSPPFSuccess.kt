@@ -1,11 +1,11 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import org.srcgll.grammar.RSMNonterminalEdge
-import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.RSMTerminalEdge
-import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.RSMNonterminalEdge
+import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.RSMTerminalEdge
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.GLL
 import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput

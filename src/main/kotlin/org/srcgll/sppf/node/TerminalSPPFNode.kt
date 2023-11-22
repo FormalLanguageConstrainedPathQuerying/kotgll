@@ -1,6 +1,6 @@
 package org.srcgll.sppf.node
 
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.symbol.Terminal
 import java.util.*
 
 class TerminalSPPFNode <VertexType>

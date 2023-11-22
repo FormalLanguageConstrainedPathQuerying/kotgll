@@ -1,8 +1,8 @@
 package org.srcgll.gss
 
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.symbol.Nonterminal
+import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.sppf.node.SPPFNode
 import java.util.*
 

@@ -2,8 +2,8 @@ package org.srcgll
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
-import org.srcgll.grammar.symbol.Terminal
-import org.srcgll.grammar.writeRSMToDOT
+import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.writeRSMToDOT
 import org.srcgll.input.Edge
 import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
@@ -36,20 +36,19 @@ class Stack : Grammar()
 
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
-        S = Term("<-()") * Term("->()")       or
-            Term("<-.") * Term("->.")         or
-            Term("use_a") * Term("def_a")     or
-            Term("use_A") * Term("def_A")     or
-            Term("use_B") * Term("def_B")     or
-            Term("use_x") * Term("def_x")     or
-            Term("<-()")  * S * Term("->()")  or
-            Term("<-.")   * S * Term("->.")   or
-            Term("use_a") * S * Term("def_a") or
-            Term("use_A") * S * Term("def_A") or
-            Term("use_B") * S * Term("def_B") or
-            Term("use_b") * S * Term("def_b") or
-            Term("use_x") * S * Term("def_x") or
-            S * S
+        S = Many(Term("<-()") * Term("->()") or
+            Term("<-.") * Term("->.")             or
+            Term("use_a") * Term("def_a")         or
+            Term("use_A") * Term("def_A")         or
+            Term("use_B") * Term("def_B")         or
+            Term("use_x") * Term("def_x")         or
+            Term("<-()")  * S * Term("->()")      or
+            Term("<-.")   * S * Term("->.")       or
+            Term("use_a") * S * Term("def_a")     or
+            Term("use_A") * S * Term("def_A")     or
+            Term("use_B") * S * Term("def_B")     or
+            Term("use_b") * S * Term("def_b")     or
+            Term("use_x") * S * Term("def_x"))
 
         // Set Starting Nonterminal
         setStart(S)

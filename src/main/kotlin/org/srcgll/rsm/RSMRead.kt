@@ -1,7 +1,7 @@
-package org.srcgll.grammar
+package org.srcgll.rsm
 
-import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import java.io.File
 
 

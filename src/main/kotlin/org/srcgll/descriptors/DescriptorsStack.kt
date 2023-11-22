@@ -1,6 +1,6 @@
 package org.srcgll.descriptors
 
-import org.srcgll.grammar.RSMState
+import org.srcgll.rsm.RSMState
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.node.SPPFNode
 
@@ -30,8 +30,9 @@ class Descriptor <VertexType>
 
 interface IDescriptorsStack <VertexType>
 {
-    fun defaultDescriptorsStackIsNotEmpty() : Boolean
+    fun defaultDescriptorsStackIsEmpty() : Boolean
     fun add(descriptor : Descriptor<VertexType>)
+    fun recoverDescriptors(vertex : VertexType)
     fun next() : Descriptor<VertexType>
     fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean
     fun addToHandled(descriptor : Descriptor<VertexType>)
@@ -39,15 +40,22 @@ interface IDescriptorsStack <VertexType>
 
 class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexType>
 {
-    private var defaultDescriptorsStack          = ArrayDeque<Descriptor<VertexType>>()
-    private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType>>>()
+    private val handledDescriptors               = HashMap<VertexType, HashSet<Descriptor<VertexType>>>()
+    private val defaultDescriptorsStack          = ArrayDeque<Descriptor<VertexType>>()
+    private val errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType>>>()
     
-    override fun defaultDescriptorsStackIsNotEmpty() = defaultDescriptorsStack.isNotEmpty()
+    override fun defaultDescriptorsStackIsEmpty() = defaultDescriptorsStack.isEmpty()
 
     override fun add(descriptor : Descriptor<VertexType>)
     {
         if (!isAlreadyHandled(descriptor)) {
             val pathWeight = descriptor.weight()
+
+            if (!handledDescriptors.containsKey(descriptor.inputPosition)) {
+                handledDescriptors[descriptor.inputPosition] = HashSet()
+            }
+
+            handledDescriptors.getValue(descriptor.inputPosition).add(descriptor)
 
             if (pathWeight == 0) {
                 defaultDescriptorsStack.addLast(descriptor)
@@ -59,11 +67,19 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexTyp
             }
         }
     }
+
+    override fun recoverDescriptors(vertex : VertexType)
+    {
+        handledDescriptors.getOrDefault(vertex, HashSet()).forEach {descriptor ->
+            descriptor.gssNode.handledDescriptors.remove(descriptor)
+            add(descriptor)
+        }
+        handledDescriptors.remove(vertex)
+    }
+
     override fun next() : Descriptor <VertexType>
     {
-        if (defaultDescriptorsStackIsNotEmpty()) {
-            return defaultDescriptorsStack.removeLast()
-        } else {
+        if (defaultDescriptorsStackIsEmpty()) {
             val iterator   = errorRecoveringDescriptorsStacks.keys.iterator()
             val currentMin = iterator.next()
             val result     = errorRecoveringDescriptorsStacks.getValue(currentMin).removeLast()
@@ -73,6 +89,7 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexTyp
 
             return result
         }
+        return defaultDescriptorsStack.removeLast()
     }
 
     override fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean

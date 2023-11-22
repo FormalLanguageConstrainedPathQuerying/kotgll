@@ -1,6 +1,6 @@
-package org.srcgll.grammar.symbol
+package org.srcgll.rsm.symbol
 
-import org.srcgll.grammar.RSMState
+import org.srcgll.rsm.RSMState
 
 class Nonterminal
 (

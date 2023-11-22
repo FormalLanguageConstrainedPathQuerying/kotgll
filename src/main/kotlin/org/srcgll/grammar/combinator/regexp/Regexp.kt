@@ -1,6 +1,6 @@
 package org.srcgll.grammar.combinator.regexp
 
-import org.srcgll.grammar.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Nonterminal
 
 
 sealed interface Regexp

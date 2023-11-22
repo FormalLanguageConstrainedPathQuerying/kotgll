@@ -13,8 +13,7 @@ fun writeSPPFToDOT(sppfNode : ISPPFNode, filePath : String)
 
     val file = File(filePath)
 
-    file.printWriter().use {
-            out ->
+    file.printWriter().use { out ->
         out.println("digraph g {")
 
         while (queue.isNotEmpty()) {

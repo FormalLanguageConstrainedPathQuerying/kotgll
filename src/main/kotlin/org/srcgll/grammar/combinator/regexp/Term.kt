@@ -1,6 +1,6 @@
 package org.srcgll.grammar.combinator.regexp
 
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.symbol.Terminal
 
 open class Term <TerminalType>
 (

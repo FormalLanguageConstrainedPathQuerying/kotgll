@@ -1,4 +1,4 @@
-package org.srcgll.grammar.symbol
+package org.srcgll.rsm.symbol
 
 class Terminal <TerminalType>
 (

@@ -4,8 +4,8 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.srcgll.GLL
 import org.srcgll.RecoveryMode
 import org.srcgll.sppf.buildStringFromSPPF
-import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.grammar.symbol.*
+import org.srcgll.rsm.readRSMFromTXT
+import org.srcgll.rsm.symbol.*
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.sppf.writeSPPFToDOT
@@ -161,11 +161,9 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
-        writeSPPFToDOT(result.first!!, "./debug_${input}.dot")
         val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()

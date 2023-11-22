@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.symbol.Terminal
 
 class LinearInputLabel
 (

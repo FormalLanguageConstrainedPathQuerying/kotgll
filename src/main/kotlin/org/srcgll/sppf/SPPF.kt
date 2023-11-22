@@ -1,10 +1,9 @@
 package org.srcgll.sppf
 
-import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
-import java.io.File
 
 class SPPF <VertexType>
 {
@@ -22,13 +21,16 @@ class SPPF <VertexType>
             else               getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
 
 
-        sppfNode?.parents?.add(packedNode)
-        nextSPPFNode.parents.add(packedNode)
-        packedNode.parents.add(parent)
+        //  Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
+        if (sppfNode != null || parent != nextSPPFNode) {
+            sppfNode?.parents?.add(packedNode)
+            nextSPPFNode.parents.add(packedNode)
+            packedNode.parents.add(parent)
 
-        parent.kids.add(packedNode)
+            parent.kids.add(packedNode)
+        }
 
-        parent.updateWeights()
+        updateWeights(parent)
 
         return parent
     }
@@ -85,6 +87,72 @@ class SPPF <VertexType>
         if (!createdSPPFNodes.containsKey(node)) createdSPPFNodes[node] = node
 
         return createdSPPFNodes[node]!! as SymbolSPPFNode
+    }
+
+    fun updateWeights(sppfNode : ISPPFNode)
+    {
+        val cycle = HashSet<ISPPFNode>()
+        val deque = ArrayDeque(listOf(sppfNode))
+        var curNode : ISPPFNode
+
+        while (deque.isNotEmpty()) {
+            curNode = deque.last()
+
+            when (curNode) {
+                is SymbolSPPFNode<*> -> {
+                    val oldWeight = curNode.weight
+                    var newWeight = Int.MAX_VALUE
+
+                    curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
+
+                    if (oldWeight > newWeight) {
+                        curNode.weight = newWeight
+
+                        curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
+                        curNode.kids.removeIf { it.weight > newWeight }
+
+                        curNode.parents.forEach { deque.addLast(it) }
+                    }
+                }
+                is ItemSPPFNode<*> -> {
+                    if (!cycle.contains(curNode)) {
+                        cycle.add(curNode)
+
+                        val oldWeight = curNode.weight
+                        var newWeight = Int.MAX_VALUE
+
+                        curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
+
+                        if (oldWeight > newWeight) {
+                            curNode.weight = newWeight
+
+                            curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
+                            curNode.kids.removeIf { it.weight > newWeight }
+
+                            curNode.parents.forEach { deque.addLast(it) }
+                        }
+                        if (deque.last() == curNode) {
+                            cycle.remove(curNode)
+                        }
+                    }
+                }
+                is PackedSPPFNode<*> -> {
+                    val oldWeight = curNode.weight
+                    val newWeight = (curNode.leftSPPFNode?.weight ?: 0) + (curNode.rightSPPFNode?.weight ?: 0)
+
+                    if (oldWeight > newWeight) {
+                        curNode.weight = newWeight
+
+                        curNode.parents.forEach { deque.addLast(it) }
+                    }
+                }
+                else -> {
+                    throw  Error("Terminal node can not be parent")
+                }
+            }
+
+            if (curNode == deque.last()) deque.removeLast()
+        }
     }
 }
 

@@ -2,7 +2,7 @@ package org.srcgll.grammar.combinator
 
 import org.srcgll.grammar.combinator.regexp.NT
 import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.grammar.RSMState
+import org.srcgll.rsm.RSMState
 
 object GlobalState
 {

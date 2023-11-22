@@ -1,6 +1,6 @@
 package org.srcgll.sppf.node
 
-import org.srcgll.grammar.RSMState
+import org.srcgll.rsm.RSMState
 import java.util.*
 
 class ItemSPPFNode <VertexType>

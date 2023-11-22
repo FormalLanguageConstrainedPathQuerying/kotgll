@@ -1,6 +1,6 @@
-package org.srcgll.grammar
+package org.srcgll.rsm
 
-import org.srcgll.grammar.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Nonterminal
 import java.io.File
 
 fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
@@ -90,7 +90,7 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
     val boxes  : HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
 
     while (!queue.isEmpty()) {
-        val state = queue.removeFirst()
+        state = queue.removeFirst()
 
         if (!states.contains(state)) states.add(state)
 
@@ -125,7 +125,7 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
 
         states.forEach { state ->
             if (state.isStart)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = circle, color = green]")
+                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle, color = green]")
             else if (state.isFinal)
                 out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle, color = red]")
             else

@@ -1,6 +1,6 @@
 package org.srcgll.sppf.node
 
-import org.srcgll.grammar.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Nonterminal
 import java.util.*
 
 class SymbolSPPFNode <VertexType>

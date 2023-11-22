@@ -2,11 +2,11 @@ package org.srcgll.grammar.combinator.regexp
 
 import org.srcgll.grammar.combinator.GlobalState
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.grammar.RSMNonterminalEdge
-import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.RSMTerminalEdge
-import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.RSMNonterminalEdge
+import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.RSMTerminalEdge
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import java.util.*
 import kotlin.reflect.KProperty
 
