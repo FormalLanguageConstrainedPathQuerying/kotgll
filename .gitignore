@@ -29,7 +29,6 @@ output.txt
 
 # Graphs
 *.dot
-*.pdf
 
 # Profiling
 /visualvm_217

@@ -21,11 +21,27 @@ class GLL <VertexType, LabelType : ILabel>
 )
 {
     private val stack             : IDescriptorsStack<VertexType> = ErrorRecoveringDescriptorsStack()
-    private val sppf              : SPPF<VertexType> = SPPF()
+    private val createdSPPFNodes  : HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
+//    private val sppf              : SPPF<VertexType> = SPPF()
     private val poppedGSSNodes    : HashMap<GSSNode<VertexType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
     private val createdGSSNodes   : HashMap<GSSNode<VertexType>, GSSNode<VertexType>> = HashMap()
     private var parseResult       : SPPFNode<VertexType>? = null
     private val reachableVertices : HashSet<VertexType> = HashSet()
+
+    fun addDescriptor(descriptor : Descriptor<VertexType>)
+    {
+        val sppfNode    = descriptor.sppfNode
+        val state       = descriptor.rsmState
+        val leftExtent  = sppfNode?.leftExtent
+        val rightExtent = sppfNode?.rightExtent
+
+        if (sppfNode is SymbolSPPFNode<*> &&
+            state.nonterminal == startState.nonterminal && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)) {
+            stack.removeFromHandled(descriptor)
+        }
+
+        stack.add(descriptor)
+    }
 
     fun parse() : Pair<SPPFNode<VertexType>?, HashSet<VertexType>>
     {
@@ -37,7 +53,7 @@ class GLL <VertexType, LabelType : ILabel>
                         sppfNode = null,
                         startVertex
                     )
-            stack.add(descriptor)
+            addDescriptor(descriptor)
         }
 
         // Continue parsing until all default descriptors processed
@@ -127,13 +143,9 @@ class GLL <VertexType, LabelType : ILabel>
 
         if (curSPPFNode != null && curSPPFNode is TerminalSPPFNode<*>) {
             curSPPFNode.parents.forEach { packed ->
-                packed.parents.forEach { parent ->
-                    queue.addLast(parent)
-                    (parent as ParentSPPFNode<*>).kids.remove(curSPPFNode)
-                }
+                queue.addLast(packed)
             }
             curSPPFNode.parents.clear()
-            (queue.last() as ParentSPPFNode<*>).kids.clear()
         }
 
         while (queue.isNotEmpty()) {
@@ -182,13 +194,13 @@ class GLL <VertexType, LabelType : ILabel>
 
         parseResult = null
 
-        while (!stack.defaultDescriptorsStackIsEmpty()) {
+        while (parseResult == null && !stack.defaultDescriptorsStackIsEmpty()) {
             val curDefaultDescriptor = stack.next()
 
             parse(curDefaultDescriptor)
         }
 
-        while (recovery == RecoveryMode.ON && parseResult == null) {
+        while (parseResult == null && recovery == RecoveryMode.ON) {
             val curRecoveryDescriptor = stack.next()
 
             parse(curRecoveryDescriptor)
@@ -209,10 +221,10 @@ class GLL <VertexType, LabelType : ILabel>
         stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal) {
-            curSPPFNode = sppf.getNodeP(
+            curSPPFNode = getNodeP(
                               state,
                               curSPPFNode,
-                              sppf.getOrCreateItemSPPFNode(
+                              getOrCreateItemSPPFNode(
                                   state,
                                   pos,
                                   pos,
@@ -238,10 +250,10 @@ class GLL <VertexType, LabelType : ILabel>
                         Descriptor(
                             state,
                             gssNode,
-                            sppf.getNodeP(
+                            getNodeP(
                                 state,
                                 curSPPFNode,
-                                sppf.getOrCreateTerminalSPPFNode(
+                                getOrCreateTerminalSPPFNode(
                                     terminal = null,
                                     pos,
                                     inputEdge.head,
@@ -250,7 +262,7 @@ class GLL <VertexType, LabelType : ILabel>
                             ),
                             inputEdge.head
                         )
-                stack.add(descriptor)
+                addDescriptor(descriptor)
                 continue
             }
             for (kvp in state.outgoingTerminalEdges) {
@@ -262,10 +274,10 @@ class GLL <VertexType, LabelType : ILabel>
                                 Descriptor(
                                     rsmEdge.head,
                                     gssNode,
-                                    sppf.getNodeP(
+                                    getNodeP(
                                         rsmEdge.head,
                                         curSPPFNode,
-                                        sppf.getOrCreateTerminalSPPFNode(
+                                        getOrCreateTerminalSPPFNode(
                                             rsmEdge.terminal,
                                             pos,
                                             inputEdge.head,
@@ -274,7 +286,7 @@ class GLL <VertexType, LabelType : ILabel>
                                     ),
                                     inputEdge.head
                                 )
-                        stack.add(descriptor)
+                        addDescriptor(descriptor)
                     }
                 }
             }
@@ -291,7 +303,7 @@ class GLL <VertexType, LabelType : ILabel>
                             sppfNode = null,
                             pos
                         )
-                stack.add(descriptor)
+                addDescriptor(descriptor)
             }
         }
 
@@ -363,10 +375,10 @@ class GLL <VertexType, LabelType : ILabel>
                 Descriptor(
                     targetState,
                     curDescriptor.gssNode,
-                    sppf.getNodeP(
+                    getNodeP(
                         targetState,
                         curDescriptor.sppfNode,
-                        sppf.getOrCreateTerminalSPPFNode(
+                        getOrCreateTerminalSPPFNode(
                             terminal,
                             curDescriptor.inputPosition,
                             targetEdge.head,
@@ -375,7 +387,7 @@ class GLL <VertexType, LabelType : ILabel>
                     ),
                     targetEdge.head
                 )
-        stack.add(descriptor)
+        addDescriptor(descriptor)
     }
 
     private fun getOrCreateGSSNode(nonterminal : Nonterminal, inputPosition : VertexType, weight : Int)
@@ -412,10 +424,10 @@ class GLL <VertexType, LabelType : ILabel>
                             Descriptor(
                                 state,
                                 gssNode,
-                                sppf.getNodeP(state, sppfNode, popped!!),
+                                getNodeP(state, sppfNode, popped!!),
                                 popped.rightExtent
                             )
-                    stack.add(descriptor)
+                    addDescriptor(descriptor)
                 }
             }
         }
@@ -435,11 +447,172 @@ class GLL <VertexType, LabelType : ILabel>
                         Descriptor(
                             edge.key.first,
                             node,
-                            sppf.getNodeP(edge.key.first, edge.key.second, sppfNode!!),
+                            getNodeP(edge.key.first, edge.key.second, sppfNode!!),
                             pos
                         )
-                stack.add(descriptor)
+                addDescriptor(descriptor)
             }
+        }
+    }
+
+    fun getNodeP(state : RSMState, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
+    {
+        val leftExtent  = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
+        val rightExtent = nextSPPFNode.rightExtent
+
+        val packedNode = PackedSPPFNode(nextSPPFNode.leftExtent, state, sppfNode, nextSPPFNode)
+
+        val parent : ParentSPPFNode<VertexType> =
+            if (state.isFinal) getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
+            else               getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
+
+
+        //  Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
+        if (sppfNode != null || parent != nextSPPFNode) {
+            sppfNode?.parents?.add(packedNode)
+            nextSPPFNode.parents.add(packedNode)
+            packedNode.parents.add(parent)
+
+            parent.kids.add(packedNode)
+        }
+
+        updateWeights(parent)
+
+//        if (parent is SymbolSPPFNode<*> &&
+//            state.nonterminal == startState.nonterminal && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)) {
+//            if ((parseResult == null || parseResult!!.weight > parent!!.weight)) {
+//                parseResult = parent
+//            }
+//            reachableVertices.add(rightExtent)
+//        }
+
+        return parent
+    }
+
+    fun getOrCreateTerminalSPPFNode
+    (
+        terminal    : Terminal<*>?,
+        leftExtent  : VertexType,
+        rightExtent : VertexType,
+        weight      : Int
+    )
+        : SPPFNode<VertexType>
+    {
+        val node = TerminalSPPFNode(terminal, leftExtent, rightExtent, weight)
+
+        if (!createdSPPFNodes.containsKey(node)) {
+            createdSPPFNodes[node] = node
+        }
+
+        return createdSPPFNodes[node]!!
+    }
+
+    fun getOrCreateItemSPPFNode
+    (
+        state       : RSMState,
+        leftExtent  : VertexType,
+        rightExtent : VertexType,
+        weight      : Int
+    )
+        : ParentSPPFNode<VertexType>
+    {
+        val node = ItemSPPFNode(state, leftExtent, rightExtent)
+        node.weight = weight
+
+        if (!createdSPPFNodes.containsKey(node)) {
+            createdSPPFNodes[node] = node
+        }
+
+        return createdSPPFNodes[node]!! as ItemSPPFNode
+    }
+
+    fun getOrCreateSymbolSPPFNode
+    (
+        nonterminal : Nonterminal,
+        leftExtent  : VertexType,
+        rightExtent : VertexType,
+        weight      : Int
+    )
+        : SymbolSPPFNode<VertexType>
+    {
+        val node = SymbolSPPFNode(nonterminal, leftExtent, rightExtent)
+        node.weight = weight
+
+        if (!createdSPPFNodes.containsKey(node)) createdSPPFNodes[node] = node
+
+//        if (nonterminal == startState.nonterminal && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)) {
+//            if (parseResult == null || parseResult!!.weight > createdSPPFNodes[node]!!.weight) {
+//                parseResult = createdSPPFNodes[node]
+//            }
+//            reachableVertices.add(rightExtent)
+//        }
+
+        return createdSPPFNodes[node]!! as SymbolSPPFNode
+    }
+
+    fun updateWeights(sppfNode : ISPPFNode)
+    {
+        val cycle = HashSet<ISPPFNode>()
+        val deque = ArrayDeque(listOf(sppfNode))
+        var curNode : ISPPFNode
+
+        while (deque.isNotEmpty()) {
+            curNode = deque.last()
+
+            when (curNode) {
+                is SymbolSPPFNode<*> -> {
+                    val oldWeight = curNode.weight
+                    var newWeight = Int.MAX_VALUE
+
+                    curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
+
+                    if (oldWeight > newWeight) {
+                        curNode.weight = newWeight
+
+                        curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
+                        curNode.kids.removeIf { it.weight > newWeight }
+
+                        curNode.parents.forEach { deque.addLast(it) }
+                    }
+                }
+                is ItemSPPFNode<*> -> {
+                    if (!cycle.contains(curNode)) {
+                        cycle.add(curNode)
+
+                        val oldWeight = curNode.weight
+                        var newWeight = Int.MAX_VALUE
+
+                        curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
+
+                        if (oldWeight > newWeight) {
+                            curNode.weight = newWeight
+
+                            curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
+                            curNode.kids.removeIf { it.weight > newWeight }
+
+                            curNode.parents.forEach { deque.addLast(it) }
+                        }
+                        if (deque.last() == curNode) {
+                            cycle.remove(curNode)
+                        }
+                    }
+                }
+                is PackedSPPFNode<*> -> {
+                    val oldWeight = curNode.weight
+                    val newWeight = (curNode.leftSPPFNode?.weight ?: 0) + (curNode.rightSPPFNode?.weight ?: 0)
+
+                    if (oldWeight > newWeight) {
+                        curNode.weight = newWeight
+
+                        curNode.parents.forEach { deque.addLast(it) }
+                    }
+                }
+                else -> {
+                    throw  Error("Terminal node can not be parent")
+                }
+            }
+
+            if (curNode == deque.last()) deque.removeLast()
         }
     }
 }

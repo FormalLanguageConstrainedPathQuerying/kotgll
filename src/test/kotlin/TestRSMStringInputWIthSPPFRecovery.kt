@@ -3,12 +3,12 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.srcgll.GLL
 import org.srcgll.RecoveryMode
+import org.srcgll.sppf.buildStringFromSPPF
+import org.srcgll.rsm.readRSMFromTXT
+import org.srcgll.rsm.symbol.*
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.rsm.readRSMFromTXT
-import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.buildStringFromSPPF
-import org.srcgll.sppf.writeSPPFToDOT
+
 import kotlin.test.assertNotNull
 
 const val pathToGrammars = "./src/test/resources/cli/TestRSMReadWriteTXT"
@@ -27,7 +27,7 @@ class TestRSMStringInputWIthSPPFRecovery {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-
+        
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
@@ -59,7 +59,7 @@ class TestRSMStringInputWIthSPPFRecovery {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-
+        
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
@@ -159,7 +159,6 @@ class TestRSMStringInputWIthSPPFRecovery {
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
-        writeSPPFToDOT(result.first!!, "./debug_${input}.dot")
         val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -190,7 +189,7 @@ class TestRSMStringInputWIthSPPFRecovery {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-
+        
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
