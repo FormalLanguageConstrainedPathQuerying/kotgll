@@ -3,6 +3,7 @@ package org.srcgll.descriptors
 import org.srcgll.rsm.RSMState
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.node.SPPFNode
+import org.srcgll.sppf.node.SymbolSPPFNode
 
 class Descriptor <VertexType>
 (
@@ -21,10 +22,14 @@ class Descriptor <VertexType>
     
     override fun equals(other : Any?) : Boolean
     {
-        return other is Descriptor<*>               &&
-               other.rsmState == rsmState           &&
-               other.inputPosition == inputPosition &&
-               other.gssNode == gssNode
+        if (this === other)                       return true
+        if (other !is Descriptor<*>)              return false
+        if (other.rsmState == rsmState)           return false
+        if (other.inputPosition == inputPosition) return false
+        if (other.gssNode == gssNode )            return false
+        if (other.sppfNode == sppfNode)           return false
+
+        return true
     }
 }
 
@@ -36,6 +41,7 @@ interface IDescriptorsStack <VertexType>
     fun next() : Descriptor<VertexType>
     fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean
     fun addToHandled(descriptor : Descriptor<VertexType>)
+    fun removeFromHandled(descriptor : Descriptor<VertexType>)
 }
 
 class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexType>
@@ -102,6 +108,15 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexTyp
     override fun addToHandled(descriptor : Descriptor<VertexType>)
     {
         descriptor.gssNode.handledDescriptors.add(descriptor)
+    }
+
+    override fun removeFromHandled(descriptor : Descriptor<VertexType>)
+    {
+        descriptor.gssNode.handledDescriptors.remove(descriptor)
+
+        if (handledDescriptors.containsKey(descriptor.inputPosition)) {
+            handledDescriptors.getValue(descriptor.inputPosition).remove(descriptor)
+        }
     }
 }
 

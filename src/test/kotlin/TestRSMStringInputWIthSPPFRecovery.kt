@@ -8,6 +8,7 @@ import org.srcgll.rsm.readRSMFromTXT
 import org.srcgll.rsm.symbol.*
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.sppf.node.ISPPFNode
 import org.srcgll.sppf.writeSPPFToDOT
 import kotlin.test.assertNotNull
 
@@ -228,12 +229,12 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
+//        writeSPPFToDOT(result!!.first as ISPPFNode, "./${input.length}_sppf.dot")
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
