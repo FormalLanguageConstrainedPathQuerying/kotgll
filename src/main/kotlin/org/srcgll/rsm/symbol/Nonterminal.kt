@@ -13,7 +13,7 @@ class Nonterminal
 
     override fun equals(other : Any?) : Boolean
     {
-        if (this === other)           return true
+        if (this === other)        return true
         if (other !is Nonterminal) return false
         if (name != other.name)     return false
 
