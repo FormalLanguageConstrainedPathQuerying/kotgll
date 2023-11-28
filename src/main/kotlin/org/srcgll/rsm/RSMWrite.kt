@@ -7,8 +7,8 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
     var lastId = 0
     val stateToId: HashMap<RSMState, Int> = HashMap()
 
-    fun getId(state: RSMState) {
-        stateToId.getOrPut(state) { lastId++ }
+    fun getId(state: RSMState): Int {
+        return stateToId.getOrPut(state) { lastId++ }
     }
 
     val states: ArrayList<RSMState> = ArrayList()
@@ -100,8 +100,8 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
     var lastId = 0
     val stateToId: HashMap<RSMState, Int> = HashMap()
 
-    fun getId(state: RSMState) {
-        stateToId.getOrPut(state) { lastId++ }
+    fun getId(state: RSMState): Int {
+        return stateToId.getOrPut(state) { lastId++ }
     }
 
     val states: HashSet<RSMState> = HashSet()
