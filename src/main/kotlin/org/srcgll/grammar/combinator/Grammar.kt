@@ -8,6 +8,9 @@ object GlobalState
 {
     private var value = 0
     fun getNextInt() : Int = value++
+    fun resetCounter() {
+        value = 0
+    }
 }
 
 open class Grammar

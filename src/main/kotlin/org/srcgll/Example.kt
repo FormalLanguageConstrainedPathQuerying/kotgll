@@ -3,7 +3,6 @@ package org.srcgll
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.rsm.writeRSMToDOT
 import org.srcgll.input.Edge
 import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
