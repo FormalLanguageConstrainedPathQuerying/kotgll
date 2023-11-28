@@ -7,8 +7,8 @@ open class PackedSPPFNode <VertexType>
 (
     val pivot         : VertexType,
     val rsmState      : RSMState,
-    val leftSPPFNode  : SPPFNode<VertexType>? = null,
-    val rightSPPFNode : SPPFNode<VertexType>? = null,
+    var leftSPPFNode  : SPPFNode<VertexType>? = null,
+    var rightSPPFNode : SPPFNode<VertexType>? = null,
     override var id   : Int = SPPFNodeId.getFirstFreeSPPFNodeId()
 )
     : ISPPFNode

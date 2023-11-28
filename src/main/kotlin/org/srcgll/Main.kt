@@ -54,7 +54,7 @@ fun main(args : Array<String>)
     val inputGraph = LinearInput<Int, LinearInputLabel>()
     val gll = GLL(grammar, inputGraph, RecoveryMode.ON)
     var vertexId = 0
-    var addFrom  = 3
+    var addFrom  = 1
 
     inputGraph.addStartVertex(vertexId)
     inputGraph.addVertex(vertexId)
@@ -72,11 +72,13 @@ fun main(args : Array<String>)
     val initEdges = inputGraph.getEdges(addFrom)
 
     inputGraph.edges.remove(addFrom)
-    inputGraph.addEdge(addFrom, LinearInputLabel(Terminal(")")), ++vertexId)
+    inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("[")), ++vertexId)
     inputGraph.edges[vertexId] = initEdges
 
     inputGraph.addVertex(vertexId)
 
+    val static = GLL(grammar, inputGraph, RecoveryMode.ON).parse()
+    writeSPPFToDOT(static.first!!, pathToOutputSPPF + "static.dot")
     // If new edge was added to graph - we need to recover corresponding descriptors and add them to
     // descriptors stack and proceed with parsing them
     result = gll.parse(addFrom)
