@@ -35,7 +35,7 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
         out.println(
             """StartState(
             |id=${startState.id},
-            |nonterminal=Nonterminal("${startState.nonterminal.value}"),
+            |nonterminal=Nonterminal("${startState.nonterminal.name}"),
             |isStart=${startState.isStart},
             |isFinal=${startState.isFinal}
             |)"""
@@ -46,7 +46,7 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
             out.println(
                 """State(
                 |id=${state.id},
-                |nonterminal=Nonterminal("${state.nonterminal.value}"),
+                |nonterminal=Nonterminal("${state.nonterminal.name}"),
                 |isStart=${state.isStart},
                 |isFinal=${state.isFinal}
                 |)"""
@@ -73,7 +73,7 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
                         """NonterminalEdge(
                         |tail=${state.id},
                         |head=${head.id},
-                        |nonterminal=Nonterminal("${head.nonterminal.value}")
+                        |nonterminal=Nonterminal("${head.nonterminal.name}")
                         |)"""
                         .trimMargin()
                         .replace("\n", ""))
@@ -125,11 +125,11 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
 
         states.forEach { state ->
             if (state.isStart)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle, color = green]")
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = green]")
             else if (state.isFinal)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle, color = red]")
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = red]")
             else
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = circle]")
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle]")
         }
 
         states.forEach { state ->
@@ -140,18 +140,18 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
             }
             state.outgoingNonterminalEdges.forEach { edge ->
                 edge.value.forEach { head ->
-                    out.println("${state.id} -> ${head.id} [label = ${edge.key.value}]")
+                    out.println("${state.id} -> ${head.id} [label = ${edge.key.name}]")
                 }
             }
         }
 
         boxes.forEach { box ->
-            out.println("subgraph cluster_${box.key.value} {")
+            out.println("subgraph cluster_${box.key.name} {")
 
             box.value.forEach { state ->
                 out.println("${state.id}")
             }
-            out.println("label = \"${box.key.value}\"")
+            out.println("label = \"${box.key.name}\"")
             out.println("}")
         }
         out.println("}")

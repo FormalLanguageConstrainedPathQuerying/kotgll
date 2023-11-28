@@ -234,7 +234,6 @@ class TestRSMStringInputWIthSPPFRecovery
         val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
-//        writeSPPFToDOT(result!!.first as ISPPFNode, "./${input.length}_sppf.dot")
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)

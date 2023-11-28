@@ -19,15 +19,15 @@ class Descriptor <VertexType>
     fun weight() : Int = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
     
     override fun hashCode() = hashCode
-    
+
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                       return true
         if (other !is Descriptor<*>)              return false
-        if (other.rsmState == rsmState)           return false
-        if (other.inputPosition == inputPosition) return false
-        if (other.gssNode == gssNode )            return false
-        if (other.sppfNode == sppfNode)           return false
+        if (other.rsmState != rsmState)           return false
+        if (other.gssNode != gssNode )            return false
+        if (other.sppfNode != sppfNode)           return false
+        if (other.inputPosition != inputPosition) return false
 
         return true
     }
@@ -57,12 +57,6 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexTyp
         if (!isAlreadyHandled(descriptor)) {
             val pathWeight = descriptor.weight()
 
-            if (!handledDescriptors.containsKey(descriptor.inputPosition)) {
-                handledDescriptors[descriptor.inputPosition] = HashSet()
-            }
-
-            handledDescriptors.getValue(descriptor.inputPosition).add(descriptor)
-
             if (pathWeight == 0) {
                 defaultDescriptorsStack.addLast(descriptor)
             } else {
@@ -76,7 +70,7 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexTyp
 
     override fun recoverDescriptors(vertex : VertexType)
     {
-        handledDescriptors.getOrDefault(vertex, HashSet()).forEach {descriptor ->
+        handledDescriptors.getOrDefault(vertex, HashSet()).forEach { descriptor ->
             descriptor.gssNode.handledDescriptors.remove(descriptor)
             add(descriptor)
         }
@@ -108,6 +102,12 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack<VertexTyp
     override fun addToHandled(descriptor : Descriptor<VertexType>)
     {
         descriptor.gssNode.handledDescriptors.add(descriptor)
+
+        if (!handledDescriptors.containsKey(descriptor.inputPosition)) {
+            handledDescriptors[descriptor.inputPosition] = HashSet()
+        }
+
+        handledDescriptors.getValue(descriptor.inputPosition).add(descriptor)
     }
 
     override fun removeFromHandled(descriptor : Descriptor<VertexType>)

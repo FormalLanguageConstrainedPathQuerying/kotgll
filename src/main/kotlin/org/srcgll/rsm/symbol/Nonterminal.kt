@@ -4,22 +4,22 @@ import org.srcgll.rsm.RSMState
 
 class Nonterminal
 (
-   val value : String
+   val name : String
 )
     : Symbol
 {
     lateinit var startState : RSMState
-    override fun toString() = "Nonterminal($value)"
+    override fun toString() = "Nonterminal($name)"
 
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)           return true
         if (other !is Nonterminal) return false
-        if (value != other.value)     return false
+        if (name != other.name)     return false
 
         return true
     }
 
-    val hashCode : Int = value.hashCode()
+    val hashCode : Int = name.hashCode()
     override fun hashCode() = hashCode
 }

@@ -49,7 +49,7 @@ open class NT : DerivedSymbol
 
                         is NT -> {
                             if (!symbol::nonTerm.isInitialized) {
-                                throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.value}\"")
+                                throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.name}\"")
                             }
                             state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm as Nonterminal, toState))
                         }

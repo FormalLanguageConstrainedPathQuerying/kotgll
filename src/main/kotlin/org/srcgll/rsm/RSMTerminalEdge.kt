@@ -12,10 +12,10 @@ class RSMTerminalEdge
 
     override fun equals(other : Any?) : Boolean
     {
-        if (this === other)               return true
-        if (other !is RSMTerminalEdge) return false
-        if (terminal != other.terminal)   return false
-        if (head != other.head)           return false
+        if (this === other)             return true
+        if (other !is RSMTerminalEdge)  return false
+        if (terminal != other.terminal) return false
+        if (head != other.head)         return false
 
         return true
     }

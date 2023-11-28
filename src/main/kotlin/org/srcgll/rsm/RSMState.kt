@@ -21,9 +21,9 @@ class RSMState
 
     override fun equals(other : Any?) : Boolean
     {
-        if (this === other)        return true
+        if (this === other)     return true
         if (other !is RSMState) return false
-        if (id != other.id)        return false
+        if (id != other.id)     return false
 
         return true
     }

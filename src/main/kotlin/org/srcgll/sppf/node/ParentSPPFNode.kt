@@ -10,7 +10,6 @@ open class ParentSPPFNode <VertexType>
     : SPPFNode<VertexType>(leftExtent, rightExtent, Int.MAX_VALUE)
 {
     val kids : HashSet<PackedSPPFNode<VertexType>> = HashSet()
-    
 
     override fun toString() = "ParentSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent)"
     
