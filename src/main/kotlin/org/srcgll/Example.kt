@@ -206,8 +206,8 @@ fun createStackExampleGraph(startVertex : Int) : SimpleGraph
 }
 
 fun main() {
-    val rsmAnBnStartState  = AnBn().buildRsm()
-    val rsmStackStartState = Stack().buildRsm()
+    val rsmAnBnStartState  = AnBn().getRsm()
+    val rsmStackStartState = Stack().getRsm()
     val startVertex        = 0
     val inputGraphAnBn     = createAnBnExampleGraph(startVertex)
     val inputGraphStack    = createStackExampleGraph(startVertex)

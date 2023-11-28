@@ -5,35 +5,26 @@ import org.srcgll.rsm.symbol.Terminal
 import java.io.File
 
 
-fun readRSMFromTXT(pathToTXT : String) : RSMState
-{
-    val rsmStates     : HashMap<Int, RSMState> = HashMap()
-    var startRSMState : RSMState?              = null
+fun readRSMFromTXT(pathToTXT: String): RSMState {
+    val idToState: HashMap<Int, RSMState> = HashMap()
+    var startRSMState: RSMState? = null
+    fun makeRSMState(
+        id: Int,
+        nonterminal: Nonterminal,
+        isStart: Boolean = false,
+        isFinal: Boolean = false
+    ): RSMState {
+        val y = RSMState(nonterminal, isStart, isFinal)
 
-    fun makeRSMState
-    (
-        id          : Int,
-        nonterminal : Nonterminal,
-        isStart     : Boolean = false,
-        isFinal     : Boolean = false
-    ) : RSMState
-    {
-        val y = RSMState(id, nonterminal, isStart, isFinal)
+        if (!idToState.containsKey(id)) idToState[id] = y
 
-        if (!rsmStates.containsKey(y.hashCode)) rsmStates[y.hashCode] = y
-
-        return rsmStates[y.hashCode]!!
+        return idToState[id]!!
     }
 
-    val nonterminals : HashMap<Nonterminal, Nonterminal> = HashMap()
+    val nameToNonterminal: HashMap<String, Nonterminal> = HashMap()
 
-    fun makeNonterminal(name : String) : Nonterminal
-    {
-        val y = Nonterminal(name)
-
-        if (!nonterminals.contains(y)) nonterminals[y] = y
-
-        return nonterminals[y]!!
+    fun makeNonterminal(name: String): Nonterminal {
+        return nameToNonterminal.getOrPut(name) { Nonterminal(name) }
     }
 
     val startStateRegex =
@@ -91,10 +82,10 @@ fun readRSMFromTXT(pathToTXT : String) : RSMState
 
             startRSMState =
                 makeRSMState(
-                    id          = idValue.toInt(),
+                    id = idValue.toInt(),
                     nonterminal = tmpNonterminal,
-                    isStart     = isStartValue == "true",
-                    isFinal     = isFinalValue == "true",
+                    isStart = isStartValue == "true",
+                    isFinal = isFinalValue == "true",
                 )
 
             if (startRSMState.isStart) tmpNonterminal.startState = startRSMState
@@ -107,10 +98,10 @@ fun readRSMFromTXT(pathToTXT : String) : RSMState
 
             val tmpRSMState =
                 makeRSMState(
-                    id          = idValue.toInt(),
+                    id = idValue.toInt(),
                     nonterminal = tmpNonterminal,
-                    isStart     = isStartValue == "true",
-                    isFinal     = isFinalValue == "true",
+                    isStart = isStartValue == "true",
+                    isFinal = isFinalValue == "true",
                 )
 
             if (tmpRSMState.isStart) tmpNonterminal.startState = tmpRSMState
@@ -118,8 +109,8 @@ fun readRSMFromTXT(pathToTXT : String) : RSMState
         } else if (rsmTerminalEdgeRegex.matches(line)) {
             val (tailId, headId, terminalValue) = rsmTerminalEdgeRegex.matchEntire(line)!!.destructured
 
-            val tailRSMState = rsmStates[tailId.toInt()]!!
-            val headRSMState = rsmStates[headId.toInt()]!!
+            val tailRSMState = idToState[tailId.toInt()]!!
+            val headRSMState = idToState[headId.toInt()]!!
 
             tailRSMState.addTerminalEdge(
                 RSMTerminalEdge(terminal = Terminal(terminalValue), head = headRSMState)
@@ -128,8 +119,8 @@ fun readRSMFromTXT(pathToTXT : String) : RSMState
             val (tailId, headId, nonterminalValue) =
                 rsmNonterminalEdgeRegex.matchEntire(line)!!.destructured
 
-            val tailRSMState = rsmStates[tailId.toInt()]!!
-            val headRSMState = rsmStates[headId.toInt()]!!
+            val tailRSMState = idToState[tailId.toInt()]!!
+            val headRSMState = idToState[headId.toInt()]!!
 
             tailRSMState.addNonterminalEdge(
                 RSMNonterminalEdge(nonterminal = makeNonterminal(nonterminalValue), head = headRSMState)
