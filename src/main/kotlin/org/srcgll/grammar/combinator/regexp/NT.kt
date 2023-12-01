@@ -10,18 +10,15 @@ import org.srcgll.rsm.symbol.Terminal
 import java.util.*
 import kotlin.reflect.KProperty
 
-open class NT : DerivedSymbol
-{
-    private lateinit var nonTerm        : Nonterminal
-    private lateinit var rsmDescription : Regexp
+open class NT : DerivedSymbol {
+    private lateinit var nonTerm: Nonterminal
+    private lateinit var rsmDescription: Regexp
 
-    private fun getNewState(regex : Regexp) : RSMState
-    {
+    private fun getNewState(regex: Regexp): RSMState {
         return RSMState(GlobalState.getNextInt(), nonTerm, isStart = false, regex.acceptEpsilon())
     }
 
-    fun buildRsmBox() : RSMState
-    {
+    fun buildRsmBox(): RSMState {
         val regexpToProcess = Stack<Regexp>()
         val regexpToRsmState = HashMap<Regexp, RSMState>()
         regexpToRsmState[rsmDescription] = nonTerm.startState
@@ -60,23 +57,22 @@ open class NT : DerivedSymbol
         return nonTerm.startState
     }
 
-    override fun getNonterminal() : Nonterminal?
-    {
+    override fun getNonterminal(): Nonterminal? {
         return nonTerm
     }
 
-    operator fun setValue(grammar : Grammar, property : KProperty<*>, lrh : Regexp)
-    {
+    operator fun setValue(grammar: Grammar, property: KProperty<*>, lrh: Regexp) {
         if (!this::nonTerm.isInitialized) {
             nonTerm = Nonterminal(property.name)
             grammar.nonTerms.add(this)
             rsmDescription = lrh
-            nonTerm.startState = RSMState(GlobalState.getNextInt(), nonTerm, isStart = true, rsmDescription.acceptEpsilon())
+            nonTerm.startState =
+                RSMState(GlobalState.getNextInt(), nonTerm, isStart = true, rsmDescription.acceptEpsilon())
         } else {
             throw Exception("NonTerminal ${property.name} is already initialized")
         }
 
     }
 
-    operator fun getValue(grammar : Grammar, property : KProperty<*>) : Regexp = this
+    operator fun getValue(grammar: Grammar, property: KProperty<*>): Regexp = this
 }

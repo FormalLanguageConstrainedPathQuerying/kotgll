@@ -4,8 +4,8 @@ import org.srcgll.rsm.symbol.Nonterminal
 import java.io.File
 
 fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
-    val states : ArrayList<RSMState>  = ArrayList()
-    val queue  : ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+    val states: ArrayList<RSMState> = ArrayList()
+    val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
 
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
@@ -14,19 +14,15 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
 
         for (kvp in state.outgoingTerminalEdges) {
             for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
+                if (!states.contains(head)) queue.addLast(head)
             }
         }
 
         for (kvp in state.outgoingNonterminalEdges) {
             for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
-                if (!states.contains(kvp.key.startState))
-                    queue.addLast(kvp.key.startState)
-                if (!states.contains(head.nonterminal.startState))
-                    queue.addLast(head.nonterminal.startState)
+                if (!states.contains(head)) queue.addLast(head)
+                if (!states.contains(kvp.key.startState)) queue.addLast(kvp.key.startState)
+                if (!states.contains(head.nonterminal.startState)) queue.addLast(head.nonterminal.startState)
             }
         }
     }
@@ -38,9 +34,8 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
             |nonterminal=Nonterminal("${startState.nonterminal.name}"),
             |isStart=${startState.isStart},
             |isFinal=${startState.isFinal}
-            |)"""
-            .trimMargin()
-            .replace("\n", ""))
+            |)""".trimMargin().replace("\n", "")
+        )
 
         states.forEach { state ->
             out.println(
@@ -49,9 +44,8 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
                 |nonterminal=Nonterminal("${state.nonterminal.name}"),
                 |isStart=${state.isStart},
                 |isFinal=${state.isFinal}
-                |)"""
-                .trimMargin()
-                .replace("\n", ""))
+                |)""".trimMargin().replace("\n", "")
+            )
         }
 
         states.forEach { state ->
@@ -62,9 +56,8 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
                         |tail=${state.id},
                         |head=${head.id},
                         |terminal=Terminal("${edge.key.value}")
-                        |)"""
-                        .trimMargin()
-                        .replace("\n", ""))
+                        |)""".trimMargin().replace("\n", "")
+                    )
                 }
             }
             state.outgoingNonterminalEdges.forEach { edge ->
@@ -74,20 +67,20 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
                         |tail=${state.id},
                         |head=${head.id},
                         |nonterminal=Nonterminal("${head.nonterminal.name}")
-                        |)"""
-                        .trimMargin()
-                        .replace("\n", ""))
+                        |)""".trimMargin().replace("\n", "")
+                    )
                 }
             }
         }
     }
 
 }
+
 fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
-    val states : HashSet<RSMState> = HashSet()
-    val queue  : ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
-    var state  : RSMState
-    val boxes  : HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
+    val states: HashSet<RSMState> = HashSet()
+    val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+    var state: RSMState
+    val boxes: HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
 
     while (!queue.isEmpty()) {
         state = queue.removeFirst()
@@ -96,19 +89,15 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
 
         for (kvp in state.outgoingTerminalEdges) {
             for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
+                if (!states.contains(head)) queue.addLast(head)
             }
         }
 
         for (kvp in state.outgoingNonterminalEdges) {
             for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
-                if (!states.contains(kvp.key.startState))
-                    queue.addLast(kvp.key.startState)
-                if (!states.contains(head.nonterminal.startState))
-                    queue.addLast(head.nonterminal.startState)
+                if (!states.contains(head)) queue.addLast(head)
+                if (!states.contains(kvp.key.startState)) queue.addLast(kvp.key.startState)
+                if (!states.contains(head.nonterminal.startState)) queue.addLast(head.nonterminal.startState)
             }
         }
     }
@@ -124,12 +113,9 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
         out.println("digraph g {")
 
         states.forEach { state ->
-            if (state.isStart)
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = green]")
-            else if (state.isFinal)
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = red]")
-            else
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle]")
+            if (state.isStart) out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle, color = green]")
+            else if (state.isFinal) out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = red]")
+            else out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle]")
         }
 
         states.forEach { state ->

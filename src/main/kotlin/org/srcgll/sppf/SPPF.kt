@@ -5,25 +5,26 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
 
-class SPPF <VertexType>
-{
-    private val createdSPPFNodes : HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
+class SPPF<VertexType> {
+    private val createdSPPFNodes: HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
 
-    fun removeNode(sppfNode : SPPFNode<VertexType>)
-    {
+    fun removeNode(sppfNode: SPPFNode<VertexType>) {
         createdSPPFNodes.remove(sppfNode)
     }
-
-    fun getNodeP(state : RSMState, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
-    {
-        val leftExtent  = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
+ 
+    fun getNodeP(
+        state: RSMState,
+        sppfNode: SPPFNode<VertexType>?,
+        nextSPPFNode: SPPFNode<VertexType>,
+    ): SPPFNode<VertexType> {
+        val leftExtent = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
         val rightExtent = nextSPPFNode.rightExtent
 
         val packedNode = PackedSPPFNode(nextSPPFNode.leftExtent, state, sppfNode, nextSPPFNode)
 
-        val parent : ParentSPPFNode<VertexType> =
+        val parent: ParentSPPFNode<VertexType> =
             if (state.isFinal) getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
-            else               getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
+            else getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
 
 
         //  Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
@@ -40,15 +41,12 @@ class SPPF <VertexType>
         return parent
     }
 
-    fun getOrCreateTerminalSPPFNode
-    (
-        terminal    : Terminal<*>?,
-        leftExtent  : VertexType,
-        rightExtent : VertexType,
-        weight      : Int
-    )
-        : SPPFNode<VertexType>
-    {
+    fun getOrCreateTerminalSPPFNode(
+        terminal: Terminal<*>?,
+        leftExtent: VertexType,
+        rightExtent: VertexType,
+        weight: Int,
+    ): SPPFNode<VertexType> {
         val node = TerminalSPPFNode(terminal, leftExtent, rightExtent, weight)
 
         if (!createdSPPFNodes.containsKey(node)) {
@@ -58,15 +56,12 @@ class SPPF <VertexType>
         return createdSPPFNodes[node]!!
     }
 
-    fun getOrCreateItemSPPFNode
-    (
-        state       : RSMState,
-        leftExtent  : VertexType,
-        rightExtent : VertexType,
-        weight      : Int
-    )
-        : ParentSPPFNode<VertexType>
-    {
+    fun getOrCreateItemSPPFNode(
+        state: RSMState,
+        leftExtent: VertexType,
+        rightExtent: VertexType,
+        weight: Int,
+    ): ParentSPPFNode<VertexType> {
         val node = ItemSPPFNode(state, leftExtent, rightExtent)
         node.weight = weight
 
@@ -77,29 +72,27 @@ class SPPF <VertexType>
         return createdSPPFNodes[node]!! as ItemSPPFNode
     }
 
-    fun getOrCreateSymbolSPPFNode
-    (
-        nonterminal : Nonterminal,
-        leftExtent  : VertexType,
-        rightExtent : VertexType,
-        weight      : Int
-    )
-        : SymbolSPPFNode<VertexType>
-    {
+    fun getOrCreateSymbolSPPFNode(
+        nonterminal: Nonterminal,
+        leftExtent: VertexType,
+        rightExtent: VertexType,
+        weight: Int,
+    ): SymbolSPPFNode<VertexType> {
         val node = SymbolSPPFNode(nonterminal, leftExtent, rightExtent)
         node.weight = weight
 
-        if (!createdSPPFNodes.containsKey(node)) createdSPPFNodes[node] = node
+        if (!createdSPPFNodes.containsKey(node)) {
+            createdSPPFNodes[node] = node
+        }
 
         return createdSPPFNodes[node]!! as SymbolSPPFNode
     }
 
-    fun invalidate(vertex : VertexType, parseResult : ISPPFNode)
-    {
+    fun invalidate(vertex: VertexType, parseResult: ISPPFNode) {
         val queue = ArrayDeque<ISPPFNode>()
         val cycle = HashSet<ISPPFNode>()
         val added = HashSet<ISPPFNode>()
-        var curSPPFNode : ISPPFNode? = parseResult
+        var curSPPFNode: ISPPFNode? = parseResult
 
         queue.add(curSPPFNode!!)
         added.add(curSPPFNode!!)
@@ -124,6 +117,7 @@ class SPPF <VertexType>
                         }
                     }
                 }
+
                 is ItemSPPFNode<*> -> {
                     if (!cycle.contains(curSPPFNode)) {
                         cycle.add(curSPPFNode)
@@ -140,6 +134,7 @@ class SPPF <VertexType>
                         }
                     }
                 }
+
                 is PackedSPPFNode<*> -> {
                     if (curSPPFNode.rightSPPFNode != null) {
                         if (!added.contains(curSPPFNode.rightSPPFNode!!)) {
@@ -154,6 +149,7 @@ class SPPF <VertexType>
                         }
                     }
                 }
+
                 is TerminalSPPFNode<*> -> {
                     if (curSPPFNode.leftExtent == vertex) {
                         break
@@ -194,6 +190,7 @@ class SPPF <VertexType>
                         }
                     }
                 }
+
                 is PackedSPPFNode<*> -> {
                     curSPPFNode.parents.forEach { parent ->
                         if ((parent as ParentSPPFNode<*>).kids.contains(curSPPFNode)) {
@@ -202,6 +199,7 @@ class SPPF <VertexType>
                         }
                     }
                 }
+
                 is TerminalSPPFNode<*> -> {
                     curSPPFNode.parents.forEach { packed ->
                         queue.addLast(packed)
@@ -218,11 +216,10 @@ class SPPF <VertexType>
         }
     }
 
-    fun updateWeights(sppfNode : ISPPFNode)
-    {
+    fun updateWeights(sppfNode: ISPPFNode) {
         val cycle = HashSet<ISPPFNode>()
         val deque = ArrayDeque(listOf(sppfNode))
-        var curNode : ISPPFNode
+        var curNode: ISPPFNode
 
         while (deque.isNotEmpty()) {
             curNode = deque.last()
@@ -251,6 +248,7 @@ class SPPF <VertexType>
                         }
                     }
                 }
+
                 is PackedSPPFNode<*> -> {
                     val oldWeight = curNode.weight
                     val newWeight = (curNode.leftSPPFNode?.weight ?: 0) + (curNode.rightSPPFNode?.weight ?: 0)
@@ -261,8 +259,9 @@ class SPPF <VertexType>
                         curNode.parents.forEach { deque.addLast(it) }
                     }
                 }
+
                 else -> {
-                    throw  Error("Terminal node can not be parent")
+                    throw Error("Terminal node can not be parent")
                 }
             }
 
