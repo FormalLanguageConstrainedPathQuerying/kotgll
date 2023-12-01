@@ -53,8 +53,6 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
         states.forEach { state ->
             out.println(
                 """State(
-                |id=${state.id},
-                |nonterminal=Nonterminal("${state.nonterminal.name}"),
                 |id=${getId(state)},
                 |nonterminal=Nonterminal("${state.nonterminal.name}"),
                 |isStart=${state.isStart},
