@@ -1,6 +1,7 @@
 package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 
 class RSMState
@@ -39,6 +40,13 @@ class RSMState
             targetStates.add(edge.head)
         } else {
             outgoingNonterminalEdges[edge.nonterminal] = hashSetOf(edge.head)
+        }
+    }
+
+    fun addEdge(label: Symbol, head: RSMState){
+        when (label){
+            is Terminal<*> -> addTerminalEdge(RSMTerminalEdge(label, head))
+            is Nonterminal -> addNonterminalEdge(RSMNonterminalEdge(label, head))
         }
     }
 }
