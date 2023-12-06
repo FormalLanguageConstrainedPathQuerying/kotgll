@@ -8,6 +8,69 @@ import org.srcgll.sppf.node.*
 class SPPF<VertexType> {
     private val createdSPPFNodes: HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
     private val createdTerminalNodes: HashMap<VertexType, HashSet<TerminalSPPFNode<VertexType>>> = HashMap()
+    private val minDistanceRecognisedBySymbol: HashMap<SymbolSPPFNode<VertexType>, Int> = HashMap()
+
+    fun minDistance(root: ISPPFNode): Int {
+        val cycle = HashSet<ISPPFNode>()
+        val visited = HashSet<ISPPFNode>()
+        val stack = ArrayDeque(listOf(root))
+        var curSPPFNode: ISPPFNode
+        var minDistance = 0
+
+        while (stack.isNotEmpty()) {
+            curSPPFNode = stack.last()
+            visited.add(curSPPFNode)
+
+            if (!cycle.contains(curSPPFNode)) {
+                cycle.add(curSPPFNode)
+
+                when (curSPPFNode) {
+                    is TerminalSPPFNode<*> -> {
+                        minDistance++
+                    }
+
+                    is PackedSPPFNode<*> -> {
+                        if (curSPPFNode.rightSPPFNode != null) stack.add(curSPPFNode.rightSPPFNode!!)
+                        if (curSPPFNode.leftSPPFNode != null) stack.add(curSPPFNode.leftSPPFNode!!)
+                    }
+
+                    is ItemSPPFNode<*> -> {
+                        if (curSPPFNode.kids.isNotEmpty()) {
+                            curSPPFNode.kids.findLast {
+                                it.rightSPPFNode != curSPPFNode && it.leftSPPFNode != curSPPFNode && !visited.contains(
+                                    it
+                                )
+                            }?.let { stack.add(it) }
+                            curSPPFNode.kids.forEach { visited.add(it) }
+                        }
+                    }
+
+                    is SymbolSPPFNode<*> -> {
+                        if (minDistanceRecognisedBySymbol.containsKey(curSPPFNode)) {
+                            minDistance += minDistanceRecognisedBySymbol[curSPPFNode]!!
+                        } else {
+                            if (curSPPFNode.kids.isNotEmpty()) {
+                                curSPPFNode.kids.findLast {
+                                    it.rightSPPFNode != curSPPFNode && it.leftSPPFNode != curSPPFNode && !visited.contains(
+                                        it
+                                    )
+                                }?.let { stack.add(it) }
+                                curSPPFNode.kids.forEach { visited.add(it) }
+                            }
+                        }
+                    }
+                }
+            }
+            if (curSPPFNode == stack.last()) {
+                stack.removeLast()
+                cycle.remove(curSPPFNode)
+            }
+        }
+
+        minDistanceRecognisedBySymbol[root as SymbolSPPFNode<VertexType>] = minDistance
+
+        return minDistance
+    }
 
     fun removeNode(sppfNode: SPPFNode<VertexType>) {
         createdSPPFNodes.remove(sppfNode)

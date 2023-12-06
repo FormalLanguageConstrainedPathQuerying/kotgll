@@ -26,7 +26,6 @@ class GLL<VertexType, LabelType : ILabel>(
     private val createdGSSNodes: HashMap<GSSNode<VertexType>, GSSNode<VertexType>> = HashMap()
     private var parseResult: SPPFNode<VertexType>? = null
     private val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int> = HashMap()
-    private val minDistanceRecognisedBySymbol: HashMap<SymbolSPPFNode<VertexType>, Int> = HashMap()
 
     fun parse(): Pair<SPPFNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         for (startVertex in input.getInputStartVertices()) {
@@ -84,68 +83,6 @@ class GLL<VertexType, LabelType : ILabel>(
         return Pair(parseResult, reachabilityPairs)
     }
 
-    private fun minDistance(root: ISPPFNode): Int {
-        val cycle = HashSet<ISPPFNode>()
-        val visited = HashSet<ISPPFNode>()
-        val stack = ArrayDeque(listOf(root))
-        var curSPPFNode: ISPPFNode
-        var minDistance = 0
-
-        while (stack.isNotEmpty()) {
-            curSPPFNode = stack.last()
-            visited.add(curSPPFNode)
-
-            if (!cycle.contains(curSPPFNode)) {
-                cycle.add(curSPPFNode)
-
-                when (curSPPFNode) {
-                    is TerminalSPPFNode<*> -> {
-                        minDistance++
-                    }
-
-                    is PackedSPPFNode<*> -> {
-                        if (curSPPFNode.rightSPPFNode != null) stack.add(curSPPFNode.rightSPPFNode!!)
-                        if (curSPPFNode.leftSPPFNode != null) stack.add(curSPPFNode.leftSPPFNode!!)
-                    }
-
-                    is ItemSPPFNode<*> -> {
-                        if (curSPPFNode.kids.isNotEmpty()) {
-                            curSPPFNode.kids.findLast {
-                                it.rightSPPFNode != curSPPFNode && it.leftSPPFNode != curSPPFNode && !visited.contains(
-                                    it
-                                )
-                            }?.let { stack.add(it) }
-                            curSPPFNode.kids.forEach { visited.add(it) }
-                        }
-                    }
-
-                    is SymbolSPPFNode<*> -> {
-                        if (minDistanceRecognisedBySymbol.containsKey(curSPPFNode)) {
-                            minDistance += minDistanceRecognisedBySymbol[curSPPFNode]!!
-                        } else {
-                            if (curSPPFNode.kids.isNotEmpty()) {
-                                curSPPFNode.kids.findLast {
-                                    it.rightSPPFNode != curSPPFNode && it.leftSPPFNode != curSPPFNode && !visited.contains(
-                                        it
-                                    )
-                                }?.let { stack.add(it) }
-                                curSPPFNode.kids.forEach { visited.add(it) }
-                            }
-                        }
-                    }
-                }
-            }
-            if (curSPPFNode == stack.last()) {
-                stack.removeLast()
-                cycle.remove(curSPPFNode)
-            }
-        }
-
-        minDistanceRecognisedBySymbol[root as SymbolSPPFNode<VertexType>] = minDistance
-
-        return minDistance
-    }
-
     private fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
@@ -175,7 +112,7 @@ class GLL<VertexType, LabelType : ILabel>(
             }
 
             val pair = Pair(leftExtent, rightExtent)
-            val distance = minDistance(curSPPFNode)
+            val distance = sppf.minDistance(curSPPFNode)
 
             if (reachabilityPairs.containsKey(pair)) {
                 reachabilityPairs[pair] = minOf(distance, reachabilityPairs[pair]!!)
