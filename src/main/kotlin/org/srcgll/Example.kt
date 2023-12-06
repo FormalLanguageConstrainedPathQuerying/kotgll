@@ -36,13 +36,19 @@ class Stack : Grammar() {
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
         S = Many(
-            Term("<-()") * Term("->()") or Term("<-.") * Term("->.") or Term("use_a") * Term("def_a") or Term("use_A") * Term(
-                "def_A"
-            ) or Term("use_B") * Term("def_B") or Term("use_x") * Term("def_x") or Term("<-()") * S * Term("->()") or Term(
-                "<-."
-            ) * S * Term("->.") or Term("use_a") * S * Term("def_a") or Term("use_A") * S * Term("def_A") or Term("use_B") * S * Term(
-                "def_B"
-            ) or Term("use_b") * S * Term("def_b") or Term("use_x") * S * Term("def_x")
+            Term("<-()") * Term("->()") or
+            Term("<-.") * Term("->.") or
+            Term("use_a") * Term("def_a") or
+            Term("use_A") * Term("def_A") or
+            Term("use_B") * Term("def_B") or
+            Term("use_x") * Term("def_x") or
+            Term("<-()") * S * Term("->()") or
+            Term("<-.") * S * Term("->.") or
+            Term("use_a") * S * Term("def_a") or
+            Term("use_A") * S * Term("def_A") or
+            Term("use_B") * S * Term("def_B") or
+            Term("use_b") * S * Term("def_b") or
+            Term("use_x") * S * Term("def_x")
         )
 
         // Set Starting Nonterminal
@@ -53,10 +59,9 @@ class Stack : Grammar() {
 /**
  * Realisation of ILabel interface which represents label on Input Graph edges
  */
-class SimpleInputLabel
-(
+class SimpleInputLabel(
     label: String?,
-) : ILabel {
+): ILabel {
     // null terminal represents epsilon edge in Graph
     override val terminal: Terminal<String>? = when (label) {
         null -> null
@@ -76,7 +81,7 @@ class SimpleInputLabel
  * @param VertexType   = Int
  * @param LabelType    = SimpleInputLabel
  */
-class SimpleGraph : IGraph<Int, SimpleInputLabel> {
+class SimpleGraph: IGraph<Int, SimpleInputLabel> {
     override val vertices: MutableMap<Int, Int> = HashMap()
     override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
 
