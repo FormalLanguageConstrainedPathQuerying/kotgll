@@ -206,12 +206,13 @@ fun main() {
 
     resultAnBn.second.forEach { kvp ->
         println("from : ${kvp.key.first} , to : ${kvp.key.second} , distance : ${kvp.value}")
-
     }
 
-//    println("\nStack Language Grammar")
-//    println("Reachable vertices from vertex $startVertex : ")
-//    for (reachable in resultStack.second) {
-//        println("Vertex: $reachable")
-//    }
+    println("\nStack Language Grammar")
+    println("Reachability pairs : ")
+
+    resultStack.second.forEach { kvp ->
+        println("from : ${kvp.key.first} , to : ${kvp.key.second} , distance : ${kvp.value}")
+    }
 }
+
