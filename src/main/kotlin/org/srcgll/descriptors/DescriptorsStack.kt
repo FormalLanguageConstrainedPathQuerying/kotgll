@@ -4,8 +4,7 @@ import org.srcgll.gss.GSSNode
 import org.srcgll.rsm.RSMState
 import org.srcgll.sppf.node.SPPFNode
 
-class Descriptor<VertexType>
-    (
+class Descriptor<VertexType>(
     val rsmState: RSMState,
     val gssNode: GSSNode<VertexType>,
     val sppfNode: SPPFNode<VertexType>?,

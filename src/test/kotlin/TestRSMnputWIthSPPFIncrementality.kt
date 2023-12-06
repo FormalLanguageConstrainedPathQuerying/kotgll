@@ -8,121 +8,122 @@ import org.srcgll.input.LinearInputLabel
 import org.srcgll.rsm.readRSMFromTXT
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
+import org.srcgll.sppf.writeSPPFToDOT
 
 fun sameStructure(lhs: ISPPFNode, rhs: ISPPFNode): Boolean {
-    val stack = ArrayDeque<Pair<ISPPFNode, ISPPFNode>>()
-    val cycle = HashSet<Pair<ISPPFNode, ISPPFNode>>()
-    val added = HashSet<Pair<ISPPFNode, ISPPFNode>>()
-    var curPair: Pair<ISPPFNode, ISPPFNode>
+    val queue = ArrayDeque<ISPPFNode>()
+    val added = HashSet<ISPPFNode>()
+    val lhsTreeMetrics = IntArray(5) {0}
+    val rhsTreeMetrics = IntArray(5) {0}
+    var curSPPFNode: ISPPFNode
 
-    stack.addLast(Pair(lhs, rhs))
+    queue.addLast(lhs)
 
-    while (stack.isNotEmpty()) {
-        curPair = stack.last()
-        added.add(curPair)
+    while (queue.isNotEmpty()) {
+        curSPPFNode = queue.last()
 
-        val x = curPair.first
-        val y = curPair.second
+        if (curSPPFNode.weight > 0) {
+            lhsTreeMetrics[4]++
+        }
 
-        when (x) {
-            is SymbolSPPFNode<*> -> {
-                when (y) {
-                    is SymbolSPPFNode<*> -> {
-                        if (!cycle.contains(curPair)) {
-                            cycle.add(curPair)
+        when (curSPPFNode) {
+            is ParentSPPFNode<*> -> {
 
-                            if (x != y) return false
-                            if (x.kids.count() != y.kids.count()) return false
-
-                            for (i in x.kids.indices) {
-                                val pair = Pair(x.kids.elementAt(i), y.kids.elementAt(i))
-
-                                if (!added.contains(pair)) {
-                                    stack.addLast(pair)
-                                }
-                            }
-
-                            if (stack.last() == curPair) {
-                                cycle.remove(curPair)
-                            }
-                        }
-                    }
-
-                    else -> return false
+                if (curSPPFNode is SymbolSPPFNode<*>) {
+                    lhsTreeMetrics[2]++
+                } else {
+                    lhsTreeMetrics[1]++
                 }
-            }
 
-            is ItemSPPFNode<*> -> {
-                when (y) {
-                    is ItemSPPFNode<*> -> {
-                        if (!cycle.contains(curPair)) {
-                            cycle.add(curPair)
-
-                            if (x != y) return false
-                            if (x.kids.count() != y.kids.count()) return false
-
-                            for (i in x.kids.indices) {
-                                val pair = Pair(x.kids.elementAt(i), y.kids.elementAt(i))
-                                if (!added.contains(pair)) {
-                                    stack.addLast(pair)
-                                }
-                            }
-
-                            if (stack.last() == curPair) {
-                                cycle.remove(curPair)
-                            }
-                        }
+                curSPPFNode.kids.forEach { kid ->
+                    if (!added.contains(kid)) {
+                        queue.addLast(kid)
+                        added.add(kid)
                     }
-
-                    else -> return false
                 }
             }
 
             is PackedSPPFNode<*> -> {
-                when (y) {
-                    is PackedSPPFNode<*> -> {
-                        if (x.rsmState != y.rsmState) return false
-                        if (x.pivot != y.pivot) return false
-
-                        if (x.leftSPPFNode != null && y.leftSPPFNode != null) {
-                            val pair = Pair(x.leftSPPFNode!!, y.leftSPPFNode!!)
-
-                            if (!added.contains(pair)) {
-                                stack.addLast(pair)
-                            }
-                        } else if (x.leftSPPFNode != null || y.leftSPPFNode != null) {
-                            return false
-                        }
-                        if (x.rightSPPFNode != null && y.rightSPPFNode != null) {
-                            val pair = Pair(x.rightSPPFNode!!, y.rightSPPFNode!!)
-
-                            if (!added.contains(pair)) {
-                                stack.addLast(pair)
-                            }
-                        } else if (x.rightSPPFNode != null || y.rightSPPFNode != null) {
-                            return false
-                        }
+                lhsTreeMetrics[3]++
+                if (curSPPFNode.rightSPPFNode != null) {
+                    if (!added.contains(curSPPFNode.rightSPPFNode!!)) {
+                        queue.addLast(curSPPFNode.rightSPPFNode!!)
+                        added.add(curSPPFNode.rightSPPFNode!!)
                     }
-
-                    else -> return false
+                }
+                if (curSPPFNode.leftSPPFNode != null) {
+                    if (!added.contains(curSPPFNode.leftSPPFNode!!)) {
+                        queue.addLast(curSPPFNode.leftSPPFNode!!)
+                        added.add(curSPPFNode.leftSPPFNode!!)
+                    }
                 }
             }
-
             is TerminalSPPFNode<*> -> {
-                when (y) {
-                    is TerminalSPPFNode<*> -> {
-                        if (x != y) return false
-                    }
-
-                    else -> return false
-                }
+                lhsTreeMetrics[0]++
             }
         }
 
-        if (stack.last() == curPair) stack.removeLast()
+        if (curSPPFNode == queue.last()) {
+            queue.removeLast()
+        }
     }
 
-    return true
+    added.clear()
+    queue.clear()
+
+    queue.addLast(rhs)
+
+    while (queue.isNotEmpty()) {
+        curSPPFNode = queue.last()
+
+        if (curSPPFNode.weight > 0) {
+            rhsTreeMetrics[4]++
+        }
+
+        when (curSPPFNode) {
+            is ParentSPPFNode<*> -> {
+
+                if (curSPPFNode is SymbolSPPFNode<*>) {
+                    rhsTreeMetrics[2]++
+                } else {
+                    rhsTreeMetrics[1]++
+                }
+
+                curSPPFNode.kids.forEach { kid ->
+                    if (!added.contains(kid)) {
+                        queue.addLast(kid)
+                        added.add(kid)
+                    }
+                }
+            }
+
+            is PackedSPPFNode<*> -> {
+                rhsTreeMetrics[3]++
+                if (curSPPFNode.rightSPPFNode != null) {
+                    if (!added.contains(curSPPFNode.rightSPPFNode!!)) {
+                        queue.addLast(curSPPFNode.rightSPPFNode!!)
+                        added.add(curSPPFNode.rightSPPFNode!!)
+                    }
+                }
+                if (curSPPFNode.leftSPPFNode != null) {
+                    if (!added.contains(curSPPFNode.leftSPPFNode!!)) {
+                        queue.addLast(curSPPFNode.leftSPPFNode!!)
+                        added.add(curSPPFNode.leftSPPFNode!!)
+                    }
+                }
+            }
+            is TerminalSPPFNode<*> -> {
+                rhsTreeMetrics[0]++
+            }
+        }
+
+        if (curSPPFNode == queue.last()) {
+            queue.removeLast()
+        }
+    }
+
+    val result = lhsTreeMetrics.zip(rhsTreeMetrics) { x, y -> x == y }
+    return !result.contains(false)
 }
 
 class TestRSMStringInputWIthSPPFIncrementality {
@@ -187,6 +188,11 @@ class TestRSMStringInputWIthSPPFIncrementality {
         result = gll.parse(addFrom)
         val static = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
+        if (input == "caabb") {
+            writeSPPFToDOT(result.first!!, "./debug_incr.dot")
+            writeSPPFToDOT(static.first!!, "./debug_static.dot")
+        }
+
         assert(sameStructure(result.first!!, static.first!!))
     }
 
@@ -212,7 +218,7 @@ class TestRSMStringInputWIthSPPFIncrementality {
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("b")), ++curVertexId)
+        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("ab")), ++curVertexId)
         inputGraph.edges[curVertexId] = initEdges
 
         inputGraph.addVertex(curVertexId)
@@ -399,7 +405,11 @@ class TestRSMStringInputWIthSPPFIncrementality {
 
         @JvmStatic
         fun test_5() = listOf(
-            Arguments.of(""), Arguments.of("a"), Arguments.of("aa"), Arguments.of("aaa"), Arguments.of("aaaa")
+            Arguments.of(""),
+            Arguments.of("a"),
+            Arguments.of("aa"),
+            Arguments.of("aaa"),
+            Arguments.of("aaaa")
         )
 
         @JvmStatic

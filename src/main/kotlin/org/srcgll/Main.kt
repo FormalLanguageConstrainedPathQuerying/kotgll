@@ -45,7 +45,6 @@ fun main(args: Array<String>) {
     val inputGraph = LinearInput<Int, LinearInputLabel>()
     val gll = GLL(grammar, inputGraph, RecoveryMode.ON)
     var vertexId = 0
-    var addFrom = 1
 
     inputGraph.addStartVertex(vertexId)
     inputGraph.addVertex(vertexId)
@@ -60,10 +59,11 @@ fun main(args: Array<String>) {
 
     writeSPPFToDOT(result.first!!, pathToOutputSPPF + "before.dot")
 
+    var addFrom = vertexId - 1
     val initEdges = inputGraph.getEdges(addFrom)
 
     inputGraph.edges.remove(addFrom)
-    inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("[")), ++vertexId)
+    inputGraph.addEdge(addFrom, LinearInputLabel(Terminal(")")), ++vertexId)
     inputGraph.edges[vertexId] = initEdges
 
     inputGraph.addVertex(vertexId)

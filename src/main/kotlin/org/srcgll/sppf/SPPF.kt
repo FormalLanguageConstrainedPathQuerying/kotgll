@@ -7,11 +7,15 @@ import org.srcgll.sppf.node.*
 
 class SPPF<VertexType> {
     private val createdSPPFNodes: HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
+    private val createdTerminalNodes: HashMap<VertexType, HashSet<TerminalSPPFNode<VertexType>>> = HashMap()
 
     fun removeNode(sppfNode: SPPFNode<VertexType>) {
         createdSPPFNodes.remove(sppfNode)
+        if (sppfNode is TerminalSPPFNode<*>) {
+            createdTerminalNodes.remove(sppfNode.leftExtent)
+        }
     }
- 
+
     fun getNodeP(
         state: RSMState,
         sppfNode: SPPFNode<VertexType>?,
@@ -25,7 +29,6 @@ class SPPF<VertexType> {
         val parent: ParentSPPFNode<VertexType> =
             if (state.isFinal) getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
             else getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
-
 
         //  Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
         if (sppfNode != null || parent != nextSPPFNode) {
@@ -52,6 +55,10 @@ class SPPF<VertexType> {
         if (!createdSPPFNodes.containsKey(node)) {
             createdSPPFNodes[node] = node
         }
+        if (!createdTerminalNodes.containsKey(leftExtent)) {
+            createdTerminalNodes[leftExtent] = HashSet()
+        }
+        createdTerminalNodes[leftExtent]!!.add(createdSPPFNodes[node] as TerminalSPPFNode<VertexType>)
 
         return createdSPPFNodes[node]!!
     }
@@ -90,111 +97,39 @@ class SPPF<VertexType> {
 
     fun invalidate(vertex: VertexType, parseResult: ISPPFNode) {
         val queue = ArrayDeque<ISPPFNode>()
-        val cycle = HashSet<ISPPFNode>()
         val added = HashSet<ISPPFNode>()
         var curSPPFNode: ISPPFNode? = parseResult
 
-        queue.add(curSPPFNode!!)
-        added.add(curSPPFNode!!)
-
-        while (queue.isNotEmpty()) {
-            curSPPFNode = queue.last()
-
-            when (curSPPFNode) {
-                is SymbolSPPFNode<*> -> {
-                    if (!cycle.contains(curSPPFNode)) {
-                        cycle.add(curSPPFNode)
-
-                        curSPPFNode.kids.forEach { kid ->
-                            if (!added.contains(kid)) {
-                                queue.addLast(kid)
-                                added.add(kid)
-                            }
-                        }
-
-                        if (queue.last() == curSPPFNode) {
-                            cycle.remove(curSPPFNode)
-                        }
-                    }
-                }
-
-                is ItemSPPFNode<*> -> {
-                    if (!cycle.contains(curSPPFNode)) {
-                        cycle.add(curSPPFNode)
-
-                        curSPPFNode.kids.forEach { kid ->
-                            if (!added.contains(kid)) {
-                                queue.addLast(kid)
-                                added.add(kid)
-                            }
-                        }
-
-                        if (queue.last() == curSPPFNode) {
-                            cycle.remove(curSPPFNode)
-                        }
-                    }
-                }
-
-                is PackedSPPFNode<*> -> {
-                    if (curSPPFNode.rightSPPFNode != null) {
-                        if (!added.contains(curSPPFNode.rightSPPFNode!!)) {
-                            queue.addLast(curSPPFNode.rightSPPFNode!!)
-                            added.add(curSPPFNode.rightSPPFNode!!)
-                        }
-                    }
-                    if (curSPPFNode.leftSPPFNode != null) {
-                        if (!added.contains(curSPPFNode.leftSPPFNode!!)) {
-                            queue.addLast(curSPPFNode.leftSPPFNode!!)
-                            added.add(curSPPFNode.leftSPPFNode!!)
-                        }
-                    }
-                }
-
-                is TerminalSPPFNode<*> -> {
-                    if (curSPPFNode.leftExtent == vertex) {
-                        break
-                    }
-                }
-            }
-
-            if (curSPPFNode == queue.last()) queue.removeLast()
-        }
-
-        queue.clear()
-        cycle.clear()
-        added.clear()
-
-        if (curSPPFNode is TerminalSPPFNode<*>) {
-            queue.addLast(curSPPFNode)
+        createdTerminalNodes[vertex]!!.forEach { node ->
+            queue.add(node)
+            added.add(node)
         }
 
         while (queue.isNotEmpty()) {
-            curSPPFNode = queue.last()
+            curSPPFNode = queue.removeFirst()
 
             when (curSPPFNode) {
                 is ParentSPPFNode<*> -> {
-                    if (!cycle.contains(curSPPFNode)) {
-                        cycle.add(curSPPFNode)
-
-                        if (curSPPFNode.kids.isEmpty()) {
-                            curSPPFNode.parents.forEach { packed ->
+                    if (curSPPFNode.kids.isEmpty()) {
+                        curSPPFNode.parents.forEach { packed ->
+                            if (!added.contains(packed)) {
                                 queue.addLast(packed)
-                                (packed as PackedSPPFNode<VertexType>).rightSPPFNode = null
-                                (packed as PackedSPPFNode<VertexType>).leftSPPFNode = null
+                                added.add(packed)
                             }
-                            removeNode(curSPPFNode as SPPFNode<VertexType>)
+                            (packed as PackedSPPFNode<VertexType>).rightSPPFNode = null
+                            (packed as PackedSPPFNode<VertexType>).leftSPPFNode = null
                         }
-
-                        if (queue.last() == curSPPFNode) {
-                            cycle.remove(curSPPFNode)
-                        }
+                        removeNode(curSPPFNode as SPPFNode<VertexType>)
                     }
                 }
 
                 is PackedSPPFNode<*> -> {
                     curSPPFNode.parents.forEach { parent ->
                         if ((parent as ParentSPPFNode<*>).kids.contains(curSPPFNode)) {
-                            queue.addLast(parent)
+                            if (!added.contains(parent)) {
+                                queue.addLast(parent)
+                                added.add(parent)
+                            }
                             parent.kids.remove(curSPPFNode)
                         }
                     }
@@ -202,7 +137,10 @@ class SPPF<VertexType> {
 
                 is TerminalSPPFNode<*> -> {
                     curSPPFNode.parents.forEach { packed ->
-                        queue.addLast(packed)
+                        if (!added.contains(packed)) {
+                            queue.addLast(packed)
+                            added.add(packed)
+                        }
                         (packed as PackedSPPFNode<VertexType>).rightSPPFNode = null
                         (packed as PackedSPPFNode<VertexType>).leftSPPFNode = null
                     }
@@ -210,53 +148,51 @@ class SPPF<VertexType> {
                 }
             }
 
-            curSPPFNode.parents.clear()
-
-            if (curSPPFNode == queue.last()) queue.removeLast()
+            if (curSPPFNode != parseResult) {
+                curSPPFNode.parents.clear()
+            }
         }
     }
 
     fun updateWeights(sppfNode: ISPPFNode) {
-        val cycle = HashSet<ISPPFNode>()
-        val deque = ArrayDeque(listOf(sppfNode))
-        var curNode: ISPPFNode
+        val added = HashSet<ISPPFNode>(listOf(sppfNode))
+        val queue = ArrayDeque(listOf(sppfNode))
+        var curSPPFNode: ISPPFNode
 
-        while (deque.isNotEmpty()) {
-            curNode = deque.last()
+        while (queue.isNotEmpty()) {
+            curSPPFNode = queue.removeFirst()
 
-            when (curNode) {
+            when (curSPPFNode) {
                 is ParentSPPFNode<*> -> {
-                    if (!cycle.contains(curNode)) {
-                        cycle.add(curNode)
+                    val oldWeight = curSPPFNode.weight
+                    var newWeight = Int.MAX_VALUE
 
-                        val oldWeight = curNode.weight
-                        var newWeight = Int.MAX_VALUE
+                    curSPPFNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
 
-                        curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
+                    if (oldWeight > newWeight) {
+                        curSPPFNode.weight = newWeight
 
-                        if (oldWeight > newWeight) {
-                            curNode.weight = newWeight
+                        curSPPFNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curSPPFNode) }
+                        curSPPFNode.kids.removeIf { it.weight > newWeight }
 
-                            curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
-                            curNode.kids.removeIf { it.weight > newWeight }
-
-                            curNode.parents.forEach { deque.addLast(it) }
-                        }
-
-                        if (deque.last() == curNode) {
-                            cycle.remove(curNode)
+                        curSPPFNode.parents.forEach {
+                            queue.addLast(it)
+                            added.add(it)
                         }
                     }
                 }
 
                 is PackedSPPFNode<*> -> {
-                    val oldWeight = curNode.weight
-                    val newWeight = (curNode.leftSPPFNode?.weight ?: 0) + (curNode.rightSPPFNode?.weight ?: 0)
+                    val oldWeight = curSPPFNode.weight
+                    val newWeight = (curSPPFNode.leftSPPFNode?.weight ?: 0) + (curSPPFNode.rightSPPFNode?.weight ?: 0)
 
                     if (oldWeight > newWeight) {
-                        curNode.weight = newWeight
+                        curSPPFNode.weight = newWeight
 
-                        curNode.parents.forEach { deque.addLast(it) }
+                        curSPPFNode.parents.forEach {
+                            queue.addLast(it)
+                            added.add(it)
+                        }
                     }
                 }
 
@@ -264,8 +200,6 @@ class SPPF<VertexType> {
                     throw Error("Terminal node can not be parent")
                 }
             }
-
-            if (curNode == deque.last()) deque.removeLast()
         }
     }
 }
