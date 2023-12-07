@@ -11,77 +11,97 @@ class Incremental(private val origin: RSMState) {
     private val botOrigin = RSMState(origin.nonterminal)
     private val cloneStatesToParents = hashMapOf<RSMState, CloneState>()
     private val register = mutableSetOf<RSMState>()
-    private val rsmProxy = RsmProxyInfo(origin)
+    private lateinit var commonStart: RSMState
 
     /**
      * Only linear input
      */
     fun constructIncremental(delta: RSMState, isRemoving: Boolean) {
-        writeRSMToTXT(origin, "inc/1_origin.txt")
-        // 1. Add all states from original RSM
-        for (state in rsmProxy.originAllStates) {
-            //optimization: common states are states of original rsm
-            register.add(state)
-            cloneStatesToParents[state] = CloneState(state, botDelta)
-        }
-        var commonStart = clone(origin, delta)
-        cloneStatesToParents[commonStart] = CloneState(origin, delta)
-        writeRSMToTXT(commonStart, "inc/2_common.txt")
-        addDeltaStates(commonStart)
-        writeRSMToTXT(commonStart, "inc/3_common.txt")
-
-        rsmProxy.incomingEdges.putAll(rsmProxy.calculateIncomingEdges(commonStart))
-        // 2. Find unreachable states and remove them from Register
-        val unreachable = rsmProxy.originAllStates
-            .filter { isUnreachable(it) }
-            .toHashSet()
-        register.removeAll(unreachable)
-        writeRSMToTXT(commonStart, "inc/4_restore.txt")
-
-        // 2.5. Optimization: "save" unreachable states from original RSM
-        commonStart = restoreUnreachable(commonStart, unreachable)
-        writeRSMToTXT(commonStart, "inc/5_restore.txt")
-
-        // 3. Find and merge equivalent states between register and new states
-        replaceOrRegister(commonStart)
-        writeRSMToTXT(commonStart, "inc/6_replace.txt")
+        registerOriginStates()
+        commonStart = clone(origin, delta)
+        addDeltaStates()
+        restoreUnreachableOrigins(unregisterUnreachable())
+        mergeOrRegister()
     }
 
-    private fun isUnreachable(state: RSMState): Boolean {
-        val edges = rsmProxy.incomingEdges[state]
-        return edges == null || edges.size == 0
-    }
 
     /**
      * Check queue and cloned states one by one from the end
      */
-    private fun replaceOrRegister(startState: RSMState) {
+    private fun mergeOrRegister() {
         val used = hashSetOf<RSMState>()
-        fun replaceByDfs(state: RSMState) {
+
+        /**
+         * Redirect into newState those transitions coming into oldState
+         * States must be equivalent on output
+         */
+        fun merge(oldState: RSMState, newState: RSMState) {
+            val incomingEdges = calculateIncomingEdges(commonStart)
+            val edges = incomingEdges[oldState] ?: emptySet()
+            for (edge in edges) {
+                edge.state.removeEdge(Edge(oldState, edge.symbol))
+                edge.state.addEdge(edge.symbol, newState)
+            }
+        }
+
+        fun mergeRecursive(state: RSMState) {
             if (!used.contains(state)) {
                 used.add(state)
-                for (outEdge in rsmProxy.getOutgoingEdges(state)) {
-                    replaceByDfs(outEdge.state)
+                for (outEdge in getOutgoingEdges(state)) {
+                    mergeRecursive(outEdge.state)
                 }
                 val equivState = register.find {
                     state.equivalent(it)
                 }
                 if (equivState != null) {
-                    replace(state, equivState)
-                }
+                    merge(state, equivState)
+                } else (register.add(state))
             }
         }
-        replaceByDfs(startState)
+        mergeRecursive(commonStart)
     }
 
-    private fun restoreUnreachable(
-        newStart: RSMState,
-        unreachable: HashSet<RSMState>,
-    ): RSMState {
+
+    /**
+     *  Find unreachable origin states and remove them from Register
+     */
+    private fun unregisterUnreachable(): HashSet<RSMState> {
+        val incomingEdges = calculateIncomingEdges(commonStart)
+        val unreachable = getAllStates(origin).filter {
+            incomingEdges[it].isNullOrEmpty()
+        }.toHashSet()
+        register.removeAll(unreachable)
+        return unreachable
+    }
+
+    /**
+     * Replace unreachable states from original Rsm as kotlin objects
+     * in equivalent place in result rsm
+     */
+    private fun restoreUnreachableOrigins(unreachable: HashSet<RSMState>) {
+        /**
+         * Replace all incoming and outgoing transition from oldState to newState
+         * Remove all transition of oldState
+         */
+        fun replace(oldState: RSMState, newState: RSMState) {
+            getOutgoingEdges(newState).forEach { newState.removeEdge(it) }
+            getOutgoingEdges(oldState).forEach { (state, symbol) -> newState.addEdge(symbol, state) }
+            calculateIncomingEdges(commonStart)[oldState]?.forEach { (state, symbol) ->
+                state.removeEdge(
+                    Edge(
+                        newState, symbol
+                    )
+                )
+                state.addEdge(symbol, newState)
+            }
+        }
+
         val used = mutableSetOf<RSMState>()
         val queue = ArrayDeque<RSMState>()
         var updatedStart: RSMState? = null
-        queue.add(newStart)
+        queue.add(commonStart)
+
+
         while (queue.isNotEmpty()) {
             val state = queue.removeFirst()
             if (!used.contains(state)) {
@@ -90,134 +110,129 @@ class Incremental(private val origin: RSMState) {
                 if (unreachable.contains(originState)) {
                     unreachable.remove(originState)
                     replace(state, originState)
-                    if (state == newStart) {
+                    if (state == commonStart) {
                         updatedStart = originState
                     }
                 }
-                for (edge in rsmProxy.getOutgoingEdges(state)) {
+                for (edge in getOutgoingEdges(state)) {
                     queue.add(edge.state)
                 }
             }
         }
-        return updatedStart ?: throw Exception("Start state should be updated!!")
+        commonStart = updatedStart ?: throw Exception("Start state should be updated!!")
     }
 
     private fun clone(origin: RSMState, delta: RSMState): RSMState {
+        /**
+         * All outgoing transitions point to the corresponding intact states in ,
+         * except for the transition with symbol a : xa ∈ Pr(w),
+         * which will points to the corresponding cloned state
+         */
+        fun cloneOutgoingEdges(srcState: RSMState, destState: RSMState) {
+            val srcOutgoingEdges = getOutgoingEdges(srcState)
+            val destOutgoingEdges = getOutgoingEdges(destState)
+            for (srcEdge in srcOutgoingEdges) {
+                destState.addEdge(srcEdge.symbol, srcEdge.state)
+            }
+        }
+
         val newState = RSMState(origin.nonterminal, origin.isStart || delta.isStart, origin.isFinal || delta.isFinal)
         cloneStatesToParents[newState] = CloneState(origin, delta)
-        rsmProxy.cloneOutgoingEdges(origin, newState)
+        cloneOutgoingEdges(origin, newState)
         return newState
     }
 
-    private fun addDeltaStates(commonStart: RSMState) {
+    private fun registerOriginStates() {
+        for (state in getAllStates(origin)) {
+            //optimization: common states are states of original rsm
+            register.add(state)
+            cloneStatesToParents[state] = CloneState(state, botDelta)
+        }
+    }
+
+    private fun addDeltaStates() {
+        /**
+         * If source rsm contains edge with deltaSymbol -- returns clone state
+         * in form (<stateFromOrigin>, <stateFromDelta>)
+         * Else (<originAbsorption>, <stateFromDelta>)
+         */
         fun cloneStep(
-            qLast: RSMState,
-            s: Symbol,
-            newDelta: RSMState,
-            origins: HashMap<out Symbol, HashSet<RSMState>>
+            qLast: RSMState, deltaSymbol: Symbol, newDelta: RSMState, origins: HashMap<out Symbol, HashSet<RSMState>>
         ): RSMState {
-            val newOrigin = origins[s]?.first() ?: botOrigin
+            val newOrigin = origins[deltaSymbol]?.first() ?: botOrigin
             val newState = clone(newOrigin, newDelta)
-            qLast.addEdge(s, newState)
+            val destEdge = getOutgoingEdges(qLast).find { it.symbol == deltaSymbol }
+            if (destEdge != null) {
+                qLast.removeEdge(destEdge)
+            }
+            qLast.addEdge(deltaSymbol, newState)
             return newState
         }
 
         var qLast = commonStart
         do {
-            val parents = cloneStatesToParents[qLast]!!
-            val termEdges = parents.delta.outgoingTerminalEdges.entries
-            val nonTermEdges = parents.delta.outgoingNonterminalEdges.entries
+            val (originState, deltaState) = cloneStatesToParents[qLast]!!
+            val termEdges = deltaState.outgoingTerminalEdges.entries
+            val nonTermEdges = deltaState.outgoingNonterminalEdges.entries
             for (t in termEdges) {
-                qLast = cloneStep(qLast, t.key, t.value.first(), parents.origin.outgoingTerminalEdges)
+                qLast = cloneStep(qLast, t.key, t.value.first(), originState.outgoingTerminalEdges)
             }
             for (nt in nonTermEdges) {
-                qLast = cloneStep(qLast, nt.key, nt.value.first(), parents.origin.outgoingNonterminalEdges)
+                qLast = cloneStep(qLast, nt.key, nt.value.first(), originState.outgoingNonterminalEdges)
             }
         } while (termEdges.isNotEmpty() || nonTermEdges.isNotEmpty())
     }
 
-    private fun replace(oldState: RSMState, newState: RSMState) {
-        val edges = rsmProxy.incomingEdges[oldState] ?: emptySet()
-        for (edge in edges) {
-            edge.state.removeEdge(Edge(oldState, edge.symbol))
-            edge.state.addEdge(edge.symbol, newState)
-        }
-        for (edge in rsmProxy.getOutgoingEdges(oldState)) {
-            newState.addEdge(edge.symbol, edge.state)
-        }
+
+    /**
+     *
+     */
+    private fun getOutgoingEdges(state: RSMState): HashSet<Edge> {
+        val states = hashSetOf<Edge>()
+        state.outgoingNonterminalEdges.map { entry -> states.addAll(entry.value.map { Edge(it, entry.key) }) }
+        state.outgoingTerminalEdges.map { entry -> states.addAll(entry.value.map { Edge(it, entry.key) }) }
+        return states
     }
 
-    data class RsmProxyInfo(val startState: RSMState) {
-        private var outgoingEdges = hashMapOf<RSMState, HashSet<Edge>>()
-        var originAllStates: HashSet<RSMState>
-        var incomingEdges: HashMap<RSMState, HashSet<Edge>>
-
-        init {
-            originAllStates = getAllStates()
-            incomingEdges = calculateIncomingEdges(startState)
-        }
-
-        fun cloneOutgoingEdges(srcState: RSMState, destState: RSMState) {
-            val srcOutgoingEdges = getOutgoingEdges(srcState)
-            val destOutgoingEdges = getOutgoingEdges(destState)
-
-            for (edge in srcOutgoingEdges) {
-                if (destOutgoingEdges.find { it.symbol == edge.symbol } == null) {
-                    destState.addEdge(edge.symbol, edge.state)
-                    incomingEdges.getOrPut(edge.state) { hashSetOf() }.add(Edge(destState, edge.symbol))
+    /**
+     * Get all states of RSM reachable from startState
+     */
+    private fun getAllStates(startState: RSMState): HashSet<RSMState> {
+        val states = hashSetOf<RSMState>()
+        val queue = ArrayDeque<RSMState>()
+        queue.add(startState)
+        while (queue.isNotEmpty()) {
+            val state = queue.removeFirst()
+            if (!states.contains(state)) {
+                states.add(state)
+                for (edge in getOutgoingEdges(state)) {
+                    queue.add(edge.state)
                 }
             }
         }
+        return states
+    }
 
-        fun getOutgoingEdges(state: RSMState): HashSet<Edge> {
-            var states = outgoingEdges[state]
-            return if (states == null) {
-                states = hashSetOf()
-                state.outgoingNonterminalEdges.map { entry -> states.addAll(entry.value.map { Edge(it, entry.key) }) }
-                state.outgoingTerminalEdges.map { entry -> states.addAll(entry.value.map { Edge(it, entry.key) }) }
-                states
-            } else {
-                states
-            }
-        }
-
-        private fun getAllStates(): HashSet<RSMState> {
-            val states = hashSetOf<RSMState>()
-            val queue = ArrayDeque<RSMState>()
-            queue.add(startState)
-            while (queue.isNotEmpty()) {
-                val state = queue.removeFirst()
-                if (!states.contains(state)) {
-                    states.add(state)
-                    for (edge in getOutgoingEdges(state)) {
-                        queue.add(edge.state)
-                    }
+    /**
+     * For each state get set of state which contains output edge to it
+     * and Symbol on this edge
+     */
+    private fun calculateIncomingEdges(state: RSMState): HashMap<RSMState, HashSet<Edge>> {
+        val used = hashSetOf<RSMState>()
+        val queue = ArrayDeque<RSMState>()
+        queue.add(state)
+        val incomingEdges = hashMapOf<RSMState, HashSet<Edge>>()
+        while (queue.isNotEmpty()) {
+            val nextState = queue.removeFirst()
+            if (!used.contains(nextState)) {
+                used.add(nextState)
+                for (edge in getOutgoingEdges(nextState)) {
+                    incomingEdges.getOrPut(edge.state) { hashSetOf() }.add(Edge(nextState, edge.symbol))
+                    queue.add(edge.state)
                 }
             }
-            return states
         }
-
-        /**
-         * For each state get set of state which contains output edge to it
-         * and Symbol on this edge
-         */
-        fun calculateIncomingEdges(state: RSMState): HashMap<RSMState, HashSet<Edge>> {
-            val used = hashSetOf<RSMState>()
-            val queue = ArrayDeque<RSMState>()
-            queue.add(state)
-            val incomingEdges = hashMapOf<RSMState, HashSet<Edge>>()
-            while (queue.isNotEmpty()) {
-                val nextState = queue.removeFirst()
-                if (!used.contains(nextState)) {
-                    used.add(nextState)
-                    for (edge in getOutgoingEdges(nextState)) {
-                        incomingEdges.getOrPut(edge.state) { hashSetOf() }.add(Edge(nextState, edge.symbol))
-                        queue.add(edge.state)
-                    }
-                }
-            }
-            return incomingEdges
-        }
+        return incomingEdges
     }
 }
 
@@ -244,10 +259,19 @@ fun RSMState.remove(delta: RSMState) {
     Incremental(this).constructIncremental(delta, true)
 }
 
-fun RSMState.removeEdge(edge: Edge){
-    when(edge.symbol){
+fun RSMState.removeEdge(edge: Edge) {
+    when (edge.symbol) {
         is Terminal<*> -> outgoingTerminalEdges[edge.symbol]!!.remove(edge.state)
         is Nonterminal -> outgoingNonterminalEdges[edge.symbol]!!.remove(edge.state)
+        else -> throw Exception("Not implemented for ${edge.symbol} instance of Symbol")
+    }
+}
+
+fun RSMState.getEdges(symbol: Symbol): Set<RSMState>? {
+    return when (symbol) {
+        is Terminal<*> -> outgoingTerminalEdges[symbol]
+        is Nonterminal -> outgoingNonterminalEdges[symbol]
+        else -> throw Exception("Not implemented for $symbol instance of Symbol")
     }
 }
 
