@@ -6,6 +6,7 @@ import org.srcgll.grammar.combinator.regexp.NT
 import org.srcgll.grammar.combinator.regexp.Term
 import org.srcgll.grammar.combinator.regexp.or
 import org.srcgll.grammar.combinator.regexp.times
+import org.srcgll.rsm.writeRSMToDOT
 import rsm.RsmTest
 import kotlin.test.assertTrue
 
@@ -21,16 +22,19 @@ class TerminalsEqualsTest : RsmTest {
 
     class AStar : Grammar() {
         var S by NT()
-        val A = Term("a")
+        var A by NT()
 
         init {
             setStart(S)
             S = A or A * S or S * S
+            A = Term("a")
+
         }
     }
 
     @Test
     fun testRsm() {
+        writeRSMToDOT(AStar().getRsm(), "actual.dot")
         assertTrue { equalsByNtName(AStar().getRsm(), AStarTerms().getRsm()) }
     }
 }
