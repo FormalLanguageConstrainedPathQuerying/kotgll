@@ -303,6 +303,7 @@ fun RSMState.removeEdge(state: RSMState, symbol: Symbol) {
                 outgoingNonterminalEdges.remove(symbol)
             }
         }
+        else -> throw IllegalArgumentException("removing not implemented for Symbol implementation $symbol")
     }
 }
 

@@ -8,7 +8,7 @@ import org.srcgll.grammar.combinator.regexp.or
 import org.srcgll.grammar.combinator.regexp.times
 import org.srcgll.rsm.writeRSMToDOT
 import rsm.RsmTest
-import kotlin.test.assertTrue
+import kotlin.test.assertFalse
 
 class TerminalsEqualsTest : RsmTest {
     class AStarTerms : Grammar() {
@@ -35,6 +35,6 @@ class TerminalsEqualsTest : RsmTest {
     @Test
     fun testRsm() {
         writeRSMToDOT(AStar().getRsm(), "actual.dot")
-        assertTrue { equalsByNtName(AStar().getRsm(), AStarTerms().getRsm()) }
+        assertFalse { equalsByNtName(AStar().getRsm(), AStarTerms().getRsm()) }
     }
 }

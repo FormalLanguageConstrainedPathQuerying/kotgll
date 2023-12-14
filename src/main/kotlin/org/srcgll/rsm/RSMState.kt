@@ -47,6 +47,7 @@ class RSMState
         when (label){
             is Terminal<*> -> addTerminalEdge(RSMTerminalEdge(label, head))
             is Nonterminal -> addNonterminalEdge(RSMNonterminalEdge(label, head))
+            else -> throw IllegalArgumentException("removing not implemented for Symbol implementation $label")
         }
     }
 }
