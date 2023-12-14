@@ -4,7 +4,13 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 
-class Incremental(private val origin: RSMState) {
+/**
+ * Modified implementation of the Incremental algorithm for dynamic rsm change:
+ * adding and removing line inputs
+ * [Incremental Construction and Maintenance of Minimal Finite-State Automata]
+ * (https://aclanthology.org/J02-2004) (Carrasco & Forcada, CL 2002)
+ */
+class DynamicRsm(private val origin: RSMState) {
     data class CloneState(val origin: RSMState, val delta: RSMState)
 
     private val botDelta = RSMState(origin.nonterminal)
@@ -275,11 +281,11 @@ fun RSMState.equivalent(other: RSMState): Boolean {
 }
 
 fun RSMState.add(delta: RSMState) {
-    Incremental(this).constructIncremental(delta, false)
+    DynamicRsm(this).constructIncremental(delta, false)
 }
 
 fun RSMState.remove(delta: RSMState) {
-    Incremental(this).constructIncremental(delta, true)
+    DynamicRsm(this).constructIncremental(delta, true)
 }
 
 fun RSMState.removeEdge(state: RSMState, symbol: Symbol) {
