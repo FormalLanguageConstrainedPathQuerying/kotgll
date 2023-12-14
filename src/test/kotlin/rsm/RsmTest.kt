@@ -13,8 +13,9 @@ import kotlin.test.assertTrue
 interface RsmTest {
     fun isDebug() = false
     fun writeDotInDebug(startState: RSMState, rsmName: String) {
-        writeRSMToDOT(startState, "inc/$rsmName.dot")
+        if (isDebug()) writeRSMToDOT(startState, "inc/$rsmName.dot")
     }
+
     /**
      * Compare two RSM, two state are equal if they have same name
      */

@@ -25,6 +25,7 @@ class Incremental(private val origin: RSMState) {
         val unreachable = unregisterUnreachable()
         restoreUnreachableOrigins(unreachable)
         mergeOrRegister()
+        removeDeadlocks()
     }
 
 
@@ -62,6 +63,41 @@ class Incremental(private val origin: RSMState) {
             }
         }
         mergeRecursive(commonStart)
+    }
+
+    private enum class State { Deadlock, Final, Known }
+
+    /**
+     * Remove deadlocks -- states with no outgoing edges that are not finite
+     */
+    private fun removeDeadlocks() {
+        val canGoToFinal = HashMap<RSMState, State>()
+        fun removeRecursive(state: RSMState) {
+            if (!canGoToFinal.contains(state)) {
+                if (state.isFinal) {
+                    canGoToFinal[state] = State.Final
+                } else {
+                    canGoToFinal[state] = State.Known
+                }
+                if (state.getOutgoingEdges().isEmpty()) {
+                    canGoToFinal[state] = if (state.isFinal) State.Final else State.Deadlock
+                }
+                for (outEdge in state.getOutgoingEdges()) {
+                    removeRecursive(outEdge.state)
+                    when (canGoToFinal[outEdge.state]) {
+                        State.Deadlock -> state.removeEdge(outEdge)
+                        //cycle
+                        State.Known -> {}
+                        State.Final -> canGoToFinal[state] = State.Final
+                        else -> throw IllegalArgumentException()
+                    }
+                }
+                if (canGoToFinal[state] != State.Final) {
+                    canGoToFinal[state] = State.Deadlock
+                }
+            }
+        }
+        removeRecursive(commonStart)
     }
 
 
@@ -171,7 +207,10 @@ class Incremental(private val origin: RSMState) {
          * Else (<originAbsorption>, <stateFromDelta>)
          */
         fun cloneStep(
-            qLast: RSMState, deltaSymbol: Symbol, newDelta: RSMState, origins: HashMap<out Symbol, HashSet<RSMState>>
+            qLast: RSMState,
+            deltaSymbol: Symbol,
+            newDelta: RSMState,
+            origins: HashMap<out Symbol, HashSet<RSMState>>
         ): RSMState {
             val newOrigin = origins[deltaSymbol]?.first() ?: botOrigin
             val newState = clone(newOrigin, newDelta)
@@ -245,9 +284,19 @@ fun RSMState.remove(delta: RSMState) {
 
 fun RSMState.removeEdge(state: RSMState, symbol: Symbol) {
     when (symbol) {
-        is Terminal<*> -> outgoingTerminalEdges[symbol]!!.remove(state)
-        is Nonterminal -> outgoingNonterminalEdges[symbol]!!.remove(state)
-        else -> throw Exception("Not implemented for $symbol instance of Symbol")
+        is Terminal<*> -> {
+            outgoingTerminalEdges[symbol]!!.remove(state)
+            if (outgoingTerminalEdges[symbol]!!.isEmpty()) {
+                outgoingTerminalEdges.remove(symbol)
+            }
+        }
+
+        is Nonterminal -> {
+            outgoingNonterminalEdges[symbol]!!.remove(state)
+            if (outgoingNonterminalEdges[symbol]!!.isEmpty()) {
+                outgoingNonterminalEdges.remove(symbol)
+            }
+        }
     }
 }
 

@@ -23,7 +23,7 @@ class UnionWithLinearTest : RsmTest {
         origin: RSMState,
         delta: RSMState,
         expected: RSMState,
-        expectedCommonStates: Int = 0,
+        expectedCommonStates: Int,
         isRemoving: Boolean = false
     ) {
         writeDotInDebug(expected, "expected")
@@ -41,48 +41,9 @@ class UnionWithLinearTest : RsmTest {
 
     @Test
     fun `test Dyck union`() {
-        /**
-         * Grammar for language S = ( S )
-         */
-        class DyckLanguage : Grammar() {
-            var S by NT()
-
-            init {
-                setStart(S)
-                S = Term("(") * S * Term(")")
-            }
-        }
-
-        /**
-         * Rsm for [ S ]
-         */
-        fun getDelta(nonTerm: Nonterminal): RSMState {
-            val deltaStart = RSMState(nonTerm, isStart = true)
-            val st1 = RSMState(nonTerm)
-            val st2 = RSMState(nonTerm)
-            val st3 = RSMState(nonTerm, isFinal = true)
-            deltaStart.addEdge(Terminal("["), st1)
-            st1.addEdge(nonTerm, st2)
-            st2.addEdge(Terminal("]"), st3)
-            return deltaStart
-        }
-
-        /**
-         * Grammar for language S = ( S ) | [ S ]
-         */
-        class ExpectedLanguage : Grammar() {
-            var S by NT()
-
-            init {
-                setStart(S)
-                S = Term("(") * S * Term(")") or (
-                        Term("[") * S * Term("]"))
-            }
-        }
-
         val origin = DyckLanguage().getRsm()
         val s = origin.nonterminal
-        testIncremental(origin, getDelta(s), ExpectedLanguage().getRsm(), 4)
+        testIncremental(origin, getDyckDelta(s), MultiDyck().getRsm(), 4)
     }
 
     @Test
@@ -105,10 +66,10 @@ class UnionWithLinearTest : RsmTest {
     }
 
     @Test
-    fun `test union {(ba)+, bar} with {bra}`() {
+    fun `test union {(ba)+, bra} with {bar}`() {
         val origin = BaPlusOrBra().getRsm()
         val s = origin.nonterminal
-        testIncremental(origin, getBar(s), BaPlusOrBarOrBra().getRsm(), 5)
+        testIncremental(origin, getBar(s), BaPlusOrBarOrBra().getRsm(), 6)
     }
 
     @Test
@@ -141,18 +102,20 @@ class UnionWithLinearTest : RsmTest {
             st3.addEdge(Terminal("a"), st4)
             return st0
         }
-        fun printStates(states: Set<RSMState>, prefix: String = ""){
-            println(prefix)
-            for(st in states){
-                println("${st.hashCode()}")
-            }
-        }
+
         val origin = BaPlusOrBarOrBra().getRsm()
         val s = origin.nonterminal
-        printStates(origin.getAllStates(), "before")
-        testIncremental(origin, getBaba(s), Expected().getRsm(), 6, true)
-        printStates(origin.getAllStates(), "after")
+        testIncremental(origin, getBaba(s), Expected().getRsm(), 7, true)
 
+    }
+
+
+    @Test
+    fun `test removing brace from Dyck language`() {
+        val origin = MultiDyck().getRsm()
+        val s = origin.nonterminal
+
+        testIncremental(origin, getDyckDelta(s), DyckLanguage().getRsm(), 4, true)
     }
 
     /**
@@ -210,5 +173,41 @@ class UnionWithLinearTest : RsmTest {
         }
     }
 
+    /**
+     * Rsm for [[ S ]]
+     */
+    private fun getDyckDelta(nonTerm: Nonterminal): RSMState {
+        val deltaStart = RSMState(nonTerm, isStart = true)
+        val st1 = RSMState(nonTerm)
+        val st2 = RSMState(nonTerm)
+        val st3 = RSMState(nonTerm, isFinal = true)
+        deltaStart.addEdge(Terminal("["), st1)
+        st1.addEdge(nonTerm, st2)
+        st2.addEdge(Terminal("]"), st3)
+        return deltaStart
+    }
 
+    /**
+     * Grammar for language S = ( S ) | [[ S ]]
+     */
+    private class MultiDyck : Grammar() {
+        var S by NT()
+
+        init {
+            setStart(S)
+            S = Term("[") * S * Term("]") or Term("(") * S * Term(")")
+        }
+    }
+
+    /**
+     * Grammar for language S = ( S )
+     */
+    class DyckLanguage : Grammar() {
+        var S by NT()
+
+        init {
+            setStart(S)
+            S = Term("(") * S * Term(")")
+        }
+    }
 }
