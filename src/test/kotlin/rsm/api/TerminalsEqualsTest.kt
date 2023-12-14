@@ -1,18 +1,17 @@
 package rsm.api
 
 import org.junit.jupiter.api.Test
-import org.srcgll.grammar.combinator.GlobalState
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.NT
 import org.srcgll.grammar.combinator.regexp.Term
 import org.srcgll.grammar.combinator.regexp.or
 import org.srcgll.grammar.combinator.regexp.times
+import rsm.RsmTest
 import kotlin.test.assertTrue
 
-class TerminalsEqualsTest {
+class TerminalsEqualsTest : RsmTest {
     class AStarTerms : Grammar() {
         var S by NT()
-        val A = Term("a")
 
         init {
             setStart(S)
@@ -32,10 +31,6 @@ class TerminalsEqualsTest {
 
     @Test
     fun testRsm() {
-        GlobalState.resetCounter()
-        val expected = AStar().buildRsm()
-        GlobalState.resetCounter()
-        val actual = AStarTerms().buildRsm()
-        assertTrue { expected.rsmEquals(actual) }
+        assertTrue { equalsByNtName(AStar().getRsm(), AStarTerms().getRsm()) }
     }
 }

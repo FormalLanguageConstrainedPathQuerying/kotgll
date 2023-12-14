@@ -1,15 +1,15 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
+import org.srcgll.GLL
+import org.srcgll.RecoveryMode
+import org.srcgll.input.LinearInput
+import org.srcgll.input.LinearInputLabel
 import org.srcgll.rsm.RSMNonterminalEdge
 import org.srcgll.rsm.RSMState
 import org.srcgll.rsm.RSMTerminalEdge
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.GLL
-import org.srcgll.RecoveryMode
-import org.srcgll.input.LinearInput
-import org.srcgll.input.LinearInputLabel
 import kotlin.test.assertNotNull
 
 class TestRSMStringInputWithSPPFSuccess {
@@ -19,7 +19,6 @@ class TestRSMStringInputWithSPPFSuccess {
         val input = ""
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
                 isFinal = true,
@@ -45,7 +44,6 @@ class TestRSMStringInputWithSPPFSuccess {
         val input = "a"
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
@@ -55,7 +53,6 @@ class TestRSMStringInputWithSPPFSuccess {
                 terminal = Terminal("a"),
                 head =
                 RSMState(
-                    id = 1,
                     nonterminal = nonterminalS,
                     isFinal = true,
                 )
@@ -81,14 +78,12 @@ class TestRSMStringInputWithSPPFSuccess {
         val input = "ab"
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
             )
         rsmState0.addTerminalEdge(
@@ -102,7 +97,6 @@ class TestRSMStringInputWithSPPFSuccess {
                 terminal = Terminal("b"),
                 head =
                 RSMState(
-                    id = 2,
                     nonterminal = nonterminalS,
                     isFinal = true,
                 )
@@ -124,11 +118,10 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["", "a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa"])
-    fun `test 'a-star' hand-crafted grammar`(input : String) {
+    fun `test 'a-star' hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
                 isFinal = true,
@@ -136,7 +129,6 @@ class TestRSMStringInputWithSPPFSuccess {
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -168,18 +160,16 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa"])
-    fun `test 'a-plus' hand-crafted grammar`(input : String) {
+    fun `test 'a-plus' hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -211,11 +201,10 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["", "ab", "abab", "ababab", "abababab", "ababababab"])
-    fun `test '(ab)-star' hand-crafted grammar`(input : String) {
+    fun `test '(ab)-star' hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
                 isFinal = true,
@@ -223,7 +212,6 @@ class TestRSMStringInputWithSPPFSuccess {
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -246,7 +234,7 @@ class TestRSMStringInputWithSPPFSuccess {
 
         inputGraph.addVertex(curVertexId)
         while (pos < input.length) {
-            var label : String
+            var label: String
             if (input.startsWith("ab", pos)) {
                 pos += 2
                 label = "ab"
@@ -284,11 +272,10 @@ class TestRSMStringInputWithSPPFSuccess {
             "(((()()())()()())()()())"
         ]
     )
-    fun `test 'dyck' hand-crafted grammar`(input : String) {
+    fun `test 'dyck' hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
                 isFinal = true,
@@ -296,22 +283,18 @@ class TestRSMStringInputWithSPPFSuccess {
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
             )
         val rsmState2 =
             RSMState(
-                id = 2,
                 nonterminal = nonterminalS,
             )
         val rsmState3 =
             RSMState(
-                id = 3,
                 nonterminal = nonterminalS,
             )
         val rsmState4 =
             RSMState(
-                id = 4,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -356,17 +339,15 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["ab", "cd"])
-    fun `test 'ab or cd' hand-crafted grammar`(input : String) {
+    fun `test 'ab or cd' hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -382,7 +363,7 @@ class TestRSMStringInputWithSPPFSuccess {
 
         inputGraph.addVertex(curVertexId)
         while (pos < input.length) {
-            var label : String
+            var label: String
             if (input.startsWith("ab", pos)) {
                 pos += 2
                 label = "ab"
@@ -403,18 +384,16 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["", "a"])
-    fun `test 'a-optional' hand-crafted grammar`(input : String) {
+    fun `test 'a-optional' hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
                 isFinal = true,
             )
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -438,72 +417,61 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["abc"])
-    fun `test 'abc' ambiguous hand-crafted grammar`(input : String) {
+    fun `test 'abc' ambiguous hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val nonterminalA = Nonterminal("A")
         val nonterminalB = Nonterminal("B")
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
             )
         val rsmState2 =
             RSMState(
-                id = 2,
                 nonterminal = nonterminalS,
             )
         val rsmState3 =
             RSMState(
-                id = 3,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         val rsmState4 =
             RSMState(
-                id = 4,
                 nonterminal = nonterminalS,
             )
         val rsmState5 =
             RSMState(
-                id = 5,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         val rsmState6 =
             RSMState(
-                id = 6,
                 nonterminal = nonterminalA,
                 isStart = true,
             )
         nonterminalA.startState = rsmState6
         val rsmState7 =
             RSMState(
-                id = 7,
                 nonterminal = nonterminalA,
             )
         val rsmState8 =
             RSMState(
-                id = 8,
                 nonterminal = nonterminalA,
                 isFinal = true,
             )
         val rsmState9 =
             RSMState(
-                id = 9,
                 nonterminal = nonterminalB,
                 isStart = true,
             )
         nonterminalB.startState = rsmState9
         val rsmState10 =
             RSMState(
-                id = 10,
                 nonterminal = nonterminalB,
                 isFinal = true,
             )
@@ -574,60 +542,52 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["ab", "cd"])
-    fun `test 'ab or cd' ambiguous hand-crafted grammar`(input : String) {
+    fun `test 'ab or cd' ambiguous hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val nonterminalA = Nonterminal("A")
         val nonterminalB = Nonterminal("B")
 
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
         nonterminalS.startState = rsmState0
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         val rsmState2 =
             RSMState(
-                id = 2,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         val rsmState3 =
             RSMState(
-                id = 3,
                 nonterminal = nonterminalA,
                 isStart = true,
             )
         nonterminalA.startState = rsmState3
         val rsmState4 =
             RSMState(
-                id = 4,
                 nonterminal = nonterminalA,
                 isFinal = true,
             )
         val rsmState5 =
             RSMState(
-                id = 5,
                 nonterminal = nonterminalA,
                 isFinal = true,
             )
         val rsmState6 =
             RSMState(
-                id = 6,
                 nonterminal = nonterminalB,
                 isStart = true,
             )
         nonterminalB.startState = rsmState6
-        val rsmState7 = RSMState(id = 7, nonterminal = nonterminalB, isFinal = true)
+        val rsmState7 = RSMState(nonterminal = nonterminalB, isFinal = true)
         val rsmState8 =
             RSMState(
-                id = 8,
                 nonterminal = nonterminalB,
                 isFinal = true,
             )
@@ -676,7 +636,7 @@ class TestRSMStringInputWithSPPFSuccess {
         inputGraph.addVertex(curVertexId)
 
         while (pos < input.length) {
-            var label : String
+            var label: String
             if (input.startsWith("ab", pos)) {
                 pos += 2
                 label = "ab"
@@ -698,13 +658,12 @@ class TestRSMStringInputWithSPPFSuccess {
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["a", "ab", "abb", "abbb", "abbbb", "abbbbb"])
-    fun `test 'a(b)-star' left recursive hand-crafted grammar`(input : String) {
+    fun `test 'a(b)-star' left recursive hand-crafted grammar`(input: String) {
         val nonterminalS = Nonterminal("S")
         val nonterminalA = Nonterminal("A")
 
         val rsmState0 =
             RSMState(
-                id = 0,
                 nonterminal = nonterminalS,
                 isStart = true,
             )
@@ -712,19 +671,16 @@ class TestRSMStringInputWithSPPFSuccess {
 
         val rsmState1 =
             RSMState(
-                id = 1,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         val rsmState2 =
             RSMState(
-                id = 2,
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         val rsmState3 =
             RSMState(
-                id = 3,
                 nonterminal = nonterminalA,
                 isStart = true,
                 isFinal = true,
@@ -732,7 +688,6 @@ class TestRSMStringInputWithSPPFSuccess {
         nonterminalA.startState = rsmState3
         val rsmState4 =
             RSMState(
-                id = 4,
                 nonterminal = nonterminalA,
                 isFinal = true,
             )

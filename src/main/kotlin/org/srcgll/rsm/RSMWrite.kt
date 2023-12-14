@@ -4,8 +4,16 @@ import org.srcgll.rsm.symbol.Nonterminal
 import java.io.File
 
 fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
-    val states : ArrayList<RSMState>  = ArrayList()
-    val queue  : ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+    var lastId = 0
+    val stateToId: HashMap<RSMState, Int> = HashMap()
+
+    fun getId(state: RSMState): Int {
+        return stateToId.getOrPut(state) { lastId++ }
+    }
+
+    val states: ArrayList<RSMState> = ArrayList()
+    val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+
 
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
@@ -34,24 +42,26 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
     File(pathToTXT).printWriter().use { out ->
         out.println(
             """StartState(
-            |id=${startState.id},
-            |nonterminal=Nonterminal("${startState.nonterminal.value}"),
+            |id=${getId(startState)},
+            |nonterminal=Nonterminal("${startState.nonterminal.name}"),
             |isStart=${startState.isStart},
             |isFinal=${startState.isFinal}
             |)"""
-            .trimMargin()
-            .replace("\n", ""))
+                .trimMargin()
+                .replace("\n", "")
+        )
 
         states.forEach { state ->
             out.println(
                 """State(
-                |id=${state.id},
-                |nonterminal=Nonterminal("${state.nonterminal.value}"),
+                |id=${getId(state)},
+                |nonterminal=Nonterminal("${state.nonterminal.name}"),
                 |isStart=${state.isStart},
                 |isFinal=${state.isFinal}
                 |)"""
-                .trimMargin()
-                .replace("\n", ""))
+                    .trimMargin()
+                    .replace("\n", "")
+            )
         }
 
         states.forEach { state ->
@@ -59,35 +69,44 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
                 edge.value.forEach { head ->
                     out.println(
                         """TerminalEdge(
-                        |tail=${state.id},
-                        |head=${head.id},
+                        |tail=${getId(state)},
+                        |head=${getId(head)},
                         |terminal=Terminal("${edge.key.value}")
                         |)"""
-                        .trimMargin()
-                        .replace("\n", ""))
+                            .trimMargin()
+                            .replace("\n", "")
+                    )
                 }
             }
             state.outgoingNonterminalEdges.forEach { edge ->
                 edge.value.forEach { head ->
                     out.println(
                         """NonterminalEdge(
-                        |tail=${state.id},
-                        |head=${head.id},
-                        |nonterminal=Nonterminal("${head.nonterminal.value}")
+                        |tail=${getId(state)},
+                        |head=${getId(head)},
+                        |nonterminal=Nonterminal("${head.nonterminal.name}")
                         |)"""
-                        .trimMargin()
-                        .replace("\n", ""))
+                            .trimMargin()
+                            .replace("\n", "")
+                    )
                 }
             }
         }
     }
 
 }
+
 fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
-    val states : HashSet<RSMState> = HashSet()
-    val queue  : ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
-    var state  : RSMState
-    val boxes  : HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
+    var lastId = 0
+    val stateToId: HashMap<RSMState, Int> = HashMap()
+
+    fun getId(state: RSMState): Int {
+        return stateToId.getOrPut(state) { lastId++ }
+    }
+
+    val states: HashSet<RSMState> = HashSet()
+    val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+    val boxes: HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
 
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
@@ -125,33 +144,33 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
 
         states.forEach { state ->
             if (state.isStart)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = circle, color = green]")
+                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle, color = green]")
             else if (state.isFinal)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle, color = red]")
+                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = doublecircle, color = red]")
             else
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = circle]")
+                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle]")
         }
 
         states.forEach { state ->
             state.outgoingTerminalEdges.forEach { edge ->
                 edge.value.forEach { head ->
-                    out.println("${state.id} -> ${head.id} [label = \"${edge.key.value}\"]")
+                    out.println("${getId(state)} -> ${getId(head)} [label = \"${edge.key.value}\"]")
                 }
             }
             state.outgoingNonterminalEdges.forEach { edge ->
                 edge.value.forEach { head ->
-                    out.println("${state.id} -> ${head.id} [label = ${edge.key.value}]")
+                    out.println("${getId(state)} -> ${getId(head)} [label = ${edge.key.name}]")
                 }
             }
         }
 
         boxes.forEach { box ->
-            out.println("subgraph cluster_${box.key.value} {")
+            out.println("subgraph cluster_${box.key.name} {")
 
             box.value.forEach { state ->
-                out.println("${state.id}")
+                out.println("${getId(state)}")
             }
-            out.println("label = \"${box.key.value}\"")
+            out.println("label = \"${box.key.name}\"")
             out.println("}")
         }
         out.println("}")

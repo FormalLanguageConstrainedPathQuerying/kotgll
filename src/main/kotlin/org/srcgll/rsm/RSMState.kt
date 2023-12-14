@@ -5,7 +5,6 @@ import org.srcgll.rsm.symbol.Terminal
 
 class RSMState
     (
-    val id: Int,
     val nonterminal: Nonterminal,
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
@@ -16,18 +15,7 @@ class RSMState
     val errorRecoveryLabels: HashSet<Terminal<*>> = HashSet()
 
     override fun toString() =
-        "RSMState(id=$id, nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is RSMState) return false
-        if (id != other.id) return false
-
-        return true
-    }
-
-    val hashCode: Int = id
-    override fun hashCode() = hashCode
+        "RSMState(nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
     fun addTerminalEdge(edge: RSMTerminalEdge) {
         if (!coveredTargetStates.contains(edge.head)) {
@@ -52,15 +40,5 @@ class RSMState
         } else {
             outgoingNonterminalEdges[edge.nonterminal] = hashSetOf(edge.head)
         }
-    }
-
-    fun rsmEquals(other: RSMState): Boolean {
-        if (this != other) {
-            return false
-        }
-        if (outgoingTerminalEdges != other.outgoingTerminalEdges) {
-            return false
-        }
-        return outgoingNonterminalEdges == other.outgoingNonterminalEdges
     }
 }
