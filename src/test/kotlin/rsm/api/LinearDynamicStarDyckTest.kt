@@ -15,7 +15,7 @@ import kotlin.test.Ignore
 class LinearDynamicDyckTest : RsmTest {
 
     @Test
-    @Ignore("not implemented yet")
+    @Ignore("not implemented yet: not linear input")
     fun `test DyckStar addition`() {
         val origin = DyckStar1().getRsm()
         val delta = getStarDyckDelta(origin.nonterminal, "[", "]")

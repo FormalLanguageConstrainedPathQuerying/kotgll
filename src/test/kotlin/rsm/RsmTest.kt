@@ -39,10 +39,7 @@ interface RsmTest {
             return false
         }
         for (tEdge in expected.outgoingTerminalEdges) {
-            val states = actual.outgoingTerminalEdges[tEdge.key]
-                if(states == null) {
-                    return false
-                }
+            val states = actual.outgoingTerminalEdges[tEdge.key] ?: return false
             if (!equalsAsSetByName(tEdge.value, states, equals)) {
                 return false
             }
