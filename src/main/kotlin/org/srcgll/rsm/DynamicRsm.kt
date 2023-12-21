@@ -280,14 +280,6 @@ fun RSMState.equivalent(other: RSMState): Boolean {
     return outgoingNonterminalEdges == other.outgoingNonterminalEdges
 }
 
-fun RSMState.add(delta: RSMState) {
-    DynamicRsm(this).constructIncremental(delta, false)
-}
-
-fun RSMState.remove(delta: RSMState) {
-    DynamicRsm(this).constructIncremental(delta, true)
-}
-
 fun RSMState.removeEdge(state: RSMState, symbol: Symbol) {
     when (symbol) {
         is Terminal<*> -> {

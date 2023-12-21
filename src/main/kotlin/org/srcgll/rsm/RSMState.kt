@@ -50,4 +50,12 @@ class RSMState
             else -> throw IllegalArgumentException("removing not implemented for Symbol implementation $label")
         }
     }
+
+    fun add(delta: RSMState) {
+        DynamicRsm(this).constructIncremental(delta, false)
+    }
+
+    fun remove(delta: RSMState) {
+        DynamicRsm(this).constructIncremental(delta, true)
+    }
 }

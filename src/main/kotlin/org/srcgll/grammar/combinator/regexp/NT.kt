@@ -10,17 +10,19 @@ import java.util.*
 import kotlin.reflect.KProperty
 
 open class NT : DerivedSymbol {
-    private lateinit var nonTerm: Nonterminal
-    private lateinit var rsmDescription: Regexp
+    protected open lateinit var nonTerm: Nonterminal
+    protected lateinit var rsmDescription: Regexp
 
-    private fun getNewState(regex: Regexp): RSMState {
-        return RSMState(nonTerm, isStart = false, regex.acceptEpsilon())
+    protected fun getNewState(regex: Regexp, isStart: Boolean = false): RSMState {
+        return RSMState(nonTerm, isStart, regex.acceptEpsilon())
     }
 
-    fun buildRsmBox(): RSMState {
+    open fun buildRsmBox(): RSMState = buildRsmBox(nonTerm.startState)
+
+    protected fun buildRsmBox(startState: RSMState): RSMState {
         val regexpToProcess = Stack<Regexp>()
         val regexpToRsmState = HashMap<Regexp, RSMState>()
-        regexpToRsmState[rsmDescription] = nonTerm.startState
+        regexpToRsmState[rsmDescription] = startState
 
         val alphabet = rsmDescription.getAlphabet()
 
@@ -53,7 +55,7 @@ open class NT : DerivedSymbol {
                 }
             }
         }
-        return nonTerm.startState
+        return startState
     }
 
     override fun getNonterminal(): Nonterminal? {
@@ -73,4 +75,36 @@ open class NT : DerivedSymbol {
     }
 
     operator fun getValue(grammar: Grammar, property: KProperty<*>): Regexp = this
+
+}
+
+/**
+ * Helper class for building rsm delta when deleting/adding rules to the grammar.
+ * Uses existing grammar nonterminal
+ */
+class StandAloneNt(nonterminal: Nonterminal) : NT() {
+    init {
+        nonTerm = nonterminal
+    }
+
+    /**
+     * Set description of Rsm, may be recursive
+     */
+    fun setDescription(description: Regexp){
+        rsmDescription = description
+    }
+
+    /**
+     * Create new start state for RsmBox
+     * Otherwise the origin of the Rsm will be ruined.
+     */
+    override fun buildRsmBox(): RSMState = buildRsmBox(getNewState(rsmDescription, true))
+
+    /**
+     * Build rsm from given description in regexp
+     */
+    fun buildRsm(description: Regexp): RSMState{
+        rsmDescription = description
+        return buildRsmBox()
+    }
 }

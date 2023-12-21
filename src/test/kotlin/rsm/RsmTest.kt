@@ -9,7 +9,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 interface RsmTest {
-    fun isDebug() = true
+    fun isDebug() = false
     fun writeDotInDebug(startState: RSMState, rsmName: String) {
         if (isDebug()) {
             writeRSMToDOT(startState, "inc/$rsmName.dot")
