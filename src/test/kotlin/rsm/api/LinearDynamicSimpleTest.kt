@@ -4,12 +4,8 @@ import org.junit.jupiter.api.Test
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 import org.srcgll.rsm.RSMState
-import org.srcgll.rsm.getAllStates
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import rsm.RsmTest
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 /**
  * Compare incremental union of Grammar Rsm and linear Delta
@@ -62,16 +58,8 @@ class LinearDynamicSimpleTest : RsmTest {
         }
 
         fun getBaba(nonTerm: Nonterminal): RSMState {
-            val st0 = RSMState(nonTerm, isStart = true)
-            val st1 = RSMState(nonTerm)
-            val st2 = RSMState(nonTerm)
-            val st3 = RSMState(nonTerm)
-            val st4 = RSMState(nonTerm, isFinal = true)
-            st0.addEdge(Terminal("b"), st1)
-            st1.addEdge(Terminal("a"), st2)
-            st2.addEdge(Terminal("b"), st3)
-            st3.addEdge(Terminal("a"), st4)
-            return st0
+            val s = StandAloneNt(nonTerm)
+            return s.buildRsm(makeConcat("b", "a", "b", "a"))
         }
 
         val origin = BaPlusOrBarOrBra().getRsm()
@@ -84,28 +72,16 @@ class LinearDynamicSimpleTest : RsmTest {
      * Single-string automaton accepting string "bra"
      */
     private fun getBra(nonTerm: Nonterminal): RSMState {
-        val st0 = RSMState(nonTerm, isStart = true)
-        val st1 = RSMState(nonTerm)
-        val st2 = RSMState(nonTerm)
-        val st3 = RSMState(nonTerm, isFinal = true)
-        st0.addEdge(Terminal("b"), st1)
-        st1.addEdge(Terminal("r"), st2)
-        st2.addEdge(Terminal("a"), st3)
-        return st0
+        val s = StandAloneNt(nonTerm)
+        return s.buildRsm(makeConcat("b", "r", "a"))
     }
 
     /**
      * Single-string automaton accepting string "bra"
      */
     private fun getBar(nonTerm: Nonterminal): RSMState {
-        val st0 = RSMState(nonTerm, isStart = true)
-        val st1 = RSMState(nonTerm)
-        val st2 = RSMState(nonTerm)
-        val st3 = RSMState(nonTerm, isFinal = true)
-        st0.addEdge(Terminal("b"), st1)
-        st1.addEdge(Terminal("a"), st2)
-        st2.addEdge(Terminal("r"), st3)
-        return st0
+        val s = StandAloneNt(nonTerm)
+        return s.buildRsm(makeConcat("b", "a", "r"))
     }
 
     /**

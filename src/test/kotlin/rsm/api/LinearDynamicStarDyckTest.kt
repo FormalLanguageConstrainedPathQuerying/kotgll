@@ -25,8 +25,6 @@ class LinearDynamicDyckTest : RsmTest {
     /**
      * Rsm for <'openBrace' nonTerm 'closeBrace' nonTerm>
      */
-    @Test
-    @Ignore("not implemented yet")
     private fun getStarDyckDelta(nonTerm: Nonterminal, openBrace: String, closeBrace: String): RSMState {
         val nt = StandAloneNt(nonTerm)
         return nt.buildRsm(Many(Term(openBrace) * nt * Term(closeBrace)))
