@@ -25,7 +25,7 @@ class OptionalTest : RsmTest {
             S = opt(Term("a")) * S
         }
     }
-    override fun getAStar(stateName: String): RSMState {
+    override fun getAStarRSM(stateName: String): RSMState {
         val s = Nonterminal(stateName)
         val a = Terminal("a")
         val st0 = RSMState(s, isStart = true)
@@ -43,7 +43,7 @@ class OptionalTest : RsmTest {
         val aStar = AStar()
         assertNotNull(aStar.S.getNonterminal())
         writeRSMToTXT(aStar.getRsm(), "actual.txt")
-        writeRSMToTXT(getAStar("S"), "expected.txt")
-        assertTrue { equalsByNtName(getAStar("S"), aStar.getRsm()) }
+        writeRSMToTXT(getAStarRSM("S"), "expected.txt")
+        assertTrue { equalsByNtName(getAStarRSM("S"), aStar.getRsm()) }
     }
 }

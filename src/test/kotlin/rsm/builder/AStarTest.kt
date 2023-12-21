@@ -25,6 +25,6 @@ class AStarTest : RsmTest {
     fun testRsm() {
         val aStar = AStar()
         assertNotNull(aStar.S.getNonterminal())
-        assertTrue { equalsByNtName(getAStar("S"), aStar.getRsm()) }
+        assertTrue { equalsByNtName(getAStarRSM("S"), aStar.getRsm()) }
     }
 }

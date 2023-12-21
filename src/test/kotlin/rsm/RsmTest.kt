@@ -1,19 +1,20 @@
 package rsm
 
 import org.junit.jupiter.api.Test
-import org.srcgll.rsm.RSMNonterminalEdge
-import org.srcgll.rsm.RSMState
-import org.srcgll.rsm.RSMTerminalEdge
+import org.srcgll.rsm.*
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.rsm.writeRSMToDOT
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 interface RsmTest {
-    fun isDebug() = false
+    fun isDebug() = true
     fun writeDotInDebug(startState: RSMState, rsmName: String) {
-        if (isDebug()) writeRSMToDOT(startState, "inc/$rsmName.dot")
+        if (isDebug()) {
+            writeRSMToDOT(startState, "inc/$rsmName.dot")
+            writeRSMToTXT(startState, "inc/$rsmName.txt")
+        }
     }
 
     /**
@@ -38,7 +39,10 @@ interface RsmTest {
             return false
         }
         for (tEdge in expected.outgoingTerminalEdges) {
-            val states = actual.outgoingTerminalEdges[tEdge.key] ?: return false
+            val states = actual.outgoingTerminalEdges[tEdge.key]
+                if(states == null) {
+                    return false
+                }
             if (!equalsAsSetByName(tEdge.value, states, equals)) {
                 return false
             }
@@ -69,7 +73,40 @@ interface RsmTest {
         return true
     }
 
-    fun getAStar(stateName: String): RSMState {
+    fun testIncremental(
+        origin: RSMState,
+        delta: RSMState,
+        expected: RSMState,
+        expectedCommonStates: Int,
+        isRemoving: Boolean = false
+    ) {
+        writeDotInDebug(delta, "delta")
+        writeDotInDebug(expected, "expected")
+        writeDotInDebug(origin, "origin")
+        val originStates = origin.getAllStates()
+        if (isRemoving) {
+            origin.remove(delta)
+        } else {
+            origin.add(delta)
+        }
+        writeDotInDebug(origin, "actual")
+        assertTrue { equalsByNtName(expected, origin) }
+        assertEquals(expectedCommonStates, originStates.intersect(origin.getAllStates()).size)
+    }
+
+
+    @Test
+    fun testEquals() {
+        assertTrue { equalsByNtName(getAStarRSM("S"), getAStarRSM("S")) }
+        assertFalse { equalsByNtName(getAStarRSM("S"), getAStarRSM("K")) }
+    }
+
+    @Test
+    fun debugTest(){
+        assertFalse(isDebug(), "\"Debug\" flag must be set to false before committing.")
+    }
+
+    fun getAStarRSM(stateName: String): RSMState {
         val s = Nonterminal(stateName)
         val a = Terminal("a")
         val st0 = RSMState(s, isStart = true)
@@ -84,9 +121,4 @@ interface RsmTest {
         return s.startState
     }
 
-    @Test
-    fun testEquals() {
-        assertTrue { equalsByNtName(getAStar("S"), getAStar("S")) }
-        assertFalse { equalsByNtName(getAStar("S"), getAStar("K")) }
-    }
 }

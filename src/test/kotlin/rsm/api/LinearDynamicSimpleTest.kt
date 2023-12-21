@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 import org.srcgll.rsm.RSMState
-import org.srcgll.rsm.add
 import org.srcgll.rsm.getAllStates
-import org.srcgll.rsm.remove
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import rsm.RsmTest
@@ -17,34 +15,7 @@ import kotlin.test.assertTrue
  * Compare incremental union of Grammar Rsm and linear Delta
  * Nonterminals in Delta must be the same as in Origin Rsm!
  */
-class UnionWithLinearTest : RsmTest {
-
-    private fun testIncremental(
-        origin: RSMState,
-        delta: RSMState,
-        expected: RSMState,
-        expectedCommonStates: Int,
-        isRemoving: Boolean = false
-    ) {
-        writeDotInDebug(expected, "expected")
-        writeDotInDebug(origin, "origin")
-        val originStates = origin.getAllStates()
-        if (isRemoving) {
-            origin.remove(delta)
-        } else {
-            origin.add(delta)
-        }
-        writeDotInDebug(origin, "actual")
-        assertTrue { equalsByNtName(expected, origin) }
-        assertEquals(expectedCommonStates, originStates.intersect(origin.getAllStates()).size)
-    }
-
-    @Test
-    fun `test Dyck union`() {
-        val origin = DyckLanguage().getRsm()
-        val s = origin.nonterminal
-        testIncremental(origin, getDyckDelta(s), MultiDyck().getRsm(), 4)
-    }
+class LinearDynamicSimpleTest : RsmTest {
 
     @Test
     fun `test union {(ba)+} with {bra}`() {
@@ -109,15 +80,6 @@ class UnionWithLinearTest : RsmTest {
 
     }
 
-
-    @Test
-    fun `test removing brace from Dyck language`() {
-        val origin = MultiDyck().getRsm()
-        val s = origin.nonterminal
-
-        testIncremental(origin, getDyckDelta(s), DyckLanguage().getRsm(), 4, true)
-    }
-
     /**
      * Single-string automaton accepting string "bra"
      */
@@ -170,44 +132,6 @@ class UnionWithLinearTest : RsmTest {
             setStart(S)
             S = some(makeConcat("b", "a")) or
                     makeConcat("b", "r", "a")
-        }
-    }
-
-    /**
-     * Rsm for [[ S ]]
-     */
-    private fun getDyckDelta(nonTerm: Nonterminal): RSMState {
-        val deltaStart = RSMState(nonTerm, isStart = true)
-        val st1 = RSMState(nonTerm)
-        val st2 = RSMState(nonTerm)
-        val st3 = RSMState(nonTerm, isFinal = true)
-        deltaStart.addEdge(Terminal("["), st1)
-        st1.addEdge(nonTerm, st2)
-        st2.addEdge(Terminal("]"), st3)
-        return deltaStart
-    }
-
-    /**
-     * Grammar for language S = ( S ) | [[ S ]]
-     */
-    private class MultiDyck : Grammar() {
-        var S by NT()
-
-        init {
-            setStart(S)
-            S = Term("[") * S * Term("]") or Term("(") * S * Term(")")
-        }
-    }
-
-    /**
-     * Grammar for language S = ( S )
-     */
-    class DyckLanguage : Grammar() {
-        var S by NT()
-
-        init {
-            setStart(S)
-            S = Term("(") * S * Term(")")
         }
     }
 }
