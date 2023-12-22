@@ -266,4 +266,3 @@ class SPPF<VertexType> {
         }
     }
 }
-

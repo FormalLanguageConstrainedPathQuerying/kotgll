@@ -13,9 +13,8 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.SPPF
 import org.srcgll.sppf.TerminalRecoveryEdge
-import org.srcgll.sppf.node.ISPPFNode
-import org.srcgll.sppf.node.SPPFNode
-import org.srcgll.sppf.node.SymbolSPPFNode
+import org.srcgll.sppf.node.*
+
 
 class GLL<VertexType, LabelType : ILabel>(
     private val startState: RSMState,
@@ -84,7 +83,7 @@ class GLL<VertexType, LabelType : ILabel>(
 
         return Pair(parseResult, reachabilityPairs)
     }
-
+    
     private fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
@@ -211,6 +210,7 @@ class GLL<VertexType, LabelType : ILabel>(
                         curDescriptor, terminal = null, errorRecoveryEdge, curDescriptor.rsmState
                     )
                 } else {
+
                     if (terminalEdges.containsKey(terminal)) {
                         for (targetState in terminalEdges.getValue(terminal)) {
                             handleTerminalOrEpsilonEdge(curDescriptor, terminal, errorRecoveryEdge, targetState)

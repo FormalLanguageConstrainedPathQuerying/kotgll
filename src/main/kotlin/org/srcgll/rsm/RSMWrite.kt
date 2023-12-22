@@ -5,10 +5,10 @@ import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 import java.io.File
 
+
 private fun getAllStates(startState: RSMState): HashSet<RSMState> {
     val states: HashSet<RSMState> = HashSet()
     val queue = ArrayDeque(listOf(startState))
-
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
         if (!states.contains(state)) {
@@ -87,6 +87,7 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
     }
 
 }
+
 
 fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
     var lastId = 0

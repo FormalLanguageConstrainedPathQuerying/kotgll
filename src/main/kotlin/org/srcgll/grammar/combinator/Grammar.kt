@@ -29,6 +29,7 @@ open class Grammar {
     /**
      * Builds a new Rsm for the grammar
      */
+
     private fun buildRsm(): RSMState {
         nonTerms.forEach { it.buildRsmBox() }
         startState = startNt.getNonterminal()?.startState
