@@ -13,18 +13,17 @@ import kotlin.test.assertTrue
 class AStarTest : RsmTest {
     class AStar : Grammar() {
         var S by NT()
-        val A = Term("a")
 
         init {
             setStart(S)
-            S = A or A * S or S * S
+            S = Term("a") or Term("a") * S or S * S
         }
     }
 
     @Test
     fun testRsm() {
-        val aStar = AStar()
-        assertNotNull(aStar.S.getNonterminal())
-        assertTrue { equalsByNtName(getAStar("S"), aStar.getRsm()) }
+        val grammar = AStar()
+        assertNotNull(grammar.S.getNonterminal())
+        assertTrue { equalsByNtName(getAStarRsm("S"), grammar.getRsm()) }
     }
 }

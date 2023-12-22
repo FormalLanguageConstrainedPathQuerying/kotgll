@@ -1,7 +1,32 @@
 package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Symbol
+import org.srcgll.rsm.symbol.Terminal
 import java.io.File
+
+private fun getAllStates(startState: RSMState): HashSet<RSMState> {
+    val states: HashSet<RSMState> = HashSet()
+    val queue = ArrayDeque(listOf(startState))
+
+    while (!queue.isEmpty()) {
+        val state = queue.removeFirst()
+        if (!states.contains(state)) {
+            states.add(state)
+
+            for ((symbol, destStates) in state.outgoingEdges) {
+                if (symbol is Nonterminal) {
+                    queue.addLast(symbol.startState)
+                }
+                for (destState in destStates) {
+                    queue.addLast(destState)
+                    queue.addLast(destState.nonterminal.startState)
+                }
+            }
+        }
+    }
+    return states
+}
 
 fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
     var lastId = 0
@@ -11,33 +36,7 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
         return stateToId.getOrPut(state) { lastId++ }
     }
 
-    val states: ArrayList<RSMState> = ArrayList()
-    val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
-
-    while (!queue.isEmpty()) {
-        val state = queue.removeFirst()
-
-        if (!states.contains(state)) states.add(state)
-
-        for (kvp in state.outgoingTerminalEdges) {
-            for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
-            }
-        }
-
-        for (kvp in state.outgoingNonterminalEdges) {
-            for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
-                if (!states.contains(kvp.key.startState))
-                    queue.addLast(kvp.key.startState)
-                if (!states.contains(head.nonterminal.startState))
-                    queue.addLast(head.nonterminal.startState)
-            }
-        }
-    }
-
+    val states = getAllStates(startState)
     File(pathToTXT).printWriter().use { out ->
         out.println(
             """StartState(
@@ -63,30 +62,24 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
             )
         }
 
-        states.forEach { state ->
-            state.outgoingTerminalEdges.forEach { edge ->
-                edge.value.forEach { head ->
-                    out.println(
-                        """TerminalEdge(
-                        |tail=${getId(state)},
-                        |head=${getId(head)},
-                        |terminal=Terminal("${edge.key.value}")
-                        |)"""
-                            .trimMargin()
-                            .replace("\n", "")
-                    )
-                }
+        fun getSymbolView(symbol: Symbol): Triple<String, String, String> {
+            return when (symbol) {
+                is Terminal<*> -> Triple("Terminal", symbol.value.toString(), "terminal")
+                is Nonterminal -> Triple("Nonterminal", symbol.name?: "NON_TERM", "nonterminal")
+                else -> throw Exception("Unsupported implementation of Symbol instance: ${symbol.javaClass}")
             }
-            state.outgoingNonterminalEdges.forEach { edge ->
-                edge.value.forEach { head ->
+        }
+
+        for (state in states) {
+            for ((symbol, destStates) in state.outgoingEdges) {
+                val (typeView, symbolView, typeLabel) = getSymbolView(symbol)
+                for (destState in destStates) {
                     out.println(
-                        """NonterminalEdge(
+                        """${typeView}Edge(
                         |tail=${getId(state)},
-                        |head=${getId(head)},
-                        |nonterminal=Nonterminal("${head.nonterminal.name}")
-                        |)"""
-                            .trimMargin()
-                            .replace("\n", "")
+                        |head=${getId(destState)},
+                        |$typeLabel=$typeView("$symbolView")
+                        |)""".trimMargin().replace("\n", "")
                     )
                 }
             }
@@ -103,33 +96,8 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
         return stateToId.getOrPut(state) { lastId++ }
     }
 
-    val states: HashSet<RSMState> = HashSet()
-    val queue: ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+    val states = getAllStates(startState)
     val boxes: HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
-
-    while (!queue.isEmpty()) {
-        val state = queue.removeFirst()
-
-        if (!states.contains(state)) states.add(state)
-
-        for (kvp in state.outgoingTerminalEdges) {
-            for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
-            }
-        }
-
-        for (kvp in state.outgoingNonterminalEdges) {
-            for (head in kvp.value) {
-                if (!states.contains(head))
-                    queue.addLast(head)
-                if (!states.contains(kvp.key.startState))
-                    queue.addLast(kvp.key.startState)
-                if (!states.contains(head.nonterminal.startState))
-                    queue.addLast(head.nonterminal.startState)
-            }
-        }
-    }
 
     for (state in states) {
         if (!boxes.containsKey(state.nonterminal)) {
@@ -150,15 +118,17 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
                 out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle]")
         }
 
-        states.forEach { state ->
-            state.outgoingTerminalEdges.forEach { edge ->
-                edge.value.forEach { head ->
-                    out.println("${getId(state)} -> ${getId(head)} [label = \"${edge.key.value}\"]")
-                }
+        fun getView(symbol: Symbol) {
+            when (symbol) {
+                is Nonterminal -> symbol.name
+                is Terminal<*> -> symbol.value
+                else -> symbol.toString()
             }
-            state.outgoingNonterminalEdges.forEach { edge ->
-                edge.value.forEach { head ->
-                    out.println("${getId(state)} -> ${getId(head)} [label = ${edge.key.name}]")
+        }
+        states.forEach { state ->
+            state.outgoingEdges.forEach { (symbol, destStates) ->
+                destStates.forEach { destState ->
+                    out.println("${getId(state)} -> ${getId(destState)} [label = \"${getView(symbol)}\"]")
                 }
             }
         }

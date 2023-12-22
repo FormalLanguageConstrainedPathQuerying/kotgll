@@ -13,7 +13,9 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.SPPF
 import org.srcgll.sppf.TerminalRecoveryEdge
-import org.srcgll.sppf.node.*
+import org.srcgll.sppf.node.ISPPFNode
+import org.srcgll.sppf.node.SPPFNode
+import org.srcgll.sppf.node.SymbolSPPFNode
 
 class GLL<VertexType, LabelType : ILabel>(
     private val startState: RSMState,
@@ -90,6 +92,8 @@ class GLL<VertexType, LabelType : ILabel>(
         var curSPPFNode = curDescriptor.sppfNode
         var leftExtent = curSPPFNode?.leftExtent
         var rightExtent = curSPPFNode?.rightExtent
+        val terminalEdges = state.getTerminalEdges()
+        val nonTerminalEdges = state.getNonTerminalEdges()
 
         stack.addToHandled(curDescriptor)
 
@@ -133,7 +137,7 @@ class GLL<VertexType, LabelType : ILabel>(
                 addDescriptor(descriptor)
                 continue
             }
-            for (kvp in state.outgoingTerminalEdges) {
+            for (kvp in terminalEdges) {
                 if (inputEdge.label.terminal == kvp.key) {
                     for (target in kvp.value) {
                         val rsmEdge = RSMTerminalEdge(kvp.key, target)
@@ -151,7 +155,7 @@ class GLL<VertexType, LabelType : ILabel>(
             }
         }
 
-        for (kvp in state.outgoingNonterminalEdges) {
+        for (kvp in nonTerminalEdges) {
             for (target in kvp.value) {
                 val rsmEdge = RSMNonterminalEdge(kvp.key, target)
 
@@ -175,14 +179,10 @@ class GLL<VertexType, LabelType : ILabel>(
 
                     val currentTerminal = currentEdge.label.terminal!!
 
-                    val coveredByCurrentTerminal: HashSet<RSMState> =
-                        if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
-                            state.outgoingTerminalEdges.getValue(currentTerminal)
-                        } else {
-                            HashSet()
-                        }
+                    val coveredByCurrentTerminal: HashSet<RSMState> = terminalEdges[currentTerminal] ?: hashSetOf()
+
                     for (terminal in state.errorRecoveryLabels) {
-                        val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState>)
+                        val coveredByTerminal = HashSet(terminalEdges[terminal] as HashSet<RSMState>)
 
                         coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
 
@@ -194,7 +194,7 @@ class GLL<VertexType, LabelType : ILabel>(
                 }
             } else {
                 for (terminal in state.errorRecoveryLabels) {
-                    val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState>)
+                    val coveredByTerminal = HashSet(terminalEdges[terminal] as HashSet<RSMState>)
 
                     if (coveredByTerminal.isNotEmpty()) {
                         errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
@@ -211,8 +211,8 @@ class GLL<VertexType, LabelType : ILabel>(
                         curDescriptor, terminal = null, errorRecoveryEdge, curDescriptor.rsmState
                     )
                 } else {
-                    if (state.outgoingTerminalEdges.containsKey(terminal)) {
-                        for (targetState in state.outgoingTerminalEdges.getValue(terminal)) {
+                    if (terminalEdges.containsKey(terminal)) {
+                        for (targetState in terminalEdges.getValue(terminal)) {
                             handleTerminalOrEpsilonEdge(curDescriptor, terminal, errorRecoveryEdge, targetState)
                         }
                     }

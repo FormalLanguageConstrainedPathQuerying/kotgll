@@ -1,9 +1,7 @@
 package rsm
 
 import org.junit.jupiter.api.Test
-import org.srcgll.rsm.RSMNonterminalEdge
 import org.srcgll.rsm.RSMState
-import org.srcgll.rsm.RSMTerminalEdge
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import kotlin.test.assertFalse
@@ -19,23 +17,25 @@ interface RsmTest {
             throw IllegalArgumentException("For comparing by name non terminal must have unique not null name")
         }
         if (expected.nonterminal.name != actual.nonterminal.name
-            || expected.isStart != actual.isStart || expected.isFinal != actual.isFinal) {
+            || expected.isStart != actual.isStart || expected.isFinal != actual.isFinal
+        ) {
             return false
         }
-        if (actual.outgoingTerminalEdges.size != expected.outgoingTerminalEdges.size
-            || actual.outgoingNonterminalEdges.size != expected.outgoingNonterminalEdges.size) {
+        if (actual.outgoingEdges.size != expected.outgoingEdges.size) {
             return false
         }
-        for (tEdge in expected.outgoingTerminalEdges) {
-            val states = actual.outgoingTerminalEdges[tEdge.key] ?: return false
-            if (!equalsAsSetByName(tEdge.value, states)) {
-                return false
-            }
-        }
-        for (ntEdge in expected.outgoingNonterminalEdges) {
-            val states =
-                actual.outgoingNonterminalEdges.entries.firstOrNull { it.key.name == ntEdge.key.name } ?: return false
-            if (!equalsAsSetByName(ntEdge.value, states.value)) {
+        for ((expectedSymbol, originDestStates) in expected.outgoingEdges) {
+            val actualDestStates: HashSet<RSMState> = when (expectedSymbol) {
+                is Terminal<*> -> actual.outgoingEdges[expectedSymbol]
+                is Nonterminal -> {
+                    actual.outgoingEdges.entries.firstOrNull { (actualSymbol, _) ->
+                        actualSymbol is Nonterminal && actualSymbol.name == expectedSymbol.name
+                    }?.value
+                }
+
+                else -> throw Exception("Unsupported instance of Symbol: ${expectedSymbol.javaClass}")
+            } ?: return false
+            if (!equalsAsSetByName(originDestStates, actualDestStates)) {
                 return false
             }
         }
@@ -46,16 +46,17 @@ interface RsmTest {
         if (expected.size != actual.size) {
             return false
         }
-        for (state in expected) {
-            val curState = actual.firstOrNull { it.nonterminal.name == state.nonterminal.name }
-            if (curState == null || !equalsByNtName(state, curState)) {
+        for (expectedState in expected) {
+            val actualState =
+                actual.firstOrNull { actualState -> actualState.nonterminal.name == expectedState.nonterminal.name }
+            if (actualState == null || !equalsByNtName(expectedState, actualState)) {
                 return false
             }
         }
         return true
     }
 
-    fun getAStar(stateName: String): RSMState {
+    fun getAStarRsm(stateName: String): RSMState {
         val s = Nonterminal(stateName)
         val a = Terminal("a")
         val st0 = RSMState(s, isStart = true)
@@ -63,16 +64,16 @@ interface RsmTest {
         val st1 = RSMState(s, isFinal = true)
         val st2 = RSMState(s)
         val st3 = RSMState(s, isFinal = true)
-        st0.addTerminalEdge(RSMTerminalEdge(a, st1))
-        st1.addNonterminalEdge(RSMNonterminalEdge(s, st3))
-        st0.addNonterminalEdge(RSMNonterminalEdge(s, st2))
-        st2.addNonterminalEdge(RSMNonterminalEdge(s, st3))
+        st0.addEdge(a, st1)
+        st1.addEdge(s, st3)
+        st0.addEdge(s, st2)
+        st2.addEdge(s, st3)
         return s.startState
     }
 
     @Test
     fun testEquals() {
-        assertTrue { equalsByNtName(getAStar("S"), getAStar("S")) }
-        assertFalse { equalsByNtName(getAStar("S"), getAStar("K")) }
+        assertTrue { equalsByNtName(getAStarRsm("S"), getAStarRsm("S")) }
+        assertFalse { equalsByNtName(getAStarRsm("S"), getAStarRsm("K")) }
     }
 }

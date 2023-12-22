@@ -112,9 +112,7 @@ fun readRSMFromTXT(pathToTXT: String): RSMState {
             val tailRSMState = idToState[tailId.toInt()]!!
             val headRSMState = idToState[headId.toInt()]!!
 
-            tailRSMState.addTerminalEdge(
-                RSMTerminalEdge(terminal = Terminal(terminalValue), head = headRSMState)
-            )
+            tailRSMState.addEdge(Terminal(terminalValue),headRSMState)
         } else if (rsmNonterminalEdgeRegex.matches(line)) {
             val (tailId, headId, nonterminalValue) =
                 rsmNonterminalEdgeRegex.matchEntire(line)!!.destructured
@@ -122,9 +120,7 @@ fun readRSMFromTXT(pathToTXT: String): RSMState {
             val tailRSMState = idToState[tailId.toInt()]!!
             val headRSMState = idToState[headId.toInt()]!!
 
-            tailRSMState.addNonterminalEdge(
-                RSMNonterminalEdge(nonterminal = makeNonterminal(nonterminalValue), head = headRSMState)
-            )
+            tailRSMState.addEdge(makeNonterminal(nonterminalValue), headRSMState)
         }
     }
 

@@ -1,9 +1,7 @@
 package org.srcgll.grammar.combinator.regexp
 
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.rsm.RSMNonterminalEdge
 import org.srcgll.rsm.RSMState
-import org.srcgll.rsm.RSMTerminalEdge
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import java.util.*
@@ -40,14 +38,14 @@ open class NT : DerivedSymbol {
 
                     when (symbol) {
                         is Term<*> -> {
-                            state?.addTerminalEdge(RSMTerminalEdge(symbol.terminal as Terminal<*>, toState))
+                            state?.addEdge(symbol.terminal as Terminal<*>, toState)
                         }
 
                         is NT -> {
                             if (!symbol::nonTerm.isInitialized) {
                                 throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.name}\"")
                             }
-                            state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm, toState))
+                            state?.addEdge(symbol.nonTerm, toState)
                         }
                     }
                 }
