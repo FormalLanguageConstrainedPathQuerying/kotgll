@@ -4,14 +4,6 @@ import org.srcgll.grammar.combinator.regexp.NT
 import org.srcgll.grammar.combinator.regexp.Regexp
 import org.srcgll.rsm.RSMState
 
-object GlobalState {
-    private var value = 0
-    fun getNextInt(): Int = value++
-    fun resetCounter() {
-        value = 0
-    }
-}
-
 open class Grammar {
     val nonTerms = ArrayList<NT>()
 
@@ -37,7 +29,8 @@ open class Grammar {
     /**
      * Builds a new Rsm for the grammar
      */
-    fun buildRsm(): RSMState {
+
+    private fun buildRsm(): RSMState {
         nonTerms.forEach { it.buildRsmBox() }
         startState = startNt.getNonterminal()?.startState
         return startState as RSMState

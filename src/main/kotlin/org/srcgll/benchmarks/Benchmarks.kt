@@ -84,6 +84,7 @@ fun runRSMWithSPPF(
                 inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
             }
 
+
             var result = gll.parse()
 
             writeSPPFToDOT(result.first!!, "./outputFiles/${inputName}_sppf.dot")

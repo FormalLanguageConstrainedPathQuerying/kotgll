@@ -15,6 +15,7 @@ import org.srcgll.sppf.SPPF
 import org.srcgll.sppf.TerminalRecoveryEdge
 import org.srcgll.sppf.node.*
 
+
 class GLL<VertexType, LabelType : ILabel>(
     private val startState: RSMState,
     private val input: IGraph<VertexType, LabelType>,
@@ -76,7 +77,7 @@ class GLL<VertexType, LabelType : ILabel>(
 
         return Pair(parseResult, reachabilityPairs)
     }
-
+    
     private fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
@@ -84,6 +85,8 @@ class GLL<VertexType, LabelType : ILabel>(
         var curSPPFNode = curDescriptor.sppfNode
         var leftExtent = curSPPFNode?.leftExtent
         var rightExtent = curSPPFNode?.rightExtent
+        val terminalEdges = state.getTerminalEdges()
+        val nonTerminalEdges = state.getNonTerminalEdges()
 
         stack.addToHandled(curDescriptor)
 
@@ -123,7 +126,7 @@ class GLL<VertexType, LabelType : ILabel>(
                 addDescriptor(descriptor)
                 continue
             }
-            for ((edgeTerminal, targetStates) in state.outgoingTerminalEdges) {
+            for ((edgeTerminal, targetStates) in terminalEdges) {
                 if (inputEdge.label.terminal == edgeTerminal) {
                     for (target in targetStates) {
                         val rsmEdge = RSMTerminalEdge(edgeTerminal, target)
@@ -141,7 +144,7 @@ class GLL<VertexType, LabelType : ILabel>(
             }
         }
 
-        for ((edgeNonterminal, targetStates) in state.outgoingNonterminalEdges) {
+        for ((edgeNonterminal, targetStates) in nonTerminalEdges) {
             for (target in targetStates) {
                 val rsmEdge = RSMNonterminalEdge(edgeNonterminal, target)
 
@@ -165,16 +168,12 @@ class GLL<VertexType, LabelType : ILabel>(
 
                     val currentTerminal = currentEdge.label.terminal!!
 
-                    val coveredByCurrentTerminal: HashSet<RSMState> =
-                        if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
-                            state.outgoingTerminalEdges.getValue(currentTerminal)
-                        } else {
-                            HashSet()
-                        }
-                    for (terminal in state.errorRecoveryLabels) {
-                        coveredByCurrentTerminal.forEach { state.outgoingTerminalEdges[terminal]?.remove(it) }
+                    val coveredByCurrentTerminal: HashSet<RSMState> = terminalEdges[currentTerminal] ?: hashSetOf()
 
-                        if (terminal != currentTerminal && !state.outgoingTerminalEdges[terminal].isNullOrEmpty()) {
+                    for (terminal in state.errorRecoveryLabels) {
+                        coveredByCurrentTerminal.forEach { terminalEdges[terminal]?.remove(it) }
+
+                        if (terminal != currentTerminal && !terminalEdges[terminal].isNullOrEmpty()) {
                             errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                         }
                     }
@@ -182,7 +181,7 @@ class GLL<VertexType, LabelType : ILabel>(
                 }
             } else {
                 for (terminal in state.errorRecoveryLabels) {
-                    if (!state.outgoingTerminalEdges[terminal].isNullOrEmpty()) {
+                    if (!terminalEdges[terminal].isNullOrEmpty()) {
                         errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                     }
                 }
@@ -194,8 +193,9 @@ class GLL<VertexType, LabelType : ILabel>(
                         curDescriptor, terminal = null, errorRecoveryEdge, curDescriptor.rsmState
                     )
                 } else {
-                    if (state.outgoingTerminalEdges.containsKey(terminal)) {
-                        for (targetState in state.outgoingTerminalEdges.getValue(terminal)) {
+
+                    if (terminalEdges.containsKey(terminal)) {
+                        for (targetState in terminalEdges.getValue(terminal)) {
                             handleTerminalOrEpsilonEdge(curDescriptor, terminal, errorRecoveryEdge, targetState)
                         }
                     }
