@@ -2,13 +2,10 @@ package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import java.nio.file.Path
+import java.io.File
+
 
 fun readRSMFromTXT(pathToTXT: String): RSMState {
-    return readRSMFromTXT(Path.of(pathToTXT))
-}
-
-fun readRSMFromTXT(pathToTXT: Path): RSMState {
     val rsmStates: HashMap<Int, RSMState> = HashMap()
     var startRSMState: RSMState? = null
 
@@ -61,7 +58,7 @@ fun readRSMFromTXT(pathToTXT: Path): RSMState {
         |nonterminal=Nonterminal\("(?<nonterminalValue>.*)"\)
         |\)$""".trimMargin().replace("\n", "").toRegex()
 
-    val reader = pathToTXT.toFile().inputStream().bufferedReader()
+    val reader = File(pathToTXT).inputStream().bufferedReader()
 
     while (true) {
         val line = reader.readLine() ?: break
