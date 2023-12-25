@@ -179,10 +179,10 @@ fun createStackExampleGraph(startVertex: Int): SimpleGraph {
     inputGraph.addEdge(from = 21, to = 20, label = SimpleInputLabel(null))
     inputGraph.addEdge(from = 20, to = 19, label = SimpleInputLabel("def_x"))
 
-    for (kvp in inputGraph.edges) {
-        inputGraph.addVertex(kvp.key)
-        for (e in kvp.value) {
-            inputGraph.addVertex(e.head)
+    for ((vertexFrom, edges) in inputGraph.edges) {
+        inputGraph.addVertex(vertexFrom)
+        for (edge in edges) {
+            inputGraph.addVertex(edge.head)
         }
     }
 
@@ -204,20 +204,18 @@ fun main() {
     val resultStack: Pair<SPPFNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
         GLL(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
 
-    writeRSMToTXT(rsmAnBnStartState, "./srcgll/rsm.txt")
-    writeSPPFToDOT(resultAnBn.first!!, "./srcgll/lol.dot")
     println("AnBn Language Grammar")
     println("Reachability pairs : ")
 
-    resultAnBn.second.forEach { kvp ->
-        println("from : ${kvp.key.first} , to : ${kvp.key.second} , distance : ${kvp.value}")
+    resultAnBn.second.forEach { (pair, distance) ->
+        println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
     }
 
     println("\nStack Language Grammar")
     println("Reachability pairs : ")
 
-    resultStack.second.forEach { kvp ->
-        println("from : ${kvp.key.first} , to : ${kvp.key.second} , distance : ${kvp.value}")
+    resultStack.second.forEach { (pair, distance) ->
+        println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
     }
 }
 

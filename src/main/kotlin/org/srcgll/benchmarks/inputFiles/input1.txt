@@ -1,4 +1,0 @@
-if (true and 5 * 2 < 15) then {
-        print 50;
-        skip
-} else print 3 / 20

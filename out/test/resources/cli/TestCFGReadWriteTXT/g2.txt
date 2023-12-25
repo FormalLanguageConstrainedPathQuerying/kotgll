@@ -1,3 +1,0 @@
-StartNonterminal("S")
-Nonterminal("S") -> Terminal("subClassOf_r") Nonterminal("S") Terminal("subClassOf")
-Nonterminal("S") -> Terminal("subClassOf")

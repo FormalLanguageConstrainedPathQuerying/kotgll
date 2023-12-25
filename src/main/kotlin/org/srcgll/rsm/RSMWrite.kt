@@ -113,9 +113,15 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
         out.println("digraph g {")
 
         states.forEach { state ->
-            if (state.isStart) out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle, color = green]")
-            else if (state.isFinal) out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = red]")
-            else out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle]")
+            if (state.isStart && state.isFinal) {
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = green]")
+            } else if (state.isStart) {
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle, color = green]")
+            } else if (state.isFinal) {
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = red]")
+            } else {
+                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle]")
+            }
         }
 
         states.forEach { state ->

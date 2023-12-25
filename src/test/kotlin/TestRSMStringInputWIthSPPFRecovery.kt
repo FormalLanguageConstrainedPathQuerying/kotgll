@@ -10,7 +10,7 @@ import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.buildStringFromSPPF
 import kotlin.test.assertNotNull
 
-const val pathToGrammars = "/home/hollowcoder/Programming/SRC/srcgll/src/test/resources/cli/TestRSMReadWriteTXT"
+const val pathToGrammars = ".src/test/resources/cli/TestRSMReadWriteTXT"
 
 class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest

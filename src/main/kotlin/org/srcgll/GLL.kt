@@ -62,12 +62,6 @@ class GLL<VertexType, LabelType : ILabel>(
 
         parseResult = null
 
-//        while (parseResult == null && !stack.defaultDescriptorsStackIsEmpty()) {
-//            val curDefaultDescriptor = stack.next()
-//
-//            parse(curDefaultDescriptor)
-//        }
-
         while (!stack.defaultDescriptorsStackIsEmpty()) {
             val curDefaultDescriptor = stack.next()
 
@@ -94,18 +88,13 @@ class GLL<VertexType, LabelType : ILabel>(
         stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal) {
-            curSPPFNode = sppf.getNodeP(
-                state, curSPPFNode, sppf.getOrCreateItemSPPFNode(
-                    state, pos, pos, weight = 0
-                )
-            )
+            curSPPFNode = sppf.getNodeP(state, curSPPFNode, sppf.getOrCreateItemSPPFNode(state, pos, pos, weight = 0))
             leftExtent = curSPPFNode.leftExtent
             rightExtent = curSPPFNode.rightExtent
         }
 
-        if (curSPPFNode is SymbolSPPFNode<VertexType> && state.nonterminal == startState.nonterminal && input.isStart(
-                leftExtent!!
-            ) && input.isFinal(rightExtent!!)
+        if (curSPPFNode is SymbolSPPFNode<VertexType> && state.nonterminal == startState.nonterminal
+            && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
         ) {
             if (parseResult == null || parseResult!!.weight > curSPPFNode.weight) {
                 parseResult = curSPPFNode
@@ -114,11 +103,12 @@ class GLL<VertexType, LabelType : ILabel>(
             val pair = Pair(leftExtent, rightExtent)
             val distance = sppf.minDistance(curSPPFNode)
 
-            if (reachabilityPairs.containsKey(pair)) {
-                reachabilityPairs[pair] = minOf(distance, reachabilityPairs[pair]!!)
-            } else {
-                reachabilityPairs[pair] = distance
-            }
+            reachabilityPairs[pair] =
+                if (reachabilityPairs.containsKey(pair)) {
+                    minOf(distance, reachabilityPairs[pair]!!)
+                } else {
+                    distance
+                }
         }
 
         for (inputEdge in input.getEdges(pos)) {
@@ -133,10 +123,10 @@ class GLL<VertexType, LabelType : ILabel>(
                 addDescriptor(descriptor)
                 continue
             }
-            for (kvp in state.outgoingTerminalEdges) {
-                if (inputEdge.label.terminal == kvp.key) {
-                    for (target in kvp.value) {
-                        val rsmEdge = RSMTerminalEdge(kvp.key, target)
+            for ((edgeTerminal, targetStates) in state.outgoingTerminalEdges) {
+                if (inputEdge.label.terminal == edgeTerminal) {
+                    for (target in targetStates) {
+                        val rsmEdge = RSMTerminalEdge(edgeTerminal, target)
 
                         val descriptor = Descriptor(
                             rsmEdge.head, gssNode, sppf.getNodeP(
@@ -151,9 +141,9 @@ class GLL<VertexType, LabelType : ILabel>(
             }
         }
 
-        for (kvp in state.outgoingNonterminalEdges) {
-            for (target in kvp.value) {
-                val rsmEdge = RSMNonterminalEdge(kvp.key, target)
+        for ((edgeNonterminal, targetStates) in state.outgoingNonterminalEdges) {
+            for (target in targetStates) {
+                val rsmEdge = RSMNonterminalEdge(edgeNonterminal, target)
 
                 val descriptor = Descriptor(
                     rsmEdge.nonterminal.startState,
@@ -182,11 +172,9 @@ class GLL<VertexType, LabelType : ILabel>(
                             HashSet()
                         }
                     for (terminal in state.errorRecoveryLabels) {
-                        val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState>)
+                        coveredByCurrentTerminal.forEach { state.outgoingTerminalEdges[terminal]?.remove(it) }
 
-                        coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
-
-                        if (terminal != currentTerminal && coveredByTerminal.isNotEmpty()) {
+                        if (terminal != currentTerminal && !state.outgoingTerminalEdges[terminal].isNullOrEmpty()) {
                             errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                         }
                     }
@@ -194,18 +182,13 @@ class GLL<VertexType, LabelType : ILabel>(
                 }
             } else {
                 for (terminal in state.errorRecoveryLabels) {
-                    val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState>)
-
-                    if (coveredByTerminal.isNotEmpty()) {
+                    if (!state.outgoingTerminalEdges[terminal].isNullOrEmpty()) {
                         errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                     }
                 }
             }
 
-            for (kvp in errorRecoveryEdges) {
-                val errorRecoveryEdge = kvp.value
-                val terminal = kvp.key
-
+            for ((terminal, errorRecoveryEdge) in errorRecoveryEdges) {
                 if (terminal == null) {
                     handleTerminalOrEpsilonEdge(
                         curDescriptor, terminal = null, errorRecoveryEdge, curDescriptor.rsmState
@@ -245,9 +228,8 @@ class GLL<VertexType, LabelType : ILabel>(
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (parseResult == null && sppfNode is SymbolSPPFNode<*> && state.nonterminal == startState.nonterminal && input.isStart(
-                leftExtent!!
-            ) && input.isFinal(rightExtent!!)
+        if (parseResult == null && sppfNode is SymbolSPPFNode<*> && state.nonterminal == startState.nonterminal
+            && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
         ) {
             stack.removeFromHandled(descriptor)
         }
@@ -300,10 +282,10 @@ class GLL<VertexType, LabelType : ILabel>(
         if (!poppedGSSNodes.containsKey(gssNode)) poppedGSSNodes[gssNode] = HashSet()
         poppedGSSNodes.getValue(gssNode).add(sppfNode)
 
-        for (edge in gssNode.edges) {
-            for (node in edge.value) {
+        for ((label, target) in gssNode.edges) {
+            for (node in target) {
                 val descriptor = Descriptor(
-                    edge.key.first, node, sppf.getNodeP(edge.key.first, edge.key.second, sppfNode!!), pos
+                    label.first, node, sppf.getNodeP(label.first, label.second, sppfNode!!), pos
                 )
                 addDescriptor(descriptor)
             }

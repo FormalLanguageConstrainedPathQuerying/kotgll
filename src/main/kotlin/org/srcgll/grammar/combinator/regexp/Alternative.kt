@@ -35,3 +35,5 @@ fun makeAlternative(literals: Iterable<String>): Regexp {
     return terms.subList(2, terms.size)
         .fold(initial) { acc: Regexp, i: Term<String> -> Alternative.makeAlternative(acc, i) }
 }
+
+fun Option(exp: Regexp) = Alternative.makeAlternative(Epsilon, exp)

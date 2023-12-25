@@ -1,7 +1,0 @@
-while not (true = false) or not (or true) and 5 <= 13 do {
-    skip;
-    skip;
-    skip;
-    skip;
-    skip;
-}
