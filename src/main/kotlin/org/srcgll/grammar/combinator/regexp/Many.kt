@@ -8,9 +8,8 @@ data class Many
 {
     override fun derive(symbol : DerivedSymbol) : Regexp
     {
-        val newReg = exp.derive(symbol)
 
-        return when (newReg) {
+        return when (val newReg = exp.derive(symbol)) {
             Epsilon -> Many(exp)
             Empty   -> Empty
             else    -> Concat(newReg, Many(exp))
@@ -18,5 +17,4 @@ data class Many
     }
 }
 
-val Regexp.many : Many
-    get() = Many(this)
+fun some(exp: Regexp) = (exp * Many(exp))

@@ -1,4 +1,4 @@
-# Grammar combinator 
+# Grammar combinator
 Kotlin DSL for describing context-free grammars.
 
 
@@ -15,14 +15,14 @@ S = A*
 *DSL*
 ```kotlin
 class AStar : Grammar() {
-        var A = Term("a")
-        var S by NT()
+    var A = Term("a")
+    var S by NT()
 
-        init {
-            setStart(S)
-            S = Many(A)
-        }
+    init {
+        setStart(S)
+        S = Many(A)
     }
+}
 ```
 ### Non-terminals
 
@@ -32,13 +32,13 @@ Non-terminals must be fields of the grammar class. Be sure to declare using dele
 
 Start non-terminal set with method `setStart(nt)`. Can be set once for grammar.
 
-### Terminals 
+### Terminals
 
 `val A = Term("a")`
 
 `val B = Term(42)`
 
-Terminal is a generic class. Can store terminals of any type. Terminals are compared based on their content. 
+Terminal is a generic class. Can store terminals of any type. Terminals are compared based on their content.
 
 They can be declared as fields of a grammar class or directly in productions.
 
@@ -55,19 +55,19 @@ S3 = '{' S '}' S
 *DSL*
 ```kotlin
 class DyckGrammar : Grammar() {
-        var S by NT()
-        var S1 by NT()
-        var S2 by NT()
-        var S3 by NT()
+    var S by NT()
+    var S1 by NT()
+    var S2 by NT()
+    var S3 by NT()
 
-        init {
-            setStart(S)
-            S = S1 or S2 or S3 or Epsilon
-            S1 = Term("(") * S * Term(")") * S
-            S2 = Term("[") * S * Term("]") * S
-            S3 = Term("{") * S * Term("}") * S
-        }
+    init {
+        setStart(S)
+        S = S1 or S2 or S3 or Epsilon
+        S1 = Term("(") * S * Term(")") * S
+        S2 = Term("[") * S * Term("]") * S
+        S3 = Term("{") * S * Term("}") * S
     }
+}
 ```
 ### Production
 A → B = A = B
@@ -76,24 +76,81 @@ A → B = A = B
 (.): Σ∗ × Σ∗ → Σ∗
 
 a . b = a * b
+```kotlin
+class AB : Grammar() {
+        var S by NT()
 
+        init {
+            setStart(S)
+            S = Term("a") * Term("b")
+        }
+    }
+```
 ### Alternative
 a | b = a or b
+
+```kotlin
+class AStar : Grammar() {
+        var S by NT()
+
+        init {
+            setStart(S)
+            S = Term("a") or S or Epsilon
+        }
+    }
+```
 
 ### Kleene Star
 $a* = U_{i=0}^{\inf}a^i$
 
 a* = Many(a)
 
-`todo: a+ = some(a)`
+```kotlin
+class AStar : Grammar() {
+        var S by NT()
 
-### Optional 
+        init {
+            setStart(S)
+            S = many(Term("a"))
+        }
+    }
+```
+
+### Some
+$a* = U_{i=1}^{\inf}a^i$
+
+a+ = some(a)
+
+```kotlin
+class AStar : Grammar() {
+        var S by NT()
+
+        init {
+            setStart(S)
+            S = some(Term("a")) or Epsilon
+        }
+    }
+```
+
+### Optional
 a? -> a | Epsilon
 
 Epsilon -- constant terminal with behavior corresponding to the $\epsilon$ terminal (empty string).
 
-`todo: a? = opt(a)`
+a? = opt(a)
 
-## RSM 
+```kotlin
+class AStar : Grammar() {
+        var S by NT()
+
+        init {
+            setStart(S)
+            S = opt(Term("a")) * S
+        }
+    }
+```
+
+## RSM
 DSL allows to get the RSM corresponding to the grammar using the `getRsm` method.
 The algorithm of RSM construction is based on Brzozowski derivations.
+

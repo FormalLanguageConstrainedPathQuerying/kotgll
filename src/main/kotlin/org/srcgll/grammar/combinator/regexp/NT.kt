@@ -1,6 +1,5 @@
 package org.srcgll.grammar.combinator.regexp
 
-import org.srcgll.grammar.combinator.GlobalState
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.rsm.RSMNonterminalEdge
 import org.srcgll.rsm.RSMState
@@ -10,21 +9,20 @@ import org.srcgll.rsm.symbol.Terminal
 import java.util.*
 import kotlin.reflect.KProperty
 
-open class NT : DerivedSymbol
-{
-    private lateinit var nonTerm        : Nonterminal
-    private lateinit var rsmDescription : Regexp
+open class NT : DerivedSymbol {
+    protected open lateinit var nonTerm: Nonterminal
+    protected lateinit var rsmDescription: Regexp
 
-    private fun getNewState(regex : Regexp) : RSMState
-    {
-        return RSMState(GlobalState.getNextInt(), nonTerm, isStart = false, regex.acceptEpsilon())
+    protected fun getNewState(regex: Regexp, isStart: Boolean = false): RSMState {
+        return RSMState(nonTerm, isStart, regex.acceptEpsilon())
     }
 
-    fun buildRsmBox() : RSMState
-    {
+    open fun buildRsmBox(): RSMState = buildRsmBox(nonTerm.startState)
+
+    protected fun buildRsmBox(startState: RSMState): RSMState {
         val regexpToProcess = Stack<Regexp>()
         val regexpToRsmState = HashMap<Regexp, RSMState>()
-        regexpToRsmState[rsmDescription] = nonTerm.startState
+        regexpToRsmState[rsmDescription] = startState
 
         val alphabet = rsmDescription.getAlphabet()
 
@@ -49,34 +47,64 @@ open class NT : DerivedSymbol
 
                         is NT -> {
                             if (!symbol::nonTerm.isInitialized) {
-                                throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.value}\"")
+                                throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.name}\"")
                             }
-                            state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm as Nonterminal, toState))
+                            state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm, toState))
                         }
                     }
                 }
             }
         }
-        return nonTerm.startState
+        return startState
     }
 
-    override fun getNonterminal() : Nonterminal?
-    {
+    override fun getNonterminal(): Nonterminal? {
         return nonTerm
     }
 
-    operator fun setValue(grammar : Grammar, property : KProperty<*>, lrh : Regexp)
-    {
+    operator fun setValue(grammar: Grammar, property: KProperty<*>, lrh: Regexp) {
         if (!this::nonTerm.isInitialized) {
             nonTerm = Nonterminal(property.name)
             grammar.nonTerms.add(this)
             rsmDescription = lrh
-            nonTerm.startState = RSMState(GlobalState.getNextInt(), nonTerm, isStart = true, rsmDescription.acceptEpsilon())
+            nonTerm.startState = RSMState(nonTerm, isStart = true, rsmDescription.acceptEpsilon())
         } else {
             throw Exception("NonTerminal ${property.name} is already initialized")
         }
 
     }
 
-    operator fun getValue(grammar : Grammar, property : KProperty<*>) : Regexp = this
+    operator fun getValue(grammar: Grammar, property: KProperty<*>): Regexp = this
+
+}
+
+/**
+ * Helper class for building rsm delta when deleting/adding rules to the grammar.
+ * Uses existing grammar nonterminal
+ */
+class StandAloneNt(nonterminal: Nonterminal) : NT() {
+    init {
+        nonTerm = nonterminal
+    }
+
+    /**
+     * Set description of Rsm, may be recursive
+     */
+    fun setDescription(description: Regexp){
+        rsmDescription = description
+    }
+
+    /**
+     * Create new start state for RsmBox
+     * Otherwise the origin of the Rsm will be ruined.
+     */
+    override fun buildRsmBox(): RSMState = buildRsmBox(getNewState(rsmDescription, true))
+
+    /**
+     * Build rsm from given description in regexp
+     */
+    fun buildRsm(description: Regexp): RSMState{
+        rsmDescription = description
+        return buildRsmBox()
+    }
 }

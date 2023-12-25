@@ -1,3 +1,3 @@
 package org.srcgll.rsm.symbol
 
-interface Symbol
+sealed interface Symbol

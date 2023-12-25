@@ -1,11 +1,11 @@
 package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 
 class RSMState
     (
-    val id: Int,
     val nonterminal: Nonterminal,
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
@@ -16,18 +16,7 @@ class RSMState
     val errorRecoveryLabels: HashSet<Terminal<*>> = HashSet()
 
     override fun toString() =
-        "RSMState(id=$id, nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is RSMState) return false
-        if (id != other.id) return false
-
-        return true
-    }
-
-    val hashCode: Int = id
-    override fun hashCode() = hashCode
+        "RSMState(nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
     fun addTerminalEdge(edge: RSMTerminalEdge) {
         if (!coveredTargetStates.contains(edge.head)) {
@@ -54,13 +43,19 @@ class RSMState
         }
     }
 
-    fun rsmEquals(other: RSMState): Boolean {
-        if (this != other) {
-            return false
+    fun addEdge(label: Symbol, head: RSMState){
+        when (label){
+            is Terminal<*> -> addTerminalEdge(RSMTerminalEdge(label, head))
+            is Nonterminal -> addNonterminalEdge(RSMNonterminalEdge(label, head))
+            else -> throw IllegalArgumentException("removing not implemented for Symbol implementation $label")
         }
-        if (outgoingTerminalEdges != other.outgoingTerminalEdges) {
-            return false
-        }
-        return outgoingNonterminalEdges == other.outgoingNonterminalEdges
+    }
+
+    fun add(delta: RSMState) {
+        DynamicRsm(this).constructIncremental(delta, false)
+    }
+
+    fun remove(delta: RSMState) {
+        DynamicRsm(this).constructIncremental(delta, true)
     }
 }

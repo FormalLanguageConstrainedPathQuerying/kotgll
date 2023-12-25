@@ -71,10 +71,10 @@ fun printNode(nodeId : Int, node : ISPPFNode) : String
             "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${getColor(node.weight)}]"
         }
         is SymbolSPPFNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; ${node.symbol.value}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${getColor(node.weight)}]"
+            "${nodeId} [label = \"${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${getColor(node.weight)}]"
         }
         is ItemSPPFNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.value}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${getColor(node.weight)}]"
+            "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${getColor(node.weight)}]"
         }
         is PackedSPPFNode<*> -> {
             "${nodeId} [label = \"${nodeId} ; Weight: ${node.weight}\", shape = point, width = 0.5, color = ${getColor(node.weight)}]"
