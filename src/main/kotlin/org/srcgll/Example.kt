@@ -2,23 +2,24 @@ package org.srcgll
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.input.Edge
-import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
+import org.srcgll.input.ILabel
+import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.writeRSMToTXT
 import org.srcgll.sppf.node.SPPFNode
+import org.srcgll.sppf.writeSPPFToDOT
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
  */
-class AnBn : Grammar()
-{
+class AnBn : Grammar() {
     // Nonterminals
     var S by NT()
 
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
-         S = Epsilon or Term("a") * S * Term("b")
+        S = Term("a") * Term("b") or Term("a") * S * Term("b")
 
         // Set Starting Nonterminal
         setStart(S)
@@ -28,27 +29,27 @@ class AnBn : Grammar()
 /**
  * Define Class for Stack Language CF-Grammar
  */
-class Stack : Grammar()
-{
+class Stack : Grammar() {
     // Nonterminals
     var S by NT()
 
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
-        S = Term("<-()") * Term("->()")       or
-            Term("<-.") * Term("->.")         or
-            Term("use_a") * Term("def_a")     or
-            Term("use_A") * Term("def_A")     or
-            Term("use_B") * Term("def_B")     or
-            Term("use_x") * Term("def_x")     or
-            Term("<-()")  * S * Term("->()")  or
-            Term("<-.")   * S * Term("->.")   or
+        S = Many(
+            Term("<-()") * Term("->()") or
+            Term("<-.") * Term("->.") or
+            Term("use_a") * Term("def_a") or
+            Term("use_A") * Term("def_A") or
+            Term("use_B") * Term("def_B") or
+            Term("use_x") * Term("def_x") or
+            Term("<-()") * S * Term("->()") or
+            Term("<-.") * S * Term("->.") or
             Term("use_a") * S * Term("def_a") or
             Term("use_A") * S * Term("def_A") or
             Term("use_B") * S * Term("def_B") or
             Term("use_b") * S * Term("def_b") or
-            Term("use_x") * S * Term("def_x") or
-            S * S
+            Term("use_x") * S * Term("def_x")
+        )
 
         // Set Starting Nonterminal
         setStart(S)
@@ -58,22 +59,17 @@ class Stack : Grammar()
 /**
  * Realisation of ILabel interface which represents label on Input Graph edges
  */
-class SimpleInputLabel
-(
-    label : String?
-)
-    : ILabel
-{
+class SimpleInputLabel(
+    label: String?,
+): ILabel {
     // null terminal represents epsilon edge in Graph
-    override val terminal : Terminal<String>? =
-        when (label) {
-            null -> null
-            else -> Terminal(label)
-        }
+    override val terminal: Terminal<String>? = when (label) {
+        null -> null
+        else -> Terminal(label)
+    }
 
-    override fun equals(other : Any?) : Boolean
-    {
-        if (this === other)             return true
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
         if (other !is SimpleInputLabel) return false
         if (terminal != other.terminal) return false
         return true
@@ -85,63 +81,54 @@ class SimpleInputLabel
  * @param VertexType   = Int
  * @param LabelType    = SimpleInputLabel
  */
-class SimpleGraph : IGraph<Int, SimpleInputLabel>
-{
-    override val vertices : MutableMap<Int, Int> = HashMap()
-    override val edges    : MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
+class SimpleGraph: IGraph<Int, SimpleInputLabel> {
+    override val vertices: MutableMap<Int, Int> = HashMap()
+    override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
 
-    override val startVertices : MutableSet<Int> = HashSet()
+    override val startVertices: MutableSet<Int> = HashSet()
 
-    override fun getInputStartVertices() : MutableSet<Int>  = startVertices
+    override fun getInputStartVertices(): MutableSet<Int> = startVertices
 
-    override fun isFinal(vertex : Int) : Boolean = true
+    override fun isFinal(vertex: Int): Boolean = true
 
-    override fun isStart(vertex : Int) : Boolean = startVertices.contains(vertex)
+    override fun isStart(vertex: Int): Boolean = startVertices.contains(vertex)
 
-    override fun removeEdge(from : Int, label : SimpleInputLabel, to : Int)
-    {
+    override fun removeEdge(from: Int, label: SimpleInputLabel, to: Int) {
         val edge = Edge(label, to)
 
         edges.getValue(from).remove(edge)
     }
 
-    override fun addEdge(from : Int, label : SimpleInputLabel, to : Int)
-    {
+    override fun addEdge(from: Int, label: SimpleInputLabel, to: Int) {
         val edge = Edge(label, to)
         if (!edges.containsKey(from)) edges[from] = ArrayList()
         edges.getValue(from).add(edge)
     }
 
-    override fun getEdges(from : Int) : MutableList<Edge<Int, SimpleInputLabel>>
-    {
+    override fun getEdges(from: Int): MutableList<Edge<Int, SimpleInputLabel>> {
         return edges.getOrDefault(from, ArrayList())
     }
 
-    override fun removeVertex(vertex : Int)
-    {
+    override fun removeVertex(vertex: Int) {
         vertices.remove(vertex)
     }
 
-    override fun addVertex(vertex : Int)
-    {
+    override fun addVertex(vertex: Int) {
         vertices[vertex] = vertex
     }
 
-    override fun addStartVertex(vertex : Int)
-    {
+    override fun addStartVertex(vertex: Int) {
         startVertices.add(vertex)
     }
 
-    override fun getVertex(vertex : Int?) : Int?
-    {
+    override fun getVertex(vertex: Int?): Int? {
         return vertices.getOrDefault(vertex, null)
     }
 }
 
-fun createAnBnExampleGraph(startVertex : Int) : SimpleGraph
-{
+fun createAnBnExampleGraph(startVertex: Int): SimpleGraph {
     val inputGraph = SimpleGraph()
-    for (i in 0..3) inputGraph.addVertex(vertex = i)
+    for (i in 0 .. 3) inputGraph.addVertex(vertex = i)
 
     inputGraph.addEdge(from = 0, to = 1, label = SimpleInputLabel("a"))
     inputGraph.addEdge(from = 1, to = 2, label = SimpleInputLabel("a"))
@@ -156,8 +143,7 @@ fun createAnBnExampleGraph(startVertex : Int) : SimpleGraph
     return inputGraph
 }
 
-fun createStackExampleGraph(startVertex : Int) : SimpleGraph
-{
+fun createStackExampleGraph(startVertex: Int): SimpleGraph {
     val inputGraph = SimpleGraph()
 
     inputGraph.addEdge(from = 0, to = 1, label = SimpleInputLabel("use_x"))
@@ -193,10 +179,10 @@ fun createStackExampleGraph(startVertex : Int) : SimpleGraph
     inputGraph.addEdge(from = 21, to = 20, label = SimpleInputLabel(null))
     inputGraph.addEdge(from = 20, to = 19, label = SimpleInputLabel("def_x"))
 
-    for (kvp in inputGraph.edges) {
-        inputGraph.addVertex(kvp.key)
-        for (e in kvp.value) {
-            inputGraph.addVertex(e.head)
+    for ((vertexFrom, edges) in inputGraph.edges) {
+        inputGraph.addVertex(vertexFrom)
+        for (edge in edges) {
+            inputGraph.addVertex(edge.head)
         }
     }
 
@@ -206,27 +192,30 @@ fun createStackExampleGraph(startVertex : Int) : SimpleGraph
 }
 
 fun main() {
-    val rsmAnBnStartState  = AnBn().buildRsm()
-    val rsmStackStartState = Stack().buildRsm()
-    val startVertex        = 0
-    val inputGraphAnBn     = createAnBnExampleGraph(startVertex)
-    val inputGraphStack    = createStackExampleGraph(startVertex)
+    val rsmAnBnStartState = AnBn().getRsm()
+    val rsmStackStartState = Stack().getRsm()
+    val startVertex = 0
+    val inputGraphAnBn = createAnBnExampleGraph(startVertex)
+    val inputGraphStack = createStackExampleGraph(startVertex)
 
     // result = (root of SPPF, set of reachable vertices)
-    val resultAnBn : Pair<SPPFNode<Int>?, HashSet<Int>> =
+    val resultAnBn: Pair<SPPFNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
         GLL(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
-    val resultStack : Pair<SPPFNode<Int>?, HashSet<Int>> =
+    val resultStack: Pair<SPPFNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
         GLL(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
 
     println("AnBn Language Grammar")
-    println("Reachable vertices from vertex $startVertex : ")
-    for (reachable in resultAnBn.second) {
-        println("Vertex: $reachable")
+    println("Reachability pairs : ")
+
+    resultAnBn.second.forEach { (pair, distance) ->
+        println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
     }
 
     println("\nStack Language Grammar")
-    println("Reachable vertices from vertex $startVertex : ")
-    for (reachable in resultStack.second) {
-        println("Vertex: $reachable")
+    println("Reachability pairs : ")
+
+    resultStack.second.forEach { (pair, distance) ->
+        println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
     }
 }
+

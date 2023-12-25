@@ -1,3 +1,0 @@
-StartNonterminal("S")
-Nonterminal("S") -> Terminal("a")
-Nonterminal("S") -> Terminal("a") Nonterminal("S")

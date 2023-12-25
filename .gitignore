@@ -1,11 +1,8 @@
 # Compiled class file
 *.class
 
-# input files
-input.txt
-
-# Output files
-output.txt
+# text files
+*.txt
 
 # Python scripts
 *.py
