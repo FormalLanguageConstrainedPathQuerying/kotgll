@@ -1,9 +1,6 @@
 # Compiled class file
 *.class
 
-# text files
-*.txt
-
 # Python scripts
 *.py
 

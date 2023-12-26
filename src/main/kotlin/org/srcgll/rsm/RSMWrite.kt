@@ -111,26 +111,16 @@ fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
         out.println("digraph g {")
 
         states.forEach { state ->
-<<<<<<< HEAD
             if (state.isStart && state.isFinal) {
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = green]")
+                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = doublecircle, color = green]")
             } else if (state.isStart) {
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle, color = green]")
-            } else if (state.isFinal) {
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = doublecircle, color = red]")
-            } else {
-                out.println("${state.id} [label = \"${state.nonterminal.name},${state.id}\", shape = circle]")
-            }
-=======
-            if (state.isStart)
                 out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle, color = green]")
-            else if (state.isFinal)
+            } else if (state.isFinal) {
                 out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = doublecircle, color = red]")
-            else
+            } else {
                 out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle]")
->>>>>>> c4ef2d5792f056dd567cdd251f39b9f0c61fabd3
+            }
         }
-
         fun getView(symbol: Symbol) {
             when (symbol) {
                 is Nonterminal -> symbol.name
