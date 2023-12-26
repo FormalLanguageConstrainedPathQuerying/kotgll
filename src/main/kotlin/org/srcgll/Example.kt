@@ -6,16 +6,14 @@ import org.srcgll.input.Edge
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.rsm.writeRSMToTXT
-import org.srcgll.sppf.node.SPPFNode
-import org.srcgll.sppf.writeSPPFToDOT
+import org.srcgll.sppf.node.SppfNode
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
  */
 class AnBn : Grammar() {
     // Nonterminals
-    var S by NT()
+    var S by Nt()
 
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
@@ -31,7 +29,7 @@ class AnBn : Grammar() {
  */
 class Stack : Grammar() {
     // Nonterminals
-    var S by NT()
+    var S by Nt()
 
     init {
         // Production rules. 'or' is Alternative, '*' is Concatenation
@@ -199,10 +197,10 @@ fun main() {
     val inputGraphStack = createStackExampleGraph(startVertex)
 
     // result = (root of SPPF, set of reachable vertices)
-    val resultAnBn: Pair<SPPFNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        GLL(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
-    val resultStack: Pair<SPPFNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        GLL(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
+    val resultAnBn: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
+        Gll(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
+    val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
+        Gll(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
 
     println("AnBn Language Grammar")
     println("Reachability pairs : ")

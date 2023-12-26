@@ -1,3 +1,0 @@
-StartNonterminal("S")
-Nonterminal("S") ->
-Nonterminal("S") -> Terminal("type") Nonterminal("S")

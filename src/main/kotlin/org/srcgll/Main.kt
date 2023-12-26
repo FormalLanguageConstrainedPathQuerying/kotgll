@@ -7,13 +7,11 @@ import kotlinx.cli.required
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.lexer.JavaGrammar
-import org.srcgll.rsm.readRSMFromTXT
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.writeSPPFToDOT
+import org.srcgll.sppf.writeSppfToDot
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
-import org.srcgll.lexer.SymbolCode
-import org.srcgll.rsm.writeRSMToDOT
+import org.srcgll.rsm.writeRsmToDot
 import java.io.File
 import java.io.StringReader
 
@@ -50,11 +48,11 @@ fun main(args: Array<String>) {
     val grammar = JavaGrammar().getRsm()
     val inputGraph = LinearInput<Int, LinearInputLabel>()
     val lexer = JavaLexer(StringReader(input))
-    val gll = GLL(grammar, inputGraph, RecoveryMode.ON)
+    val gll = Gll(grammar, inputGraph, RecoveryMode.ON)
     var vertexId = 0
     var token : JavaToken
 
-    writeRSMToDOT(grammar, "./rsm.dot")
+    writeRsmToDot(grammar, "./rsm.dot")
 
     inputGraph.addStartVertex(vertexId)
     inputGraph.addVertex(vertexId)
@@ -68,5 +66,5 @@ fun main(args: Array<String>) {
     }
 
     val result = gll.parse()
-    writeSPPFToDOT(result.first!!, "./result.dot")
+    writeSppfToDot(result.first!!, "./result.dot")
 }

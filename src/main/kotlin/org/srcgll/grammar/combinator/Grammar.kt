@@ -1,17 +1,17 @@
 package org.srcgll.grammar.combinator
 
-import org.srcgll.grammar.combinator.regexp.NT
+import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.RsmState
 
 open class Grammar {
-    val nonTerms = ArrayList<NT>()
+    val nonTerms = ArrayList<Nt>()
 
-    private var startState: RSMState? = null
-    private lateinit var startNt: NT
+    private var startState: RsmState? = null
+    private lateinit var startNt: Nt
 
     fun setStart(expr: Regexp) {
-        if (expr is NT) {
+        if (expr is Nt) {
             startNt = expr
         } else throw IllegalArgumentException("Only NT object can be start state for Grammar")
     }
@@ -19,20 +19,20 @@ open class Grammar {
     /**
      * Builds or returns a Rsm built earlier for the grammar
      */
-    fun getRsm(): RSMState {
+    fun getRsm(): RsmState {
         if (startState == null) {
             buildRsm()
         }
-        return startState as RSMState
+        return startState as RsmState
     }
 
     /**
      * Builds a new Rsm for the grammar
      */
 
-    private fun buildRsm(): RSMState {
+    private fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }
         startState = startNt.getNonterminal()?.startState
-        return startState as RSMState
+        return startState as RsmState
     }
 }

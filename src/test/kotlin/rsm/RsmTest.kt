@@ -1,7 +1,7 @@
 package rsm
 
 import org.junit.jupiter.api.Test
-import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import kotlin.test.assertFalse
@@ -12,7 +12,7 @@ interface RsmTest {
      * Compare two RSM, two state are equal if they have same name
      *
      */
-    fun equalsByNtName(expected: RSMState, actual: RSMState): Boolean {
+    fun equalsByNtName(expected: RsmState, actual: RsmState): Boolean {
         if (actual.nonterminal.name == null) {
             throw IllegalArgumentException("For comparing by name non terminal must have unique not null name")
         }
@@ -25,7 +25,7 @@ interface RsmTest {
             return false
         }
         for ((expectedSymbol, originDestStates) in expected.outgoingEdges) {
-            val actualDestStates: HashSet<RSMState> = when (expectedSymbol) {
+            val actualDestStates: HashSet<RsmState> = when (expectedSymbol) {
                 is Terminal<*> -> actual.outgoingEdges[expectedSymbol]
                 is Nonterminal -> {
                     actual.outgoingEdges.entries.firstOrNull { (actualSymbol, _) ->
@@ -42,7 +42,7 @@ interface RsmTest {
         return true
     }
 
-    private fun equalsAsSetByName(expected: HashSet<RSMState>, actual: HashSet<RSMState>): Boolean {
+    private fun equalsAsSetByName(expected: HashSet<RsmState>, actual: HashSet<RsmState>): Boolean {
         if (expected.size != actual.size) {
             return false
         }
@@ -56,14 +56,14 @@ interface RsmTest {
         return true
     }
 
-    fun getAStarRsm(stateName: String): RSMState {
+    fun getAStarRsm(stateName: String): RsmState {
         val s = Nonterminal(stateName)
         val a = Terminal("a")
-        val st0 = RSMState(s, isStart = true)
+        val st0 = RsmState(s, isStart = true)
         s.startState = st0
-        val st1 = RSMState(s, isFinal = true)
-        val st2 = RSMState(s)
-        val st3 = RSMState(s, isFinal = true)
+        val st1 = RsmState(s, isFinal = true)
+        val st2 = RsmState(s)
+        val st3 = RsmState(s, isFinal = true)
         st0.addEdge(a, st1)
         st1.addEdge(s, st3)
         st0.addEdge(s, st2)

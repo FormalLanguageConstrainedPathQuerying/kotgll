@@ -2,7 +2,7 @@ package rsm.api
 
 import org.junit.jupiter.api.Test
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.grammar.combinator.regexp.NT
+import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Term
 import org.srcgll.grammar.combinator.regexp.or
 import org.srcgll.grammar.combinator.regexp.times
@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 
 class TerminalsEqualsTest : RsmTest {
     class AStarTerms : Grammar() {
-        var S by NT()
+        var S by Nt()
 
         init {
             setStart(S)
@@ -20,7 +20,7 @@ class TerminalsEqualsTest : RsmTest {
     }
 
     class AStar : Grammar() {
-        var S by NT()
+        var S by Nt()
         val A = Term("a")
 
         init {

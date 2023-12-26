@@ -1,24 +1,24 @@
 package org.srcgll.grammar.combinator.regexp
 
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import java.util.*
 import kotlin.reflect.KProperty
 
-open class NT : DerivedSymbol {
-    private lateinit var nonTerm: Nonterminal
+open class Nt : DerivedSymbol {
+    private lateinit var nonterm: Nonterminal
     private lateinit var rsmDescription: Regexp
 
-    private fun getNewState(regex: Regexp): RSMState {
-        return RSMState(nonTerm, isStart = false, regex.acceptEpsilon())
+    private fun getNewState(regex: Regexp): RsmState {
+        return RsmState(nonterm, isStart = false, regex.acceptEpsilon())
     }
 
-    fun buildRsmBox(): RSMState {
+    fun buildRsmBox(): RsmState {
         val regexpToProcess = Stack<Regexp>()
-        val regexpToRsmState = HashMap<Regexp, RSMState>()
-        regexpToRsmState[rsmDescription] = nonTerm.startState
+        val regexpToRsmState = HashMap<Regexp, RsmState>()
+        regexpToRsmState[rsmDescription] = nonterm.startState
 
         val alphabet = rsmDescription.getAlphabet()
 
@@ -41,31 +41,31 @@ open class NT : DerivedSymbol {
                             state?.addEdge(symbol.terminal as Terminal<*>, toState)
                         }
 
-                        is NT -> {
-                            if (!symbol::nonTerm.isInitialized) {
-                                throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.name}\"")
+                        is Nt -> {
+                            if (!symbol::nonterm.isInitialized) {
+                                throw IllegalArgumentException("Not initialized Nt used in description of \"${nonterm.name}\"")
                             }
-                            state?.addEdge(symbol.nonTerm, toState)
+                            state?.addEdge(symbol.nonterm, toState)
                         }
                     }
                 }
             }
         }
-        return nonTerm.startState
+        return nonterm.startState
     }
 
     override fun getNonterminal(): Nonterminal? {
-        return nonTerm
+        return nonterm
     }
 
     operator fun setValue(grammar: Grammar, property: KProperty<*>, lrh: Regexp) {
-        if (!this::nonTerm.isInitialized) {
-            nonTerm = Nonterminal(property.name)
+        if (!this::nonterm.isInitialized) {
+            nonterm = Nonterminal(property.name)
             grammar.nonTerms.add(this)
             rsmDescription = lrh
-            nonTerm.startState = RSMState(nonTerm, isStart = true, rsmDescription.acceptEpsilon())
+            nonterm.startState = RsmState(nonterm, isStart = true, rsmDescription.acceptEpsilon())
         } else {
-            throw Exception("NonTerminal ${property.name} is already initialized")
+            throw Exception("Nonterminal ${property.name} is already initialized")
         }
 
     }

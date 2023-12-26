@@ -4,11 +4,11 @@ import org.srcgll.sppf.node.*
 import java.io.File
 
 
-fun writeSPPFToDOT(sppfNode: ISPPFNode, filePath: String) {
-    val queue: ArrayDeque<ISPPFNode> = ArrayDeque(listOf(sppfNode))
+fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
+    val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
     val edges: HashMap<Int, HashSet<Int>> = HashMap()
     val visited: HashSet<Int> = HashSet()
-    var node: ISPPFNode
+    var node: ISppfNode
 
     val file = File(filePath)
 
@@ -21,7 +21,7 @@ fun writeSPPFToDOT(sppfNode: ISPPFNode, filePath: String) {
 
             out.println(printNode(node.id, node))
 
-            (node as? ParentSPPFNode<*>)?.kids?.forEach {
+            (node as? ParentSppfNode<*>)?.kids?.forEach {
                 queue.addLast(it)
                 if (!edges.containsKey(node.id)) {
                     edges[node.id] = HashSet()
@@ -29,8 +29,8 @@ fun writeSPPFToDOT(sppfNode: ISPPFNode, filePath: String) {
                 edges.getValue(node.id).add(it.id)
             }
 
-            val leftChild = (node as? PackedSPPFNode<*>)?.leftSPPFNode
-            val rightChild = (node as? PackedSPPFNode<*>)?.rightSPPFNode
+            val leftChild = (node as? PackedSppfNode<*>)?.leftSppfNode
+            val rightChild = (node as? PackedSppfNode<*>)?.rightSppfNode
 
             if (leftChild != null) {
                 queue.addLast(leftChild)
@@ -61,38 +61,22 @@ fun printEdge(x: Int, y: Int): String {
     return "${x}->${y}"
 }
 
-fun printNode(nodeId: Int, node: ISPPFNode): String {
+fun printNode(nodeId: Int, node: ISppfNode): String {
     return when (node) {
-        is TerminalSPPFNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${
-                getColor(
-                    node.weight
-                )
-            }]"
+        is TerminalSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${getColor(node.weight)}]"
         }
 
-        is SymbolSPPFNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${
-                getColor(
-                    node.weight
-                )
-            }]"
+        is SymbolSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${getColor(node.weight)}]"
         }
 
-        is ItemSPPFNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${
-                getColor(
-                    node.weight
-                )
-            }]"
+        is ItemSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${getColor(node.weight)}]"
         }
 
-        is PackedSPPFNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; Weight: ${node.weight}\", shape = point, width = 0.5, color = ${
-                getColor(
-                    node.weight
-                )
-            }]"
+        is PackedSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; Weight: ${node.weight}\", shape = point, width = 0.5, color = ${getColor(node.weight)}]"
         }
 
         else -> ""

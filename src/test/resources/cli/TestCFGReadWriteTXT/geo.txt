@@ -1,3 +1,0 @@
-StartNonterminal("S")
-Nonterminal("S") -> Terminal("broaderTransitive") Nonterminal("S") Terminal("broaderTransitive_r")
-Nonterminal("S") -> Terminal("broaderTransitive") Terminal("broaderTransitive_r")

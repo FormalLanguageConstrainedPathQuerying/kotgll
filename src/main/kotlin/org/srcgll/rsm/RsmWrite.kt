@@ -6,8 +6,8 @@ import org.srcgll.rsm.symbol.Terminal
 import java.io.File
 
 
-private fun getAllStates(startState: RSMState): HashSet<RSMState> {
-    val states: HashSet<RSMState> = HashSet()
+private fun getAllStates(startState: RsmState): HashSet<RsmState> {
+    val states: HashSet<RsmState> = HashSet()
     val queue = ArrayDeque(listOf(startState))
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
@@ -28,11 +28,11 @@ private fun getAllStates(startState: RSMState): HashSet<RSMState> {
     return states
 }
 
-fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
+fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
     var lastId = 0
-    val stateToId: HashMap<RSMState, Int> = HashMap()
+    val stateToId: HashMap<RsmState, Int> = HashMap()
 
-    fun getId(state: RSMState): Int {
+    fun getId(state: RsmState): Int {
         return stateToId.getOrPut(state) { lastId++ }
     }
 
@@ -89,16 +89,16 @@ fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
 }
 
 
-fun writeRSMToDOT(startState: RSMState, pathToTXT: String) {
+fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
     var lastId = 0
-    val stateToId: HashMap<RSMState, Int> = HashMap()
+    val stateToId: HashMap<RsmState, Int> = HashMap()
 
-    fun getId(state: RSMState): Int {
+    fun getId(state: RsmState): Int {
         return stateToId.getOrPut(state) { lastId++ }
     }
 
     val states = getAllStates(startState)
-    val boxes: HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
+    val boxes: HashMap<Nonterminal, HashSet<RsmState>> = HashMap()
 
     for (state in states) {
         if (!boxes.containsKey(state.nonterminal)) {

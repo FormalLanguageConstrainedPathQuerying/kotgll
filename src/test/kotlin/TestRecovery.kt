@@ -1,22 +1,22 @@
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import org.srcgll.GLL
+import org.srcgll.Gll
 import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.rsm.readRSMFromTXT
+import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.buildStringFromSPPF
+import org.srcgll.sppf.buildStringFromSppf
 import kotlin.test.assertNotNull
 
-const val pathToGrammars = ".src/test/resources/cli/TestRSMReadWriteTXT"
+const val pathToGrammars = "./src/test/resources/cli/TestRSMReadWriteTXT"
 
-class TestRSMStringInputWIthSPPFRecovery {
+class TestRecovery {
     @ParameterizedTest
     @MethodSource("test_1")
     fun `test BracketStarX grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/bracket_star_x.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/bracket_star_x.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -28,8 +28,8 @@ class TestRSMStringInputWIthSPPFRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -42,13 +42,13 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
     @MethodSource("test_2")
     fun `test CAStarBStar grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/c_a_star_b_star.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/c_a_star_b_star.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -60,8 +60,8 @@ class TestRSMStringInputWIthSPPFRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -74,13 +74,13 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
     @MethodSource("test_3")
     fun `test AB grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/ab.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/ab.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -92,8 +92,8 @@ class TestRSMStringInputWIthSPPFRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -106,13 +106,13 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
     @MethodSource("test_4")
     fun `test Dyck grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/dyck.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -124,8 +124,8 @@ class TestRSMStringInputWIthSPPFRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -138,13 +138,13 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
     @MethodSource("test_5")
     fun `test Ambiguous grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/ambiguous.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/ambiguous.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -155,9 +155,9 @@ class TestRSMStringInputWIthSPPFRecovery {
         }
         inputGraph.addStartVertex(0)
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -171,13 +171,13 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
     @MethodSource("test_6")
     fun `test MultiDyck grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/multi_dyck.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/multi_dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -189,8 +189,8 @@ class TestRSMStringInputWIthSPPFRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -203,13 +203,13 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
     @MethodSource("test_7")
     fun `test SimpleGolang grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/simple_golang.txt")
+        val startState = readRsmFromTxt("${pathToGrammars}/simple_golang.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -220,8 +220,8 @@ class TestRSMStringInputWIthSPPFRecovery {
         }
         inputGraph.addStartVertex(0)
 
-        val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result.first!!)
+        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
@@ -234,7 +234,7 @@ class TestRSMStringInputWIthSPPFRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     companion object {

@@ -1,13 +1,13 @@
 package org.srcgll.descriptors
 
-import org.srcgll.gss.GSSNode
-import org.srcgll.rsm.RSMState
-import org.srcgll.sppf.node.SPPFNode
+import org.srcgll.gss.GssNode
+import org.srcgll.rsm.RsmState
+import org.srcgll.sppf.node.SppfNode
 
 class Descriptor<VertexType>(
-    val rsmState: RSMState,
-    val gssNode: GSSNode<VertexType>,
-    val sppfNode: SPPFNode<VertexType>?,
+    val rsmState: RsmState,
+    val gssNode: GssNode<VertexType>,
+    val sppfNode: SppfNode<VertexType>?,
     val inputPosition: VertexType,
 ) {
     val hashCode = 23 * (23 * (23 * 17 + rsmState.hashCode()) + inputPosition.hashCode()) + gssNode.hashCode()

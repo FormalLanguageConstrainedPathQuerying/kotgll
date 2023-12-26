@@ -3,16 +3,16 @@ package org.srcgll.sppf.node
 import org.srcgll.rsm.symbol.Nonterminal
 import java.util.*
 
-class SymbolSPPFNode<VertexType>(
+class SymbolSppfNode<VertexType>(
     val symbol: Nonterminal,
     leftExtent: VertexType,
     rightExtent: VertexType,
-) : ParentSPPFNode<VertexType>(leftExtent, rightExtent) {
-    override fun toString() = "SymbolSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent, symbol=$symbol)"
+) : ParentSppfNode<VertexType>(leftExtent, rightExtent) {
+    override fun toString() = "SymbolSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, symbol=$symbol)"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is SymbolSPPFNode<*>) return false
+        if (other !is SymbolSppfNode<*>) return false
         if (!super.equals(other)) return false
         if (symbol != other.symbol) return false
 

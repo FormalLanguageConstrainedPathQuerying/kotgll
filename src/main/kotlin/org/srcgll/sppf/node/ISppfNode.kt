@@ -1,7 +1,7 @@
 package org.srcgll.sppf.node
 
-interface ISPPFNode {
+interface ISppfNode {
     var id: Int
     var weight: Int
-    val parents: HashSet<ISPPFNode>
+    val parents: HashSet<ISppfNode>
 }
