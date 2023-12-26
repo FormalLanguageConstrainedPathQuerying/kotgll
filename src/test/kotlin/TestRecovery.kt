@@ -11,6 +11,7 @@ import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.buildStringFromSppf
 import java.io.IOException
+import kotlin.io.path.Path
 import kotlin.test.assertNotNull
 
 const val pathToGrammars = "/cli/TestRSMReadWriteTXT/"
@@ -18,7 +19,7 @@ const val pathToGrammars = "/cli/TestRSMReadWriteTXT/"
 fun getRsm(fileName: String): RsmState {
     val fullName = pathToGrammars + fileName
     val url = object {}.javaClass.getResource(fullName) ?: throw IOException("Not find $fullName in project resources")
-    return readRsmFromTxt(url.path)
+    return readRsmFromTxt(Path(url.path))
 }
 
 class TestRecovery {

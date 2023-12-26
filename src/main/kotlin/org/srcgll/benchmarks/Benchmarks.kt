@@ -16,6 +16,8 @@ import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.writeSppfToDot
 import java.io.File
 import java.io.StringReader
+import java.nio.file.Path
+import kotlin.io.path.Path
 import kotlin.system.measureNanoTime
 
 fun getResultPath(
@@ -48,18 +50,18 @@ fun main(args: Array<String>) {
 
     parser.parse(args)
 
-    runRsmWithSppf(pathToInput, pathToGrammar, pathToOutput, warmUpRounds, benchmarksRounds)
+    runRsmWithSppf(pathToInput, Path(pathToGrammar), pathToOutput, warmUpRounds, benchmarksRounds)
 }
 
 fun runRsmWithSppf(
     pathToInput: String,
-    pathToRSM: String,
+    pathToRSM: Path,
     pathToOutput: String,
     warmUpRounds: Int,
     benchmarkRounds: Int,
 ) {
     val rsm = readRsmFromTxt(pathToRSM)
-    val rsmName = File(pathToRSM).nameWithoutExtension
+    val rsmName = pathToRSM.toFile().nameWithoutExtension
 
     File(pathToInput).walk().filter { it.isFile }.forEach { inputPath ->
             val inputName = inputPath.nameWithoutExtension
