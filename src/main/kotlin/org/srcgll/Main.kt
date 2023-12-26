@@ -50,7 +50,7 @@ fun main(args: Array<String>) {
     val lexer = JavaLexer(StringReader(input))
     val gll = Gll(grammar, inputGraph, RecoveryMode.ON)
     var vertexId = 0
-    var token : JavaToken
+    var token: JavaToken
 
     writeRsmToDot(grammar, "./rsm.dot")
 

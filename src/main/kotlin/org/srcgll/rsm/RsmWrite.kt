@@ -65,7 +65,7 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
         fun getSymbolView(symbol: Symbol): Triple<String, String, String> {
             return when (symbol) {
                 is Terminal<*> -> Triple("Terminal", symbol.value.toString(), "terminal")
-                is Nonterminal -> Triple("Nonterminal", symbol.name?: "NON_TERM", "nonterminal")
+                is Nonterminal -> Triple("Nonterminal", symbol.name ?: "NON_TERM", "nonterminal")
                 else -> throw Exception("Unsupported implementation of Symbol instance: ${symbol.javaClass}")
             }
         }
@@ -111,16 +111,13 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
         out.println("digraph g {")
 
         states.forEach { state ->
-            if (state.isStart && state.isFinal) {
-                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = doublecircle, color = green]")
-            } else if (state.isStart) {
-                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle, color = green]")
-            } else if (state.isFinal) {
-                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = doublecircle, color = red]")
-            } else {
-                out.println("${getId(state)} [label = \"${state.nonterminal.name},${getId(state)}\", shape = circle]")
-            }
+            val shape = if (state.isFinal) "doublecircle" else "circle"
+            val color = if (state.isStart) "green" else if (state.isFinal) "red" else "black"
+            val id = getId(state)
+            val name = state.nonterminal.name
+            out.println("$id [label = \"$name,$id\", shape = $shape, color = $color]")
         }
+
         fun getView(symbol: Symbol) {
             when (symbol) {
                 is Nonterminal -> symbol.name

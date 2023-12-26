@@ -132,7 +132,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_1")
     fun `test BracketStarX grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/bracket_star_x.txt")
+        val startState = getRsm("bracket_star_x.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0
@@ -164,7 +164,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_2")
     fun `test CAStarBStar grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/c_a_star_b_star.txt")
+        val startState = getRsm("c_a_star_b_star.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0
@@ -202,7 +202,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_3")
     fun `test AB grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/ab.txt")
+        val startState = getRsm("ab.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0
@@ -236,7 +236,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_4")
     fun `test Dyck grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/dyck.txt")
+        val startState = getRsm("dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0
@@ -269,7 +269,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_5")
     fun `test Ambiguous grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/ambiguous.txt")
+        val startState = getRsm("ambiguous.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0
@@ -302,7 +302,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_6")
     fun `test MultiDyck grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/multi_dyck.txt")
+        val startState = getRsm("multi_dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0
@@ -335,7 +335,7 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_7")
     fun `test SimpleGolang grammar`(input: String) {
-        val startState = readRsmFromTxt("${pathToGrammars}/simple_golang.txt")
+        val startState = getRsm("simple_golang.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
         var curVertexId = 0

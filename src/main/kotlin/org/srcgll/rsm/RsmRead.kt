@@ -2,10 +2,9 @@ package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import java.io.File
+import java.nio.file.Path
 
-
-fun readRsmFromTxt(pathToTXT: String): RsmState {
+fun readRsmFromTxt(pathToTXT: Path): RsmState {
     val idToState: HashMap<Int, RsmState> = HashMap()
     var startRsmState: RsmState? = null
 
@@ -70,7 +69,7 @@ fun readRsmFromTxt(pathToTXT: String): RsmState {
             .replace("\n", "")
             .toRegex()
 
-    val reader = File(pathToTXT).inputStream().bufferedReader()
+    val reader = pathToTXT.toFile().inputStream().bufferedReader()
 
     while (true) {
         val line = reader.readLine() ?: break
