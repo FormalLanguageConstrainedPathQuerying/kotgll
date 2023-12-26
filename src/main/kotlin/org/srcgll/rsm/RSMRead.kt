@@ -2,10 +2,14 @@ package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import java.io.File
+import java.nio.file.Path
 
 
 fun readRSMFromTXT(pathToTXT: String): RSMState {
+    return readRSMFromTXT(Path.of(pathToTXT))
+}
+
+fun readRSMFromTXT(pathToTXT: Path): RSMState {
     val idToState: HashMap<Int, RSMState> = HashMap()
     var startRSMState: RSMState? = null
     fun makeRSMState(
@@ -69,7 +73,7 @@ fun readRSMFromTXT(pathToTXT: String): RSMState {
             .replace("\n", "")
             .toRegex()
 
-    val reader = File(pathToTXT).inputStream().bufferedReader()
+    val reader = pathToTXT.toFile().inputStream().bufferedReader()
 
     while (true) {
         val line = reader.readLine() ?: break
@@ -112,7 +116,7 @@ fun readRSMFromTXT(pathToTXT: String): RSMState {
             val tailRSMState = idToState[tailId.toInt()]!!
             val headRSMState = idToState[headId.toInt()]!!
 
-            tailRSMState.addEdge(Terminal(terminalValue),headRSMState)
+            tailRSMState.addEdge(Terminal(terminalValue), headRSMState)
         } else if (rsmNonterminalEdgeRegex.matches(line)) {
             val (tailId, headId, nonterminalValue) =
                 rsmNonterminalEdgeRegex.matchEntire(line)!!.destructured

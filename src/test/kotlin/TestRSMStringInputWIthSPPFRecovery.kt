@@ -5,18 +5,26 @@ import org.srcgll.GLL
 import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.rsm.RSMState
 import org.srcgll.rsm.readRSMFromTXT
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.buildStringFromSPPF
+import java.io.IOException
 import kotlin.test.assertNotNull
 
-const val pathToGrammars = ".src/test/resources/cli/TestRSMReadWriteTXT"
+const val pathToGrammars = "/cli/TestRSMReadWriteTXT/"
+
+fun getRsm(fileName: String): RSMState {
+    val fullName = pathToGrammars + fileName
+    val url = object {}.javaClass.getResource(fullName) ?: throw IOException("Not find $fullName in project resources")
+    return readRSMFromTXT(url.path)
+}
 
 class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_1")
     fun `test BracketStarX grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/bracket_star_x.txt")
+        val startState = getRsm("bracket_star_x.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -48,7 +56,7 @@ class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_2")
     fun `test CAStarBStar grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/c_a_star_b_star.txt")
+        val startState = getRsm("c_a_star_b_star.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -80,7 +88,7 @@ class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_3")
     fun `test AB grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/ab.txt")
+        val startState = getRsm("ab.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -112,7 +120,7 @@ class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_4")
     fun `test Dyck grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/dyck.txt")
+        val startState = getRsm("dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -144,7 +152,7 @@ class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_5")
     fun `test Ambiguous grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/ambiguous.txt")
+        val startState = getRsm("ambiguous.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -177,7 +185,7 @@ class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_6")
     fun `test MultiDyck grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/multi_dyck.txt")
+        val startState = getRsm("multi_dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
@@ -209,7 +217,7 @@ class TestRSMStringInputWIthSPPFRecovery {
     @ParameterizedTest
     @MethodSource("test_7")
     fun `test SimpleGolang grammar`(input: String, weight: Int) {
-        val startState = readRSMFromTXT("${pathToGrammars}/simple_golang.txt")
+        val startState = getRsm("simple_golang.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
