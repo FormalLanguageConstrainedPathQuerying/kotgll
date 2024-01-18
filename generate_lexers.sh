@@ -1,8 +1,8 @@
 #!/bin/bash
-sudo apt-get install -y jflex
 
 cd src/main/kotlin/org/srcgll/lexer
 
-jflex while.x
-jflex Java.x
-
+for lexer_name in while.x Java.x
+do
+    jflex $lexer_name
+done
