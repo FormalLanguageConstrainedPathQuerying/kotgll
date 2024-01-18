@@ -7,4 +7,3 @@ do
     jflex $lexer_name
 done
 
-cd ../../../../../..
