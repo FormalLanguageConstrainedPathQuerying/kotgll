@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo apt-get install -y jflex
 
 cd src/main/kotlin/org/srcgll/lexer
 
