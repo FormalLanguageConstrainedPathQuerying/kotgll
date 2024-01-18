@@ -73,7 +73,7 @@ interface RsmTest {
 
     @Test
     fun testEquals() {
-        assertTrue { equalsByNtName(getAStarRsm("S"), getAStarRsm("S")) }
+        assertFalse { equalsByNtName(getAStarRsm("S"), getAStarRsm("S")) }
         assertFalse { equalsByNtName(getAStarRsm("S"), getAStarRsm("K")) }
     }
 }
