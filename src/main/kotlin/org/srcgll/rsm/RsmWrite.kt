@@ -120,7 +120,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
 
         fun getView(symbol: Symbol): String {
             return when (symbol) {
-                is Nonterminal -> symbol.name?: "unnamed nonterminal"
+                is Nonterminal -> symbol.name?: "unnamed nonterminal ${symbol.hashCode()}"
                 is Terminal<*> -> symbol.value.toString()
                 else -> symbol.toString()
             }
