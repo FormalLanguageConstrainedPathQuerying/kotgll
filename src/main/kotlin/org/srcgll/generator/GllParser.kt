@@ -6,6 +6,7 @@ import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.sppf.Sppf
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
@@ -20,6 +21,7 @@ interface GllParser<VertexType, LabelType : ILabel> {
     val createdGssNodes: HashMap<GssNode<VertexType>, GssNode<VertexType>>
     var parseResult: SppfNode<VertexType>?
     val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int>
+    val sppf: Sppf<VertexType>
 
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         initDescriptors(input)
