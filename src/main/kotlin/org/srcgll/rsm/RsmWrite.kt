@@ -118,10 +118,10 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
             out.println("$id [label = \"$name,$id\", shape = $shape, color = $color]")
         }
 
-        fun getView(symbol: Symbol) {
-            when (symbol) {
-                is Nonterminal -> symbol.name
-                is Terminal<*> -> symbol.value
+        fun getView(symbol: Symbol): String {
+            return when (symbol) {
+                is Nonterminal -> symbol.name?: "unnamed nonterminal"
+                is Terminal<*> -> symbol.value.toString()
                 else -> symbol.toString()
             }
         }
