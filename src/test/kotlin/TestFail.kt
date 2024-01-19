@@ -45,7 +45,7 @@ class TestFail {
         )
         nonterminalS.startState = rsmState0
         rsmState0.addEdge(
-            symbol = Terminal("a"), head = RsmState(
+            symbol = Terminal("a"), destinationState = RsmState(
                 nonterminal = nonterminalS,
                 isFinal = true,
                 )
@@ -79,10 +79,10 @@ class TestFail {
         )
         rsmState0.addEdge(
             symbol = Terminal("a"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState1.addEdge(
-            symbol = Terminal("b"), head = RsmState(
+            symbol = Terminal("b"), destinationState = RsmState(
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -118,11 +118,11 @@ class TestFail {
         )
         rsmState0.addEdge(
             symbol = Terminal("a"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState1.addEdge(
             symbol = Terminal("a"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
@@ -154,11 +154,11 @@ class TestFail {
         )
         rsmState0.addEdge(
             symbol = Terminal("a"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState1.addEdge(
             symbol = Terminal("a"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
@@ -210,11 +210,11 @@ class TestFail {
         )
         rsmState0.addEdge(
             symbol = Terminal("ab"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState1.addEdge(
             symbol = Terminal("ab"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
@@ -284,19 +284,19 @@ class TestFail {
 
         rsmState0.addEdge(
             symbol = Terminal("("),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState1.addEdge(
             symbol = nonterminalS,
-            head = rsmState2,
+            destinationState = rsmState2,
         )
         rsmState2.addEdge(
             symbol = Terminal(")"),
-            head = rsmState3,
+            destinationState = rsmState3,
         )
         rsmState3.addEdge(
             symbol = nonterminalS,
-            head = rsmState4,
+            destinationState = rsmState4,
         )
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
@@ -350,8 +350,8 @@ class TestFail {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("ab"), head = rsmState1)
-        rsmState0.addEdge(symbol = Terminal("cd"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("cd"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -383,7 +383,7 @@ class TestFail {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -451,37 +451,37 @@ class TestFail {
 
         rsmState0.addEdge(
             symbol = Terminal("a"),
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState1.addEdge(
             symbol = nonterminalB,
-            head = rsmState2,
+            destinationState = rsmState2,
         )
         rsmState2.addEdge(
             symbol = Terminal("c"),
-            head = rsmState3,
+            destinationState = rsmState3,
         )
         rsmState0.addEdge(
             symbol = nonterminalA,
-            head = rsmState4,
+            destinationState = rsmState4,
         )
         rsmState4.addEdge(
             symbol = Terminal("c"),
-            head = rsmState5,
+            destinationState = rsmState5,
         )
 
         rsmState6.addEdge(
             symbol = Terminal("a"),
-            head = rsmState7,
+            destinationState = rsmState7,
         )
         rsmState7.addEdge(
             symbol = Terminal("b"),
-            head = rsmState8,
+            destinationState = rsmState8,
         )
 
         rsmState9.addEdge(
             symbol = Terminal("b"),
-            head = rsmState10,
+            destinationState = rsmState10,
         )
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
@@ -566,27 +566,27 @@ class TestFail {
 
         rsmState0.addEdge(
             symbol = nonterminalA,
-            head = rsmState1,
+            destinationState = rsmState1,
         )
         rsmState0.addEdge(
             symbol = nonterminalB,
-            head = rsmState2,
+            destinationState = rsmState2,
         )
         rsmState3.addEdge(
             symbol = Terminal("ab"),
-            head = rsmState4,
+            destinationState = rsmState4,
         )
         rsmState3.addEdge(
             symbol = Terminal("cd"),
-            head = rsmState5,
+            destinationState = rsmState5,
         )
         rsmState6.addEdge(
             symbol = Terminal("ab"),
-            head = rsmState7,
+            destinationState = rsmState7,
         )
         rsmState6.addEdge(
             symbol = Terminal("cd"),
-            head = rsmState8,
+            destinationState = rsmState8,
         )
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
