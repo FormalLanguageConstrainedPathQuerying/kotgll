@@ -2,30 +2,29 @@ package org.srcgll
 
 import Context
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.descriptors.ErrorRecoveringDescriptorsStack
-import org.srcgll.descriptors.IDescriptorsStack
 import org.srcgll.gss.GssNode
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.Sppf
 import org.srcgll.sppf.TerminalRecoveryEdge
-import org.srcgll.sppf.node.*
+import org.srcgll.sppf.node.ISppfNode
+import org.srcgll.sppf.node.SppfNode
+import org.srcgll.sppf.node.SymbolSppfNode
 
 
 class Gll<VertexType, LabelType : ILabel>(
-    private val startState: RsmState,
-    private val input: IGraph<VertexType, LabelType>,
-    private val recovery: RecoveryMode,
+    startState: RsmState,
+    input: IGraph<VertexType, LabelType>,
+    recovery: RecoveryMode,
 ) {
     var ctx: Context<VertexType, LabelType> = Context(startState, input, recovery)
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
-        for (startVertex in input.getInputStartVertices()) {
+        for (startVertex in ctx.input.getInputStartVertices()) {
             val descriptor = Descriptor(
-                startState,
-                getOrCreateGssNode(startState.nonterminal, startVertex, weight = 0),
+                ctx.startState,
+                getOrCreateGssNode(ctx.startState.nonterminal, startVertex, weight = 0),
                 sppfNode = null,
                 startVertex
             )
@@ -41,7 +40,7 @@ class Gll<VertexType, LabelType : ILabel>(
 
         // If string was not parsed - process recovery descriptors until first valid parse tree is found
         // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
-        while (recovery == RecoveryMode.ON && ctx.parseResult == null) {
+        while (ctx.recovery == RecoveryMode.ON && ctx.parseResult == null) {
             val curRecoveryDescriptor = ctx.stack.next()
 
             parse(curRecoveryDescriptor)
@@ -62,7 +61,7 @@ class Gll<VertexType, LabelType : ILabel>(
             parse(curDefaultDescriptor)
         }
 
-        while (ctx.parseResult == null && recovery == RecoveryMode.ON) {
+        while (ctx.parseResult == null && ctx.recovery == RecoveryMode.ON) {
             val curRecoveryDescriptor = ctx.stack.next()
 
             parse(curRecoveryDescriptor)
@@ -70,7 +69,7 @@ class Gll<VertexType, LabelType : ILabel>(
 
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
-    
+
     private fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
@@ -84,13 +83,14 @@ class Gll<VertexType, LabelType : ILabel>(
         ctx.stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal) {
-            curSppfNode = ctx.sppf.getNodeP(state, curSppfNode, ctx.sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
+            curSppfNode =
+                ctx.sppf.getNodeP(state, curSppfNode, ctx.sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
             leftExtent = curSppfNode.leftExtent
             rightExtent = curSppfNode.rightExtent
         }
 
-        if (curSppfNode is SymbolSppfNode<VertexType> && state.nonterminal == startState.nonterminal
-            && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
+        if (curSppfNode is SymbolSppfNode<VertexType> && state.nonterminal == ctx.startState.nonterminal
+            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
         ) {
             if (ctx.parseResult == null || ctx.parseResult!!.weight > curSppfNode.weight) {
                 ctx.parseResult = curSppfNode
@@ -107,7 +107,7 @@ class Gll<VertexType, LabelType : ILabel>(
                 }
         }
 
-        for (inputEdge in input.getEdges(pos)) {
+        for (inputEdge in ctx.input.getEdges(pos)) {
             if (inputEdge.label.terminal == null) {
                 val descriptor = Descriptor(
                     state, gssNode, ctx.sppf.getNodeP(
@@ -147,9 +147,9 @@ class Gll<VertexType, LabelType : ILabel>(
             }
         }
 
-        if (recovery == RecoveryMode.ON) {
+        if (ctx.recovery == RecoveryMode.ON) {
             val errorRecoveryEdges = HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>()
-            val currentEdges = input.getEdges(pos)
+            val currentEdges = ctx.input.getEdges(pos)
 
             if (currentEdges.isNotEmpty()) {
                 for (currentEdge in currentEdges) {
@@ -220,8 +220,8 @@ class Gll<VertexType, LabelType : ILabel>(
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal
-            && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
+        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal
+            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
         ) {
             ctx.stack.removeFromHandled(descriptor)
         }
