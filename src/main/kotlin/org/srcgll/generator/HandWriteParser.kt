@@ -1,24 +1,19 @@
 package org.srcgll.generator
 
+import Context
 import GllParser
-import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.descriptors.ErrorRecoveringDescriptorsStack
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Term
 import org.srcgll.grammar.combinator.regexp.or
 import org.srcgll.grammar.combinator.regexp.times
-import org.srcgll.gss.GssNode
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.writeRsmToDot
-import org.srcgll.sppf.Sppf
-import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
 
@@ -26,26 +21,21 @@ import org.srcgll.sppf.node.SymbolSppfNode
  * hand-write parser for @GrammarImpl
  *
  */
-class HandWriteParser<VertexType, LabelType : ILabel>(override val recovery: RecoveryMode = RecoveryMode.OFF) :
+class HandWriteParser<VertexType, LabelType : ILabel>() :
     GllParser<VertexType, LabelType> {
+    override lateinit var ctx: Context<VertexType, LabelType>
     val grammar = GrammarImpl()
-    override val startState: RsmState = grammar.getRsm()
-    override val stack = ErrorRecoveringDescriptorsStack<VertexType>()
-    override val createdGssNodes: HashMap<GssNode<VertexType>, GssNode<VertexType>> = HashMap()
-    override var parseResult: SppfNode<VertexType>? = null
-    override val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int> = HashMap()
-    override val sppf: Sppf<VertexType> = Sppf()
-
-    private var _input: IGraph<VertexType, LabelType>? = null
-    override var input: IGraph<VertexType, LabelType>
-        get() = _input ?: throw ParserException("Input not initialized!")
+    var input: IGraph<VertexType, LabelType>
+        get() {
+            return ctx.input
+        }
         set(value) {
-            _input = value
+            ctx = Context(grammar.getRsm(), value)
         }
 
     fun parseS(descriptor: Descriptor<VertexType>) {
-        for(path in descriptor.rsmState.pathLabels){
-            when(path){
+        for (path in descriptor.rsmState.pathLabels) {
+            when (path) {
                 "" -> {}
                 "A" -> {}
                 "AB" -> {}
@@ -57,27 +47,30 @@ class HandWriteParser<VertexType, LabelType : ILabel>(override val recovery: Rec
             }
         }
     }
+
     fun parseA(descriptor: Descriptor<VertexType>) {
-        for(path in descriptor.rsmState.pathLabels){
-            when(path){
+        for (path in descriptor.rsmState.pathLabels) {
+            when (path) {
                 "" -> {}
                 "a" -> {}
                 "aA" -> {}
             }
         }
     }
+
     fun parseB(descriptor: Descriptor<VertexType>) {
-        for(path in descriptor.rsmState.pathLabels){
-            when(path){
+        for (path in descriptor.rsmState.pathLabels) {
+            when (path) {
                 "" -> {}
                 "b" -> {}
                 "bB" -> {}
             }
         }
     }
+
     fun parseC(descriptor: Descriptor<VertexType>) {
-        for(path in descriptor.rsmState.pathLabels){
-            when(path){
+        for (path in descriptor.rsmState.pathLabels) {
+            when (path) {
                 "" -> {}
                 "b" -> {}
                 "bC" -> {}
@@ -97,11 +90,11 @@ class HandWriteParser<VertexType, LabelType : ILabel>(override val recovery: Rec
         val func = NtFuncs[nt] ?: throw ParserException("Nonterminal ${nt.name} is absent from the grammar!")
 
         func(curDescriptor)
-        stack.addToHandled(curDescriptor)
+        ctx.stack.addToHandled(curDescriptor)
 
     }
 
-    fun updateSppf(curDescriptor: Descriptor<VertexType>){
+    fun updateSppf(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
 //        val gssNode = curDescriptor.gssNode
@@ -112,24 +105,25 @@ class HandWriteParser<VertexType, LabelType : ILabel>(override val recovery: Rec
 //        val nonterminalEdges = state.getNonterminalEdges()
 //
         if (state.isStart && state.isFinal) {
-            curSppfNode = sppf.getNodeP(state, curSppfNode, sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
+            curSppfNode =
+                ctx.sppf.getNodeP(state, curSppfNode, ctx.sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
             leftExtent = curSppfNode.leftExtent
             rightExtent = curSppfNode.rightExtent
         }
 
-        if (curSppfNode is SymbolSppfNode<VertexType> && state.nonterminal == startState.nonterminal
-            && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
+        if (curSppfNode is SymbolSppfNode<VertexType> && state.nonterminal == ctx.startState.nonterminal
+            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
         ) {
-            if (parseResult == null || parseResult!!.weight > curSppfNode.weight) {
-                parseResult = curSppfNode
+            if (ctx.parseResult == null || ctx.parseResult!!.weight > curSppfNode.weight) {
+                ctx.parseResult = curSppfNode
             }
 
             val pair = Pair(leftExtent, rightExtent)
-            val distance = sppf.minDistance(curSppfNode)
+            val distance = ctx.sppf.minDistance(curSppfNode)
 
-            reachabilityPairs[pair] =
-                if (reachabilityPairs.containsKey(pair)) {
-                    minOf(distance, reachabilityPairs[pair]!!)
+            ctx.reachabilityPairs[pair] =
+                if (ctx.reachabilityPairs.containsKey(pair)) {
+                    minOf(distance, ctx.reachabilityPairs[pair]!!)
                 } else {
                     distance
                 }
