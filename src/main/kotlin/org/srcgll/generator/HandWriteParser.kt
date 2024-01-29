@@ -12,6 +12,7 @@ import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.rsm.PrintableRsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.node.SymbolSppfNode
@@ -34,46 +35,57 @@ class HandWriteParser<VertexType, LabelType : ILabel>() :
         }
 
     fun parseS(descriptor: Descriptor<VertexType>) {
-        for (path in descriptor.rsmState.pathLabels) {
-            when (path) {
-                "" -> {}
-                "A" -> {}
-                "AB" -> {}
-                "ABa" -> {}
-                "ABaa" -> {}
-                "AC" -> {}
-                "ACa" -> {}
-                "ACaB" -> {}
+        if (descriptor.rsmState is PrintableRsmState) {
+            for (path in descriptor.rsmState.pathLabels) {
+                when (path) {
+                    "" -> {}
+                    "A" -> {}
+                    "AB" -> {}
+                    "ABa" -> {}
+                    "ABaa" -> {}
+                    "AC" -> {}
+                    "ACa" -> {}
+                    "ACaB" -> {}
+                }
             }
         }
     }
 
     fun parseA(descriptor: Descriptor<VertexType>) {
-        for (path in descriptor.rsmState.pathLabels) {
-            when (path) {
-                "" -> {}
-                "a" -> {}
-                "aA" -> {}
+        if (descriptor.rsmState is PrintableRsmState) {
+
+            for (path in descriptor.rsmState.pathLabels) {
+                when (path) {
+                    "" -> {}
+                    "a" -> {}
+                    "aA" -> {}
+                }
             }
         }
     }
 
     fun parseB(descriptor: Descriptor<VertexType>) {
-        for (path in descriptor.rsmState.pathLabels) {
-            when (path) {
-                "" -> {}
-                "b" -> {}
-                "bB" -> {}
+        if (descriptor.rsmState is PrintableRsmState) {
+
+            for (path in descriptor.rsmState.pathLabels) {
+                when (path) {
+                    "" -> {}
+                    "b" -> {}
+                    "bB" -> {}
+                }
             }
         }
     }
 
     fun parseC(descriptor: Descriptor<VertexType>) {
-        for (path in descriptor.rsmState.pathLabels) {
-            when (path) {
-                "" -> {}
-                "b" -> {}
-                "bC" -> {}
+        if (descriptor.rsmState is PrintableRsmState) {
+
+            for (path in descriptor.rsmState.pathLabels) {
+                when (path) {
+                    "" -> {}
+                    "b" -> {}
+                    "bC" -> {}
+                }
             }
         }
     }
