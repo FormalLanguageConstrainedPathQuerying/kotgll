@@ -1,5 +1,6 @@
 package org.srcgll
 
+import Context
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.descriptors.ErrorRecoveringDescriptorsStack
 import org.srcgll.descriptors.IDescriptorsStack
@@ -19,13 +20,7 @@ class Gll<VertexType, LabelType : ILabel>(
     private val input: IGraph<VertexType, LabelType>,
     private val recovery: RecoveryMode,
 ) {
-    private val stack: IDescriptorsStack<VertexType> = ErrorRecoveringDescriptorsStack()
-    private val sppf: Sppf<VertexType> = Sppf()
-    private val poppedGssNodes: HashMap<GssNode<VertexType>, HashSet<SppfNode<VertexType>?>> = HashMap()
-    private val createdGssNodes: HashMap<GssNode<VertexType>, GssNode<VertexType>> = HashMap()
-    private var parseResult: SppfNode<VertexType>? = null
-    private val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int> = HashMap()
-
+    var ctx: Context<VertexType, LabelType> = Context(startState, input, recovery)
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         for (startVertex in input.getInputStartVertices()) {
             val descriptor = Descriptor(
@@ -38,42 +33,42 @@ class Gll<VertexType, LabelType : ILabel>(
         }
 
         // Continue parsing until all default descriptors processed
-        while (!stack.defaultDescriptorsStackIsEmpty()) {
-            val curDefaultDescriptor = stack.next()
+        while (!ctx.stack.defaultDescriptorsStackIsEmpty()) {
+            val curDefaultDescriptor = ctx.stack.next()
 
             parse(curDefaultDescriptor)
         }
 
         // If string was not parsed - process recovery descriptors until first valid parse tree is found
         // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
-        while (recovery == RecoveryMode.ON && parseResult == null) {
-            val curRecoveryDescriptor = stack.next()
+        while (recovery == RecoveryMode.ON && ctx.parseResult == null) {
+            val curRecoveryDescriptor = ctx.stack.next()
 
             parse(curRecoveryDescriptor)
         }
 
-        return Pair(parseResult, reachabilityPairs)
+        return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
 
     fun parse(vertex: VertexType): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
-        stack.recoverDescriptors(vertex)
-        sppf.invalidate(vertex, parseResult as ISppfNode)
+        ctx.stack.recoverDescriptors(vertex)
+        ctx.sppf.invalidate(vertex, ctx.parseResult as ISppfNode)
 
-        parseResult = null
+        ctx.parseResult = null
 
-        while (!stack.defaultDescriptorsStackIsEmpty()) {
-            val curDefaultDescriptor = stack.next()
+        while (!ctx.stack.defaultDescriptorsStackIsEmpty()) {
+            val curDefaultDescriptor = ctx.stack.next()
 
             parse(curDefaultDescriptor)
         }
 
-        while (parseResult == null && recovery == RecoveryMode.ON) {
-            val curRecoveryDescriptor = stack.next()
+        while (ctx.parseResult == null && recovery == RecoveryMode.ON) {
+            val curRecoveryDescriptor = ctx.stack.next()
 
             parse(curRecoveryDescriptor)
         }
 
-        return Pair(parseResult, reachabilityPairs)
+        return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
     
     private fun parse(curDescriptor: Descriptor<VertexType>) {
@@ -86,10 +81,10 @@ class Gll<VertexType, LabelType : ILabel>(
         val terminalEdges = state.getTerminalEdges()
         val nonterminalEdges = state.getNonterminalEdges()
 
-        stack.addToHandled(curDescriptor)
+        ctx.stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal) {
-            curSppfNode = sppf.getNodeP(state, curSppfNode, sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
+            curSppfNode = ctx.sppf.getNodeP(state, curSppfNode, ctx.sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
             leftExtent = curSppfNode.leftExtent
             rightExtent = curSppfNode.rightExtent
         }
@@ -97,16 +92,16 @@ class Gll<VertexType, LabelType : ILabel>(
         if (curSppfNode is SymbolSppfNode<VertexType> && state.nonterminal == startState.nonterminal
             && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
         ) {
-            if (parseResult == null || parseResult!!.weight > curSppfNode.weight) {
-                parseResult = curSppfNode
+            if (ctx.parseResult == null || ctx.parseResult!!.weight > curSppfNode.weight) {
+                ctx.parseResult = curSppfNode
             }
 
             val pair = Pair(leftExtent, rightExtent)
-            val distance = sppf.minDistance(curSppfNode)
+            val distance = ctx.sppf.minDistance(curSppfNode)
 
-            reachabilityPairs[pair] =
-                if (reachabilityPairs.containsKey(pair)) {
-                    minOf(distance, reachabilityPairs[pair]!!)
+            ctx.reachabilityPairs[pair] =
+                if (ctx.reachabilityPairs.containsKey(pair)) {
+                    minOf(distance, ctx.reachabilityPairs[pair]!!)
                 } else {
                     distance
                 }
@@ -115,8 +110,8 @@ class Gll<VertexType, LabelType : ILabel>(
         for (inputEdge in input.getEdges(pos)) {
             if (inputEdge.label.terminal == null) {
                 val descriptor = Descriptor(
-                    state, gssNode, sppf.getNodeP(
-                        state, curSppfNode, sppf.getOrCreateTerminalSppfNode(
+                    state, gssNode, ctx.sppf.getNodeP(
+                        state, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
                             terminal = null, pos, inputEdge.head, weight = 0
                         )
                     ), inputEdge.head
@@ -128,8 +123,8 @@ class Gll<VertexType, LabelType : ILabel>(
                 if (inputEdge.label.terminal == edgeTerminal) {
                     for (target in targetStates) {
                         val descriptor = Descriptor(
-                            target, gssNode, sppf.getNodeP(
-                                target, curSppfNode, sppf.getOrCreateTerminalSppfNode(
+                            target, gssNode, ctx.sppf.getNodeP(
+                                target, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
                                     edgeTerminal, pos, inputEdge.head, weight = 0
                                 )
                             ), inputEdge.head
@@ -210,8 +205,8 @@ class Gll<VertexType, LabelType : ILabel>(
         targetState: RsmState,
     ) {
         val descriptor = Descriptor(
-            targetState, curDescriptor.gssNode, sppf.getNodeP(
-                targetState, curDescriptor.sppfNode, sppf.getOrCreateTerminalSppfNode(
+            targetState, curDescriptor.gssNode, ctx.sppf.getNodeP(
+                targetState, curDescriptor.sppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
                     terminal, curDescriptor.inputPosition, targetEdge.head, targetEdge.weight
                 )
             ), targetEdge.head
@@ -225,13 +220,13 @@ class Gll<VertexType, LabelType : ILabel>(
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal
+        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal
             && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
         ) {
-            stack.removeFromHandled(descriptor)
+            ctx.stack.removeFromHandled(descriptor)
         }
 
-        stack.add(descriptor)
+        ctx.stack.add(descriptor)
     }
 
     private fun getOrCreateGssNode(
@@ -241,13 +236,13 @@ class Gll<VertexType, LabelType : ILabel>(
     ): GssNode<VertexType> {
         val gssNode = GssNode(nonterminal, inputPosition, weight)
 
-        if (createdGssNodes.containsKey(gssNode)) {
-            if (createdGssNodes.getValue(gssNode).minWeightOfLeftPart > weight) {
-                createdGssNodes.getValue(gssNode).minWeightOfLeftPart = weight
+        if (ctx.createdGssNodes.containsKey(gssNode)) {
+            if (ctx.createdGssNodes.getValue(gssNode).minWeightOfLeftPart > weight) {
+                ctx.createdGssNodes.getValue(gssNode).minWeightOfLeftPart = weight
             }
-        } else createdGssNodes[gssNode] = gssNode
+        } else ctx.createdGssNodes[gssNode] = gssNode
 
-        return createdGssNodes.getValue(gssNode)
+        return ctx.createdGssNodes.getValue(gssNode)
     }
 
 
@@ -262,10 +257,10 @@ class Gll<VertexType, LabelType : ILabel>(
             getOrCreateGssNode(nonterminal, pos, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
 
         if (newNode.addEdge(state, sppfNode, gssNode)) {
-            if (poppedGssNodes.containsKey(newNode)) {
-                for (popped in poppedGssNodes[newNode]!!) {
+            if (ctx.poppedGssNodes.containsKey(newNode)) {
+                for (popped in ctx.poppedGssNodes[newNode]!!) {
                     val descriptor = Descriptor(
-                        state, gssNode, sppf.getNodeP(state, sppfNode, popped!!), popped.rightExtent
+                        state, gssNode, ctx.sppf.getNodeP(state, sppfNode, popped!!), popped.rightExtent
                     )
                     addDescriptor(descriptor)
                 }
@@ -276,13 +271,13 @@ class Gll<VertexType, LabelType : ILabel>(
     }
 
     private fun pop(gssNode: GssNode<VertexType>, sppfNode: SppfNode<VertexType>?, pos: VertexType) {
-        if (!poppedGssNodes.containsKey(gssNode)) poppedGssNodes[gssNode] = HashSet()
-        poppedGssNodes.getValue(gssNode).add(sppfNode)
+        if (!ctx.poppedGssNodes.containsKey(gssNode)) ctx.poppedGssNodes[gssNode] = HashSet()
+        ctx.poppedGssNodes.getValue(gssNode).add(sppfNode)
 
         for ((label, target) in gssNode.edges) {
             for (node in target) {
                 val descriptor = Descriptor(
-                    label.first, node, sppf.getNodeP(label.first, label.second, sppfNode!!), pos
+                    label.first, node, ctx.sppf.getNodeP(label.first, label.second, sppfNode!!), pos
                 )
                 addDescriptor(descriptor)
             }
