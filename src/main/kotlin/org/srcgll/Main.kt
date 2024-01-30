@@ -19,25 +19,6 @@ enum class RecoveryMode {
     ON, OFF,
 }
 
-open class Node{}
-open class ANode: Node(){}
-class WANode(val i: Int): ANode(){}
- class BNode: Node(){}
-
-fun create(n: ANode){}
-fun create(n: BNode){}
-
-fun getOrCreateA(){
-    val a = ANode()
-    create(a);
-}
-fun getOrCreateA(i: Int){
-    val a = WANode(3)
-    create(a);
-}
-fun getOrCreateB(){
-
-}
 fun main(args: Array<String>) {
     val parser = ArgParser("srcgll")
 

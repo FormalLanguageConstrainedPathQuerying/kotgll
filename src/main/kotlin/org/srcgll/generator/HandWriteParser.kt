@@ -3,6 +3,7 @@ package org.srcgll.generator
 import Context
 import GllParser
 import org.srcgll.descriptors.Descriptor
+import org.srcgll.exceptions.ParsingException
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Term
@@ -23,7 +24,7 @@ import org.srcgll.sppf.node.SymbolSppfNode
  *
  */
 class HandWriteParser<VertexType, LabelType : ILabel>() :
-    GllParser<VertexType, LabelType> {
+    GllParser<VertexType, LabelType, Context<VertexType, LabelType>>() {
     override lateinit var ctx: Context<VertexType, LabelType>
     val grammar = GrammarImpl()
     var input: IGraph<VertexType, LabelType>
@@ -99,7 +100,7 @@ class HandWriteParser<VertexType, LabelType : ILabel>() :
 
     override fun parse(curDescriptor: Descriptor<VertexType>) {
         val nt = curDescriptor.rsmState.nonterminal
-        val func = NtFuncs[nt] ?: throw ParserException("Nonterminal ${nt.name} is absent from the grammar!")
+        val func = NtFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
 
         func(curDescriptor)
         ctx.descriptors.addToHandled(curDescriptor)
@@ -118,7 +119,11 @@ class HandWriteParser<VertexType, LabelType : ILabel>() :
 //
         if (state.isStart && state.isFinal) {
             curSppfNode =
-                ctx.sppf.getParentNode(state, curSppfNode, ctx.sppf.getOrCreateIntermediateSppfNode(state, pos, pos, weight = 0))
+                ctx.sppf.getParentNode(
+                    state,
+                    curSppfNode,
+                    ctx.sppf.getOrCreateIntermediateSppfNode(state, pos, pos, weight = 0)
+                )
             leftExtent = curSppfNode.leftExtent
             rightExtent = curSppfNode.rightExtent
         }
@@ -144,8 +149,6 @@ class HandWriteParser<VertexType, LabelType : ILabel>() :
     }
 
 }
-
-class ParserException(msg: String? = null) : Exception(msg) {}
 
 
 fun main() {

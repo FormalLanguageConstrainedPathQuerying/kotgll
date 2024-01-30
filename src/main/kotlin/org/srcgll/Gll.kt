@@ -1,7 +1,7 @@
 package org.srcgll
 
-import Context
 import GllParser
+import RecoveryContext
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.gss.GssNode
 import org.srcgll.input.IGraph
@@ -18,8 +18,8 @@ class Gll<VertexType, LabelType : ILabel>(
     startState: RsmState,
     input: IGraph<VertexType, LabelType>,
     recovery: RecoveryMode,
-) : GllParser<VertexType, LabelType> {
-    override var ctx: Context<VertexType, LabelType> = Context(startState, input, recovery)
+) : GllParser<VertexType, LabelType, RecoveryContext<VertexType, LabelType>>() {
+    override var ctx = RecoveryContext(startState, input, recovery)
 
     fun parse(vertex: VertexType): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         ctx.descriptors.recoverDescriptors(vertex)
