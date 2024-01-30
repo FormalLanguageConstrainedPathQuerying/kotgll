@@ -7,7 +7,7 @@ class TerminalSppfNode<VertexType>(
     val terminal: Terminal<*>?,
     leftExtent: VertexType,
     rightExtent: VertexType,
-    weight: Int,
+    weight: Int = 0,
 ) : SppfNode<VertexType>(leftExtent, rightExtent, weight) {
     override fun toString() = "TerminalSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, terminal=$terminal)"
 

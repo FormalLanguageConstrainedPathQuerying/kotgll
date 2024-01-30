@@ -1,7 +1,7 @@
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.descriptors.ErrorRecoveringDescriptorsStack
-import org.srcgll.descriptors.IDescriptorsStack
+import org.srcgll.descriptors.ErrorRecoveringDescriptorsStorage
+import org.srcgll.descriptors.IDescriptorsStorage
 import org.srcgll.gss.GssNode
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
@@ -17,7 +17,7 @@ open class Context<VertexType, LabelType : ILabel>(
     val input: IGraph<VertexType, LabelType>,
     val recovery: RecoveryMode = RecoveryMode.OFF
 ) {
-    val stack: IDescriptorsStack<VertexType> = ErrorRecoveringDescriptorsStack()
+    val descriptors: IDescriptorsStorage<VertexType> = ErrorRecoveringDescriptorsStorage()
     val sppf: Sppf<VertexType> = Sppf()
     val poppedGssNodes: HashMap<GssNode<VertexType>, HashSet<SppfNode<VertexType>?>> = HashMap()
     val createdGssNodes: HashMap<GssNode<VertexType>, GssNode<VertexType>> = HashMap()
@@ -35,15 +35,15 @@ interface GllParser<VertexType, LabelType : ILabel> {
         initDescriptors(ctx.input)
 
         // Continue parsing until all default descriptors processed
-        while (!ctx.stack.defaultDescriptorsStackIsEmpty()) {
-            parse(ctx.stack.next())
+        while (!ctx.descriptors.defaultDescriptorsStorageIsEmpty()) {
+            parse(ctx.descriptors.next())
         }
 
         // If string was not parsed - process recovery descriptors until first valid parse tree is found
         // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
         if (ctx.recovery == RecoveryMode.ON) {
             while (ctx.parseResult == null) {
-                parse(ctx.stack.next())
+                parse(ctx.descriptors.next())
             }
         }
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
@@ -51,6 +51,9 @@ interface GllParser<VertexType, LabelType : ILabel> {
 
     fun parse(curDescriptor: Descriptor<VertexType>) {}
 
+    /**
+     *
+     */
     fun initDescriptors(input: IGraph<VertexType, LabelType>) {
         for (startVertex in input.getInputStartVertices()) {
             val descriptor = Descriptor(
@@ -79,18 +82,44 @@ interface GllParser<VertexType, LabelType : ILabel> {
         return ctx.createdGssNodes.getValue(gssNode)
     }
 
-    private fun addDescriptor(descriptor: Descriptor<VertexType>) {
+    fun createGssNode(
+        nonterminal: Nonterminal,
+        state: RsmState,
+        gssNode: GssNode<VertexType>,
+        sppfNode: SppfNode<VertexType>?,
+        pos: VertexType,
+    ): GssNode<VertexType> {
+        val newNode =
+            getOrCreateGssNode(nonterminal, pos, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
+
+        if (newNode.addEdge(state, sppfNode, gssNode)) {
+            if (ctx.poppedGssNodes.containsKey(newNode)) {
+                for (popped in ctx.poppedGssNodes[newNode]!!) {
+                    val descriptor = Descriptor(
+                        state, gssNode, ctx.sppf.getParentNode(state, sppfNode, popped!!), popped.rightExtent
+                    )
+                    addDescriptor(descriptor)
+                }
+            }
+        }
+
+        return newNode
+    }
+
+    /**
+     *
+     */
+    fun addDescriptor(descriptor: Descriptor<VertexType>) {
         val sppfNode = descriptor.sppfNode
         val state = descriptor.rsmState
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal && ctx.input.isStart(
-                leftExtent!!
-            ) && ctx.input.isFinal(rightExtent!!)
+        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal
+            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
         ) {
-            ctx.stack.removeFromHandled(descriptor)
+            ctx.descriptors.removeFromHandled(descriptor)
         }
-        ctx.stack.add(descriptor)
+        ctx.descriptors.addToHandling(descriptor)
     }
 }

@@ -10,7 +10,7 @@ class SppfNodeId private constructor() {
     }
 }
 
-open class SppfNode<VertexType>(
+abstract class SppfNode<VertexType>(
     val leftExtent: VertexType,
     val rightExtent: VertexType,
     override var weight: Int,

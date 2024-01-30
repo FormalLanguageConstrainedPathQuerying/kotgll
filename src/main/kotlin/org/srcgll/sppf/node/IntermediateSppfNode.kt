@@ -3,7 +3,7 @@ package org.srcgll.sppf.node
 import org.srcgll.rsm.RsmState
 import java.util.*
 
-class ItemSppfNode<VertexType>(
+class IntermediateSppfNode<VertexType>(
     val rsmState: RsmState,
     leftExtent: VertexType,
     rightExtent: VertexType,
@@ -12,7 +12,7 @@ class ItemSppfNode<VertexType>(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is ItemSppfNode<*>) return false
+        if (other !is IntermediateSppfNode<*>) return false
         if (!super.equals(other)) return false
         if (rsmState != other.rsmState) return false
 

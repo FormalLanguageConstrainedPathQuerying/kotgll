@@ -5,7 +5,6 @@ import org.srcgll.Gll
 import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
@@ -36,7 +35,7 @@ fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
                     lhsTreeMetrics[1]++
                 }
 
-                curSppfNode.kids.forEach { kid ->
+                curSppfNode.children.forEach { kid ->
                     if (!added.contains(kid)) {
                         queue.addLast(kid)
                         added.add(kid)
@@ -90,7 +89,7 @@ fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
                     rhsTreeMetrics[1]++
                 }
 
-                curSppfNode.kids.forEach { kid ->
+                curSppfNode.children.forEach { kid ->
                     if (!added.contains(kid)) {
                         queue.addLast(kid)
                         added.add(kid)
@@ -191,8 +190,8 @@ class TestIncrementality {
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         if (input == "caabb") {
-            writeSppfToDot(result.first!!, "./debug_incr.dot")
-            writeSppfToDot(static.first!!, "./debug_static.dot")
+            writeSppfToDot(result.first!!, "debug_incr.dot")
+            writeSppfToDot(static.first!!, "debug_static.dot")
         }
 
         assert(sameStructure(result.first!!, static.first!!))

@@ -102,7 +102,7 @@ class HandWriteParser<VertexType, LabelType : ILabel>() :
         val func = NtFuncs[nt] ?: throw ParserException("Nonterminal ${nt.name} is absent from the grammar!")
 
         func(curDescriptor)
-        ctx.stack.addToHandled(curDescriptor)
+        ctx.descriptors.addToHandled(curDescriptor)
 
     }
 
@@ -118,7 +118,7 @@ class HandWriteParser<VertexType, LabelType : ILabel>() :
 //
         if (state.isStart && state.isFinal) {
             curSppfNode =
-                ctx.sppf.getNodeP(state, curSppfNode, ctx.sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
+                ctx.sppf.getParentNode(state, curSppfNode, ctx.sppf.getOrCreateIntermediateSppfNode(state, pos, pos, weight = 0))
             leftExtent = curSppfNode.leftExtent
             rightExtent = curSppfNode.rightExtent
         }
