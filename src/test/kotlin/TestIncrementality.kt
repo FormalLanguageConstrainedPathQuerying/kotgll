@@ -27,7 +27,7 @@ fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
         }
 
         when (curSppfNode) {
-            is ParentSppfNode<*> -> {
+            is NonterminalSppfNode<*> -> {
 
                 if (curSppfNode is SymbolSppfNode<*>) {
                     lhsTreeMetrics[2]++
@@ -81,7 +81,7 @@ fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
         }
 
         when (curSppfNode) {
-            is ParentSppfNode<*> -> {
+            is NonterminalSppfNode<*> -> {
 
                 if (curSppfNode is SymbolSppfNode<*>) {
                     rhsTreeMetrics[2]++

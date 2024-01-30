@@ -7,7 +7,7 @@ class SymbolSppfNode<VertexType>(
     val symbol: Nonterminal,
     leftExtent: VertexType,
     rightExtent: VertexType,
-) : ParentSppfNode<VertexType>(leftExtent, rightExtent) {
+) : NonterminalSppfNode<VertexType>(leftExtent, rightExtent) {
     override fun toString() = "SymbolSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, symbol=$symbol)"
 
     override fun equals(other: Any?): Boolean {

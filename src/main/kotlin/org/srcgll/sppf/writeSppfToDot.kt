@@ -26,7 +26,7 @@ fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
 
             out.println(printNode(node.id, node))
 
-            (node as? ParentSppfNode<*>)?.children?.forEach {
+            (node as? NonterminalSppfNode<*>)?.children?.forEach {
                 queue.addLast(it)
                 if (!edges.containsKey(node.id)) {
                     edges[node.id] = HashSet()

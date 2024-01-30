@@ -7,8 +7,8 @@ class IntermediateSppfNode<VertexType>(
     val rsmState: RsmState,
     leftExtent: VertexType,
     rightExtent: VertexType,
-) : ParentSppfNode<VertexType>(leftExtent, rightExtent) {
-    override fun toString() = "ItemSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"
+) : NonterminalSppfNode<VertexType>(leftExtent, rightExtent) {
+    override fun toString() = "IntermediateSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
