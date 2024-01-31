@@ -7,7 +7,7 @@ import java.util.*
  * Weight is assigned to Int.MAX_VALUE to ensure that after creation weight of Node
  * would be equal to minimum weight of it's children
  */
-abstract class ParentSppfNode<VertexType>(
+abstract class NonterminalSppfNode<VertexType>(
     leftExtent: VertexType,
     rightExtent: VertexType,
 ) : SppfNode<VertexType>(leftExtent, rightExtent, Int.MAX_VALUE) {

@@ -1,7 +1,6 @@
 package org.srcgll.generator
 
-import Context
-import GllParser
+import org.srcgll.parser.GllParser
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.exceptions.ParsingException
 import org.srcgll.grammar.combinator.Grammar
@@ -13,6 +12,7 @@ import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.parser.Context
 import org.srcgll.rsm.PrintableRsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.writeRsmToDot
@@ -24,7 +24,7 @@ import org.srcgll.sppf.node.SymbolSppfNode
  *
  */
 class HandWriteParser<VertexType, LabelType : ILabel>() :
-    GllParser<VertexType, LabelType, Context<VertexType, LabelType>>() {
+    GllParser<VertexType, LabelType, Context<VertexType, LabelType>> {
     override lateinit var ctx: Context<VertexType, LabelType>
     val grammar = GrammarImpl()
     var input: IGraph<VertexType, LabelType>

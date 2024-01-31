@@ -1,3 +1,5 @@
+package org.srcgll.parser
+
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.descriptors.DescriptorsStorage
@@ -14,9 +16,7 @@ import org.srcgll.sppf.node.SymbolSppfNode
 
 
 open class Context<VertexType, LabelType : ILabel>(
-    val startState: RsmState,
-    val input: IGraph<VertexType, LabelType>,
-    val recovery: RecoveryMode = RecoveryMode.OFF
+    val startState: RsmState, val input: IGraph<VertexType, LabelType>, val recovery: RecoveryMode = RecoveryMode.OFF
 ) {
     open val descriptors: IDescriptorsStorage<VertexType> = DescriptorsStorage()
     val sppf: Sppf<VertexType> = Sppf()
@@ -28,9 +28,7 @@ open class Context<VertexType, LabelType : ILabel>(
 
 
 class RecoveryContext<VertexType, LabelType : ILabel>(
-    startState: RsmState,
-    input: IGraph<VertexType, LabelType>,
-    recovery: RecoveryMode = RecoveryMode.OFF
+    startState: RsmState, input: IGraph<VertexType, LabelType>, recovery: RecoveryMode = RecoveryMode.OFF
 ) : Context<VertexType, LabelType>(startState, input, recovery) {
     override val descriptors = ErrorRecoveringDescriptorsStorage<VertexType>()
 }
@@ -39,8 +37,8 @@ class RecoveryContext<VertexType, LabelType : ILabel>(
 /**
  * Interface for Gll parser with helper functions and main parsing loop
  */
-abstract class GllParser<VertexType, LabelType : ILabel, ContextType : Context<VertexType, LabelType>> {
-    abstract val ctx: ContextType
+interface GllParser<VertexType, LabelType : ILabel, ContextType : Context<VertexType, LabelType>> {
+    val ctx: ContextType
 
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         initDescriptors(ctx.input)
@@ -60,7 +58,7 @@ abstract class GllParser<VertexType, LabelType : ILabel, ContextType : Context<V
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
 
-    open fun parse(curDescriptor: Descriptor<VertexType>) {}
+    fun parse(curDescriptor: Descriptor<VertexType>) {}
 
     /**
      *
@@ -126,8 +124,9 @@ abstract class GllParser<VertexType, LabelType : ILabel, ContextType : Context<V
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal
-            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
+        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal && ctx.input.isStart(
+                leftExtent!!
+            ) && ctx.input.isFinal(rightExtent!!)
         ) {
             ctx.descriptors.removeFromHandled(descriptor)
         }

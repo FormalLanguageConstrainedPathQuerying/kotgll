@@ -11,6 +11,7 @@ import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.writeSppfToDot
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
+import org.srcgll.parser.Gll
 import org.srcgll.rsm.writeRsmToDot
 import java.io.File
 import java.io.StringReader
