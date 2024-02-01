@@ -2,7 +2,7 @@ package org.srcgll.sppf
 
 import org.srcgll.sppf.node.ISppfNode
 import org.srcgll.sppf.node.PackedSppfNode
-import org.srcgll.sppf.node.ParentSppfNode
+import org.srcgll.sppf.node.NonterminalSppfNode
 import org.srcgll.sppf.node.TerminalSppfNode
 
 fun buildStringFromSppf(sppfNode: ISppfNode): MutableList<String> {
@@ -25,14 +25,14 @@ fun buildStringFromSppf(sppfNode: ISppfNode): MutableList<String> {
                 if (curNode.leftSppfNode != null) stack.add(curNode.leftSppfNode!!)
             }
 
-            is ParentSppfNode<*> -> {
-                if (curNode.kids.isNotEmpty()) {
-                    curNode.kids.findLast {
+            is NonterminalSppfNode<*> -> {
+                if (curNode.children.isNotEmpty()) {
+                    curNode.children.findLast {
                         it.rightSppfNode != curNode && it.leftSppfNode != curNode && !visited.contains(
                             it
                         )
                     }?.let { stack.add(it) }
-                    curNode.kids.forEach { visited.add(it) }
+                    curNode.children.forEach { visited.add(it) }
                 }
             }
         }

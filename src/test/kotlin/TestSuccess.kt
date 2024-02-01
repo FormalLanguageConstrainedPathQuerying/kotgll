@@ -1,16 +1,30 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import org.srcgll.Gll
-import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.parser.Gll
+import org.srcgll.parser.context.Context
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import kotlin.test.assertNotNull
 
 class TestSuccess {
+    private fun testOffRecovery(input: String, startState: RsmState) {
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
+        var curVertexId = 0
+
+        inputGraph.addVertex(curVertexId)
+        for (x in input) {
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addVertex(curVertexId)
+        }
+        inputGraph.addStartVertex(0)
+
+        assertNotNull(Gll(Context(startState, inputGraph)).parse().first)
+    }
+
     @Test
     fun `test 'empty' hand-crafted grammar`() {
         val nonterminalS = Nonterminal("S")
@@ -22,17 +36,9 @@ class TestSuccess {
         )
         nonterminalS.startState = rsmState0
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
+        testOffRecovery(input, rsmState0)
 
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @Test
@@ -45,23 +51,13 @@ class TestSuccess {
         )
         nonterminalS.startState = rsmState0
         rsmState0.addEdge(
-            symbol = Terminal("a"), head = RsmState(
+            symbol = Terminal("a"), destinationState = RsmState(
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @Test
@@ -76,24 +72,14 @@ class TestSuccess {
         val rsmState1 = RsmState(
             nonterminal = nonterminalS,
         )
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
         rsmState1.addEdge(
-            symbol = Terminal("b"), head = RsmState(
+            symbol = Terminal("b"), destinationState = RsmState(
                 nonterminal = nonterminalS, isFinal = true
             )
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -110,20 +96,10 @@ class TestSuccess {
             nonterminal = nonterminalS,
             isFinal = true,
         )
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
-        rsmState1.addEdge(symbol = Terminal("a"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -139,20 +115,10 @@ class TestSuccess {
             nonterminal = nonterminalS,
             isFinal = true,
         )
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
-        rsmState1.addEdge(symbol = Terminal("a"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -169,8 +135,8 @@ class TestSuccess {
             nonterminal = nonterminalS,
             isFinal = true,
         )
-        rsmState0.addEdge(symbol = Terminal("ab"), head = rsmState1)
-        rsmState1.addEdge(symbol = Terminal("ab"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -191,7 +157,7 @@ class TestSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(rsmState0, inputGraph)).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -220,22 +186,12 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = Terminal("("), head = rsmState1)
-        rsmState1.addEdge(symbol = nonterminalS, head = rsmState2)
-        rsmState2.addEdge(symbol = Terminal(")"), head = rsmState3)
-        rsmState3.addEdge(symbol = nonterminalS, head = rsmState4)
+        rsmState0.addEdge(symbol = Terminal("("), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = nonterminalS, destinationState = rsmState2)
+        rsmState2.addEdge(symbol = Terminal(")"), destinationState = rsmState3)
+        rsmState3.addEdge(symbol = nonterminalS, destinationState = rsmState4)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -253,8 +209,8 @@ class TestSuccess {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("ab"), head = rsmState1)
-        rsmState0.addEdge(symbol = Terminal("cd"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("cd"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -278,7 +234,7 @@ class TestSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(rsmState0, inputGraph)).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -297,19 +253,9 @@ class TestSuccess {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -362,28 +308,18 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
-        rsmState1.addEdge(symbol = nonterminalB, head = rsmState2)
-        rsmState2.addEdge(symbol = Terminal("c"), head = rsmState3)
-        rsmState0.addEdge(symbol = nonterminalA, head = rsmState4)
-        rsmState4.addEdge(symbol = Terminal("c"), head = rsmState5)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = nonterminalB, destinationState = rsmState2)
+        rsmState2.addEdge(symbol = Terminal("c"), destinationState = rsmState3)
+        rsmState0.addEdge(symbol = nonterminalA, destinationState = rsmState4)
+        rsmState4.addEdge(symbol = Terminal("c"), destinationState = rsmState5)
 
-        rsmState6.addEdge(symbol = Terminal("a"), head = rsmState7)
-        rsmState7.addEdge(symbol = Terminal("b"), head = rsmState8)
+        rsmState6.addEdge(symbol = Terminal("a"), destinationState = rsmState7)
+        rsmState7.addEdge(symbol = Terminal("b"), destinationState = rsmState8)
 
-        rsmState9.addEdge(symbol = Terminal("b"), head = rsmState10)
+        rsmState9.addEdge(symbol = Terminal("b"), destinationState = rsmState10)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -430,12 +366,12 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = nonterminalA, head = rsmState1)
-        rsmState0.addEdge(symbol = nonterminalB, head = rsmState2)
-        rsmState3.addEdge(symbol = Terminal("ab"), head = rsmState4)
-        rsmState3.addEdge(symbol = Terminal("cd"), head = rsmState5)
-        rsmState6.addEdge(symbol = Terminal("ab"), head = rsmState7)
-        rsmState6.addEdge(symbol = Terminal("cd"), head = rsmState8)
+        rsmState0.addEdge(symbol = nonterminalA, destinationState = rsmState1)
+        rsmState0.addEdge(symbol = nonterminalB, destinationState = rsmState2)
+        rsmState3.addEdge(symbol = Terminal("ab"), destinationState = rsmState4)
+        rsmState3.addEdge(symbol = Terminal("cd"), destinationState = rsmState5)
+        rsmState6.addEdge(symbol = Terminal("ab"), destinationState = rsmState7)
+        rsmState6.addEdge(symbol = Terminal("cd"), destinationState = rsmState8)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -461,7 +397,7 @@ class TestSuccess {
 
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(rsmState0, inputGraph)).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -495,23 +431,13 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
-        rsmState1.addEdge(symbol = nonterminalA, head = rsmState2)
-        rsmState3.addEdge(symbol = Terminal("b"), head = rsmState4)
+        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = nonterminalA, destinationState = rsmState2)
+        rsmState3.addEdge(symbol = Terminal("b"), destinationState = rsmState4)
 
-        rsmState4.addEdge(symbol = nonterminalA, head = rsmState3)
+        rsmState4.addEdge(symbol = nonterminalA, destinationState = rsmState3)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        assertNotNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
+        testOffRecovery(input, rsmState0)
     }
 }
 

@@ -2,6 +2,9 @@ package org.srcgll.sppf
 
 import org.srcgll.sppf.node.*
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 
 fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
@@ -10,7 +13,9 @@ fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
     val visited: HashSet<Int> = HashSet()
     var node: ISppfNode
 
-    val file = File(filePath)
+    Files.createDirectories(Paths.get("gen"))
+    val file = File(Path.of("gen", filePath).toUri())
+
 
     file.printWriter().use { out ->
         out.println("digraph g {")
@@ -21,7 +26,7 @@ fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
 
             out.println(printNode(node.id, node))
 
-            (node as? ParentSppfNode<*>)?.kids?.forEach {
+            (node as? NonterminalSppfNode<*>)?.children?.forEach {
                 queue.addLast(it)
                 if (!edges.containsKey(node.id)) {
                     edges[node.id] = HashSet()
@@ -71,7 +76,7 @@ fun printNode(nodeId: Int, node: ISppfNode): String {
             "${nodeId} [label = \"${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${getColor(node.weight)}]"
         }
 
-        is ItemSppfNode<*> -> {
+        is IntermediateSppfNode<*> -> {
             "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${getColor(node.weight)}]"
         }
 

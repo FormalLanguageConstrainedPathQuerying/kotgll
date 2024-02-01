@@ -5,72 +5,12 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
 
-class Sppf<VertexType> {
+/**
+ * Incremental by default
+ */
+open class Sppf<VertexType> {
     private val createdSppfNodes: HashMap<SppfNode<VertexType>, SppfNode<VertexType>> = HashMap()
     private val createdTerminalNodes: HashMap<VertexType, HashSet<TerminalSppfNode<VertexType>>> = HashMap()
-    private val minDistanceRecognisedBySymbol: HashMap<SymbolSppfNode<VertexType>, Int> = HashMap()
-
-    fun minDistance(root: ISppfNode): Int {
-        val cycle = HashSet<ISppfNode>()
-        val visited = HashSet<ISppfNode>()
-        val stack = ArrayDeque(listOf(root))
-        var curSPPFNode: ISppfNode
-        var minDistance = 0
-
-        while (stack.isNotEmpty()) {
-            curSPPFNode = stack.last()
-            visited.add(curSPPFNode)
-
-            if (!cycle.contains(curSPPFNode)) {
-                cycle.add(curSPPFNode)
-
-                when (curSPPFNode) {
-                    is TerminalSppfNode<*> -> {
-                        minDistance++
-                    }
-
-                    is PackedSppfNode<*> -> {
-                        if (curSPPFNode.rightSppfNode != null) stack.add(curSPPFNode.rightSppfNode!!)
-                        if (curSPPFNode.leftSppfNode != null) stack.add(curSPPFNode.leftSppfNode!!)
-                    }
-
-                    is ItemSppfNode<*> -> {
-                        if (curSPPFNode.kids.isNotEmpty()) {
-                            curSPPFNode.kids.findLast {
-                                it.rightSppfNode != curSPPFNode && it.leftSppfNode != curSPPFNode && !visited.contains(
-                                    it
-                                )
-                            }?.let { stack.add(it) }
-                            curSPPFNode.kids.forEach { visited.add(it) }
-                        }
-                    }
-
-                    is SymbolSppfNode<*> -> {
-                        if (minDistanceRecognisedBySymbol.containsKey(curSPPFNode)) {
-                            minDistance += minDistanceRecognisedBySymbol[curSPPFNode]!!
-                        } else {
-                            if (curSPPFNode.kids.isNotEmpty()) {
-                                curSPPFNode.kids.findLast {
-                                    it.rightSppfNode != curSPPFNode && it.leftSppfNode != curSPPFNode && !visited.contains(
-                                        it
-                                    )
-                                }?.let { stack.add(it) }
-                                curSPPFNode.kids.forEach { visited.add(it) }
-                            }
-                        }
-                    }
-                }
-            }
-            if (curSPPFNode == stack.last()) {
-                stack.removeLast()
-                cycle.remove(curSPPFNode)
-            }
-        }
-
-        minDistanceRecognisedBySymbol[root as SymbolSppfNode<VertexType>] = minDistance
-
-        return minDistance
-    }
 
     fun removeNode(sppfNode: SppfNode<VertexType>) {
         createdSppfNodes.remove(sppfNode)
@@ -79,7 +19,17 @@ class Sppf<VertexType> {
         }
     }
 
-    fun getNodeP(
+    /**
+     * Receives two subtrees of SPPF and connects them via PackedNode.
+     *
+     * Get or create ParentNode. If given subtrees parse Nonterminal and state is final, then getOrCreate SymbolNode.
+     * Otherwise, getOrCreate IntermediateNode.
+     *
+     * PackedNode then attached to ParentNode as a child
+     *
+     * @return ParentNode
+     */
+    open fun getParentNode(
         state: RsmState,
         sppfNode: SppfNode<VertexType>?,
         nextSppfNode: SppfNode<VertexType>,
@@ -89,9 +39,9 @@ class Sppf<VertexType> {
 
         val packedNode = PackedSppfNode(nextSppfNode.leftExtent, state, sppfNode, nextSppfNode)
 
-        val parent: ParentSppfNode<VertexType> =
+        val parent: NonterminalSppfNode<VertexType> =
             if (state.isFinal) getOrCreateSymbolSppfNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
-            else getOrCreateItemSppfNode(state, leftExtent, rightExtent, packedNode.weight)
+            else getOrCreateIntermediateSppfNode(state, leftExtent, rightExtent, packedNode.weight)
 
         //  Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
         if (sppfNode != null || parent != nextSppfNode) {
@@ -99,10 +49,8 @@ class Sppf<VertexType> {
             nextSppfNode.parents.add(packedNode)
             packedNode.parents.add(parent)
 
-            parent.kids.add(packedNode)
+            parent.children.add(packedNode)
         }
-
-        updateWeights(parent)
 
         return parent
     }
@@ -111,7 +59,7 @@ class Sppf<VertexType> {
         terminal: Terminal<*>?,
         leftExtent: VertexType,
         rightExtent: VertexType,
-        weight: Int,
+        weight: Int = 0,
     ): SppfNode<VertexType> {
         val node = TerminalSppfNode(terminal, leftExtent, rightExtent, weight)
 
@@ -126,29 +74,32 @@ class Sppf<VertexType> {
         return createdSppfNodes[node]!!
     }
 
-    fun getOrCreateItemSppfNode(
+    fun getOrCreateIntermediateSppfNode(
         state: RsmState,
         leftExtent: VertexType,
         rightExtent: VertexType,
-        weight: Int,
-    ): ParentSppfNode<VertexType> {
-        val node = ItemSppfNode(state, leftExtent, rightExtent)
+        weight: Int = Int.MAX_VALUE,
+    ): NonterminalSppfNode<VertexType> {
+        val node = IntermediateSppfNode(state, leftExtent, rightExtent)
+        //needed to set 0 when intermediateNode accept epsilon
+        //in other case Int.MAX_VALUE like all other parentNodes
         node.weight = weight
 
         if (!createdSppfNodes.containsKey(node)) {
             createdSppfNodes[node] = node
         }
 
-        return createdSppfNodes[node]!! as ItemSppfNode
+        return createdSppfNodes[node]!! as IntermediateSppfNode
     }
 
     fun getOrCreateSymbolSppfNode(
         nonterminal: Nonterminal,
         leftExtent: VertexType,
         rightExtent: VertexType,
-        weight: Int,
+        weight: Int = Int.MAX_VALUE,
     ): SymbolSppfNode<VertexType> {
         val node = SymbolSppfNode(nonterminal, leftExtent, rightExtent)
+        //??
         node.weight = weight
 
         if (!createdSppfNodes.containsKey(node)) {
@@ -158,6 +109,9 @@ class Sppf<VertexType> {
         return createdSppfNodes[node]!! as SymbolSppfNode
     }
 
+    /**
+     * ??
+     */
     fun invalidate(vertex: VertexType, parseResult: ISppfNode) {
         val queue = ArrayDeque<ISppfNode>()
         val added = HashSet<ISppfNode>()
@@ -172,15 +126,17 @@ class Sppf<VertexType> {
             curSPPFNode = queue.removeFirst()
 
             when (curSPPFNode) {
-                is ParentSppfNode<*> -> {
-                    if (curSPPFNode.kids.isEmpty()) {
+                is NonterminalSppfNode<*> -> {
+                    if (curSPPFNode.children.isEmpty()) {
                         curSPPFNode.parents.forEach { packed ->
                             if (!added.contains(packed)) {
                                 queue.addLast(packed)
                                 added.add(packed)
                             }
-                            (packed as PackedSppfNode<VertexType>).rightSppfNode = null
-                            (packed as PackedSppfNode<VertexType>).leftSppfNode = null
+                            if (packed is PackedSppfNode<*>) {
+                                (packed as PackedSppfNode<VertexType>).rightSppfNode = null
+                                (packed as PackedSppfNode<VertexType>).leftSppfNode = null
+                            }
                         }
                         removeNode(curSPPFNode as SppfNode<VertexType>)
                     }
@@ -188,12 +144,12 @@ class Sppf<VertexType> {
 
                 is PackedSppfNode<*> -> {
                     curSPPFNode.parents.forEach { parent ->
-                        if ((parent as ParentSppfNode<*>).kids.contains(curSPPFNode)) {
+                        if ((parent as NonterminalSppfNode<*>).children.contains(curSPPFNode)) {
                             if (!added.contains(parent)) {
                                 queue.addLast(parent)
                                 added.add(parent)
                             }
-                            parent.kids.remove(curSPPFNode)
+                            parent.children.remove(curSPPFNode)
                         }
                     }
                 }
@@ -217,52 +173,71 @@ class Sppf<VertexType> {
         }
     }
 
-    fun updateWeights(sppfNode: ISppfNode) {
-        val added = HashSet<ISppfNode>(listOf(sppfNode))
-        val queue = ArrayDeque(listOf(sppfNode))
+
+    /**
+     * Uses for reachability problem
+     */
+    fun minDistance(root: ISppfNode): Int {
+        val minDistanceRecognisedBySymbol: HashMap<SymbolSppfNode<VertexType>, Int> = HashMap()
+
+        val cycle = HashSet<ISppfNode>()
+        val visited = HashSet<ISppfNode>()
+        val stack = ArrayDeque(listOf(root))
         var curSPPFNode: ISppfNode
+        var minDistance = 0
 
-        while (queue.isNotEmpty()) {
-            curSPPFNode = queue.removeFirst()
+        while (stack.isNotEmpty()) {
+            curSPPFNode = stack.last()
+            visited.add(curSPPFNode)
 
-            when (curSPPFNode) {
-                is ParentSppfNode<*> -> {
-                    val oldWeight = curSPPFNode.weight
-                    var newWeight = Int.MAX_VALUE
+            if (!cycle.contains(curSPPFNode)) {
+                cycle.add(curSPPFNode)
 
-                    curSPPFNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
+                when (curSPPFNode) {
+                    is TerminalSppfNode<*> -> {
+                        minDistance++
+                    }
 
-                    if (oldWeight > newWeight) {
-                        curSPPFNode.weight = newWeight
+                    is PackedSppfNode<*> -> {
+                        if (curSPPFNode.rightSppfNode != null) stack.add(curSPPFNode.rightSppfNode!!)
+                        if (curSPPFNode.leftSppfNode != null) stack.add(curSPPFNode.leftSppfNode!!)
+                    }
 
-                        curSPPFNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curSPPFNode) }
-                        curSPPFNode.kids.removeIf { it.weight > newWeight }
-
-                        curSPPFNode.parents.forEach {
-                            queue.addLast(it)
-                            added.add(it)
+                    is IntermediateSppfNode<*> -> {
+                        if (curSPPFNode.children.isNotEmpty()) {
+                            curSPPFNode.children.findLast {
+                                it.rightSppfNode != curSPPFNode && it.leftSppfNode != curSPPFNode && !visited.contains(
+                                    it
+                                )
+                            }?.let { stack.add(it) }
+                            curSPPFNode.children.forEach { visited.add(it) }
                         }
                     }
-                }
 
-                is PackedSppfNode<*> -> {
-                    val oldWeight = curSPPFNode.weight
-                    val newWeight = (curSPPFNode.leftSppfNode?.weight ?: 0) + (curSPPFNode.rightSppfNode?.weight ?: 0)
-
-                    if (oldWeight > newWeight) {
-                        curSPPFNode.weight = newWeight
-
-                        curSPPFNode.parents.forEach {
-                            queue.addLast(it)
-                            added.add(it)
+                    is SymbolSppfNode<*> -> {
+                        if (minDistanceRecognisedBySymbol.containsKey(curSPPFNode)) {
+                            minDistance += minDistanceRecognisedBySymbol[curSPPFNode]!!
+                        } else {
+                            if (curSPPFNode.children.isNotEmpty()) {
+                                curSPPFNode.children.findLast {
+                                    it.rightSppfNode != curSPPFNode && it.leftSppfNode != curSPPFNode && !visited.contains(
+                                        it
+                                    )
+                                }?.let { stack.add(it) }
+                                curSPPFNode.children.forEach { visited.add(it) }
+                            }
                         }
                     }
-                }
-
-                else -> {
-                    throw Error("Terminal node can not be parent")
                 }
             }
+            if (curSPPFNode == stack.last()) {
+                stack.removeLast()
+                cycle.remove(curSPPFNode)
+            }
         }
+
+        minDistanceRecognisedBySymbol[root as SymbolSppfNode<VertexType>] = minDistance
+
+        return minDistance
     }
 }

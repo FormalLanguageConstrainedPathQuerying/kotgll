@@ -4,7 +4,7 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 
-class RsmState(
+open class RsmState(
     val nonterminal: Nonterminal,
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
@@ -15,15 +15,15 @@ class RsmState(
 
     override fun toString() = "RsmState(nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
-    fun addEdge(symbol: Symbol, head: RsmState) {
+    open fun addEdge(symbol: Symbol, destinationState: RsmState) {
         if (symbol is Terminal<*>) {
-            addRecoveryInfo(symbol, head)
+            addRecoveryInfo(symbol, destinationState)
         }
         val destinationStates = outgoingEdges.getOrPut(symbol) { hashSetOf() }
-        destinationStates.add(head)
+        destinationStates.add(destinationState)
     }
 
-    private fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
+    protected fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
         if (!coveredTargetStates.contains(head)) {
             errorRecoveryLabels.add(symbol)
             coveredTargetStates.add(head)
