@@ -1,10 +1,10 @@
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import org.srcgll.parser.Gll
-import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.parser.Gll
+import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
@@ -13,8 +13,8 @@ import kotlin.test.Ignore
 fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
     val queue = ArrayDeque<ISppfNode>()
     val added = HashSet<ISppfNode>()
-    val lhsTreeMetrics = IntArray(5) {0}
-    val rhsTreeMetrics = IntArray(5) {0}
+    val lhsTreeMetrics = IntArray(5) { 0 }
+    val rhsTreeMetrics = IntArray(5) { 0 }
     var curSppfNode: ISppfNode
 
     queue.addLast(lhs)
@@ -58,6 +58,7 @@ fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
                     }
                 }
             }
+
             is TerminalSppfNode<*> -> {
                 lhsTreeMetrics[0]++
             }
@@ -112,6 +113,7 @@ fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
                     }
                 }
             }
+
             is TerminalSppfNode<*> -> {
                 rhsTreeMetrics[0]++
             }
@@ -133,7 +135,7 @@ class TestIncrementality {
     fun `test BracketStarX grammar`(input: String) {
         val startState = getRsm("bracket_star_x.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -143,9 +145,7 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
-
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -154,8 +154,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
     }
@@ -165,7 +165,7 @@ class TestIncrementality {
     fun `test CAStarBStar grammar`(input: String) {
         val startState = getRsm("c_a_star_b_star.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -175,9 +175,9 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -186,8 +186,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         if (input == "caabb") {
             writeSppfToDot(result.first!!, "debug_incr.dot")
@@ -203,7 +203,7 @@ class TestIncrementality {
     fun `test AB grammar`(input: String) {
         val startState = getRsm("ab.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -214,9 +214,9 @@ class TestIncrementality {
         inputGraph.addStartVertex(0)
 
 
-        var result = gll.parse()
+        gll.parse()
 
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -225,8 +225,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
     }
@@ -237,7 +237,7 @@ class TestIncrementality {
     fun `test Dyck grammar`(input: String) {
         val startState = getRsm("dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -248,9 +248,9 @@ class TestIncrementality {
         inputGraph.addStartVertex(0)
 
 
-        var result = gll.parse()
+        gll.parse()
 
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -259,8 +259,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
     }
@@ -270,7 +270,7 @@ class TestIncrementality {
     fun `test Ambiguous grammar`(input: String) {
         val startState = getRsm("ambiguous.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -280,9 +280,9 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -291,8 +291,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
     }
@@ -303,7 +303,7 @@ class TestIncrementality {
     fun `test MultiDyck grammar`(input: String) {
         val startState = getRsm("multi_dyck.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -314,9 +314,9 @@ class TestIncrementality {
         inputGraph.addStartVertex(0)
 
 
-        var result = gll.parse()
+        gll.parse()
 
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -325,18 +325,19 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
     }
+
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_7")
     fun `test SimpleGolang grammar`(input: String) {
         val startState = getRsm("simple_golang.txt")
         val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(startState, inputGraph, recovery = RecoveryMode.ON)
+        val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -346,9 +347,9 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
-        var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
+        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
@@ -357,8 +358,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
-        val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = gll.parse(addFrom)
+        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
     }

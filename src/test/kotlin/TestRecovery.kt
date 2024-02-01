@@ -1,12 +1,12 @@
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import org.srcgll.parser.Gll
-import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.parser.Gll
+import org.srcgll.parser.context.Context
+import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.RsmState
-
 import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.buildStringFromSppf
@@ -38,7 +38,7 @@ class TestRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -46,13 +46,13 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     @ParameterizedTest
@@ -70,7 +70,7 @@ class TestRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -78,13 +78,13 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     @ParameterizedTest
@@ -102,7 +102,7 @@ class TestRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -110,13 +110,13 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     @ParameterizedTest
@@ -134,7 +134,7 @@ class TestRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -142,13 +142,13 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     @ParameterizedTest
@@ -165,7 +165,7 @@ class TestRecovery {
         }
         inputGraph.addStartVertex(0)
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         val recoveredString = buildStringFromSppf(result.first!!)
 
@@ -175,13 +175,13 @@ class TestRecovery {
         recoveredInputGraph.addVertex(curVertexId)
 
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     @ParameterizedTest
@@ -199,7 +199,7 @@ class TestRecovery {
         inputGraph.addStartVertex(0)
 
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -207,13 +207,13 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     @ParameterizedTest
@@ -230,7 +230,7 @@ class TestRecovery {
         }
         inputGraph.addStartVertex(0)
 
-        val result = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -238,13 +238,13 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
+        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
     }
 
     companion object {

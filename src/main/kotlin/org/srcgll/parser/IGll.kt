@@ -2,43 +2,20 @@ package org.srcgll.parser
 
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.descriptors.DescriptorsStorage
-import org.srcgll.descriptors.ErrorRecoveringDescriptorsStorage
-import org.srcgll.descriptors.IDescriptorsStorage
 import org.srcgll.gss.GssNode
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
+import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.Sppf
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
-
-
-open class Context<VertexType, LabelType : ILabel>(
-    val startState: RsmState, val input: IGraph<VertexType, LabelType>, val recovery: RecoveryMode = RecoveryMode.OFF
-) {
-    open val descriptors: IDescriptorsStorage<VertexType> = DescriptorsStorage()
-    val sppf: Sppf<VertexType> = Sppf()
-    val poppedGssNodes: HashMap<GssNode<VertexType>, HashSet<SppfNode<VertexType>?>> = HashMap()
-    val createdGssNodes: HashMap<GssNode<VertexType>, GssNode<VertexType>> = HashMap()
-    var parseResult: SppfNode<VertexType>? = null
-    val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int> = HashMap()
-}
-
-
-class RecoveryContext<VertexType, LabelType : ILabel>(
-    startState: RsmState, input: IGraph<VertexType, LabelType>, recovery: RecoveryMode = RecoveryMode.OFF
-) : Context<VertexType, LabelType>(startState, input, recovery) {
-    override val descriptors = ErrorRecoveringDescriptorsStorage<VertexType>()
-}
-
 
 /**
  * Interface for Gll parser with helper functions and main parsing loop
  */
-interface GllParser<VertexType, LabelType : ILabel, ContextType : Context<VertexType, LabelType>> {
-    val ctx: ContextType
+interface GllParser<VertexType, LabelType : ILabel> {
+    val ctx: IContext<VertexType, LabelType>
 
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         initDescriptors(ctx.input)

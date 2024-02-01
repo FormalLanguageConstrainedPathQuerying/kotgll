@@ -1,7 +1,7 @@
 package org.srcgll.descriptors
 
 
-class ErrorRecoveringDescriptorsStorage<VertexType> : DescriptorsStorage<VertexType>() {
+class RecoveringDescriptorsStorage<VertexType> : DescriptorsStorage<VertexType>() {
     private val errorRecoveringDescriptorsStorage = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType>>>()
 
     override fun addToHandling(descriptor: Descriptor<VertexType>) {
@@ -19,13 +19,6 @@ class ErrorRecoveringDescriptorsStorage<VertexType> : DescriptorsStorage<VertexT
         }
     }
 
-    fun recoverDescriptors(vertex: VertexType) {
-        handledDescriptors.getOrDefault(vertex, HashSet()).forEach { descriptor ->
-            descriptor.gssNode.handledDescriptors.remove(descriptor)
-            addToHandling(descriptor)
-        }
-        handledDescriptors.remove(vertex)
-    }
 
     override fun next(): Descriptor<VertexType> {
         if (defaultDescriptorsStorageIsEmpty()) {

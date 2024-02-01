@@ -6,6 +6,7 @@ import org.srcgll.input.Edge
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.Gll
+import org.srcgll.parser.context.Context
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 
@@ -36,18 +37,18 @@ class Stack : Grammar() {
         // Production rules. 'or' is Alternative, '*' is Concatenation
         S = Many(
             Term("<-()") * Term("->()") or
-            Term("<-.") * Term("->.") or
-            Term("use_a") * Term("def_a") or
-            Term("use_A") * Term("def_A") or
-            Term("use_B") * Term("def_B") or
-            Term("use_x") * Term("def_x") or
-            Term("<-()") * S * Term("->()") or
-            Term("<-.") * S * Term("->.") or
-            Term("use_a") * S * Term("def_a") or
-            Term("use_A") * S * Term("def_A") or
-            Term("use_B") * S * Term("def_B") or
-            Term("use_b") * S * Term("def_b") or
-            Term("use_x") * S * Term("def_x")
+                    Term("<-.") * Term("->.") or
+                    Term("use_a") * Term("def_a") or
+                    Term("use_A") * Term("def_A") or
+                    Term("use_B") * Term("def_B") or
+                    Term("use_x") * Term("def_x") or
+                    Term("<-()") * S * Term("->()") or
+                    Term("<-.") * S * Term("->.") or
+                    Term("use_a") * S * Term("def_a") or
+                    Term("use_A") * S * Term("def_A") or
+                    Term("use_B") * S * Term("def_B") or
+                    Term("use_b") * S * Term("def_b") or
+                    Term("use_x") * S * Term("def_x")
         )
 
         // Set Starting Nonterminal
@@ -60,7 +61,7 @@ class Stack : Grammar() {
  */
 class SimpleInputLabel(
     label: String?,
-): ILabel {
+) : ILabel {
     // null terminal represents epsilon edge in Graph
     override val terminal: Terminal<String>? = when (label) {
         null -> null
@@ -80,7 +81,7 @@ class SimpleInputLabel(
  * @param VertexType   = Int
  * @param LabelType    = SimpleInputLabel
  */
-class SimpleGraph: IGraph<Int, SimpleInputLabel> {
+class SimpleGraph : IGraph<Int, SimpleInputLabel> {
     override val vertices: MutableMap<Int, Int> = HashMap()
     override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
 
@@ -127,7 +128,7 @@ class SimpleGraph: IGraph<Int, SimpleInputLabel> {
 
 fun createAnBnExampleGraph(startVertex: Int): SimpleGraph {
     val inputGraph = SimpleGraph()
-    for (i in 0 .. 3) inputGraph.addVertex(vertex = i)
+    for (i in 0..3) inputGraph.addVertex(vertex = i)
 
     inputGraph.addEdge(from = 0, to = 1, label = SimpleInputLabel("a"))
     inputGraph.addEdge(from = 1, to = 2, label = SimpleInputLabel("a"))
@@ -199,9 +200,9 @@ fun main() {
 
     // result = (root of SPPF, set of reachable vertices)
     val resultAnBn: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
+        Gll(Context(rsmAnBnStartState, inputGraphAnBn)).parse()
     val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
+        Gll(Context(rsmStackStartState, inputGraphStack)).parse()
 
     println("AnBn Language Grammar")
     println("Reachability pairs : ")

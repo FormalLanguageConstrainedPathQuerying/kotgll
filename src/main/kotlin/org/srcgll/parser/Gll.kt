@@ -3,8 +3,8 @@ package org.srcgll.parser
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.gss.GssNode
-import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
+import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.TerminalRecoveryEdge
@@ -14,14 +14,11 @@ import org.srcgll.sppf.node.SymbolSppfNode
 
 
 class Gll<VertexType, LabelType : ILabel>(
-    startState: RsmState,
-    input: IGraph<VertexType, LabelType>,
-    recovery: RecoveryMode,
-) : GllParser<VertexType, LabelType, RecoveryContext<VertexType, LabelType>> {
-    override var ctx = RecoveryContext(startState, input, recovery)
+    override val ctx: IContext<VertexType, LabelType>,
+) : GllParser<VertexType, LabelType> {
 
     fun parse(vertex: VertexType): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
-        ctx.descriptors.recoverDescriptors(vertex)
+        ctx.descriptors.restoreDescriptors(vertex)
         ctx.sppf.invalidate(vertex, ctx.parseResult as ISppfNode)
 
         ctx.parseResult = null
@@ -40,6 +37,7 @@ class Gll<VertexType, LabelType : ILabel>(
 
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
+
 
     override fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
@@ -62,7 +60,8 @@ class Gll<VertexType, LabelType : ILabel>(
         val rightExtent = curSppfNode?.rightExtent
 
         if (curSppfNode is SymbolSppfNode<VertexType> && state.nonterminal == ctx.startState.nonterminal
-            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)) {
+            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
+        ) {
             if (ctx.parseResult == null || ctx.parseResult!!.weight > curSppfNode.weight) {
                 ctx.parseResult = curSppfNode
             }
@@ -199,3 +198,4 @@ class Gll<VertexType, LabelType : ILabel>(
         }
     }
 }
+

@@ -7,12 +7,13 @@ import kotlinx.cli.required
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.lexer.JavaGrammar
-import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.writeSppfToDot
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
 import org.srcgll.parser.Gll
+import org.srcgll.parser.context.RecoveryContext
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.rsm.writeRsmToDot
+import org.srcgll.sppf.writeSppfToDot
 import java.io.File
 import java.io.StringReader
 
@@ -49,7 +50,7 @@ fun main(args: Array<String>) {
     val grammar = JavaGrammar().getRsm()
     val inputGraph = LinearInput<Int, LinearInputLabel>()
     val lexer = JavaLexer(StringReader(input))
-    val gll = Gll(grammar, inputGraph, RecoveryMode.ON)
+    val gll = Gll(RecoveryContext(grammar, inputGraph))
     var vertexId = 0
     var token: JavaToken
 
