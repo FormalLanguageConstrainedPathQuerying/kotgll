@@ -3,7 +3,7 @@ package org.srcgll
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 import org.srcgll.input.Edge
-import org.srcgll.input.IGraph
+import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.Gll
 import org.srcgll.parser.context.Context
@@ -81,7 +81,7 @@ class SimpleInputLabel(
  * @param VertexType   = Int
  * @param LabelType    = SimpleInputLabel
  */
-class SimpleGraph : IGraph<Int, SimpleInputLabel> {
+class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     override val vertices: MutableMap<Int, Int> = HashMap()
     override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
 

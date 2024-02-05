@@ -3,7 +3,7 @@ package org.srcgll.parser.context
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.RecoveringDescriptorsStorage
 import org.srcgll.gss.GssNode
-import org.srcgll.input.IGraph
+import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.rsm.RsmState
 import org.srcgll.sppf.Sppf
@@ -11,7 +11,7 @@ import org.srcgll.sppf.node.SppfNode
 
 class RecoveryContext<VertexType, LabelType : ILabel>(
     override val startState: RsmState,
-    override val input: IGraph<VertexType, LabelType>
+    override val input: IInputGraph<VertexType, LabelType>
 ) : IContext<VertexType, LabelType> {
     override val recovery: RecoveryMode = RecoveryMode.ON
     override val descriptors: RecoveringDescriptorsStorage<VertexType> = RecoveringDescriptorsStorage()
