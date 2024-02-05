@@ -7,6 +7,7 @@ import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
+import org.srcgll.sppf.writeSppfToDot
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
@@ -73,7 +74,6 @@ class SimpleInputLabel(
         return true
     }
 }
-
 /**
  * Simple Realisation of IGraph interface as Directed Graph
  * @param VertexType   = Int
@@ -198,9 +198,9 @@ fun main() {
 
     // result = (root of SPPF, set of reachable vertices)
     val resultAnBn: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF).parse()
+        Gll(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF, reachability = ReachabilityMode.ALLPAIRS).parse()
     val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF).parse()
+        Gll(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF, reachability = ReachabilityMode.ALLPAIRS).parse()
 
     println("AnBn Language Grammar")
     println("Reachability pairs : ")

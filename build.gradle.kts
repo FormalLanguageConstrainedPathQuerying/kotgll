@@ -2,17 +2,28 @@ plugins {
   java
   application
   kotlin("jvm") version "1.9.20"
+  id("me.champeau.jmh") version "0.7.2"
 }
 
 repositories {
   mavenCentral()
+  maven("https://releases.usethesource.io/maven/")
 }
 
 dependencies {
   testImplementation(kotlin("test"))
   testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
   implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
+  implementation("org.antlr:antlr4:4.13.1")
+  implementation("io.usethesource:capsule:0.6.3")
+  implementation("com.fasterxml.jackson.core:jackson-core:2.14.0")
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
+  implementation("com.google.guava:guava-testlib:23.0")
+  implementation("info.picocli:picocli:4.7.0")
   implementation(kotlin("reflect"))
+  jmhImplementation("org.openjdk.jmh:jmh-core:1.36")
+  jmhImplementation("org.openjdk.jmh:jmh-generator-annprocess:1.36")
+  jmhImplementation("org.openjdk.jmh:jmh-generator-bytecode:1.36")
 }
 
 tasks.test { useJUnitPlatform() }
@@ -24,7 +35,16 @@ configure<SourceSetContainer> {
   named("main") {
     java.srcDir("src/main/kotlin")
   }
+  named("jmh") {
+    kotlin.srcDir("src/jmh/kotlin")
+  }
 }
+
+jmh {
+  duplicateClassesStrategy = DuplicatesStrategy.EXCLUDE
+  zip64 = true
+}
+
 
 tasks.withType<Jar> {
   dependsOn.addAll(listOf("compileJava", "compileKotlin", "processResources"))

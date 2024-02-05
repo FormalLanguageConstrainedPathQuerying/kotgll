@@ -10,6 +10,7 @@ class Sppf<VertexType> {
     private val createdTerminalNodes: HashMap<VertexType, HashSet<TerminalSppfNode<VertexType>>> = HashMap()
     private val minDistanceRecognisedBySymbol: HashMap<SymbolSppfNode<VertexType>, Int> = HashMap()
 
+    // TODO: Resolve problem with HeapOverflow on large inputs
     fun minDistance(root: ISppfNode): Int {
         val cycle = HashSet<ISppfNode>()
         val visited = HashSet<ISppfNode>()
@@ -161,7 +162,7 @@ class Sppf<VertexType> {
     fun invalidate(vertex: VertexType, parseResult: ISppfNode) {
         val queue = ArrayDeque<ISppfNode>()
         val added = HashSet<ISppfNode>()
-        var curSPPFNode: ISppfNode? = parseResult
+        var curSPPFNode: ISppfNode?
 
         createdTerminalNodes[vertex]!!.forEach { node ->
             queue.add(node)

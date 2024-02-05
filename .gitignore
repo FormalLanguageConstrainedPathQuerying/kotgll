@@ -5,11 +5,18 @@
 *.py
 
 # Benchmarks
-/src/main/kotlin/org/srcgll/benchmarks/test.kt
-/src/main/kotlin/org/srcgll/benchmarks/bloated
-/src/main/kotlin/org/srcgll/benchmarks/cfgOutput
-/src/main/kotlin/org/srcgll/benchmarks/rsmOutput
-*.csv
+/src/jmh/resources/BenchmarkOutput/
+/src/jmh/resources/BenchmarkSources/
+
+# Antlr
+src/main/kotlin/org/antlr/Java8.interp
+src/main/kotlin/org/antlr/Java8.tokens
+src/main/kotlin/org/antlr/Java8BaseListener.java
+src/main/kotlin/org/antlr/Java8Lexer.java
+src/main/kotlin/org/antlr/Java8Lexer.interp
+src/main/kotlin/org/antlr/Java8Lexer.tokens
+src/main/kotlin/org/antlr/Java8Listener.java
+src/main/kotlin/org/antlr/Java8Parser.java
 
 # Lexer
 /src/main/kotlin/org/srcgll/lexer/*.java

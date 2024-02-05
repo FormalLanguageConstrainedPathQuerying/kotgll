@@ -22,15 +22,7 @@ class TestFail {
         )
         nonterminalS.startState = rsmState0
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -51,16 +43,7 @@ class TestFail {
                 )
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -88,16 +71,7 @@ class TestFail {
             )
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -125,16 +99,7 @@ class TestFail {
             head = rsmState1,
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -161,16 +126,7 @@ class TestFail {
             head = rsmState1,
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -217,16 +173,7 @@ class TestFail {
             head = rsmState1,
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -299,16 +246,7 @@ class TestFail {
             head = rsmState4,
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -353,16 +291,7 @@ class TestFail {
         rsmState0.addEdge(symbol = Terminal("ab"), head = rsmState1)
         rsmState0.addEdge(symbol = Terminal("cd"), head = rsmState1)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -385,16 +314,7 @@ class TestFail {
 
         rsmState0.addEdge(symbol = Terminal("a"), head = rsmState1)
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -484,16 +404,7 @@ class TestFail {
             head = rsmState10,
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
@@ -589,16 +500,7 @@ class TestFail {
             head = rsmState8,
         )
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
+        val inputGraph = getTokenStream(input)
 
         assertNull(Gll(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }

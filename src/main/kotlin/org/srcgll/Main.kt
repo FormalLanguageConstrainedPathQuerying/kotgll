@@ -19,6 +19,10 @@ enum class RecoveryMode {
     ON, OFF,
 }
 
+enum class ReachabilityMode {
+    REACHABILITY, ALLPAIRS,
+}
+
 fun main(args: Array<String>) {
     val parser = ArgParser("srcgll")
 
@@ -43,12 +47,11 @@ fun main(args: Array<String>) {
 
     parser.parse(args)
 
-
-    val input = File(pathToInput).readText().replace("\n", "").trim()
+    val input = File(pathToInput).readText().replace("\n", "").trim().replace(" ", "")
     val grammar = JavaGrammar().getRsm()
     val inputGraph = LinearInput<Int, LinearInputLabel>()
     val lexer = JavaLexer(StringReader(input))
-    val gll = Gll(grammar, inputGraph, RecoveryMode.ON)
+    val gll = Gll(grammar, inputGraph, RecoveryMode.ON, ReachabilityMode.REACHABILITY)
     var vertexId = 0
     var token: JavaToken
 

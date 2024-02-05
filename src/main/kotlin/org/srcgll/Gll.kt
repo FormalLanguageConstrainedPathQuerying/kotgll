@@ -18,6 +18,7 @@ class Gll<VertexType, LabelType : ILabel>(
     private val startState: RsmState,
     private val input: IGraph<VertexType, LabelType>,
     private val recovery: RecoveryMode,
+    private val reachability: ReachabilityMode = ReachabilityMode.REACHABILITY,
 ) {
     private val stack: IDescriptorsStack<VertexType> = ErrorRecoveringDescriptorsStack()
     private val sppf: Sppf<VertexType> = Sppf()
@@ -102,7 +103,11 @@ class Gll<VertexType, LabelType : ILabel>(
             }
 
             val pair = Pair(leftExtent, rightExtent)
-            val distance = sppf.minDistance(curSppfNode)
+            var distance = 0
+
+            if (reachability == ReachabilityMode.ALLPAIRS) {
+                distance = sppf.minDistance(curSppfNode)
+            }
 
             reachabilityPairs[pair] =
                 if (reachabilityPairs.containsKey(pair)) {

@@ -5,10 +5,8 @@ import org.srcgll.Gll
 import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
-import org.srcgll.sppf.writeSppfToDot
 import kotlin.test.Ignore
 
 fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
@@ -144,7 +142,7 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -155,7 +153,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
@@ -176,7 +174,7 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -187,13 +185,8 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-
-        if (input == "caabb") {
-            writeSppfToDot(result.first!!, "./debug_incr.dot")
-            writeSppfToDot(static.first!!, "./debug_static.dot")
-        }
 
         assert(sameStructure(result.first!!, static.first!!))
     }
@@ -215,7 +208,7 @@ class TestIncrementality {
         inputGraph.addStartVertex(0)
 
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -226,7 +219,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
@@ -249,7 +242,7 @@ class TestIncrementality {
         inputGraph.addStartVertex(0)
 
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -260,7 +253,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
@@ -281,7 +274,7 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -292,7 +285,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
@@ -315,7 +308,7 @@ class TestIncrementality {
         inputGraph.addStartVertex(0)
 
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -326,7 +319,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
@@ -347,7 +340,7 @@ class TestIncrementality {
         }
         inputGraph.addStartVertex(0)
 
-        var result = gll.parse()
+        gll.parse()
 
         var addFrom = if (curVertexId > 1) curVertexId - 1 else 0
         val initEdges = inputGraph.getEdges(addFrom)
@@ -358,7 +351,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
 
-        result = gll.parse(addFrom)
+        val result = gll.parse(addFrom)
         val static = Gll(startState, inputGraph, recovery = RecoveryMode.ON).parse()
 
         assert(sameStructure(result.first!!, static.first!!))

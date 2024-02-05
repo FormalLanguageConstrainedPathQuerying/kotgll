@@ -4,6 +4,10 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
 import java.nio.file.Path
 
+fun readRsmFromTxt(pathToTXT: String): RsmState {
+    return readRsmFromTxt(Path.of(pathToTXT))
+}
+
 fun readRsmFromTxt(pathToTXT: Path): RsmState {
     val idToState: HashMap<Int, RsmState> = HashMap()
     var startRsmState: RsmState? = null
