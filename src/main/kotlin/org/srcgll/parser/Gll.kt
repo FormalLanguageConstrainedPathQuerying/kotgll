@@ -1,6 +1,5 @@
 package org.srcgll.parser
 
-import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
@@ -18,9 +17,12 @@ import org.srcgll.sppf.node.SymbolSppfNode
 
 class Gll<VertexType, LabelType : ILabel> private constructor(
     override val ctx: IContext<VertexType, LabelType>,
-) : GllParser<VertexType, LabelType> {
+) : IGll<VertexType, LabelType> {
 
     companion object {
+        /**
+         * Create instance of incremental Gll
+         */
         fun <VertexType, LabelType : ILabel> gll(
             startState: RsmState,
             inputGraph: IInputGraph<VertexType, LabelType>
@@ -28,6 +30,9 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
             return Gll(Context(startState, inputGraph))
         }
 
+        /**
+         * Create instance of incremental Gll with error recovery
+         */
         fun <VertexType, LabelType : ILabel> recoveryGll(
             startState: RsmState,
             inputGraph: IRecoveryInputGraph<VertexType, LabelType>
@@ -35,33 +40,18 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
             return Gll(RecoveryContext(startState, inputGraph))
         }
     }
-    
+
     fun parse(vertex: VertexType): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         ctx.descriptors.restoreDescriptors(vertex)
         ctx.sppf.invalidate(vertex, ctx.parseResult as ISppfNode)
-
         ctx.parseResult = null
-
-        while (!ctx.descriptors.defaultDescriptorsStorageIsEmpty()) {
-            val curDefaultDescriptor = ctx.descriptors.next()
-
-            parse(curDefaultDescriptor)
-        }
-
-        while (ctx.parseResult == null && ctx.recovery == RecoveryMode.ON) {
-            val curRecoveryDescriptor = ctx.descriptors.next()
-
-            parse(curRecoveryDescriptor)
-        }
-
-        return Pair(ctx.parseResult, ctx.reachabilityPairs)
+        return parse()
     }
 
 
     override fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
-        val gssNode = curDescriptor.gssNode
 
         ctx.descriptors.addToHandled(curDescriptor)
 
@@ -87,7 +77,7 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
             curSppfNode
         )
 
-        if (state.isFinal) pop(gssNode, curSppfNode, pos)
+        if (state.isFinal) pop(curDescriptor.gssNode, curSppfNode, pos)
     }
 
 
@@ -119,8 +109,10 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
         rightExtent: VertexType?,
         nonterminal: Nonterminal
     ) {
-        if (sppfNode is SymbolSppfNode<VertexType> && nonterminal == ctx.startState.nonterminal
-            && ctx.input.isStart(leftExtent!!) && ctx.input.isFinal(rightExtent!!)
+        if (sppfNode is SymbolSppfNode<VertexType>
+            && nonterminal == ctx.startState.nonterminal
+            && ctx.input.isStart(leftExtent!!)
+            && ctx.input.isFinal(rightExtent!!)
         ) {
             if (ctx.parseResult == null || ctx.parseResult!!.weight > sppfNode.weight) {
                 ctx.parseResult = sppfNode

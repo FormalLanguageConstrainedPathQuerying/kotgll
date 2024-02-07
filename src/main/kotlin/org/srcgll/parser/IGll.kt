@@ -1,6 +1,5 @@
 package org.srcgll.parser
 
-import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.gss.GssNode
 import org.srcgll.input.IInputGraph
@@ -14,28 +13,23 @@ import org.srcgll.sppf.node.SymbolSppfNode
 /**
  * Interface for Gll parser with helper functions and main parsing loop
  */
-interface GllParser<VertexType, LabelType : ILabel> {
+interface IGll<VertexType, LabelType : ILabel> {
     val ctx: IContext<VertexType, LabelType>
 
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         initDescriptors(ctx.input)
 
-        // Continue parsing until all default descriptors processed
-        while (!ctx.descriptors.defaultDescriptorsStorageIsEmpty()) {
-            parse(ctx.descriptors.next())
+        // Continue parsing until all descriptors processed
+        var curDescriptor = ctx.nextDescriptorToHandle()
+        while (curDescriptor != null) {
+            parse(curDescriptor)
+            curDescriptor = ctx.nextDescriptorToHandle()
         }
 
-        // If string was not parsed - process recovery descriptors until first valid parse tree is found
-        // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
-        if (ctx.recovery == RecoveryMode.ON) {
-            while (ctx.parseResult == null) {
-                parse(ctx.descriptors.next())
-            }
-        }
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
 
-    fun parse(curDescriptor: Descriptor<VertexType>) {}
+    fun parse(curDescriptor: Descriptor<VertexType>)
 
     /**
      *

@@ -42,4 +42,12 @@ interface IContext<VertexType, LabelType : ILabel> {
         }
         descriptors.addToHandling(descriptor)
     }
+
+    fun nextDescriptorToHandle(): Descriptor<VertexType>?{
+        // Continue parsing until all default descriptors processed
+        if (!descriptors.defaultDescriptorsStorageIsEmpty()) {
+            return descriptors.next()
+        }
+        return null
+    }
 }
