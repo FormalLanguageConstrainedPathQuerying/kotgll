@@ -4,12 +4,11 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
-import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.writeSppfToDot
@@ -70,11 +69,9 @@ fun runRsmWithSppf(
         val resultPath = getResultPath(pathToOutput, inputName, "rsm", rsmName, "with_sppf")
         File(resultPath).writeText("")
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
+        val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
         val lexer = GeneratedLexer(StringReader(input))
-        val gll = Gll(
-            RecoveryContext(rsm, inputGraph)
-        )
+        val gll = Gll.recoveryGll(rsm, inputGraph)
         var token: SymbolCode
         var vertexId = 1
 
@@ -106,7 +103,7 @@ fun runRsmWithSppf(
 
         for (benchmarkAttempt in 1..benchmarkRounds) {
             val elapsedRecovery = measureNanoTime {
-                Gll(RecoveryContext(rsm, inputGraph)).parse()
+                Gll.recoveryGll(rsm, inputGraph).parse()
             }
 
             val elapsedRecoverySeconds = elapsedRecovery.toDouble() / 1_000_000_000.0

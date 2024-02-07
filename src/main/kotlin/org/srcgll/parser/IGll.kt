@@ -3,7 +3,7 @@ package org.srcgll.parser
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.gss.GssNode
-import org.srcgll.input.IGraph
+import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
@@ -40,7 +40,7 @@ interface GllParser<VertexType, LabelType : ILabel> {
     /**
      *
      */
-    fun initDescriptors(input: IGraph<VertexType, LabelType>) {
+    fun initDescriptors(input: IInputGraph<VertexType, LabelType>) {
         for (startVertex in input.getInputStartVertices()) {
             val descriptor = Descriptor(
                 ctx.startState,
@@ -108,5 +108,19 @@ interface GllParser<VertexType, LabelType : ILabel> {
             ctx.descriptors.removeFromHandled(descriptor)
         }
         ctx.descriptors.addToHandling(descriptor)
+    }
+
+    fun pop(gssNode: GssNode<VertexType>, sppfNode: SppfNode<VertexType>?, pos: VertexType) {
+        if (!ctx.poppedGssNodes.containsKey(gssNode)) ctx.poppedGssNodes[gssNode] = HashSet()
+        ctx.poppedGssNodes.getValue(gssNode).add(sppfNode)
+
+        for ((label, target) in gssNode.edges) {
+            for (node in target) {
+                val descriptor = Descriptor(
+                    label.first, node, ctx.sppf.getParentNode(label.first, label.second, sppfNode!!), pos
+                )
+                addDescriptor(descriptor)
+            }
+        }
     }
 }

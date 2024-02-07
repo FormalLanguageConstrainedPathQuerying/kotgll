@@ -1,11 +1,9 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.Context
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
@@ -33,7 +31,7 @@ class TestFail {
         }
         inputGraph.addStartVertex(0)
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -63,7 +61,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -100,7 +98,8 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -137,7 +136,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -173,7 +172,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -229,7 +228,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -311,7 +310,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -365,7 +364,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -397,7 +396,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -496,7 +495,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -601,6 +600,6 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
-        assertNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 }
