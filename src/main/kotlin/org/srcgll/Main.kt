@@ -10,7 +10,6 @@ import org.srcgll.lexer.JavaGrammar
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.writeSppfToDot

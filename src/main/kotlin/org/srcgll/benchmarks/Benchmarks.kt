@@ -9,7 +9,6 @@ import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.writeSppfToDot

@@ -43,37 +43,60 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
         val state = curDescriptor.rsmState
         val terminalEdges = state.getTerminalEdges()
 
-
         val errorRecoveryEdges = HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>()
         val currentEdges = getEdges(pos)
+
         if (currentEdges.isNotEmpty()) {
-            for (currentEdge in currentEdges) {
-                if (currentEdge.label.terminal == null) continue
-
-                val currentTerminal = currentEdge.label.terminal!!
-
-                val coveredByCurrentTerminal: HashSet<RsmState> = terminalEdges[currentTerminal] ?: hashSetOf()
-
-                for (terminal in state.errorRecoveryLabels) {
-                    val coveredByTerminal = HashSet(terminalEdges[terminal] as HashSet<RsmState>)
-
-                    coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
-
-                    if (terminal != currentTerminal && coveredByTerminal.isNotEmpty()) {
-                        errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
-                    }
-                }
-
-                errorRecoveryEdges[null] = TerminalRecoveryEdge(currentEdge.head, weight = 1)
-            }
+            addTerminalRecoveryEdges(terminalEdges, errorRecoveryEdges, pos, state, currentEdges)
         } else {
+            addEpsilonRecoveryEdges(terminalEdges, errorRecoveryEdges, pos, state)
+        }
+
+        return errorRecoveryEdges
+    }
+
+    private fun addEpsilonRecoveryEdges(
+        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
+        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
+        pos: VertexType,
+        state: RsmState
+    ) {
+        for (terminal in state.errorRecoveryLabels) {
+            if (!terminalEdges[terminal].isNullOrEmpty()) {
+                errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
+            }
+        }
+    }
+
+    /**
+     * Trying to reach states that were previously inaccessible using recovery terminal
+     */
+    private fun addTerminalRecoveryEdges(
+        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
+        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
+        pos: VertexType,
+        state: RsmState,
+        currentEdges: MutableList<Edge<VertexType, LabelType>>
+    ) {
+        for (currentEdge in currentEdges) {
+            if (currentEdge.label.terminal == null) continue
+            val currentTerminal = currentEdge.label.terminal!!
+
+            val coveredByCurrentTerminal: HashSet<RsmState> = terminalEdges[currentTerminal] ?: hashSetOf()
+
             for (terminal in state.errorRecoveryLabels) {
-                if (!terminalEdges[terminal].isNullOrEmpty()) {
+                //accessible states
+                val coveredByTerminal = HashSet(terminalEdges[terminal] as HashSet<RsmState>)
+
+                coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
+
+                if (terminal != currentTerminal && coveredByTerminal.isNotEmpty()) {
                     errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                 }
             }
+
+            errorRecoveryEdges[null] = TerminalRecoveryEdge(currentEdge.head, weight = 1)
         }
-        return errorRecoveryEdges
     }
 
     private fun handleRecoveryEdges(

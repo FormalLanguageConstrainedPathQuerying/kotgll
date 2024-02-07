@@ -5,8 +5,6 @@ import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.Context
-import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal

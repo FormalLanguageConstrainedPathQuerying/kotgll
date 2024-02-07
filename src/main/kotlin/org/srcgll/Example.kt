@@ -6,7 +6,6 @@ import org.srcgll.input.Edge
 import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.Context
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 
@@ -78,8 +77,8 @@ class SimpleInputLabel(
 
 /**
  * Simple Realisation of IGraph interface as Directed Graph
- * @param VertexType   = Int
- * @param LabelType    = SimpleInputLabel
+ * VertexType   = Int
+ * LabelType    = SimpleInputLabel
  */
 class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     override val vertices: MutableMap<Int, Int> = HashMap()

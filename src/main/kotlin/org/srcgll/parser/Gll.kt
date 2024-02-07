@@ -66,6 +66,7 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
         ctx.descriptors.addToHandled(curDescriptor)
 
         val curSppfNode = if (state.isStart && state.isFinal) {
+            // if nonterminal accept epsilon
             ctx.sppf.getParentNode(
                 state, curDescriptor.sppfNode, ctx.sppf.getOrCreateIntermediateSppfNode(state, pos, pos, weight = 0)
             )
