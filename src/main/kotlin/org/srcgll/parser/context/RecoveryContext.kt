@@ -21,3 +21,4 @@ class RecoveryContext<VertexType, LabelType : ILabel>(
     override val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int> = HashMap()
     override var parseResult: SppfNode<VertexType>? = null
 }
+

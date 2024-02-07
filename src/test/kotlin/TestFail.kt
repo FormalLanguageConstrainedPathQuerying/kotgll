@@ -98,6 +98,7 @@ class TestFail {
         inputGraph.addStartVertex(0)
 
 
+
         assertNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 

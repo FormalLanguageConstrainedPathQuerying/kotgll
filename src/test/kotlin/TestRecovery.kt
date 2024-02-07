@@ -33,35 +33,30 @@ class TestRecovery {
     @MethodSource("test_2")
     fun `test CAStarBStar grammar`(input: String, weight: Int) {
         testRecovery("c_a_star_b_star.txt", input, weight)
-
     }
 
     @ParameterizedTest
     @MethodSource("test_3")
     fun `test AB grammar`(input: String, weight: Int) {
         testRecovery("ab.txt", input, weight)
-
     }
 
     @ParameterizedTest
     @MethodSource("test_4")
     fun `test Dyck grammar`(input: String, weight: Int) {
         testRecovery("dyck.txt", input, weight)
-
     }
 
     @ParameterizedTest
     @MethodSource("test_5")
     fun `test Ambiguous grammar`(input: String, weight: Int) {
         testRecovery("ambiguous.txt", input, weight)
-
     }
 
     @ParameterizedTest
     @MethodSource("test_6")
     fun `test MultiDyck grammar`(input: String, weight: Int) {
         testRecovery("multi_dyck.txt", input, weight)
-
     }
 
     @ParameterizedTest
@@ -84,6 +79,7 @@ class TestRecovery {
         inputGraph.addStartVertex(0)
 
         val result = Gll.recoveryGll(startState, inputGraph).parse()
+        
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()

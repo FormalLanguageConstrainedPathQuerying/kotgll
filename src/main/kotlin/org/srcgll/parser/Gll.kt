@@ -35,7 +35,7 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
             return Gll(RecoveryContext(startState, inputGraph))
         }
     }
-
+    
     fun parse(vertex: VertexType): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         ctx.descriptors.restoreDescriptors(vertex)
         ctx.sppf.invalidate(vertex, ctx.parseResult as ISppfNode)

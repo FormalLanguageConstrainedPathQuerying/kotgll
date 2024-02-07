@@ -80,6 +80,7 @@ class SimpleInputLabel(
  * VertexType   = Int
  * LabelType    = SimpleInputLabel
  */
+ 
 class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     override val vertices: MutableMap<Int, Int> = HashMap()
     override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
