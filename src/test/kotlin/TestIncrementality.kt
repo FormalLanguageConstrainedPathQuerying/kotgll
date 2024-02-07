@@ -1,8 +1,8 @@
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.parser.Gll
 import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.symbol.Terminal
@@ -133,210 +133,62 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_1")
     fun `test BracketStarX grammar`(input: String) {
-        val startState = getRsm("bracket_star_x.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
-        val initEdges = inputGraph.getEdges(addFrom)
-
-        inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("[")), ++curVertexId)
-        inputGraph.edges[curVertexId] = initEdges
-
-        inputGraph.addVertex(curVertexId)
-
-        val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
-
-        assert(sameStructure(result.first!!, static.first!!))
+        incrementalityTest(input, "bracket_star_x.txt", Terminal("["))
     }
 
     @ParameterizedTest
     @MethodSource("test_2")
     fun `test CAStarBStar grammar`(input: String) {
-        val startState = getRsm("c_a_star_b_star.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        gll.parse()
-
-        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
-        val initEdges = inputGraph.getEdges(addFrom)
-
-        inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("a")), ++curVertexId)
-        inputGraph.edges[curVertexId] = initEdges
-
-        inputGraph.addVertex(curVertexId)
-
-        val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
+        val (result, static) = incrementalityTest(input, "c_a_star_b_star.txt", Terminal("a"))
 
         if (input == "caabb") {
-            writeSppfToDot(result.first!!, "debug_incr.dot")
-            writeSppfToDot(static.first!!, "debug_static.dot")
+            writeSppfToDot(result, "debug_incr.dot")
+            writeSppfToDot(static, "debug_static.dot")
         }
-
-        assert(sameStructure(result.first!!, static.first!!))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_3")
     fun `test AB grammar`(input: String) {
-        val startState = getRsm("ab.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-
-        gll.parse()
-
-        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
-        val initEdges = inputGraph.getEdges(addFrom)
-
-        inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("ab")), ++curVertexId)
-        inputGraph.edges[curVertexId] = initEdges
-
-        inputGraph.addVertex(curVertexId)
-
-        val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
-
-        assert(sameStructure(result.first!!, static.first!!))
+        incrementalityTest(input, "ab.txt", Terminal("ab"))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_4")
     fun `test Dyck grammar`(input: String) {
-        val startState = getRsm("dyck.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-
-        gll.parse()
-
-        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
-        val initEdges = inputGraph.getEdges(addFrom)
-
-        inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("(")), ++curVertexId)
-        inputGraph.edges[curVertexId] = initEdges
-
-        inputGraph.addVertex(curVertexId)
-
-        val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
-
-        assert(sameStructure(result.first!!, static.first!!))
+        incrementalityTest(input, "dyck.txt", Terminal("("))
     }
 
     @ParameterizedTest
     @MethodSource("test_5")
     fun `test Ambiguous grammar`(input: String) {
-        val startState = getRsm("ambiguous.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-        gll.parse()
-
-        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
-        val initEdges = inputGraph.getEdges(addFrom)
-
-        inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("a")), ++curVertexId)
-        inputGraph.edges[curVertexId] = initEdges
-
-        inputGraph.addVertex(curVertexId)
-
-        val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
-
-        assert(sameStructure(result.first!!, static.first!!))
+        incrementalityTest(input, "ambiguous.txt", Terminal("a"))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_6")
     fun `test MultiDyck grammar`(input: String) {
-        val startState = getRsm("multi_dyck.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
-        var curVertexId = 0
-
-        inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-        }
-        inputGraph.addStartVertex(0)
-
-
-        gll.parse()
-
-        val addFrom = if (curVertexId > 1) curVertexId - 1 else 0
-        val initEdges = inputGraph.getEdges(addFrom)
-
-        inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("{")), ++curVertexId)
-        inputGraph.edges[curVertexId] = initEdges
-
-        inputGraph.addVertex(curVertexId)
-
-        val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
-
-        assert(sameStructure(result.first!!, static.first!!))
+        incrementalityTest(input, "multi_dyck.txt", Terminal("{"))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_7")
     fun `test SimpleGolang grammar`(input: String) {
-        val startState = getRsm("simple_golang.txt")
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
+        incrementalityTest(input, "simple_golang.txt", Terminal("1"))
+    }
+
+    private fun incrementalityTest(
+        input: String,
+        pathToRsm: String,
+        additionalLabel: Terminal<*>
+    ): Pair<SppfNode<Int>, SppfNode<Int>> {
+        val startState = getRsm(pathToRsm)
+
+        val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
         val gll = Gll(RecoveryContext(startState, inputGraph))
         var curVertexId = 0
 
@@ -353,7 +205,7 @@ class TestIncrementality {
         val initEdges = inputGraph.getEdges(addFrom)
 
         inputGraph.edges.remove(addFrom)
-        inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("1")), ++curVertexId)
+        inputGraph.addEdge(addFrom, LinearInputLabel(additionalLabel), ++curVertexId)
         inputGraph.edges[curVertexId] = initEdges
 
         inputGraph.addVertex(curVertexId)
@@ -362,6 +214,9 @@ class TestIncrementality {
         val static = Gll(RecoveryContext(startState, inputGraph)).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
+
+        return Pair(result.first!!, static.first!!)
+
     }
 
     companion object {
