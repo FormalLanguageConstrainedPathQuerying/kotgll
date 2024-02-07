@@ -4,8 +4,8 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
-import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.parser.Gll
@@ -70,7 +70,7 @@ fun runRsmWithSppf(
         val resultPath = getResultPath(pathToOutput, inputName, "rsm", rsmName, "with_sppf")
         File(resultPath).writeText("")
 
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
+        val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
         val lexer = GeneratedLexer(StringReader(input))
         val gll = Gll(
             RecoveryContext(rsm, inputGraph)

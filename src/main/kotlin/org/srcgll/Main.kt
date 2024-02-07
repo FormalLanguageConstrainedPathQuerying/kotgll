@@ -4,8 +4,8 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
-import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.lexer.JavaGrammar
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
@@ -48,7 +48,7 @@ fun main(args: Array<String>) {
 
     val input = File(pathToInput).readText().replace("\n", "").trim()
     val grammar = JavaGrammar().getRsm()
-    val inputGraph = LinearInput<Int, LinearInputLabel>()
+    val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
     val lexer = JavaLexer(StringReader(input))
     val gll = Gll(RecoveryContext(grammar, inputGraph))
     var vertexId = 0
