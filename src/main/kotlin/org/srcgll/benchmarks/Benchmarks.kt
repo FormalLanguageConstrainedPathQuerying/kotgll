@@ -72,9 +72,7 @@ fun runRsmWithSppf(
 
         val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
         val lexer = GeneratedLexer(StringReader(input))
-        val gll = Gll(
-            RecoveryContext(rsm, inputGraph)
-        )
+        val gll = Gll.recoveryGll(rsm, inputGraph)
         var token: SymbolCode
         var vertexId = 1
 
@@ -106,7 +104,7 @@ fun runRsmWithSppf(
 
         for (benchmarkAttempt in 1..benchmarkRounds) {
             val elapsedRecovery = measureNanoTime {
-                Gll(RecoveryContext(rsm, inputGraph)).parse()
+                Gll.recoveryGll(rsm, inputGraph).parse()
             }
 
             val elapsedRecoverySeconds = elapsedRecovery.toDouble() / 1_000_000_000.0

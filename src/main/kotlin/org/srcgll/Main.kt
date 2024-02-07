@@ -50,7 +50,7 @@ fun main(args: Array<String>) {
     val grammar = JavaGrammar().getRsm()
     val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
     val lexer = JavaLexer(StringReader(input))
-    val gll = Gll(RecoveryContext(grammar, inputGraph))
+    val gll = Gll.recoveryGll(grammar, inputGraph)
     var vertexId = 0
     var token: JavaToken
 

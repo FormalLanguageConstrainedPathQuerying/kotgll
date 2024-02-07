@@ -85,7 +85,7 @@ class TestRecovery {
         }
         inputGraph.addStartVertex(0)
 
-        val result = Gll(RecoveryContext(startState, inputGraph)).parse()
+        val result = Gll.recoveryGll(startState, inputGraph).parse()
         val recoveredString = buildStringFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
@@ -99,7 +99,7 @@ class TestRecovery {
         recoveredInputGraph.addStartVertex(0)
 
         assert(result.first!!.weight <= weight)
-        assertNotNull(Gll(Context(startState, recoveredInputGraph)).parse().first)
+        assertNotNull(Gll.gll(startState, recoveredInputGraph).parse().first)
     }
 
     companion object {

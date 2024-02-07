@@ -4,7 +4,6 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.Context
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
@@ -22,7 +21,7 @@ class TestSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(Context(startState, inputGraph)).parse().first)
+        assertNotNull(Gll.gll(startState, inputGraph).parse().first)
     }
 
     @Test
@@ -157,7 +156,7 @@ class TestSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNotNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -234,7 +233,7 @@ class TestSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNotNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -397,7 +396,7 @@ class TestSuccess {
 
         inputGraph.addStartVertex(0)
 
-        assertNotNull(Gll(Context(rsmState0, inputGraph)).parse().first)
+        assertNotNull(Gll.gll(rsmState0, inputGraph).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")

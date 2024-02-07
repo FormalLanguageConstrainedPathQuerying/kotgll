@@ -2,8 +2,12 @@ package org.srcgll.parser
 
 import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
+import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
+import org.srcgll.input.IRecoveryInputGraph
+import org.srcgll.parser.context.Context
 import org.srcgll.parser.context.IContext
+import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
@@ -12,9 +16,25 @@ import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
 
-class Gll<VertexType, LabelType : ILabel>(
+class Gll<VertexType, LabelType : ILabel> private constructor(
     override val ctx: IContext<VertexType, LabelType>,
 ) : GllParser<VertexType, LabelType> {
+
+    companion object {
+        fun <VertexType, LabelType : ILabel> gll(
+            startState: RsmState,
+            inputGraph: IInputGraph<VertexType, LabelType>
+        ): Gll<VertexType, LabelType> {
+            return Gll(Context(startState, inputGraph))
+        }
+
+        fun <VertexType, LabelType : ILabel> recoveryGll(
+            startState: RsmState,
+            inputGraph: IRecoveryInputGraph<VertexType, LabelType>
+        ): Gll<VertexType, LabelType> {
+            return Gll(RecoveryContext(startState, inputGraph))
+        }
+    }
 
     fun parse(vertex: VertexType): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         ctx.descriptors.restoreDescriptors(vertex)

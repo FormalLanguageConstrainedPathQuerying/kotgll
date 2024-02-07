@@ -4,7 +4,6 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.parser.Gll
-import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
@@ -189,7 +188,7 @@ class TestIncrementality {
         val startState = getRsm(pathToRsm)
 
         val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
-        val gll = Gll(RecoveryContext(startState, inputGraph))
+        val gll = Gll.recoveryGll(startState, inputGraph)
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -211,7 +210,7 @@ class TestIncrementality {
         inputGraph.addVertex(curVertexId)
 
         val result = gll.parse(addFrom)
-        val static = Gll(RecoveryContext(startState, inputGraph)).parse()
+        val static = Gll.recoveryGll(startState, inputGraph).parse()
 
         assert(sameStructure(result.first!!, static.first!!))
 

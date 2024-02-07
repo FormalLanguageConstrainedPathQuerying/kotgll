@@ -200,9 +200,9 @@ fun main() {
 
     // result = (root of SPPF, set of reachable vertices)
     val resultAnBn: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(Context(rsmAnBnStartState, inputGraphAnBn)).parse()
+        Gll.gll(rsmAnBnStartState, inputGraphAnBn).parse()
     val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(Context(rsmStackStartState, inputGraphStack)).parse()
+        Gll.gll(rsmStackStartState, inputGraphStack).parse()
 
     println("AnBn Language Grammar")
     println("Reachability pairs : ")
