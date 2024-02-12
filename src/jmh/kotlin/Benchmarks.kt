@@ -47,31 +47,41 @@ fun getTokenStream(input: String): LinearInput<Int, LinearInputLabel> {
     inputGraph.addVertex(vertexId)
     inputGraph.addStartVertex(vertexId)
 
-    try {
-        while (true) {
-            token = lexer.yylex() as JavaToken
-            if (token == JavaToken.EOF) break
-            inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
-        }
-    } catch (e : Error) {
+    while (true) {
+        token = lexer.yylex() as JavaToken
+        if (token == JavaToken.EOF) break
+        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
     }
 
     return inputGraph
 }
 
-val pathToInput = "/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/BenchmarkSourcesProcessed/"
+fun getCharStream(input: String): LinearInput<Int, LinearInputLabel> {
+    val inputGraph = LinearInput<Int, LinearInputLabel>()
+    var vertexId = 1
+
+    inputGraph.addVertex(vertexId)
+    inputGraph.addStartVertex(vertexId)
+
+    for (ch in input) {
+        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(ch.toString())), ++vertexId)
+        inputGraph.addVertex(vertexId)
+    }
+
+    return inputGraph
+}
+
+val pathToInput = "/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/BenchmarkSourcesScannerless/"
 
 @State(Scope.Benchmark)
 open class JmhBenchmark {
 
     @State(Scope.Thread)
     open class AntlrState{
-        val antlrParser: Java8Parser
-            get() = Java8Parser(CommonTokenStream(Java8Lexer(CharStreams.fromString(file.readText()))))
+        lateinit var file: File
 
         companion object {
             lateinit var sources: Iterator<File>
-            lateinit var file: File
         }
 
         @Setup(Level.Trial)
@@ -80,59 +90,88 @@ open class JmhBenchmark {
             file = sources.next()
         }
 
-        @Setup(Level.Invocation)
+        @Setup(Level.Iteration)
         fun nextFile() {
             if (sources.hasNext()) {
                 file = sources.next()
+                println(file.nameWithoutExtension)
             }
         }
     }
 
     @State(Scope.Thread)
     open class GllState{
-        val gll: Gll<Int, LinearInputLabel>
-            get() = Gll(startStateJavaTokenized, inputGraph, recovery = RecoveryMode.ON, reachability = ReachabilityMode.REACHABILITY)
+        lateinit var file: File
+
+        val startStateJavaTokenized: RsmState
+            get() = JavaGrammar().getRsm()
+
         companion object {
-            val startStateJavaTokenized = JavaGrammar().getRsm()
             lateinit var sources: Iterator<File>
-            lateinit var file: File
-            lateinit var inputGraph: LinearInput<Int, LinearInputLabel>
         }
 
         @Setup(Level.Trial)
         fun prepare() {
             sources = File(pathToInput).walk().filter { it.isFile }.iterator()
             file = sources.next()
-            inputGraph = getTokenStream(file.readText())
         }
 
-        @Setup(Level.Invocation)
+        @Setup(Level.Iteration)
         fun nextFile() {
             if (sources.hasNext()) {
                 file = sources.next()
                 println(file.nameWithoutExtension)
-                inputGraph = getTokenStream(file.readText())
+            }
+        }
+    }
+
+    @State(Scope.Thread)
+    open class GllScannerlessState {
+        lateinit var file: File
+
+        val startStateJavaScannerless: RsmState = JavaGrammarScannerless().getRsm()
+
+        companion object {
+            lateinit var sources: Iterator<File>
+        }
+
+        @Setup(Level.Trial)
+        fun prepare() {
+            GllState.sources = File(pathToInput).walk().filter { it.isFile }.iterator()
+            file = GllState.sources.next()
+        }
+
+        @Setup(Level.Iteration)
+        fun nextFile() {
+            if (GllState.sources.hasNext()) {
+                file = GllState.sources.next()
+                println(file.nameWithoutExtension)
             }
         }
     }
 
     @Benchmark
-    @BenchmarkMode(Mode.SingleShotTime)
-    @Warmup(iterations = 10)
-    @Measurement(iterations = 20)
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     fun measureAntlr(stateObject: AntlrState, blackhole: Blackhole) {
-        val antlrParser = stateObject.antlrParser
+        val antlrParser = Java8Parser(CommonTokenStream(Java8Lexer(CharStreams.fromString(stateObject.file.readText()))))
         blackhole.consume(antlrParser.compilationUnit())
     }
 
     @Benchmark
-    @BenchmarkMode(Mode.SingleShotTime)
-    @Warmup(iterations = 10)
-    @Measurement(iterations = 20)
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     fun measureGll(stateObject: GllState, blackhole: Blackhole) {
-        val gll = stateObject.gll
+        val inputGraph = getTokenStream(stateObject.file.readText())
+        val gll = Gll(stateObject.startStateJavaTokenized, inputGraph, recovery = RecoveryMode.ON, reachability = ReachabilityMode.REACHABILITY)
+
+        blackhole.consume(gll.parse())
+    }
+
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.NANOSECONDS)
+    fun measureGllScannerless(stateObject: GllScannerlessState, blackhole: Blackhole) {
+        val inputGraph = getCharStream(stateObject.file.readText().replace(" ", "").replace("\n", ""))
+        val gll = Gll(stateObject.startStateJavaScannerless, inputGraph, recovery = RecoveryMode.ON, reachability = ReachabilityMode.REACHABILITY)
+
         blackhole.consume(gll.parse())
     }
 }

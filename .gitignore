@@ -5,8 +5,7 @@
 *.py
 
 # Benchmarks
-/src/jmh/resources/BenchmarkOutput/
-/src/jmh/resources/BenchmarkSources/
+/src/jmh/resources/
 
 # Antlr
 src/main/kotlin/org/antlr/Java8.interp

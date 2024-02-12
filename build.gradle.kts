@@ -13,6 +13,7 @@ repositories {
 dependencies {
   testImplementation(kotlin("test"))
   testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+  implementation("java_cup:java_cup:0.9e")
   implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
   implementation("org.antlr:antlr4:4.13.1")
   implementation("io.usethesource:capsule:0.6.3")
@@ -43,6 +44,19 @@ configure<SourceSetContainer> {
 jmh {
   duplicateClassesStrategy = DuplicatesStrategy.EXCLUDE
   zip64 = true
+  profilers.addAll("gc", "stack")
+  warmupForks = 0
+  warmupBatchSize = 1
+  warmupIterations = 5
+  fork = 1
+  batchSize = 5
+  iterations = 100
+  verbosity = "EXTRA"
+  jmhTimeout = "600s"
+  benchmarkMode.addAll("avgt")
+  failOnError = false
+//  forceGC = true
+  resultFormat = "CSV"
 }
 
 

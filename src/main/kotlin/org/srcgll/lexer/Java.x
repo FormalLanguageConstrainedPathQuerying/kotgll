@@ -36,9 +36,6 @@ HexadecimalFloatingPointLiteral = {HexSignificand} {BinaryExponent} [fFdD]?
 HexSignificand = {HexNumeral} "."? | 0 [xX] {HexDigits}? "." {HexDigits}
 BinaryExponent = [pP] [\+\-]? {Digits}
 
-BooleanLiteral = "false" | "true"
-NullLiteral = "null"
-
 InputCharacter = \\ "u"+ [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] | [^\r\n\"\\]
 
 EscapeSequence = \\ [btnfr\"\'\\] | \\ ([0-7] | [0-7] [0-7] | [0-3][0-7][0-7])
@@ -50,11 +47,10 @@ StringLiteral = \" {StringCharacter}* \"
 StringCharacter = {InputCharacter} | {EscapeSequence}
 WhiteSpace = {LineTerminator} | [\ \t\f]
 
-Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+Comment = {TraditionalComment} | {DocumentationComment}
 TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
-EndOfLineComment     = "//" [^\r\n]* {LineTerminator}?
 DocumentationComment = "/**" {CommentContent} "*"+ "/"
-CommentContent       = ( [^*] | \*+ [^/*] )*
+CommentContent       = ( [^*] | \*+ [^/*] )
 
 %%
 
@@ -66,37 +62,11 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "char"         { return JavaToken.CHAR; }
 "float"        { return JavaToken.FLOAT; }
 "double"       { return JavaToken.DOUBLE; }
-"."            { return JavaToken.DOT; }
-"["            { return JavaToken.BRACKETLEFT; }
-"]"            { return JavaToken.BRACKETRIGHT; }
-"("            { return JavaToken.PARENTHLEFT; }
-")"            { return JavaToken.PARENTHRIGHT; }
-"{"            { return JavaToken.CURLYLEFT; }
-"}"            { return JavaToken.CURLYRIGHT; }
-"extends"      { return JavaToken.EXTENDS; }
-"&"            { return JavaToken.ANDBIT; }
-"<"            { return JavaToken.DIAMONDLEFT; }
-">"            { return JavaToken.DIAMONDRIGHT; }
-"<>"           { return JavaToken.DIAMOND; }
-";"            { return JavaToken.SEMICOLON; }
-":"            { return JavaToken.COLON; }
-"::"           { return JavaToken.DOUBLECOLON; }
-"..."          { return JavaToken.ELLIPSIS; }
-","            { return JavaToken.COMMA; }
-"?"            { return JavaToken.QUESTIONMARK; }
 "super"        { return JavaToken.SUPER; }
 "package"      { return JavaToken.PACKAGE; }
 "import"       { return JavaToken.IMPORT; }
 "static"       { return JavaToken.STATIC; }
-"*"            { return JavaToken.STAR; }
-"+"            { return JavaToken.PLUS; }
-"-"            { return JavaToken.MINUS; }
-"%"            { return JavaToken.PERCENT; }
-"/"            { return JavaToken.SLASH; }
-"++"           { return JavaToken.PLUSPLUS; }
-"--"           { return JavaToken.MINUSMINUS; }
-"~"            { return JavaToken.TILDA; }
-"!"            { return JavaToken.EXCLAMATIONMARK; }
+"extends"      { return JavaToken.EXTENDS; }
 "class"        { return JavaToken.CLASS; }
 "public"       { return JavaToken.PUBLIC; }
 "protected"    { return JavaToken.PROTECTED; }
@@ -107,29 +77,7 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "implements"   { return JavaToken.IMPLEMENTS; }
 "transient"    { return JavaToken.TRANSIENT; }
 "volatile"     { return JavaToken.VOLATILE; }
-"="            { return JavaToken.ASSIGN; }
-"*="           { return JavaToken.STARASSIGN; }
-"/="           { return JavaToken.SLASHASSIGN; }
-"+="           { return JavaToken.PLUSASSIGN; }
-"-="           { return JavaToken.MINUSASSIGN; }
-"%="           { return JavaToken.PERCENTASSIGN; }
-"^="           { return JavaToken.XORASSIGN; }
-"<<="          { return JavaToken.SHIFTLEFTASSIGN; }
-">>="          { return JavaToken.SHIFTRIGHTASSIGN; }
-">>>="         { return JavaToken.USRIGHTSHIFTASSIGN; }
-"&="           { return JavaToken.ANDASSIGN; }
-"|="           { return JavaToken.ORASSIGN; }
-"||"           { return JavaToken.OR; }
-"&&"           { return JavaToken.AND; }
-"^"            { return JavaToken.XORBIT; }
-"=="           { return JavaToken.EQ; }
-"!="           { return JavaToken.NOTEQ; }
-"<="           { return JavaToken.LESSEQ; }
-">="           { return JavaToken.GREATEQ; }
 "instanceof"   { return JavaToken.INSTANCEOF; }
-">>"           { return JavaToken.RIGHTSHIT; }
-"<<"           { return JavaToken.LEFTSHIFT; }
-">>>"          { return JavaToken.USRIGHTSHIFT; }
 "synchronized" { return JavaToken.SYNCHRONIZED; }
 "native"       { return JavaToken.NATIVE; }
 "void"         { return JavaToken.VOID; }
@@ -137,7 +85,6 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "throws"       { return JavaToken.THROWS; }
 "enum"         { return JavaToken.ENUM; }
 "interface"    { return JavaToken.INTERFACE; }
-"@"            { return JavaToken.AT; }
 "default"      { return JavaToken.DEFAULT; }
 "assert"       { return JavaToken.ASSERT; }
 "switch"       { return JavaToken.SWITCH; }
@@ -154,18 +101,63 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "try"          { return JavaToken.TRY; }
 "catch"        { return JavaToken.CATCH; }
 "finally"      { return JavaToken.FINALLY; }
-"|"            { return JavaToken.ORBIT; }
 "new"          { return JavaToken.NEW; }
+
+"true"         { return JavaToken.BOOLEAN_LITERAL; }
+"false"        { return JavaToken.BOOLEAN_LITERAL; }
+"null"         { return JavaToken.NULL_LITERAL; }
+
+"("            { return JavaToken.LPAREN; }
+")"            { return JavaToken.RPAREN; }
+"{"            { return JavaToken.LBRACE; }
+"}"            { return JavaToken.RBRACE; }
+"["            { return JavaToken.LBRACK; }
+"]"            { return JavaToken.RBRACK; }
+";"            { return JavaToken.SEMICOLON; }
+","            { return JavaToken.COMMA; }
+"."            { return JavaToken.DOT; }
+"="            { return JavaToken.EQ; }
+">"            { return JavaToken.GT; }
+"<"            { return JavaToken.LT; }
+"!"            { return JavaToken.NOT; }
+"~"            { return JavaToken.COMP; }
+"?"            { return JavaToken.QUESTION; }
+":"            { return JavaToken.COLON; }
+"=="           { return JavaToken.EQEQ; }
+"<="           { return JavaToken.LTEQ; }
+">="           { return JavaToken.GTEQ; }
+"!="           { return JavaToken.NOTEQ; }
+"&&"           { return JavaToken.ANDAND; }
+"||"           { return JavaToken.OROR; }
+"++"           { return JavaToken.PLUSPLUS; }
+"--"           { return JavaToken.MINUSMINUS; }
+"+"            { return JavaToken.PLUS; }
+"-"            { return JavaToken.MINUS; }
+"*"            { return JavaToken.MULT; }
+"/"            { return JavaToken.DIV; }
+"&"            { return JavaToken.AND; }
+"|"            { return JavaToken.OR; }
+"^"            { return JavaToken.XOR; }
+"%"            { return JavaToken.MOD; }
+"+="           { return JavaToken.PLUSEQ; }
+"-="           { return JavaToken.MINUSEQ; }
+"*="           { return JavaToken.MULTEQ; }
+"/="           { return JavaToken.DIVEQ; }
+"&="           { return JavaToken.ANDEQ; }
+"|="           { return JavaToken.OREQ; }
+"^="           { return JavaToken.XOREQ; }
+"%="           { return JavaToken.MODEQ; }
+"<<="          { return JavaToken.LSHIFTEQ; }
+">>="          { return JavaToken.RSHIFTEQ; }
+">>>="         { return JavaToken.URSHIFTEQ; }
 "->"           { return JavaToken.ARROW; }
 
 {LineTerminator}       {}
 {Comment}              {}
 {WhiteSpace}           {}
-{CharacterLiteral}     { return JavaToken.CHARLIT; }
-{NullLiteral}          { return JavaToken.NULLLIT; }
-{StringLiteral}        { return JavaToken.STRINGLIT; }
-{FloatingPointLiteral} { return JavaToken.FLOATINGLIT; }
-{BooleanLiteral}       { return JavaToken.BOOLEANLIT; }
-{IntegerLiteral}       { return JavaToken.INTEGERLIT; }
-{Identifier}           { return JavaToken.ID; }
+{FloatingPointLiteral} { return JavaToken.FLOATING_POINT_LITERAL; }
+{IntegerLiteral}       { return JavaToken.INTEGER_LITERAL; }
+{StringLiteral}        { return JavaToken.STRING_LITERAL; }
+{CharacterLiteral}     { return JavaToken.CHARACTER_LITERAL; }
+{Identifier}           { return JavaToken.IDENTIFIER; }
 <<EOF>>                { return JavaToken.EOF; }
