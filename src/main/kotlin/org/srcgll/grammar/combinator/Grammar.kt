@@ -2,7 +2,6 @@ package org.srcgll.grammar.combinator
 
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.incrementalDfs
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Terminal
 import java.util.HashSet
@@ -30,7 +29,7 @@ open class Grammar {
 
 
     /**
-     * Builds a Rsm for the grammar
+     * Builds a new Rsm for grammar
      */
     private fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }
