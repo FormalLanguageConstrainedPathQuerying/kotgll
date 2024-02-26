@@ -29,18 +29,11 @@ private fun getAllStates(startState: RsmState): HashSet<RsmState> {
 }
 
 fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
-    var lastId = 0
-    val stateToId: HashMap<RsmState, Int> = HashMap()
-
-    fun getId(state: RsmState): Int {
-        return stateToId.getOrPut(state) { lastId++ }
-    }
-
     val states = getAllStates(startState)
     File(pathToTXT).printWriter().use { out ->
         out.println(
             """StartState(
-            |id=${getId(startState)},
+            |id=${startState.id},
             |nonterminal=Nonterminal("${startState.nonterminal.name}"),
             |isStart=${startState.isStart},
             |isFinal=${startState.isFinal}
@@ -52,7 +45,7 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
         states.forEach { state ->
             out.println(
                 """State(
-                |id=${getId(state)},
+                |id=${state.id},
                 |nonterminal=Nonterminal("${state.nonterminal.name}"),
                 |isStart=${state.isStart},
                 |isFinal=${state.isFinal}
@@ -76,8 +69,8 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
                 for (destState in destStates) {
                     out.println(
                         """${typeView}Edge(
-                        |tail=${getId(state)},
-                        |head=${getId(destState)},
+                        |tail=${state.id},
+                        |head=${destState.id},
                         |$typeLabel=$typeView("$symbolView")
                         |)""".trimMargin().replace("\n", "")
                     )
@@ -90,16 +83,6 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
 
 
 fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
-    var lastId = 0
-    val stateToId: HashMap<RsmState, String> = HashMap()
-
-    fun getId(state: RsmState): String {
-        if (state is PrintableRsmState) {
-            return "${state.nonterminal.name}_${state.pathLabels.first()}"
-        }
-        return stateToId.getOrPut(state) { lastId++.toString() }
-    }
-
     val states = getAllStates(startState)
     val boxes: HashMap<Nonterminal, HashSet<RsmState>> = HashMap()
 
@@ -116,7 +99,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
         states.forEach { state ->
             val shape = if (state.isFinal) "doublecircle" else "circle"
             val color = if (state.isStart) "green" else if (state.isFinal) "red" else "black"
-            val id = getId(state)
+            val id = state.id
             val name = state.nonterminal.name
             out.println("$id [label = \"$name,$id\", shape = $shape, color = $color]")
         }
@@ -131,7 +114,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
         states.forEach { state ->
             state.outgoingEdges.forEach { (symbol, destStates) ->
                 destStates.forEach { destState ->
-                    out.println("${getId(state)} -> ${getId(destState)} [label = \"${getView(symbol)}\"]")
+                    out.println("${state.id} -> ${destState.id} [label = \"${getView(symbol)}\"]")
                 }
             }
         }
@@ -140,7 +123,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
             out.println("subgraph cluster_${box.key.name} {")
 
             box.value.forEach { state ->
-                out.println(getId(state))
+                out.println(state.id)
             }
             out.println("label = \"${box.key.name}\"")
             out.println("}")

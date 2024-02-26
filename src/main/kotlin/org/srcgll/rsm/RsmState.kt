@@ -8,13 +8,24 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 import java.util.*
-
+import kotlin.collections.HashMap
 
 open class RsmState(
     val nonterminal: Nonterminal,
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
 ) {
+    val id:String = getId(nonterminal)
+
+    companion object{
+        private val counters = HashMap<Nonterminal, Int>()
+        private fun getId(nt: Nonterminal): String{
+            val id = counters.getOrPut(nt) { 0 }
+            counters[nt] = id + 1
+            return "${nt.name}_${(id)}"
+        }
+    }
+
     val outgoingEdges get() = terminalEdges.plus(nonterminalEdges)
 
     /**

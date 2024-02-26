@@ -2,7 +2,6 @@ package org.srcgll.grammar.combinator
 
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.rsm.PrintableRsmState
 import org.srcgll.rsm.RsmState
 
 
@@ -18,18 +17,8 @@ open class Grammar {
     }
 
 
-    fun buildPrintableRsm(): PrintableRsmState {
-        nonTerms.forEach { it.buildPrintableRsmBox() }
-        val startState = startNt.getNonterminal()?.startState
-        //if nonterminal not initialized -- it will be checked in buildRsmBox()
-        return startState as PrintableRsmState
-    }
-
-
     /**
      * Builds a new Rsm for grammar
-     *
-     * Each call of Rsm building update links to startState in nonterminals!!!
      */
     fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }

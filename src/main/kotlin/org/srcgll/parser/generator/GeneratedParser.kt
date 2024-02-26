@@ -1,10 +1,17 @@
 package org.srcgll.parser.generator
 
+import org.srcgll.descriptors.Descriptor
+import org.srcgll.exceptions.ParsingException
 import org.srcgll.grammar.combinator.Grammar
+import org.srcgll.input.Edge
 import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.IGll
 import org.srcgll.parser.context.Context
+import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.sppf.node.SppfNode
 
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     IGll<VertexType, LabelType> {
@@ -19,5 +26,55 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
             ctx = Context(grammar.buildRsm(), value)
         }
 
+    protected abstract val NtFuncs: HashMap<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
+
+    override fun parse(descriptor: Descriptor<VertexType>) {
+        val state = descriptor.rsmState
+        val nt = state.nonterminal
+
+        val handleEdges = NtFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
+
+        val pos = descriptor.inputPosition
+
+        ctx.descriptors.addToHandled(descriptor)
+        val curSppfNode = descriptor.getCurSppfNode(ctx)
+
+        val leftExtent = curSppfNode?.leftExtent
+        val rightExtent = curSppfNode?.rightExtent
+
+        checkAcceptance(curSppfNode, leftExtent, rightExtent, state.nonterminal)
+
+        for (inputEdge in ctx.input.getEdges(pos)) {
+            if (inputEdge.label.terminal == null) {
+                input.handleNullLabel(descriptor, curSppfNode, inputEdge, ctx)
+                continue
+            }
+        }
+        handleEdges(descriptor, curSppfNode)
+
+        if (state.isFinal) pop(descriptor.gssNode, curSppfNode, pos)
+
+    }
+
+    protected fun handleTerminal(
+        terminal: Terminal<String>, state: RsmState,
+        inputEdge: Edge<VertexType, LabelType>,
+        descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?
+    ) {
+        val newStates = state.terminalEdges[terminal]!!
+
+        if (inputEdge.label.terminal == terminal) {
+            for (target in newStates) {
+                handleTerminalOrEpsilonEdge(
+                    descriptor,
+                    curSppfNode,
+                    terminal,
+                    target,
+                    inputEdge.head,
+                    0
+                )
+            }
+        }
+    }
 
 }
