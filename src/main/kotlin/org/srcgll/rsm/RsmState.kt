@@ -1,19 +1,39 @@
 package org.srcgll.rsm
 
+import org.srcgll.grammar.combinator.regexp.Empty
+import org.srcgll.grammar.combinator.regexp.Nt
+import org.srcgll.grammar.combinator.regexp.Regexp
+import org.srcgll.grammar.combinator.regexp.Term
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
+import java.util.*
+
 
 open class RsmState(
     val nonterminal: Nonterminal,
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
 ) {
-    val outgoingEdges: HashMap<Symbol, HashSet<RsmState>> = HashMap()
+    val outgoingEdges get() = terminalEdges.plus(nonterminalEdges)
+
+    /**
+     * map from terminal to edges set
+     */
+    var terminalEdges = HashMap<Terminal<*>, HashSet<RsmState>>()
+        private set
+
+    /**
+     * map from nonterminal to edges set
+     */
+    var nonterminalEdges = HashMap<Nonterminal, HashSet<RsmState>>()
+        private set
+
     /**
      * Keep a list of all available RsmStates
      */
     private val targetStates: HashSet<RsmState> = HashSet()
+
     /**
      * A set of terminals that can be used to move from a given state to other states.
      * Moreover, if there are several different edges that can be used to move to one state,
@@ -26,37 +46,73 @@ open class RsmState(
     override fun toString() = "RsmState(nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
     open fun addEdge(symbol: Symbol, destinationState: RsmState) {
-        if (symbol is Terminal<*>) {
-            addRecoveryInfo(symbol, destinationState)
+        val destinationStates: HashSet<RsmState>
+        when (symbol) {
+            is Terminal<*> -> {
+                destinationStates = terminalEdges.getOrPut(symbol) { hashSetOf() }
+                addRecoveryInfo(symbol, destinationState)
+            }
+
+            is Nonterminal -> {
+                destinationStates = nonterminalEdges.getOrPut(symbol) { hashSetOf() }
+            }
+
+            else -> throw RsmException("Unsupported type of symbol")
         }
-        val destinationStates = outgoingEdges.getOrPut(symbol) { hashSetOf() }
         destinationStates.add(destinationState)
     }
 
-    protected fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
+    fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
         if (!targetStates.contains(head)) {
             errorRecoveryLabels.add(symbol)
             targetStates.add(head)
         }
     }
 
-    fun getTerminalEdges(): HashMap<Terminal<*>, HashSet<RsmState>> {
-        val terminalEdges = HashMap<Terminal<*>, HashSet<RsmState>>()
-        for ((symbol, edges) in outgoingEdges) {
-            if (symbol is Terminal<*>) {
-                terminalEdges[symbol] = edges
-            }
-        }
-        return terminalEdges
+    protected open fun getNewState(regex: Regexp): RsmState {
+        return RsmState(this.nonterminal, isStart = false, regex.acceptEpsilon())
     }
 
-    fun getNonterminalEdges(): HashMap<Nonterminal, HashSet<RsmState>> {
-        val nonTerminalEdges = HashMap<Nonterminal, HashSet<RsmState>>()
-        for ((symbol, edges) in outgoingEdges) {
-            if (symbol is Nonterminal) {
-                nonTerminalEdges[symbol] = edges
+    /**
+     * Build RSM from given state
+     */
+    fun buildRsmBox(rsmDescription: Regexp) {
+        val regexpToProcess = Stack<Regexp>()
+        val regexpToRsmState = HashMap<Regexp, RsmState>()
+        regexpToRsmState[rsmDescription] = this
+
+        val alphabet = rsmDescription.getAlphabet()
+
+        regexpToProcess.add(rsmDescription)
+
+        while (!regexpToProcess.empty()) {
+            val regexp = regexpToProcess.pop()
+            val state = regexpToRsmState[regexp]
+
+            for (symbol in alphabet) {
+                val newState = regexp.derive(symbol)
+                if (newState !is Empty) {
+                    if (!regexpToRsmState.containsKey(newState)) {
+                        regexpToProcess.add(newState)
+                    }
+                    val destinationState = regexpToRsmState.getOrPut(newState) { getNewState(newState) }
+
+                    when (symbol) {
+                        is Term<*> -> {
+
+                            state?.addEdge(symbol.terminal as Terminal<*>, destinationState)
+                        }
+
+                        is Nt -> {
+                            if (!symbol.isInitialized()) {
+                                throw IllegalArgumentException("Not initialized Nt used in description of \"${symbol.nonterm.name}\"")
+                            }
+                            state?.addEdge(symbol.nonterm, destinationState)
+                        }
+                    }
+                }
             }
         }
-        return nonTerminalEdges
     }
+
 }

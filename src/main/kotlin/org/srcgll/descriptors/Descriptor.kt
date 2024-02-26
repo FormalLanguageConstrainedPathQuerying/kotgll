@@ -1,6 +1,8 @@
 package org.srcgll.descriptors
 
 import org.srcgll.gss.GssNode
+import org.srcgll.input.ILabel
+import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.sppf.node.SppfNode
 
@@ -25,6 +27,19 @@ open class Descriptor<VertexType>(
         if (other.inputPosition != inputPosition) return false
 
         return true
+    }
+
+    fun <LabelType : ILabel> getCurSppfNode(ctx: IContext<VertexType, LabelType>): SppfNode<VertexType>? {
+        return if (rsmState.isStart && rsmState.isFinal) {
+            // if nonterminal accept epsilon
+            ctx.sppf.getParentNode(
+                rsmState,
+                sppfNode,
+                ctx.sppf.getOrCreateIntermediateSppfNode(rsmState, inputPosition, inputPosition, weight = 0)
+            )
+        } else {
+            sppfNode
+        }
     }
 }
 

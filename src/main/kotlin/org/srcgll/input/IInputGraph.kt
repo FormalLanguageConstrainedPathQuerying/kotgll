@@ -48,19 +48,11 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
     ) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
-        val gssNode = curDescriptor.gssNode
-        val terminalEdges = state.getTerminalEdges()
-        val nonterminalEdges = state.getNonterminalEdges()
+        val terminalEdges = state.terminalEdges
+        val nonterminalEdges = state.nonterminalEdges
         for (inputEdge in ctx.input.getEdges(pos)) {
             if (inputEdge.label.terminal == null) {
-                val descriptor = Descriptor(
-                    state, gssNode, ctx.sppf.getParentNode(
-                        state, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
-                            terminal = null, pos, inputEdge.head
-                        )
-                    ), inputEdge.head
-                )
-                ctx.addDescriptor(descriptor)
+                handleNullLabel(curDescriptor, curSppfNode, inputEdge, ctx)
                 continue
             }
             for ((edgeTerminal, targetStates) in terminalEdges) {
@@ -75,6 +67,22 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
         for ((edgeNonterminal, targetStates) in nonterminalEdges) {
             handleNonterminalEdge(curDescriptor, edgeNonterminal, targetStates, curSppfNode)
         }
+    }
+
+    fun handleNullLabel(
+        descriptor: Descriptor<VertexType>,
+        curSppfNode: SppfNode<VertexType>?,
+        inputEdge: Edge<VertexType, LabelType>,
+        ctx: IContext<VertexType, LabelType>
+    ) {
+        val newDescriptor = Descriptor(
+            descriptor.rsmState, descriptor.gssNode, ctx.sppf.getParentNode(
+                descriptor.rsmState, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
+                    terminal = null, descriptor.inputPosition, inputEdge.head
+                )
+            ), inputEdge.head
+        )
+        ctx.addDescriptor(newDescriptor)
     }
 
 

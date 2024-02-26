@@ -31,6 +31,6 @@ class TerminalsEqualsTest : RsmTest {
 
     @Test
     fun testRsm() {
-        assertTrue { equalsByNtName(AStar().getRsm(), AStarTerms().getRsm()) }
+        assertTrue { equalsByNtName(AStar().buildRsm(), AStarTerms().buildRsm()) }
     }
 }

@@ -2,12 +2,13 @@ package org.srcgll.grammar.combinator
 
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
+import org.srcgll.rsm.PrintableRsmState
 import org.srcgll.rsm.RsmState
+
 
 open class Grammar {
     val nonTerms = ArrayList<Nt>()
 
-    private var startState: RsmState? = null
     private lateinit var startNt: Nt
 
     fun setStart(expr: Regexp) {
@@ -16,23 +17,24 @@ open class Grammar {
         } else throw IllegalArgumentException("Only NT object can be start state for Grammar")
     }
 
-    /**
-     * Builds or returns a Rsm built earlier for the grammar
-     */
-    fun getRsm(): RsmState {
-        if (startState == null) {
-            buildRsm()
-        }
-        return startState as RsmState
+
+    fun buildPrintableRsm(): PrintableRsmState {
+        nonTerms.forEach { it.buildPrintableRsmBox() }
+        val startState = startNt.getNonterminal()?.startState
+        //if nonterminal not initialized -- it will be checked in buildRsmBox()
+        return startState as PrintableRsmState
     }
 
-    /**
-     * Builds a new Rsm for the grammar
-     */
 
-    private fun buildRsm(): RsmState {
+    /**
+     * Builds a new Rsm for grammar
+     *
+     * Each call of Rsm building update links to startState in nonterminals!!!
+     */
+    fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }
-        startState = startNt.getNonterminal()?.startState
-        return startState as RsmState
+        val startState = startNt.getNonterminal()?.startState
+        //if nonterminal not initialized -- it will be checked in buildRsmBox()
+        return startState!!
     }
 }

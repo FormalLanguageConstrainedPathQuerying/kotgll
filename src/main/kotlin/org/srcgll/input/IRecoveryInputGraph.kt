@@ -34,14 +34,14 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
             errorRecoveryEdges,
             handleTerminalOrEpsilonEdge,
             curDescriptor,
-            curDescriptor.rsmState.getTerminalEdges()
+            curDescriptor.rsmState.terminalEdges
         )
     }
 
     private fun createRecoveryEdges(curDescriptor: Descriptor<VertexType>): HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>> {
         val pos = curDescriptor.inputPosition
         val state = curDescriptor.rsmState
-        val terminalEdges = state.getTerminalEdges()
+        val terminalEdges = state.terminalEdges
 
         val errorRecoveryEdges = HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>()
         val currentEdges = getEdges(pos)

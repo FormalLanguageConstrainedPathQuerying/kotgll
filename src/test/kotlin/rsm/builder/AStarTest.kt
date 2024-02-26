@@ -24,6 +24,6 @@ class AStarTest : RsmTest {
     fun testRsm() {
         val grammar = AStar()
         assertNotNull(grammar.S.getNonterminal())
-        assertTrue { equalsByNtName(getAStarRsm("S"), grammar.getRsm()) }
+        assertTrue { equalsByNtName(getAStarRsm("S"), grammar.buildRsm()) }
     }
 }

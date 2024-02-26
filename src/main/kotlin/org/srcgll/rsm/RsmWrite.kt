@@ -91,10 +91,13 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
 
 fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
     var lastId = 0
-    val stateToId: HashMap<RsmState, Int> = HashMap()
+    val stateToId: HashMap<RsmState, String> = HashMap()
 
-    fun getId(state: RsmState): Int {
-        return stateToId.getOrPut(state) { lastId++ }
+    fun getId(state: RsmState): String {
+        if (state is PrintableRsmState) {
+            return "${state.nonterminal.name}_${state.pathLabels.first()}"
+        }
+        return stateToId.getOrPut(state) { lastId++.toString() }
     }
 
     val states = getAllStates(startState)
@@ -120,7 +123,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
 
         fun getView(symbol: Symbol): String {
             return when (symbol) {
-                is Nonterminal -> symbol.name?: "unnamed nonterminal ${symbol.hashCode()}"
+                is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
                 is Terminal<*> -> symbol.value.toString()
                 else -> symbol.toString()
             }
@@ -137,7 +140,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
             out.println("subgraph cluster_${box.key.name} {")
 
             box.value.forEach { state ->
-                out.println("${getId(state)}")
+                out.println(getId(state))
             }
             out.println("label = \"${box.key.name}\"")
             out.println("}")

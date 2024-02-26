@@ -5,7 +5,7 @@ import org.srcgll.sppf.node.PackedSppfNode
 import org.srcgll.sppf.node.NonterminalSppfNode
 import org.srcgll.sppf.node.TerminalSppfNode
 
-fun buildStringFromSppf(sppfNode: ISppfNode): MutableList<String> {
+fun buildStringsFromSppf(sppfNode: ISppfNode): MutableList<String> {
     val visited: HashSet<ISppfNode> = HashSet()
     val stack: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
     val result: MutableList<String> = ArrayList()
@@ -39,4 +39,8 @@ fun buildStringFromSppf(sppfNode: ISppfNode): MutableList<String> {
 
     }
     return result
+}
+
+fun buildStringFromSppf(sppfNode: ISppfNode): String {
+    return buildStringsFromSppf(sppfNode).joinToString(separator = "")
 }
