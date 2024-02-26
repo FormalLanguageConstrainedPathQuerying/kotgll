@@ -7,6 +7,7 @@ import org.srcgll.input.ILabel
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
@@ -14,7 +15,7 @@ import org.srcgll.sppf.node.SymbolSppfNode
  * Interface for Gll parser with helper functions and main parsing loop
  */
 interface IGll<VertexType, LabelType : ILabel> {
-    val ctx: IContext<VertexType, LabelType>
+    var ctx: IContext<VertexType, LabelType>
 
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         initDescriptors(ctx.input)
@@ -117,4 +118,72 @@ interface IGll<VertexType, LabelType : ILabel> {
             }
         }
     }
+
+    /**
+     * Check that parsed nonterminal accepts whole input
+     * Update result of parsing
+     */
+    fun checkAcceptance(
+        sppfNode: SppfNode<VertexType>?,
+        leftExtent: VertexType?,
+        rightExtent: VertexType?,
+        nonterminal: Nonterminal
+    ) {
+        if (sppfNode is SymbolSppfNode<VertexType>
+            && nonterminal == ctx.startState.nonterminal
+            && ctx.input.isStart(leftExtent!!)
+            && ctx.input.isFinal(rightExtent!!)
+        ) {
+            if (ctx.parseResult == null || ctx.parseResult!!.weight > sppfNode.weight) {
+                ctx.parseResult = sppfNode
+            }
+
+            //update reachability
+            val pair = Pair(leftExtent, rightExtent)
+            val distance = ctx.sppf.minDistance(sppfNode)
+
+            ctx.reachabilityPairs[pair] = if (ctx.reachabilityPairs.containsKey(pair)) {
+                minOf(distance, ctx.reachabilityPairs[pair]!!)
+            } else {
+                distance
+            }
+        }
+    }
+    fun handleNonterminalEdge(
+        descriptor: Descriptor<VertexType>,
+        nonterminal: Nonterminal,
+        targetStates: HashSet<RsmState>,
+        curSppfNode: SppfNode<VertexType>?
+    ) {
+        for (target in targetStates) {
+            val newDescriptor = Descriptor(
+                nonterminal.startState,
+                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
+                sppfNode = null,
+                descriptor.inputPosition
+            )
+            ctx.addDescriptor(newDescriptor)
+        }
+    }
+
+
+
+    fun handleTerminalOrEpsilonEdge(
+        curDescriptor: Descriptor<VertexType>,
+        curSppfNode: SppfNode<VertexType>?,
+        terminal: Terminal<*>?,
+        targetState: RsmState,
+        targetVertex: VertexType,
+        targetWeight: Int = 0,
+    ) {
+        val descriptor = Descriptor(
+            targetState, curDescriptor.gssNode, ctx.sppf.getParentNode(
+                targetState, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
+                    terminal, curDescriptor.inputPosition, targetVertex, targetWeight
+                )
+            ), targetVertex
+        )
+        addDescriptor(descriptor)
+    }
+
 }

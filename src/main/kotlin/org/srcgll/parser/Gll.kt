@@ -8,15 +8,12 @@ import org.srcgll.parser.context.Context
 import org.srcgll.parser.context.IContext
 import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.ISppfNode
 import org.srcgll.sppf.node.SppfNode
-import org.srcgll.sppf.node.SymbolSppfNode
 
 
 class Gll<VertexType, LabelType : ILabel> private constructor(
-    override val ctx: IContext<VertexType, LabelType>,
+    override var ctx: IContext<VertexType, LabelType>,
 ) : IGll<VertexType, LabelType> {
 
     companion object {
@@ -52,17 +49,9 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
     override fun parse(curDescriptor: Descriptor<VertexType>) {
         val state = curDescriptor.rsmState
         val pos = curDescriptor.inputPosition
+        val curSppfNode = curDescriptor.getCurSppfNode(ctx)
 
         ctx.descriptors.addToHandled(curDescriptor)
-
-        val curSppfNode = if (state.isStart && state.isFinal) {
-            // if nonterminal accept epsilon
-            ctx.sppf.getParentNode(
-                state, curDescriptor.sppfNode, ctx.sppf.getOrCreateIntermediateSppfNode(state, pos, pos, weight = 0)
-            )
-        } else {
-            curDescriptor.sppfNode
-        }
 
         val leftExtent = curSppfNode?.leftExtent
         val rightExtent = curSppfNode?.rightExtent
@@ -79,76 +68,6 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
 
         if (state.isFinal) pop(curDescriptor.gssNode, curSppfNode, pos)
     }
-
-
-    private fun handleNonterminalEdge(
-        descriptor: Descriptor<VertexType>,
-        nonterminal: Nonterminal,
-        targetStates: HashSet<RsmState>,
-        curSppfNode: SppfNode<VertexType>?
-    ) {
-        for (target in targetStates) {
-            val newDescriptor = Descriptor(
-                nonterminal.startState,
-                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
-                sppfNode = null,
-                descriptor.inputPosition
-            )
-            ctx.addDescriptor(newDescriptor)
-        }
-    }
-
-
-    /**
-     * Check that parsed nonterminal accepts whole input
-     * Update result of parsing
-     */
-    private fun checkAcceptance(
-        sppfNode: SppfNode<VertexType>?,
-        leftExtent: VertexType?,
-        rightExtent: VertexType?,
-        nonterminal: Nonterminal
-    ) {
-        if (sppfNode is SymbolSppfNode<VertexType>
-            && nonterminal == ctx.startState.nonterminal
-            && ctx.input.isStart(leftExtent!!)
-            && ctx.input.isFinal(rightExtent!!)
-        ) {
-            if (ctx.parseResult == null || ctx.parseResult!!.weight > sppfNode.weight) {
-                ctx.parseResult = sppfNode
-            }
-
-            //update reachability
-            val pair = Pair(leftExtent, rightExtent)
-            val distance = ctx.sppf.minDistance(sppfNode)
-
-            ctx.reachabilityPairs[pair] = if (ctx.reachabilityPairs.containsKey(pair)) {
-                minOf(distance, ctx.reachabilityPairs[pair]!!)
-            } else {
-                distance
-            }
-        }
-    }
-
-
-    private fun handleTerminalOrEpsilonEdge(
-        curDescriptor: Descriptor<VertexType>,
-        curSppfNode: SppfNode<VertexType>?,
-        terminal: Terminal<*>?,
-        targetState: RsmState,
-        targetVertex: VertexType,
-        targetWeight: Int = 0,
-    ) {
-        val descriptor = Descriptor(
-            targetState, curDescriptor.gssNode, ctx.sppf.getParentNode(
-                targetState, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
-                    terminal, curDescriptor.inputPosition, targetVertex, targetWeight
-                )
-            ), targetVertex
-        )
-        addDescriptor(descriptor)
-    }
-
 
 }
 

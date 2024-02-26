@@ -8,7 +8,7 @@ import org.srcgll.parser.Gll
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.buildStringFromSppf
+import org.srcgll.sppf.buildStringsFromSppf
 import java.io.IOException
 import kotlin.io.path.Path
 import kotlin.test.assertNotNull
@@ -80,7 +80,7 @@ class TestRecovery {
 
         val result = Gll.recoveryGll(startState, inputGraph).parse()
         
-        val recoveredString = buildStringFromSppf(result.first!!)
+        val recoveredString = buildStringsFromSppf(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 

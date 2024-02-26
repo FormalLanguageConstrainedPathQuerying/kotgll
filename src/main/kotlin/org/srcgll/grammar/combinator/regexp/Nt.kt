@@ -1,57 +1,29 @@
 package org.srcgll.grammar.combinator.regexp
 
 import org.srcgll.grammar.combinator.Grammar
+import org.srcgll.rsm.PrintableRsmState
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
-import java.util.*
 import kotlin.reflect.KProperty
 
 open class Nt : DerivedSymbol {
-    private lateinit var nonterm: Nonterminal
+    lateinit var nonterm: Nonterminal
+        private set
+
     private lateinit var rsmDescription: Regexp
 
-    private fun getNewState(regex: Regexp): RsmState {
-        return RsmState(nonterm, isStart = false, regex.acceptEpsilon())
+    fun isInitialized(): Boolean {
+        return ::nonterm.isInitialized
     }
 
-    fun buildRsmBox(): RsmState {
-        val regexpToProcess = Stack<Regexp>()
-        val regexpToRsmState = HashMap<Regexp, RsmState>()
-        regexpToRsmState[rsmDescription] = nonterm.startState
+    fun buildRsmBox() {
+        nonterm.startState.buildRsmBox(rsmDescription)
+    }
 
-        val alphabet = rsmDescription.getAlphabet()
-
-        regexpToProcess.add(rsmDescription)
-
-        while (!regexpToProcess.empty()) {
-            val regexp = regexpToProcess.pop()
-            val state = regexpToRsmState[regexp]
-
-            for (symbol in alphabet) {
-                val newState = regexp.derive(symbol)
-                if (newState !is Empty) {
-                    if (!regexpToRsmState.containsKey(newState)) {
-                        regexpToProcess.add(newState)
-                    }
-                    val toState = regexpToRsmState.getOrPut(newState) { getNewState(newState) }
-
-                    when (symbol) {
-                        is Term<*> -> {
-                            state?.addEdge(symbol.terminal as Terminal<*>, toState)
-                        }
-
-                        is Nt -> {
-                            if (!symbol::nonterm.isInitialized) {
-                                throw IllegalArgumentException("Not initialized Nt used in description of \"${nonterm.name}\"")
-                            }
-                            state?.addEdge(symbol.nonterm, toState)
-                        }
-                    }
-                }
-            }
-        }
-        return nonterm.startState
+    fun buildPrintableRsmBox() {
+        val printableState = PrintableRsmState(nonterm.startState)
+        printableState.buildRsmBox(rsmDescription)
+        nonterm.startState = printableState
     }
 
     override fun getNonterminal(): Nonterminal? {

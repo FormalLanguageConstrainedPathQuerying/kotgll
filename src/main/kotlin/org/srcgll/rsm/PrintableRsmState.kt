@@ -1,5 +1,6 @@
 package org.srcgll.rsm
 
+import org.srcgll.grammar.combinator.regexp.Regexp
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
@@ -9,6 +10,8 @@ class PrintableRsmState(
     isStart: Boolean = false,
     isFinal: Boolean = false,
 ) : RsmState(nonterminal, isStart, isFinal) {
+    constructor(state: RsmState) : this(state.nonterminal, state.isStart, state.isFinal) {}
+
     //All path in rsm from start state to current
     val pathLabels: HashSet<String> = HashSet()
 
@@ -18,32 +21,30 @@ class PrintableRsmState(
         }
     }
 
-    override fun addEdge(symbol: Symbol, destinationState: RsmState) {
-        if (symbol is Terminal<*>) {
-            addRecoveryInfo(symbol, destinationState)
-        }
-        val destinationStates = outgoingEdges.getOrPut(symbol) { hashSetOf() }
-        destinationStates.add(destinationState)
+    override fun getNewState(regex: Regexp): RsmState {
+        return PrintableRsmState(this.nonterminal, isStart = false, regex.acceptEpsilon())
+    }
 
+    override fun addEdge(symbol: Symbol, destinationState: RsmState) {
         val view = getGeneratorView(symbol)
         for (path in pathLabels) {
             if (!destinationState.isStart) {
                 if (destinationState is PrintableRsmState) {
                     destinationState.pathLabels.add(path + view)
-                }
-                else{
+                } else {
                     throw Exception("Only PrintableRsmState can be used in generated Parser")
                 }
             }
         }
+        super.addEdge(symbol, destinationState)
     }
 }
 
 fun <T> getGeneratorView(t: T): String {
-    return if (t is Terminal<*>) {
-        getGeneratorView(t.value)
-    } else {
-        t.hashCode().toString()
+    return when (t) {
+        is Terminal<*> -> getGeneratorView(t.value)
+        is Nonterminal -> t.name!!
+        else -> t.toString()
     }
 }
 
