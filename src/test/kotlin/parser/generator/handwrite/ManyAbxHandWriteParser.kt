@@ -20,7 +20,7 @@ class ManyAbHandWriteParser<VertexType, LabelType : ILabel> :
     override lateinit var ctx: IContext<VertexType, LabelType>
     override val grammar = ManyAbX()
 
-    override val NtFuncs = hashMapOf<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>(
+    override val ntFuncs = hashMapOf<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>(
         grammar.S.getNonterminal()!! to ::parseS,
         grammar.A.getNonterminal()!! to ::parseA
     )

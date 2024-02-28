@@ -17,9 +17,9 @@ import org.srcgll.sppf.node.SppfNode
 class SomeAbHandWriteParser<VertexType, LabelType : ILabel> :
     GeneratedParser<VertexType, LabelType>() {
     override lateinit var ctx: IContext<VertexType, LabelType>
-    override val grammar = SomeAbX()
+    override val grammar: SomeAbX = SomeAbX()
 
-    override val NtFuncs = hashMapOf<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>(
+    override val ntFuncs = hashMapOf<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>(
         grammar.S.getNonterminal()!! to ::parseS,
         grammar.A.getNonterminal()!! to ::parseA
     )
