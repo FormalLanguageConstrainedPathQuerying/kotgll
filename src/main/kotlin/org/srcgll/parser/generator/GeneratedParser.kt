@@ -26,13 +26,13 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
             ctx = Context(grammar.buildRsm(), value)
         }
 
-    protected abstract val NtFuncs: HashMap<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
+    protected abstract val ntFuncs: HashMap<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
 
     override fun parse(descriptor: Descriptor<VertexType>) {
         val state = descriptor.rsmState
         val nt = state.nonterminal
 
-        val handleEdges = NtFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
+        val handleEdges = ntFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
 
         val pos = descriptor.inputPosition
 
