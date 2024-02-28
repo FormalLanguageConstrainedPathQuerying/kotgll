@@ -30,7 +30,7 @@ interface IGll<VertexType, LabelType : ILabel> {
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
 
-    fun parse(curDescriptor: Descriptor<VertexType>)
+    fun parse(descriptor: Descriptor<VertexType>)
 
     /**
      *
