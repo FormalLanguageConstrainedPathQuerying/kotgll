@@ -9,15 +9,13 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
-    implementation(kotlin("reflect"))
-    // https://mvnrepository.com/artifact/com.squareup/kotlinpoet
-    implementation("com.squareup:kotlinpoet:1.16.0")
-    implementation(kotlin("reflect"))
-
-    testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    testImplementation("com.github.tschuchortdev:kotlin-compile-testing:1.5.0")
+  testImplementation(kotlin("test"))
+  testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
+  implementation(kotlin("reflect"))
+  // https://mvnrepository.com/artifact/com.squareup/kotlinpoet
+  implementation("com.squareup:kotlinpoet:1.16.0")
+  implementation(kotlin("reflect"))
 }
 
 tasks.test { useJUnitPlatform() }
