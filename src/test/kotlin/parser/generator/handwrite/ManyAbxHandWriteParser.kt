@@ -68,6 +68,7 @@ class ManyAbHandWriteParser<VertexType, LabelType : ILabel> :
 Grammar for
  *  S = (a b)* | x
  */
+
 class ManyAbX : Grammar() {
     var S by Nt()
     var A by Nt()
