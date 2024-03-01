@@ -1,0 +1,121 @@
+/*
+ * Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+ * or more contributor license agreements. Licensed under the Elastic License
+ * 2.0; you may not use this file except in compliance with the Elastic License
+ * 2.0.
+ */
+
+package org.elasticsearch.xpack.esql.formatter;
+
+import org.elasticsearch.common.collect.Iterators;
+import org.elasticsearch.core.CheckedConsumer;
+import org.elasticsearch.xpack.esql.action.EsqlQueryResponse;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.function.Function;
+
+/**
+ * Formats {@link EsqlQueryResponse} for the textual representation.
+ */
+public class TextFormatter {
+    /**
+     * The minimum width for any column in the formatted results.
+     */
+    private static final int MIN_COLUMN_WIDTH = 15;
+
+    private final EsqlQueryResponse response;
+    private final int[] width;
+    private final Function<Object, String> FORMATTER = Objects::toString;
+
+    /**
+     * Create a new {@linkplain TextFormatter} for formatting responses.
+     */
+    public TextFormatter(EsqlQueryResponse response) {
+        this.response = response;
+        var columns = response.columns();
+        width = new int[columns.size()];
+        for (int i = 0; i < width.length; i++) {
+            width[i] = Math.max(MIN_COLUMN_WIDTH, columns.get(i).name().length());
+        }
+
+        var iterator = response.values();
+        while (iterator.hasNext()) {
+            var row = iterator.next();
+            for (int i = 0; i < width.length; i++) {
+                assert row.hasNext();
+                width[i] = Math.max(width[i], FORMATTER.apply(row.next()).length());
+            }
+            assert row.hasNext() == false;
+        }
+    }
+
+    /**
+     * Format the provided {@linkplain EsqlQueryResponse} optionally including the header lines.
+     */
+    public Iterator<CheckedConsumer<Writer, IOException>> format(boolean includeHeader) {
+        return Iterators.concat(
+            includeHeader && response.columns().size() > 0 ? Iterators.single(this::formatHeader) : Collections.emptyIterator(),
+            formatResults()
+        );
+    }
+
+    private void formatHeader(Writer writer) throws IOException {
+        for (int i = 0; i < width.length; i++) {
+            if (i > 0) {
+                writer.append('|');
+            }
+
+            String name = response.columns().get(i).name();
+            int leftPadding = (width[i] - name.length()) / 2;
+            writePadding(leftPadding, writer);
+            writer.append(name);
+            writePadding(width[i] - name.length() - leftPadding, writer);
+        }
+        writer.append('\n');
+
+        for (int i = 0; i < width.length; i++) {
+            if (i > 0) {
+                writer.append('+');
+            }
+            writer.append("-".repeat(Math.max(0, width[i]))); 
+        }
+        writer.append('\n');
+    }
+
+    private Iterator<CheckedConsumer<Writer, IOException>> formatResults() {
+        return Iterators.map(response.values(), row -> writer -> {
+            for (int i = 0; i < width.length; i++) {
+                assert row.hasNext();
+                if (i > 0) {
+                    writer.append('|');
+                }
+                String string = FORMATTER.apply(row.next());
+                if (string.length() <= width[i]) {
+                    writer.append(string);
+                    writePadding(width[i] - string.length(), writer);
+                } else {
+                    writer.append(string, 0, width[i] - 1);
+                    writer.append('~');
+                }
+            }
+            assert row.hasNext() == false;
+            writer.append('\n');
+        });
+    }
+
+    private static final String PADDING_64 = " ".repeat(64);
+
+    private static void writePadding(int padding, Writer writer) throws IOException {
+        while (padding > PADDING_64.length()) {
+            writer.append(PADDING_64);
+            padding -= PADDING_64.length();
+        }
+        if (padding > 0) {
+            writer.append(PADDING_64, 0, padding);
+        }
+    }
+}

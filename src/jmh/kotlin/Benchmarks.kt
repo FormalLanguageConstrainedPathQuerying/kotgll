@@ -8,22 +8,18 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
-import org.openjdk.jmh.annotations.*
-import org.openjdk.jmh.infra.Blackhole
 import org.srcgll.Gll
 import org.srcgll.ReachabilityMode
 import org.srcgll.RecoveryMode
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.lexer.*
-import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.writeSppfToDot
 import java.io.File
 import java.io.StringReader
-import java.util.concurrent.TimeUnit
 import kotlin.system.measureNanoTime
 import kotlin.time.measureTime
 
@@ -70,113 +66,6 @@ fun getCharStream(input: String): LinearInput<Int, LinearInputLabel> {
 
     return inputGraph
 }
-
-val pathToInput = "/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/BenchmarkSourcesScannerless/"
-
-@State(Scope.Benchmark)
-open class JmhBenchmark {
-
-    @State(Scope.Thread)
-    open class AntlrState{
-        lateinit var file: File
-
-        companion object {
-            lateinit var sources: Iterator<File>
-        }
-
-        @Setup(Level.Trial)
-        fun prepare() {
-            sources = File(pathToInput).walk().filter { it.isFile }.iterator()
-            file = sources.next()
-        }
-
-        @Setup(Level.Iteration)
-        fun nextFile() {
-            if (sources.hasNext()) {
-                file = sources.next()
-                println(file.nameWithoutExtension)
-            }
-        }
-    }
-
-    @State(Scope.Thread)
-    open class GllState{
-        lateinit var file: File
-
-        val startStateJavaTokenized: RsmState
-            get() = JavaGrammar().getRsm()
-
-        companion object {
-            lateinit var sources: Iterator<File>
-        }
-
-        @Setup(Level.Trial)
-        fun prepare() {
-            sources = File(pathToInput).walk().filter { it.isFile }.iterator()
-            file = sources.next()
-        }
-
-        @Setup(Level.Iteration)
-        fun nextFile() {
-            if (sources.hasNext()) {
-                file = sources.next()
-                println(file.nameWithoutExtension)
-            }
-        }
-    }
-
-    @State(Scope.Thread)
-    open class GllScannerlessState {
-        lateinit var file: File
-
-        val startStateJavaScannerless: RsmState = JavaGrammarScannerless().getRsm()
-
-        companion object {
-            lateinit var sources: Iterator<File>
-        }
-
-        @Setup(Level.Trial)
-        fun prepare() {
-            GllState.sources = File(pathToInput).walk().filter { it.isFile }.iterator()
-            file = GllState.sources.next()
-        }
-
-        @Setup(Level.Iteration)
-        fun nextFile() {
-            if (GllState.sources.hasNext()) {
-                file = GllState.sources.next()
-                println(file.nameWithoutExtension)
-            }
-        }
-    }
-
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    fun measureAntlr(stateObject: AntlrState, blackhole: Blackhole) {
-        val antlrParser = Java8Parser(CommonTokenStream(Java8Lexer(CharStreams.fromString(stateObject.file.readText()))))
-        blackhole.consume(antlrParser.compilationUnit())
-    }
-
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    fun measureGll(stateObject: GllState, blackhole: Blackhole) {
-        val inputGraph = getTokenStream(stateObject.file.readText())
-        val gll = Gll(stateObject.startStateJavaTokenized, inputGraph, recovery = RecoveryMode.ON, reachability = ReachabilityMode.REACHABILITY)
-
-        blackhole.consume(gll.parse())
-    }
-
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    fun measureGllScannerless(stateObject: GllScannerlessState, blackhole: Blackhole) {
-        val inputGraph = getCharStream(stateObject.file.readText().replace(" ", "").replace("\n", ""))
-        val gll = Gll(stateObject.startStateJavaScannerless, inputGraph, recovery = RecoveryMode.ON, reachability = ReachabilityMode.REACHABILITY)
-
-        blackhole.consume(gll.parse())
-    }
-}
-
-
 
 fun main(args: Array<String>) {
     val parser = ArgParser("srcgll.benchmarks")

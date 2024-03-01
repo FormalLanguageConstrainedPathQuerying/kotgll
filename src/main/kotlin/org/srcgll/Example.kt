@@ -6,6 +6,7 @@ import org.srcgll.input.Edge
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
 import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.writeSppfToDot
 
@@ -202,6 +203,7 @@ fun main() {
     val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
         Gll(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF, reachability = ReachabilityMode.ALLPAIRS).parse()
 
+    writeRsmToDot(rsmAnBnStartState, "test.dot")
     println("AnBn Language Grammar")
     println("Reachability pairs : ")
 

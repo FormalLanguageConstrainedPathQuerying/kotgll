@@ -38,27 +38,34 @@ configure<SourceSetContainer> {
   }
   named("jmh") {
     kotlin.srcDir("src/jmh/kotlin")
+    resources.srcDir("src/jmh/resources")
   }
 }
+
+
+
 
 jmh {
   duplicateClassesStrategy = DuplicatesStrategy.EXCLUDE
   zip64 = true
-  profilers.addAll("gc", "stack")
+//  profilers.addAll("gc", "stack")
   warmupForks = 0
   warmupBatchSize = 1
   warmupIterations = 5
   fork = 1
-  batchSize = 5
-  iterations = 100
+  batchSize = 1
+  iterations = 15
   verbosity = "EXTRA"
-  jmhTimeout = "600s"
-  benchmarkMode.addAll("avgt")
+  jmhTimeout = "300s"
+  benchmarkMode.addAll("ss")
   failOnError = false
 //  forceGC = true
   resultFormat = "CSV"
 }
 
+tasks.processJmhResources {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 
 tasks.withType<Jar> {
   dependsOn.addAll(listOf("compileJava", "compileKotlin", "processResources"))

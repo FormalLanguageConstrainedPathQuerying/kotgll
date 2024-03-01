@@ -1,0 +1,34 @@
+package org.elasticsearch.compute.aggregation;
+
+import java.lang.Integer;
+import java.lang.Override;
+import java.lang.String;
+import java.util.List;
+import org.elasticsearch.compute.operator.DriverContext;
+
+/**
+ * {@link AggregatorFunctionSupplier} implementation for {@link SumLongAggregator}.
+ * This class is generated. Do not edit it.
+ */
+public final class SumLongAggregatorFunctionSupplier implements AggregatorFunctionSupplier {
+  private final List<Integer> channels;
+
+  public SumLongAggregatorFunctionSupplier(List<Integer> channels) {
+    this.channels = channels;
+  }
+
+  @Override
+  public SumLongAggregatorFunction aggregator(DriverContext driverContext) {
+    return SumLongAggregatorFunction.create(driverContext, channels);
+  }
+
+  @Override
+  public SumLongGroupingAggregatorFunction groupingAggregator(DriverContext driverContext) {
+    return SumLongGroupingAggregatorFunction.create(channels, driverContext);
+  }
+
+  @Override
+  public String describe() {
+    return "sum of longs";
+  }
+}

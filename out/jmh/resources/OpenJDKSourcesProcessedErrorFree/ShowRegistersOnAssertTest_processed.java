@@ -1,0 +1,76 @@
+/*
+ * Copyright (c) 2018, 2022 SAP SE. All rights reserved.
+ * Copyright (c) 2018, 2023, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
+
+/*
+ * @test
+ * @bug 8191101
+ * @summary Show Registers on assert/guarantee
+ * @library /test/lib
+ * @requires vm.flagless
+ * @requires (vm.debug == true) & (os.family == "linux")
+ * @author Thomas Stuefe (SAP)
+ * @modules java.base/jdk.internal.misc
+ *          java.management
+ * @run driver ShowRegistersOnAssertTest
+ */
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.regex.Pattern;
+
+import jdk.test.lib.process.OutputAnalyzer;
+import jdk.test.lib.Platform;
+import jdk.test.lib.process.ProcessTools;
+
+public class ShowRegistersOnAssertTest {
+
+    private static void do_test(boolean do_assert, 
+        boolean show_registers_on_assert) throws Exception
+    {
+        System.out.println("Testing " + (do_assert ? "assert" : "guarantee") +
+                           " with " + (show_registers_on_assert ? "-XX:+ShowRegistersOnAssert" : "-XX:-ShowRegistersOnAssert") + "...");
+        ProcessBuilder pb = ProcessTools.createLimitedTestJavaProcessBuilder(
+            "-XX:+UnlockDiagnosticVMOptions", "-Xmx100M", "-XX:-CreateCoredumpOnCrash",
+            "-XX:ErrorHandlerTest=" + (do_assert ? "1" : "2"),
+            (show_registers_on_assert ? "-XX:+ShowRegistersOnAssert" : "-XX:-ShowRegistersOnAssert"),
+            "-version");
+
+        OutputAnalyzer output_detail = new OutputAnalyzer(pb.start());
+
+        output_detail.shouldMatch("# A fatal error has been detected by the Java Runtime Environment:.*");
+        output_detail.shouldMatch("# +Internal Error.*");
+    }
+
+    public static void main(String[] args) throws Exception {
+        do_test(false, false);
+        do_test(false, true);
+        do_test(true, false);
+        do_test(true, true);
+    }
+
+}
+

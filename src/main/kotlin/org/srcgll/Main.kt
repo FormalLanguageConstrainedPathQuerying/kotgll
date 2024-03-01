@@ -13,6 +13,7 @@ import org.srcgll.lexer.*
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.writeSppfToDot
 import org.srcgll.rsm.writeRsmToDot
+import org.srcgll.sppf.node.SppfNode
 import java.io.File
 import java.io.IOException
 import java.io.StringReader
@@ -71,38 +72,42 @@ fun main(args: Array<String>) {
 //    val result = gll.parse()
 //    writeSppfToDot(result.first!!, "./result.dot")
 
-    File("/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/junit4SourcesProcessed/").walk().filter {it.isFile}.forEach {inputPath ->
-        val file = File(inputPath.path)
-        val newFile = File("/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/junit4SourcesProcessedErrorFree/${file.name}")
-        newFile.delete()
-        val input = file.readText()
-        val grammar = JavaGrammar().getRsm()
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        val gll = Gll(grammar, inputGraph, RecoveryMode.OFF, ReachabilityMode.REACHABILITY)
-        val lexer = JavaLexer(StringReader(input))
-        var token: JavaToken
-        var vertexId = 0
-
-        inputGraph.addStartVertex(vertexId)
-        inputGraph.addVertex(vertexId)
-
-        while (true) {
-            try {
-                token = lexer.yylex()
-            } catch (e: java.lang.Error) {
-                return@forEach
-            }
-            if (token == JavaToken.EOF) break
-            inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
-            inputGraph.addVertex(vertexId)
-        }
-
-        val result = gll.parse()
-        if (result.first != null) {
-            file.copyTo(newFile)
-        } else {
-//            println(file.name)
-        }
-    }
+//    File("/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/OpenJDKSourcesProcessed/").walk().filter {it.isFile}.forEach {inputPath ->
+//        val file = File(inputPath.path)
+//        val newFile = File("/home/hollowcoder/Programming/SRC/UCFS/src/jmh/resources/OpenJDKSourcesProcessedErrorFree/${file.name}")
+//        newFile.delete()
+//        val input = file.readText()
+//        val grammar = JavaGrammar().getRsm()
+//        val inputGraph = LinearInput<Int, LinearInputLabel>()
+//        val gll = Gll(grammar, inputGraph, RecoveryMode.OFF, ReachabilityMode.REACHABILITY)
+//        val lexer = JavaLexer(StringReader(input))
+//        var token: JavaToken
+//        var vertexId = 0
+//
+//        inputGraph.addStartVertex(vertexId)
+//        inputGraph.addVertex(vertexId)
+//
+//        while (true) {
+//            try {
+//                token = lexer.yylex()
+//            } catch (e: java.lang.Error) {
+//                return@forEach
+//            }
+//            if (token == JavaToken.EOF) break
+//            inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
+//            inputGraph.addVertex(vertexId)
+//        }
+//        val result: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>>
+//        try {
+//            result = gll.parse()
+//        } catch (e : java.lang.Error) {
+//            return@forEach
+//        }
+//        if (result.first != null) {
+//            file.copyTo(newFile)
+//        } else {
+////            println(file.name)
+//        }
+//    }
 
 }
