@@ -4,22 +4,22 @@ import org.srcgll.grammar.combinator.regexp.Empty
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
 import org.srcgll.grammar.combinator.regexp.Term
+import org.srcgll.incrementalDfs
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 import java.util.*
-import kotlin.collections.HashMap
 
 open class RsmState(
     val nonterminal: Nonterminal,
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
 ) {
-    val id:String = getId(nonterminal)
+    val id: String = getId(nonterminal)
 
-    companion object{
+    companion object {
         private val counters = HashMap<Nonterminal, Int>()
-        private fun getId(nt: Nonterminal): String{
+        private fun getId(nt: Nonterminal): String {
             val id = counters.getOrPut(nt) { 0 }
             counters[nt] = id + 1
             return "${nt.name}_${(id)}"
@@ -31,14 +31,12 @@ open class RsmState(
     /**
      * map from terminal to edges set
      */
-    var terminalEdges = HashMap<Terminal<*>, HashSet<RsmState>>()
-        private set
+    val terminalEdges = HashMap<Terminal<*>, HashSet<RsmState>>()
 
     /**
      * map from nonterminal to edges set
      */
-    var nonterminalEdges = HashMap<Nonterminal, HashSet<RsmState>>()
-        private set
+    val nonterminalEdges = HashMap<Nonterminal, HashSet<RsmState>>()
 
     /**
      * Keep a list of all available RsmStates
@@ -73,7 +71,7 @@ open class RsmState(
         destinationStates.add(destinationState)
     }
 
-    fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
+    private fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
         if (!targetStates.contains(head)) {
             errorRecoveryLabels.add(symbol)
             targetStates.add(head)
@@ -85,7 +83,7 @@ open class RsmState(
     }
 
     /**
-     * Build RSM from given state
+     * Build RSM from current state
      */
     fun buildRsmBox(rsmDescription: Regexp) {
         val regexpToProcess = Stack<Regexp>()

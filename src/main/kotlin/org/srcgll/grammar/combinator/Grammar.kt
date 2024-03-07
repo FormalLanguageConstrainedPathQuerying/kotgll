@@ -10,6 +10,15 @@ open class Grammar {
 
     private lateinit var startNt: Nt
 
+    private var _rsm: RsmState? = null
+    val rsm: RsmState
+        get() {
+            if (_rsm == null) {
+                _rsm = buildRsm()
+            }
+            return _rsm!!
+        }
+
     fun setStart(expr: Regexp) {
         if (expr is Nt) {
             startNt = expr
@@ -18,9 +27,9 @@ open class Grammar {
 
 
     /**
-     * Builds a new Rsm for grammar
+     * Builds a Rsm for the grammar
      */
-    fun buildRsm(): RsmState {
+    private fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }
         val startState = startNt.getNonterminal()?.startState
         //if nonterminal not initialized -- it will be checked in buildRsmBox()
