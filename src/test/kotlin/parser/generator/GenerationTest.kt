@@ -6,17 +6,16 @@ import parser.generator.handwrite.ManyAbX
 import parser.generator.handwrite.SomeAbX
 import java.nio.file.Path
 
-class TestGenerated {
+class GenerationTest {
     @Test
     fun generateSomeAbX(){
-        ParserGenerator.generate(SomeAbX::class.java,
+        ParserGenerator(SomeAbX::class.java).generate(
             Path.of("src", "test", "kotlin"), "parser.generator.generated")
     }
 
     @Test
     fun generateManyAbX(){
-        ParserGenerator.generate(
-            ManyAbX::class.java,
+        ParserGenerator( ManyAbX::class.java).generate(
             Path.of("src", "test", "kotlin"), "parser.generator.generated")
     }
 }

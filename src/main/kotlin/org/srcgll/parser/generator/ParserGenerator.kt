@@ -14,25 +14,38 @@ import org.srcgll.sppf.node.SppfNode
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
 
-object ParserGenerator {
-    private const val PARSER = "Parser"
-    private val vertexType = TypeVariableName("VertexType")
-    private val labelType = TypeVariableName("LabelType", ILabel::class.java)
-    private val superClass = GeneratedParser::class.asTypeName().parameterizedBy(vertexType, labelType)
-    private const val CTX_NAME = "ctx"
-    private const val GRAMMAR_NAME = "grammar"
-    private const val FUNCS_NAME = "ntFuncs"
-    private val descriptorType = Descriptor::class.asTypeName().parameterizedBy(vertexType)
-    private val sppfType = SppfNode::class.asTypeName().parameterizedBy(vertexType)
-    private const val DESCRIPTOR = "descriptor"
-    private const val SPPF_NODE = "curSppfNode"
-    private const val RSM_FIELD = "rsmState"
-    private const val POS_FIELD = "inputPosition"
-    private const val INPUT_FIELD = "input"
-    private const val GET_NONTERMINAL = "getNonterminal"
+class ParserGenerator(private val grammarClazz: Class<*>) {
+    companion object {
+        private const val PARSER = "Parser"
+        private val vertexType = TypeVariableName("VertexType")
+        private val labelType = TypeVariableName("LabelType", ILabel::class.java)
+        private val superClass = GeneratedParser::class.asTypeName().parameterizedBy(vertexType, labelType)
+        private const val CTX_NAME = "ctx"
+        private const val GRAMMAR_NAME = "grammar"
+        private const val FUNCS_NAME = "ntFuncs"
+        private val descriptorType = Descriptor::class.asTypeName().parameterizedBy(vertexType)
+        private val sppfType = SppfNode::class.asTypeName().parameterizedBy(vertexType).copy(true)
+        private const val DESCRIPTOR = "descriptor"
+        private const val SPPF_NODE = "curSppfNode"
+        private const val RSM_FIELD = "rsmState"
+        private const val POS_FIELD = "inputPosition"
+        private const val INPUT_FIELD = "input"
+        private const val GET_NONTERMINAL = "getNonterminal"
+        private const val GET_TERMINALS = "getTerminals"
+        private const val TERMINALS = "terminals"
+        private const val HANDLE_TERMINAL = "handleTerminal"
+        private const val STATE_NAME = "state"
+        private const val ID_FIELD_NAME = "id"
+        private const val POS_VAR_NAME = "pos"
+        private fun getParseFunName(nonterminalName: String): String = "parse${nonterminalName}"
+
+    }
+
+    private val grammar: Grammar = buildGrammar(grammarClazz)
+    private val terminals = grammar.getTerminals().toList()
 
 
-    fun getRsm(grammarClazz: Class<*>): Grammar {
+    private fun buildGrammar(grammarClazz: Class<*>): Grammar {
         if (!Grammar::class.java.isAssignableFrom(grammarClazz)) {
             throw ParserGeneratorException(ParserGeneratorException.grammarExpectedMsg)
         }
@@ -44,11 +57,9 @@ object ParserGenerator {
     }
 
 
-    fun generate(grammarClazz: Class<*>, location: Path, pkg: String) {
+    fun generate(location: Path, pkg: String) {
         val fileName = grammarClazz.simpleName + PARSER
         val parserClass = ClassName(pkg, fileName).parameterizedBy(vertexType, labelType)
-        val grammar = getRsm(grammarClazz)
-
 
         val fileBuilder = FileSpec.builder(pkg, parserClass.rawType.simpleName)
         fileBuilder.addType(
@@ -58,13 +69,15 @@ object ParserGenerator {
                 .superclass(superClass)
                 .addProperty(generateCtxProperty())
                 .addProperty(generateGrammarProperty(grammarClazz))
-                .addProperties(generateNonterminals(grammar))
-                .addProperties(generateTerminals(grammar))
+                .addProperties(generateNonterminalsSpec())
+                .addProperty(generateTerminalsSpec())
                 .addProperty(generateNtFuncsProperty())
+                .addFunctions(generateParseFunctions())
+
                 .build()
         )
 
-        // KotlinPoet set `public` modifier to class by default (wont_fix)
+        // KotlinPoet set `public` modifier to class by default (wontFix)
         // https://github.com/square/kotlinpoet/issues/1098
         fileBuilder.suppressWarningTypes("RedundantVisibilityModifier")
         val file = fileBuilder.build()
@@ -96,40 +109,45 @@ object ParserGenerator {
         val mapType = HashMap::class
             .asTypeName()
             .parameterizedBy(Nonterminal::class.asTypeName(), funcType)
+        val mapInitializer = CodeBlock.builder()
+            .addStatement("hashMapOf(")
+        for (nt in grammar.nonTerms) {
+            val ntName = nt.nonterm.name
+                ?: throw ParserGeneratorException("Unnamed nonterminal in grammar ${grammarClazz.simpleName}")
+            mapInitializer.addStatement("%L to ::%L,", ntName, getParseFunName(ntName))
+        }
+        mapInitializer.addStatement(")")
+
         return PropertySpec
             .builder(FUNCS_NAME, mapType, KModifier.OVERRIDE)
-            .initializer(CodeBlock.of("hashMapOf()"))
+            .initializer(mapInitializer.build())
             .build()
     }
 
-    private fun generateParseFunctions(grammar: Grammar): Iterable<FunSpec> {
+    private fun generateParseFunctions(): Iterable<FunSpec> {
         return grammar.nonTerms.map { generateParseFunction(it) }
     }
 
+
     private fun generateParseFunction(nt: Nt): FunSpec {
-        val funSpec = FunSpec.builder("parse${nt.nonterm.name}")
-        val stateName = "state"
-        val pos = "pos"
+        val funSpec = FunSpec.builder(getParseFunName(nt.nonterm.name!!))
         funSpec.addModifiers(KModifier.PRIVATE)
             .addParameter(DESCRIPTOR, descriptorType)
             .addParameter(SPPF_NODE, sppfType)
-            .addStatement("val %L = %L.%L", stateName, DESCRIPTOR, RSM_FIELD)
-            .addStatement("val %L = %L.%L", pos, DESCRIPTOR, POS_FIELD)
-            .beginControlFlow("when")
+            .addStatement("val %L = %L.%L", STATE_NAME, DESCRIPTOR, RSM_FIELD)
+            .addStatement("val %L = %L.%L", POS_VAR_NAME, DESCRIPTOR, POS_FIELD)
+            .beginControlFlow("when(%L.%L)", STATE_NAME, ID_FIELD_NAME)
 
         for (state in nt.nonterm.getStates()) {
             generateParseForState(state, funSpec)
         }
 
         funSpec.endControlFlow()
-
-
         return funSpec.build()
     }
 
     private fun generateParseForState(state: RsmState, funSpec: FunSpec.Builder) {
-        funSpec.addStatement("%L -> ", state.id)
-
+        funSpec.addStatement("%S -> ", state.id)
         funSpec.beginControlFlow("")
         generateTerminalParsing(state, funSpec)
         generateNonterminalParsing(state, funSpec)
@@ -139,10 +157,37 @@ object ParserGenerator {
 
     private fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
         if (state.terminalEdges.isNotEmpty()) {
-            val inputEdge = "inputEdge"
             funSpec.addComment("handle terminal edges")
-            funSpec.beginControlFlow("for %L in %L.%L.getEdges(%L)", inputEdge, CTX_NAME, INPUT_FIELD, POS_FIELD)
+            val inputEdge = "inputEdge"
+            funSpec.beginControlFlow(
+                "for (%L in %L.%L.getEdges(%L))",
+                inputEdge,
+                CTX_NAME,
+                INPUT_FIELD,
+                POS_VAR_NAME
+            )
+            for (term in state.terminalEdges.keys) {
+                generateTerminalHandling(funSpec, term, inputEdge)
+            }
+            funSpec.endControlFlow()
         }
+    }
+
+    private fun generateTerminalHandling(
+        funSpec: FunSpec.Builder,
+        terminal: Terminal<*>,
+        edgeName: String
+    ) {
+        funSpec.addStatement(
+            "%L(%L[%L], %L, %L, %L, %L)",
+            HANDLE_TERMINAL,
+            TERMINALS,
+            terminals.indexOf(terminal),
+            STATE_NAME,
+            edgeName,
+            DESCRIPTOR,
+            SPPF_NODE
+        )
     }
 
     private fun generateNonterminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
@@ -150,7 +195,6 @@ object ParserGenerator {
             funSpec.addComment("handle nonterminal edges")
             for (edge in state.nonterminalEdges) {
                 val ntName = edge.key.name!!
-                funSpec.addStatement("val %L = %L.%L.getNonterminal()!!", ntName, GRAMMAR_NAME, ntName)
                 funSpec.addStatement(
                     "handleNonterminalEdge(%L, %L, state.nonterminalEdges[%L]!!, %L)",
                     DESCRIPTOR,
@@ -163,11 +207,11 @@ object ParserGenerator {
 
     }
 
-    private fun generateNonterminals(grammar: Grammar): Iterable<PropertySpec> {
-        return grammar.nonTerms.stream().map { generateNonterminal(it) }.collect(toList())
+    private fun generateNonterminalsSpec(): Iterable<PropertySpec> {
+        return grammar.nonTerms.stream().map { generateNonterminalSpec(it) }.collect(toList())
     }
 
-    private fun generateNonterminal(nt: Nt): PropertySpec {
+    private fun generateNonterminalSpec(nt: Nt): PropertySpec {
         val ntName = nt.nonterm.name!!
         val propertyBuilder =
             PropertySpec.builder(ntName, Nonterminal::class.asTypeName())
@@ -177,19 +221,18 @@ object ParserGenerator {
     }
 
 
-    private fun generateTerminals(grammar: Grammar): Iterable<PropertySpec> {
-        return grammar.nonTerms.stream().map { generateTerminal(it) }.collect(toList())
-    }
-
-    private fun generateTerminal(nt: Nt): PropertySpec {
-        val ntName = nt.nonterm.name!!
-        val termListType = List::class.asTypeName().parameterizedBy(Terminal::class.asTypeName())
+    private fun generateTerminalsSpec(): PropertySpec {
+        val termListType = List::class.asTypeName()
+            .parameterizedBy(
+                Terminal::class.asTypeName().parameterizedBy(STAR)
+            )
         val propertyBuilder =
-            PropertySpec.builder(ntName, termListType)
+            PropertySpec.builder(TERMINALS, termListType)
                 .addModifiers(KModifier.PRIVATE)
-                .initializer("%L.%L.%L()!!", GRAMMAR_NAME, ntName, GET_NONTERMINAL)
+                .initializer("%L.%L().%L()", GRAMMAR_NAME, GET_TERMINALS, "toList")
         return propertyBuilder.build()
     }
+
 
 }
 
@@ -198,7 +241,7 @@ internal fun FileSpec.Builder.suppressWarningTypes(vararg types: String) {
         return
     }
 
-    val format = "%L,".repeat(types.count()).trimEnd(',')
+    val format = "%S,".repeat(types.count()).trimEnd(',')
     addAnnotation(
         AnnotationSpec.builder(ClassName("", "Suppress"))
             .addMember(format, *types)
