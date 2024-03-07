@@ -29,7 +29,7 @@ open class Grammar {
 
 
     /**
-     * Builds a new Rsm for grammar
+     * Builds a Rsm for the grammar
      */
     private fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }

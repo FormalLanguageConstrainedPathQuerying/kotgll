@@ -7,6 +7,10 @@ import java.util.*
 class Nonterminal(val name: String?) : Symbol {
     lateinit var startState: RsmState
     override fun toString() = "Nonterminal(${name ?: this.hashCode()})"
+
+    /**
+     * Get all states from RSM for current nonterminal
+     */
     fun getStates(): Iterable<RsmState> {
         val used = HashSet<RsmState>()
         val queue = LinkedList<RsmState>()
@@ -21,5 +25,15 @@ class Nonterminal(val name: String?) : Symbol {
             }
         }
         return used
+    }
+
+    /**
+     * Get all terminals used in RSM from current state (recursive)
+     */
+    fun getTerminals(): HashSet<Terminal<*>> {
+        return incrementalDfs(startState,
+            { state: RsmState -> state.terminalEdges.values.flatten() },
+            hashSetOf(),
+            { state, set -> set.addAll(state.terminalEdges.keys) })
     }
 }

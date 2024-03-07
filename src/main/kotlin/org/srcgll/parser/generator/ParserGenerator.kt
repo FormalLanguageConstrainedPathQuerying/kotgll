@@ -9,8 +9,10 @@ import org.srcgll.input.ILabel
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 import java.nio.file.Path
+import java.util.stream.Collectors.toList
 
 object ParserGenerator {
     private const val PARSER = "Parser"
@@ -27,6 +29,7 @@ object ParserGenerator {
     private const val RSM_FIELD = "rsmState"
     private const val POS_FIELD = "inputPosition"
     private const val INPUT_FIELD = "input"
+    private const val GET_NONTERMINAL = "getNonterminal"
 
 
     fun getRsm(grammarClazz: Class<*>): Grammar {
@@ -39,6 +42,7 @@ object ParserGenerator {
         }
         throw ParserGeneratorException(ParserGeneratorException.grammarExpectedMsg)
     }
+
 
     fun generate(grammarClazz: Class<*>, location: Path, pkg: String) {
         val fileName = grammarClazz.simpleName + PARSER
@@ -54,10 +58,14 @@ object ParserGenerator {
                 .superclass(superClass)
                 .addProperty(generateCtxProperty())
                 .addProperty(generateGrammarProperty(grammarClazz))
+                .addProperties(generateNonterminals(grammar))
+                .addProperties(generateTerminals(grammar))
                 .addProperty(generateNtFuncsProperty())
-                //.addFunctions(generateParseFunctions(grammar))
                 .build()
         )
+
+        // KotlinPoet set `public` modifier to class by default (wont_fix)
+        // https://github.com/square/kotlinpoet/issues/1098
         fileBuilder.suppressWarningTypes("RedundantVisibilityModifier")
         val file = fileBuilder.build()
         file.writeTo(location)
@@ -105,8 +113,8 @@ object ParserGenerator {
         funSpec.addModifiers(KModifier.PRIVATE)
             .addParameter(DESCRIPTOR, descriptorType)
             .addParameter(SPPF_NODE, sppfType)
-            .addStatement("val %S = %S.%S", stateName, DESCRIPTOR, RSM_FIELD)
-            .addStatement("val %S = %S.%S", pos, DESCRIPTOR, POS_FIELD)
+            .addStatement("val %L = %L.%L", stateName, DESCRIPTOR, RSM_FIELD)
+            .addStatement("val %L = %L.%L", pos, DESCRIPTOR, POS_FIELD)
             .beginControlFlow("when")
 
         for (state in nt.nonterm.getStates()) {
@@ -120,7 +128,7 @@ object ParserGenerator {
     }
 
     private fun generateParseForState(state: RsmState, funSpec: FunSpec.Builder) {
-        funSpec.addStatement("%S -> ", state.id)
+        funSpec.addStatement("%L -> ", state.id)
 
         funSpec.beginControlFlow("")
         generateTerminalParsing(state, funSpec)
@@ -130,29 +138,57 @@ object ParserGenerator {
     }
 
     private fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
-        //КАК ГЕНЕРИРОВАТЬ НЕТЕРМИНАЛЫ???
-        //можно искать через рефлексию терминалы-проперти в грамматике, которые равны
-        //терминалу на ребре
-        //и выдавать предупреждение при генерации, если несколько терминалов равны между собой
-
-
         if (state.terminalEdges.isNotEmpty()) {
             val inputEdge = "inputEdge"
             funSpec.addComment("handle terminal edges")
-            funSpec.beginControlFlow("for %S in %S.%S.getEdges(%S)", inputEdge, CTX_NAME, INPUT_FIELD, POS_FIELD)
+            funSpec.beginControlFlow("for %L in %L.%L.getEdges(%L)", inputEdge, CTX_NAME, INPUT_FIELD, POS_FIELD)
         }
     }
 
     private fun generateNonterminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
         if (state.nonterminalEdges.isNotEmpty()) {
             funSpec.addComment("handle nonterminal edges")
-            for (edge in state.nonterminalEdges){
+            for (edge in state.nonterminalEdges) {
                 val ntName = edge.key.name!!
-                funSpec.addStatement("val %S = %S.%S.getNonterminal()!!", ntName, GRAMMAR_NAME, ntName)
-                funSpec.addStatement("handleNonterminalEdge(%S, %S, state.nonterminalEdges[%S]!!, %S)", DESCRIPTOR, ntName, ntName, SPPF_NODE)
+                funSpec.addStatement("val %L = %L.%L.getNonterminal()!!", ntName, GRAMMAR_NAME, ntName)
+                funSpec.addStatement(
+                    "handleNonterminalEdge(%L, %L, state.nonterminalEdges[%L]!!, %L)",
+                    DESCRIPTOR,
+                    ntName,
+                    ntName,
+                    SPPF_NODE
+                )
             }
         }
 
+    }
+
+    private fun generateNonterminals(grammar: Grammar): Iterable<PropertySpec> {
+        return grammar.nonTerms.stream().map { generateNonterminal(it) }.collect(toList())
+    }
+
+    private fun generateNonterminal(nt: Nt): PropertySpec {
+        val ntName = nt.nonterm.name!!
+        val propertyBuilder =
+            PropertySpec.builder(ntName, Nonterminal::class.asTypeName())
+                .addModifiers(KModifier.PRIVATE)
+                .initializer("%L.%L.%L()!!", GRAMMAR_NAME, ntName, GET_NONTERMINAL)
+        return propertyBuilder.build()
+    }
+
+
+    private fun generateTerminals(grammar: Grammar): Iterable<PropertySpec> {
+        return grammar.nonTerms.stream().map { generateTerminal(it) }.collect(toList())
+    }
+
+    private fun generateTerminal(nt: Nt): PropertySpec {
+        val ntName = nt.nonterm.name!!
+        val termListType = List::class.asTypeName().parameterizedBy(Terminal::class.asTypeName())
+        val propertyBuilder =
+            PropertySpec.builder(ntName, termListType)
+                .addModifiers(KModifier.PRIVATE)
+                .initializer("%L.%L.%L()!!", GRAMMAR_NAME, ntName, GET_NONTERMINAL)
+        return propertyBuilder.build()
     }
 
 }
@@ -162,7 +198,7 @@ internal fun FileSpec.Builder.suppressWarningTypes(vararg types: String) {
         return
     }
 
-    val format = "%S,".repeat(types.count()).trimEnd(',')
+    val format = "%L,".repeat(types.count()).trimEnd(',')
     addAnnotation(
         AnnotationSpec.builder(ClassName("", "Suppress"))
             .addMember(format, *types)

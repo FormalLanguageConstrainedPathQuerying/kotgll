@@ -1,7 +1,7 @@
 package org.srcgll.parser.generator
 
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.exceptions.ParsingException
+import org.srcgll.parser.ParsingException
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.input.Edge
 import org.srcgll.input.IInputGraph
@@ -17,13 +17,16 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     IGll<VertexType, LabelType> {
     abstract val grammar: Grammar
 
+    protected fun getTerminals(nt: Nonterminal): List<Terminal<*>> {
+        return nt.getTerminals().toList().sortedBy { it.hashCode }
+    }
 
     var input: IInputGraph<VertexType, LabelType>
         get() {
             return ctx.input
         }
         set(value) {
-            ctx = Context(grammar.buildRsm(), value)
+            ctx = Context(grammar.rsm, value)
         }
 
     protected abstract val ntFuncs: HashMap<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
@@ -57,7 +60,7 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     }
 
     protected fun handleTerminal(
-        terminal: Terminal<String>, state: RsmState,
+        terminal: Terminal<*>, state: RsmState,
         inputEdge: Edge<VertexType, LabelType>,
         descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?
     ) {
