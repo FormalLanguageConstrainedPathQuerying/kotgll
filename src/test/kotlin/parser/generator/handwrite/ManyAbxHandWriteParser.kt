@@ -24,9 +24,6 @@ class ManyAbHandWriteParser<VertexType, LabelType : ILabel> :
     private val s: Nonterminal = grammar.S.getNonterminal()!!
     private val a: Nonterminal = grammar.A.getNonterminal()!!
 
-    private val sTerms: List<Terminal<*>> = getTerminals(s)
-    private val aTerms: List<Terminal<*>> = getTerminals(a)
-
 
     override val ntFuncs = hashMapOf<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>(
         s to ::parseS,
@@ -41,7 +38,7 @@ class ManyAbHandWriteParser<VertexType, LabelType : ILabel> :
             "S_0" -> {
                 // handle terminal edges
                 for (inputEdge in ctx.input.getEdges(pos)) {
-                    handleTerminal(sTerms[0], state, inputEdge, descriptor, curSppfNode)
+                    handleTerminal(Terminal("x"), state, inputEdge, descriptor, curSppfNode)
                 }
                 //handle nonterminal edges
                 handleNonterminalEdge(descriptor, a, curSppfNode)
@@ -57,14 +54,14 @@ class ManyAbHandWriteParser<VertexType, LabelType : ILabel> :
             "A_0" -> {
                 // handle terminal edges
                 for (inputEdge in ctx.input.getEdges(pos)) {
-                    handleTerminal(aTerms[0], state, inputEdge, descriptor, curSppfNode)
+                    handleTerminal(Terminal("a"), state, inputEdge, descriptor, curSppfNode)
                 }
             }
 
             "A_1" -> {
                 // handle terminal edges
                 for (inputEdge in ctx.input.getEdges(pos)) {
-                    handleTerminal(aTerms[1], state, inputEdge, descriptor, curSppfNode)
+                    handleTerminal(Terminal("b"), state, inputEdge, descriptor, curSppfNode)
                 }
             }
         }

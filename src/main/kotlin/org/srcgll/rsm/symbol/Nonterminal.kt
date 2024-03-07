@@ -26,14 +26,4 @@ class Nonterminal(val name: String?) : Symbol {
         }
         return used
     }
-
-    /**
-     * Get all terminals used in RSM from current state (recursive)
-     */
-    fun getTerminals(): HashSet<Terminal<*>> {
-        return incrementalDfs(startState,
-            { state: RsmState -> state.terminalEdges.values.flatten() },
-            hashSetOf(),
-            { state, set -> set.addAll(state.terminalEdges.keys) })
-    }
 }

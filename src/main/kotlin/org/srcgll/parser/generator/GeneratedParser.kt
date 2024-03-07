@@ -1,12 +1,12 @@
 package org.srcgll.parser.generator
 
 import org.srcgll.descriptors.Descriptor
-import org.srcgll.parser.ParsingException
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.input.Edge
 import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.IGll
+import org.srcgll.parser.ParsingException
 import org.srcgll.parser.context.Context
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
@@ -16,10 +16,6 @@ import org.srcgll.sppf.node.SppfNode
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     IGll<VertexType, LabelType> {
     abstract val grammar: Grammar
-
-    protected fun getTerminals(nt: Nonterminal): List<Terminal<*>> {
-        return nt.getTerminals().toList().sortedBy { it.hashCode }
-    }
 
     var input: IInputGraph<VertexType, LabelType>
         get() {
@@ -60,9 +56,11 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     }
 
     protected fun handleTerminal(
-        terminal: Terminal<*>, state: RsmState,
+        terminal: Terminal<*>,
+        state: RsmState,
         inputEdge: Edge<VertexType, LabelType>,
-        descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?
+        descriptor: Descriptor<VertexType>,
+        curSppfNode: SppfNode<VertexType>?
     ) {
         val newStates = state.terminalEdges[terminal]!!
 
