@@ -3,6 +3,8 @@ plugins {
   application
   kotlin("jvm") version "1.9.20"
   id("me.champeau.jmh") version "0.7.2"
+//  id("org.jetbrains.kotlinx.benchmark") version "0.4.10"
+  kotlin("plugin.allopen") version "1.9.20"
 }
 
 repositories {
@@ -16,6 +18,7 @@ dependencies {
   implementation("java_cup:java_cup:0.9e")
   implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
   implementation("org.antlr:antlr4:4.13.1")
+//  implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.10")
   implementation("io.usethesource:capsule:0.6.3")
   implementation("com.fasterxml.jackson.core:jackson-core:2.14.0")
   implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
@@ -42,7 +45,26 @@ configure<SourceSetContainer> {
   }
 }
 
+//allOpen {
+//  annotation("org.openjdk.jmh.annotations.State")
+//}
+//
+//benchmark {
+//  targets {
+//    register("jvm")
+//  }
+//}
 
+//benchmark {
+//  configurations {
+//    named("main") {
+//      warmups = 5
+//      iterations = 15
+//      outputTimeUnit = "ns"
+//      advanced("nativeGCAfterIteration", true)
+//    }
+//  }
+//}
 
 
 jmh {
@@ -52,6 +74,8 @@ jmh {
   warmupForks = 0
   warmupBatchSize = 1
   warmupIterations = 5
+  warmup = "0s"
+  timeOnIteration = "0s"
   fork = 1
   batchSize = 1
   iterations = 15
@@ -59,8 +83,9 @@ jmh {
   jmhTimeout = "300s"
   benchmarkMode.addAll("ss")
   failOnError = false
-//  forceGC = true
+  forceGC = true
   resultFormat = "CSV"
+  jvmArgs.addAll("-Xmx4096m", "-Xss4m", "-XX:+UseG1GC")
 }
 
 tasks.processJmhResources {
