@@ -38,7 +38,9 @@ class ParserGenerator(private val grammarClazz: Class<*>) {
         private const val ID_FIELD_NAME = "id"
         private const val POS_VAR_NAME = "pos"
         private fun getParseFunName(nonterminalName: String): String = "parse${nonterminalName}"
-
+        fun getParserClassName(grammarSimpleName: String): String {
+            return grammarSimpleName + PARSER
+        }
     }
 
     private val grammar: Grammar = buildGrammar(grammarClazz)
@@ -58,7 +60,7 @@ class ParserGenerator(private val grammarClazz: Class<*>) {
 
 
     fun generate(location: Path, pkg: String) {
-        val fileName = grammarClazz.simpleName + PARSER
+        val fileName = getParserClassName(grammarClazz.simpleName)
         val parserClass = ClassName(pkg, fileName).parameterizedBy(vertexType, labelType)
 
         val fileBuilder = FileSpec.builder(pkg, parserClass.rawType.simpleName)

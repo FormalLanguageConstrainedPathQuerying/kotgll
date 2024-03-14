@@ -8,14 +8,18 @@ import java.nio.file.Path
 
 class GenerationTest {
     @Test
-    fun generateSomeAbX(){
+    fun generateSomeAbX() {
         ParserGenerator(SomeAbX::class.java).generate(
-            Path.of("src", "test", "kotlin"), "parser.generator.generated")
+            Path.of("src", "test", "kotlin"), "parser.generator.generated"
+        )
     }
 
     @Test
-    fun generateManyAbX(){
-        ParserGenerator( ManyAbX::class.java).generate(
-            Path.of("src", "test", "kotlin"), "parser.generator.generated")
+    fun generateManyAbX() {
+        ParserGenerator(ManyAbX::class.java).generate(
+            Path.of("src", "test", "kotlin"), "parser.generator.generated"
+        )
     }
+
+
 }

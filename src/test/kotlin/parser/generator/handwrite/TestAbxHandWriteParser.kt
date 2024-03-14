@@ -12,31 +12,16 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class TestHandWriteParsers {
-    private fun buildInputGraph(input: String): LinearInput<Int, LinearInputLabel> {
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
-        var curVertexId = 0
-        var pos = 0
-
-        inputGraph.addVertex(curVertexId)
-        while (pos < input.length) {
-            val label = input[pos].toString()
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
-            inputGraph.addVertex(curVertexId)
-            pos += 1
-        }
-        inputGraph.addStartVertex(0)
-        return inputGraph
-    }
 
     private fun testSuccess(input: String, parser: GeneratedParser<Int, LinearInputLabel>) {
-        parser.input = buildInputGraph(input)
+        parser.input = LinearInput.buildFromString(input)
         val res = parser.parse().first
         assertNotNull(res)
         assertEquals(input, buildStringFromSppf(res))
     }
 
     private fun testFailure(input: String, parser: GeneratedParser<Int, LinearInputLabel>) {
-        parser.input = buildInputGraph(input)
+        parser.input = LinearInput.buildFromString(input)
         val res = parser.parse().first
         assertNull(res)
     }
