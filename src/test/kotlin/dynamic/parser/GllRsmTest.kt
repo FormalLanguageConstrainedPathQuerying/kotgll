@@ -16,16 +16,15 @@ import kotlin.test.assertNotNull
 
 
 open class GllRsmTest : IDynamicGllTest {
-    override val mainFileName: String
-        get() = "grammar.rsm"
+
+    private val rsmGrammarFile = "grammar.rsm"
 
     private fun getGll(input: String, rsm: RsmState): Gll<Int, LinearInputLabel> {
         return Gll.gll(rsm, LinearInput.buildFromString(input))
     }
 
     private fun getRsm(concreteGrammarFolder: File): RsmState {
-        val rsmFile = getFile(mainFileName, concreteGrammarFolder) ?:
-        throw Exception("Folder $concreteGrammarFolder not contains $mainFileName")
+        val rsmFile = getFile(rsmGrammarFile, concreteGrammarFolder)
         return readRsmFromTxt(rsmFile.toPath())
     }
 
@@ -44,15 +43,13 @@ open class GllRsmTest : IDynamicGllTest {
         }
     }
 
-
     override fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
-        val inputs = getLines(oneLineTestsFileName, concreteGrammarFolder)
-        val errorInputs = getLines(oneLineErrorsTestsFileName, concreteGrammarFolder)
+        val inputs = getFile(oneLineTestsFileName, concreteGrammarFolder).readLines()
+        val errorInputs = getFile(oneLineErrorsTestsFileName, concreteGrammarFolder).readLines()
         val rsm = getRsm(concreteGrammarFolder)
         return DynamicContainer.dynamicContainer(
-            concreteGrammarFolder.name,
-            inputs.map { getCorrectTestContainer(it, rsm) }
-                    + (errorInputs.map { getErrorTestContainer(it, rsm) })
-        )
+            concreteGrammarFolder.name, inputs
+                .map { getCorrectTestContainer(it, rsm) } +
+                    errorInputs.map { getErrorTestContainer(it, rsm) })
     }
 }

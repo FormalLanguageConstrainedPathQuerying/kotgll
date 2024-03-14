@@ -8,19 +8,35 @@ import org.junit.jupiter.api.DynamicTest
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.generator.GeneratedParser
+import org.srcgll.parser.generator.ParserGenerator
 import org.srcgll.sppf.buildStringFromSppf
 import java.io.File
+import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 
 open class GllGeneratedTest : IDynamicGllTest {
+
+
     companion object {
-        const val DSL_FILE_NAME = "GrammarDsl"
+        private const val OUTPUT_DIRECTORY = "gen/tests"
     }
 
-    override val mainFileName: String
-        get() = "$DSL_FILE_NAME.kt"
+    private fun getGll(className: String): GeneratedParser<Int, LinearInputLabel> {
+        TODO()
+//        val generatedParserClass = Class.forName(className)
+//        val ctor = generatedParserClass
+//            //.parameterizedBy(Int.Companion::class.java, LinearInputLabel::class.java)
+//            .javaClass.getConstructor()
+//        val obj = ctor.newInstance()
+//        if (obj.isAssignableFrom(GeneratedParser::class.java)) {
+//            throw Exception("Reflection load wrong class ${obj.name} instead of $className!!!")
+//        }
+//        val parser = obj as GeneratedParser<Int, LinearInputLabel>
+//        return parser
+    }
+
 
     private fun getCorrectTestContainer(input: String, gll: GeneratedParser<Int, LinearInputLabel>): DynamicNode {
         return DynamicTest.dynamicTest(getTestName(input)) {
@@ -39,16 +55,25 @@ open class GllGeneratedTest : IDynamicGllTest {
         }
     }
 
-
     override fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
-        val grammarName = concreteGrammarFolder.name
-        val inputs = getLines(oneLineTestsFileName, concreteGrammarFolder)
-        val errorInputs = getLines(oneLineErrorsTestsFileName, concreteGrammarFolder)
+        val grammarName = toCamelCase(concreteGrammarFolder.name)
+        val inputs = getFile(oneLineTestsFileName, concreteGrammarFolder).readLines()
+        val errorInputs = getFile(oneLineErrorsTestsFileName, concreteGrammarFolder).readLines()
         val gll: GeneratedParser<Int, LinearInputLabel> =
-            RuntimeCompiler.generateParser(concreteGrammarFolder, grammarName)
+            getGll(ParserGenerator.getParserClassName(grammarName))
         return DynamicContainer.dynamicContainer(
             grammarName, inputs
                 .map { getCorrectTestContainer(it, gll) } +
                     errorInputs.map { getErrorTestContainer(it, gll) })
     }
+
+
+    private fun getAbsolutePath(className: String): String {
+        val split = className.split("\\.".toRegex()).filter { it.isNotEmpty() }.toMutableList()
+        split[split.size - 1] += ".java"
+
+        return Paths.get(OUTPUT_DIRECTORY, split.toString()).toAbsolutePath()
+            .toString()
+    }
+
 }

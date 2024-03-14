@@ -6,32 +6,37 @@ import java.io.File
 
 
 interface IDynamicGllTest {
-    val mainFileName: String
-
-    companion object {
-        const val GRAMMAR_FOLDER = "grammars"
-    }
-
     val oneLineTestsFileName: String
-        get() = "oneLineInputs.txt"
+        get() = "oneLineCorrectInputs.txt"
     val oneLineErrorsTestsFileName: String
         get() = "oneLineErrorInputs.txt"
     val grammarFolderName: String
         get() = "src/test/resources/grammars"
+    val unsupportedTests: List<String>
+        get() = listOf("abStar")
 
     @TestFactory
     fun testAll(): Collection<DynamicContainer> {
         val folders =
             File(grammarFolderName).listFiles() ?: throw Exception("Resource folder $grammarFolderName not found")
         return folders
-            .filter {
-                it.isDirectory && it.listFiles()?.any { file -> file.name == mainFileName } == true
-            }
+            .filter { !unsupportedTests.contains(it.name) }
             .map { concreteGrammarFolder -> handleFolder(concreteGrammarFolder) }
     }
 
-    fun getFile(name: String, grammarFile: File): File? {
-        return grammarFile.listFiles()?.firstOrNull { it.name == name }
+    fun toCamelCase(input: String, separator: String = "_"): String {
+        return input.split(separator)
+            .filter { it.isNotEmpty() }
+            .map { it[0].uppercase() }
+            .joinToString { "" }
+    }
+
+    fun getFile(name: String, grammarFile: File): File {
+        val file = grammarFile.listFiles()?.firstOrNull { it.name == name }
+        if (file == null) {
+            throw Exception("$name file missed in ${grammarFile.name}")
+        }
+        return file
     }
 
     fun getTestName(input: String): String {
@@ -43,10 +48,4 @@ interface IDynamicGllTest {
     }
 
     fun handleFolder(concreteGrammarFolder: File): DynamicContainer
-
-    fun getLines(fileName: String, folder: File): List<String> {
-        val file = getFile(fileName, folder) ?: return listOf()
-        return file.readLines()
-    }
-
 }
