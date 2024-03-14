@@ -1,3 +1,5 @@
+package dynamic.parser
+
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.TestFactory
 import java.io.File

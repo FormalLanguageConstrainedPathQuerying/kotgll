@@ -1,3 +1,5 @@
+package dynamic.parser
+
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
@@ -13,15 +15,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 
-open class SimpleGllRsmTest : IDynamicGllTest {
+open class GllRsmTest : IDynamicGllTest {
 
     private val rsmGrammarFile = "grammar.rsm"
 
-    protected fun getGll(input: String, rsm: RsmState): Gll<Int, LinearInputLabel>{
+    private fun getGll(input: String, rsm: RsmState): Gll<Int, LinearInputLabel> {
         return Gll.gll(rsm, LinearInput.buildFromString(input))
     }
 
-    protected fun getRsm(concreteGrammarFolder: File): RsmState{
+    private fun getRsm(concreteGrammarFolder: File): RsmState {
         val rsmFile = getFile(rsmGrammarFile, concreteGrammarFolder)
         return readRsmFromTxt(rsmFile.toPath())
     }
