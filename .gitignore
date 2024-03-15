@@ -4,12 +4,15 @@
 # Python scripts
 *.py
 
-# Benchmarks
-/src/main/kotlin/org/srcgll/benchmarks/test.kt
-/src/main/kotlin/org/srcgll/benchmarks/bloated
-/src/main/kotlin/org/srcgll/benchmarks/cfgOutput
-/src/main/kotlin/org/srcgll/benchmarks/rsmOutput
-*.csv
+# Input file
+input.txt
+
+# Benchmark resources
+/src/jmh/resources
+
+# antlr & iguana
+/src/main/kotlin/org/antlr
+/src/main/kotlin/org/iguana
 
 # Lexer
 /src/main/kotlin/org/srcgll/lexer/*.java
