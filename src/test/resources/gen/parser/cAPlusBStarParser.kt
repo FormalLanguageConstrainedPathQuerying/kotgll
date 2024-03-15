@@ -34,13 +34,6 @@ public class cAPlusBStarParser<VertexType, LabelType : ILabel> :
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.id) {
-      "S_3" -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          handleTerminal(terminals[1], state, inputEdge, descriptor, curSppfNode)
-        }
-      }
       "S_2" -> 
        {
         // handle terminal edges
@@ -49,18 +42,25 @@ public class cAPlusBStarParser<VertexType, LabelType : ILabel> :
           handleTerminal(terminals[1], state, inputEdge, descriptor, curSppfNode)
         }
       }
-      "S_0" -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          handleTerminal(terminals[2], state, inputEdge, descriptor, curSppfNode)
-        }
-      }
       "S_1" -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           handleTerminal(terminals[0], state, inputEdge, descriptor, curSppfNode)
+        }
+      }
+      "S_3" -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          handleTerminal(terminals[1], state, inputEdge, descriptor, curSppfNode)
+        }
+      }
+      "S_0" -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          handleTerminal(terminals[2], state, inputEdge, descriptor, curSppfNode)
         }
       }
     }
