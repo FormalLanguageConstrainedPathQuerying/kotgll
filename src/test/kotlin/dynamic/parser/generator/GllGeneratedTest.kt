@@ -15,6 +15,12 @@ import kotlin.test.assertNotNull
 
 
 open class GllGeneratedTest : IDynamicGllTest {
+    companion object {
+        const val DSL_FILE_NAME = "GrammarDsl"
+    }
+
+    override val mainFileName: String
+        get() = "$DSL_FILE_NAME.kt"
 
     private fun getCorrectTestContainer(input: String, gll: GeneratedParser<Int, LinearInputLabel>): DynamicNode {
         return DynamicTest.dynamicTest(getTestName(input)) {
@@ -33,10 +39,11 @@ open class GllGeneratedTest : IDynamicGllTest {
         }
     }
 
+
     override fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
         val grammarName = concreteGrammarFolder.name
-        val inputs = getFile(oneLineTestsFileName, concreteGrammarFolder).readLines()
-        val errorInputs = getFile(oneLineErrorsTestsFileName, concreteGrammarFolder).readLines()
+        val inputs = getLines(oneLineTestsFileName, concreteGrammarFolder)
+        val errorInputs = getLines(oneLineErrorsTestsFileName, concreteGrammarFolder)
         val gll: GeneratedParser<Int, LinearInputLabel> =
             RuntimeCompiler.generateParser(concreteGrammarFolder, grammarName)
         return DynamicContainer.dynamicContainer(
