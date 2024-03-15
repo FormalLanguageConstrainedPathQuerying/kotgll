@@ -5,10 +5,37 @@ import org.srcgll.grammar.combinator.regexp.*
 import org.srcgll.input.Edge
 import org.srcgll.input.IGraph
 import org.srcgll.input.ILabel
+import org.srcgll.input.LinearInputLabel
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.rsm.writeRsmToDot
-import org.srcgll.sppf.node.SppfNode
+import org.srcgll.sppf.buildStringFromSppf
+import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
+import java.io.File
+
+class Dyck : Grammar() {
+    var S by Nt()
+
+    init {
+        S = Epsilon or "(" * S * ")" or S * S
+        setStart(S)
+    }
+}
+class SimpleGolang : Grammar() {
+
+    var Program by Nt()
+    var Block by Nt()
+    var Statement by Nt()
+    var IntExpr by Nt()
+
+    init {
+        Program = Block
+        Block = Many(Statement)
+        Statement = IntExpr * ";" or "r" * IntExpr * ";"
+        IntExpr = "1" or "1" * "+" * "1"
+        setStart(Program)
+    }
+}
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
@@ -190,7 +217,7 @@ fun createStackExampleGraph(startVertex: Int): SimpleGraph {
     return inputGraph
 }
 
-fun main() {
+fun reachabilityExample() {
     val rsmAnBnStartState = AnBn().getRsm()
     val rsmStackStartState = Stack().getRsm()
     val startVertex = 0
@@ -199,9 +226,19 @@ fun main() {
 
     // result = (root of SPPF, set of reachable vertices)
     val resultAnBn: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(rsmAnBnStartState, inputGraphAnBn, recovery = RecoveryMode.OFF, reachability = ReachabilityMode.ALLPAIRS).parse()
+        Gll(
+            rsmAnBnStartState,
+            inputGraphAnBn,
+            recovery = RecoveryMode.OFF,
+            reachability = ReachabilityMode.ALLPAIRS
+        ).parse()
     val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll(rsmStackStartState, inputGraphStack, recovery = RecoveryMode.OFF, reachability = ReachabilityMode.ALLPAIRS).parse()
+        Gll(
+            rsmStackStartState,
+            inputGraphStack,
+            recovery = RecoveryMode.OFF,
+            reachability = ReachabilityMode.ALLPAIRS
+        ).parse()
 
     writeRsmToDot(rsmAnBnStartState, "test.dot")
     println("AnBn Language Grammar")
@@ -217,5 +254,139 @@ fun main() {
     resultStack.second.forEach { (pair, distance) ->
         println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
     }
+}
+
+fun gatherNodes(sppfNode: ISppfNode): HashSet<Int> {
+    val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
+    val created: HashSet<Int> = HashSet()
+    var node: ISppfNode
+
+    while (queue.isNotEmpty()) {
+        node = queue.removeFirst()
+        if (!created.add(node.id)) continue
+
+        (node as? ParentSppfNode<*>)?.kids?.forEach {
+            queue.addLast(it)
+        }
+
+        val leftChild = (node as? PackedSppfNode<*>)?.leftSppfNode
+        val rightChild = (node as? PackedSppfNode<*>)?.rightSppfNode
+
+        if (leftChild != null) {
+            queue.addLast(leftChild)
+        }
+        if (rightChild != null) {
+            queue.addLast(rightChild)
+        }
+    }
+
+    return created
+}
+
+fun golangErrorRecoveryIncrementalityExample(input: String) {
+    val rsm = SimpleGolang().getRsm()
+    val inputGraph = getTokenStream(input)
+    val gll = Gll(rsm, inputGraph, RecoveryMode.ON, reachability = ReachabilityMode.REACHABILITY)
+
+    var result = gll.parse()
+
+    writeSppfToDot(result.first!!, "./result.dot", "r 1 + ;")
+    val recoveredString = buildStringFromSppf(result.first!!)
+
+    val created = gatherNodes(result.first!!)
+    var addFrom = 3
+    val initEdges = inputGraph.getEdges(addFrom)
+
+    inputGraph.edges.remove(addFrom)
+    inputGraph.addEdge(addFrom, LinearInputLabel(Terminal("1")), 5)
+    inputGraph.edges[5] = initEdges
+
+    inputGraph.addVertex(5)
+    var newResult = gll.parse(3)
+
+    WriteSppfToDot(newResult.first!!,"./resultIncremental.dot", created,"r 1 + 1 ;")
+}
+fun WriteSppfToDot(sppfNode: ISppfNode, filePath: String, created: HashSet<Int>, label: String = "") {
+    val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
+    val edges: HashMap<Int, HashSet<Int>> = HashMap()
+    val visited: HashSet<Int> = HashSet()
+    var node: ISppfNode
+
+    val file = File(filePath)
+
+    file.printWriter().use { out ->
+        out.println("digraph g {")
+        out.println("labelloc=\"t\"")
+        out.println("label=\"$label\"")
+
+        while (queue.isNotEmpty()) {
+            node = queue.removeFirst()
+            if (!visited.add(node.id)) continue
+
+            out.println(PrintNode(node.id, node, created))
+
+            (node as? ParentSppfNode<*>)?.kids?.forEach {
+                queue.addLast(it)
+                if (!edges.containsKey(node.id)) {
+                    edges[node.id] = HashSet()
+                }
+                edges.getValue(node.id).add(it.id)
+            }
+
+            val leftChild = (node as? PackedSppfNode<*>)?.leftSppfNode
+            val rightChild = (node as? PackedSppfNode<*>)?.rightSppfNode
+
+            if (leftChild != null) {
+                queue.addLast(leftChild)
+                if (!edges.containsKey(node.id)) {
+                    edges[node.id] = HashSet()
+                }
+                edges.getValue(node.id).add(leftChild.id)
+            }
+            if (rightChild != null) {
+                queue.addLast(rightChild)
+                if (!edges.containsKey(node.id)) {
+                    edges[node.id] = HashSet()
+                }
+                edges.getValue(node.id).add(rightChild.id)
+            }
+        }
+        for (kvp in edges) {
+            val head = kvp.key
+            for (tail in kvp.value) out.println(PrintEdge(head, tail))
+        }
+        out.println("}")
+    }
+}
+
+fun GetColor(set: HashSet<Int>, id: Int): String = if (set.contains(id)) "green" else "black"
+
+fun PrintEdge(x: Int, y: Int): String {
+    return "${x}->${y}"
+}
+
+fun PrintNode(nodeId: Int, node: ISppfNode, set: HashSet<Int>): String {
+    return when (node) {
+        is TerminalSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${GetColor(set, nodeId)}]"
+        }
+
+        is SymbolSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${GetColor(set, nodeId)}]"
+        }
+
+        is ItemSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${GetColor(set, nodeId)}]"
+        }
+
+        is PackedSppfNode<*> -> {
+            "${nodeId} [label = \"${nodeId} ; Weight: ${node.weight}\", shape = point, width = 0.5, color = ${GetColor(set, nodeId)}]"
+        }
+
+        else -> ""
+    }
+}
+
+fun main() {
 }
 

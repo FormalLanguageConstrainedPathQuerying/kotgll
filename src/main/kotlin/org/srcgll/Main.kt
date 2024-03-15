@@ -10,10 +10,12 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.lexer.*
+import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.writeSppfToDot
 import org.srcgll.rsm.writeRsmToDot
-import org.srcgll.sppf.node.SppfNode
+import org.srcgll.sppf.buildStringFromSppf
+import org.srcgll.sppf.node.*
 import java.io.File
 import java.io.IOException
 import java.io.StringReader
@@ -26,6 +28,21 @@ enum class ReachabilityMode {
     REACHABILITY, ALLPAIRS,
 }
 
+fun getTokenStream(input: String): LinearInput<Int, LinearInputLabel> {
+    var curVertexId = 0
+    val inputGraph = LinearInput<Int, LinearInputLabel>()
+
+    inputGraph.addVertex(curVertexId)
+
+    for (x in input) {
+        inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+        inputGraph.addVertex(curVertexId)
+    }
+    inputGraph.addStartVertex(0)
+
+    return inputGraph
+}
+
 fun main(args: Array<String>) {
     val parser = ArgParser("srcgll")
 
@@ -33,8 +50,9 @@ fun main(args: Array<String>) {
         ArgType.Choice<RecoveryMode>(), fullName = "recovery", description = "Recovery mode"
     ).default(RecoveryMode.ON)
 
-    val pathToInput by parser.option(ArgType.String, fullName = "inputPath", description = "Path to input txt file")
-        .required()
+    val pathToInput by parser.option(
+        ArgType.String, fullName = "inputPath", description = "Path to input txt file"
+    ).required()
 
     val pathToGrammar by parser.option(
         ArgType.String, fullName = "grammarPath", description = "Path to grammar txt file"
@@ -50,7 +68,6 @@ fun main(args: Array<String>) {
 
     parser.parse(args)
 
-//    val input = File(pathToInput).readText()
 //    val grammar = JavaGrammar().getRsm()
 //    val inputGraph = LinearInput<Int, LinearInputLabel>()
 //    val gll = Gll(grammar, inputGraph, RecoveryMode.ON, ReachabilityMode.REACHABILITY)

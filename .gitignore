@@ -4,8 +4,16 @@
 # Python scripts
 *.py
 
+# input file
+
+input.txt
+
 # Benchmarks
 /src/jmh/resources/
+
+# antlr and iguana
+/src/main/kotlin/org/antlr
+/src/main/kotlin/org/iguana
 
 # Antlr
 src/main/kotlin/org/antlr/Java8.interp

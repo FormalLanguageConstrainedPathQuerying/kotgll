@@ -89,6 +89,9 @@ class Gll<VertexType, LabelType : ILabel>(
 
         stack.addToHandled(curDescriptor)
 
+        //TODO: Consider working with GSS to determine return address
+        // adding condition gssNode.edges.isNotEmpty() partially solves problem for deterministic grammars
+        // but for ambiguous we get error
         if (state.isStart && state.isFinal) {
             curSppfNode = sppf.getNodeP(state, curSppfNode, sppf.getOrCreateItemSppfNode(state, pos, pos, weight = 0))
             leftExtent = curSppfNode.leftExtent
