@@ -8,7 +8,6 @@ import org.srcgll.parser.generator.ParserGenerator
 import java.io.File
 import java.net.URLClassLoader
 import java.nio.file.Path
-import java.nio.file.Paths
 
 object RuntimeCompiler {
 
@@ -27,6 +26,7 @@ object RuntimeCompiler {
         return GrammarInfo(grammarClassLoader.loadClass(fqn), sourceFile)
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun generateParser(grammarFolderFile: File, grammarName: String): GeneratedParser<Int, LinearInputLabel> {
         val grammar: GrammarInfo = compileGrammarFile(grammarFolderFile, grammarName)
         ParserGenerator(grammar.clazz).generate(parsersFolder, PARSER_PKG)
