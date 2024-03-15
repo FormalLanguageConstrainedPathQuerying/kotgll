@@ -2,12 +2,39 @@ package org.srcgll
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
-import org.srcgll.input.Edge
-import org.srcgll.input.IInputGraph
-import org.srcgll.input.ILabel
+import org.srcgll.input.*
 import org.srcgll.parser.Gll
+import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.node.SppfNode
+import org.srcgll.rsm.writeRsmToDot
+import org.srcgll.sppf.buildStringFromSppf
+import org.srcgll.sppf.node.*
+import org.srcgll.sppf.writeSppfToDot
+import java.io.File
+
+class Dyck : Grammar() {
+    var S by Nt()
+
+    init {
+        S = Epsilon or "(" * S * ")"
+        setStart(S)
+    }
+}
+class SimpleGolang : Grammar() {
+
+    var Program by Nt()
+    var Block by Nt()
+    var Statement by Nt()
+    var IntExpr by Nt()
+
+    init {
+        Program = Block
+        Block = Many(Statement)
+        Statement = IntExpr * ";" or "r" * IntExpr * ";"
+        IntExpr = "1" or "1" * "+" * "1"
+        setStart(Program)
+    }
+}
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
@@ -74,7 +101,6 @@ class SimpleInputLabel(
         return true
     }
 }
-
 /**
  * Simple Realisation of IGraph interface as Directed Graph
  * VertexType   = Int
@@ -191,31 +217,48 @@ fun createStackExampleGraph(startVertex: Int): SimpleGraph {
     return inputGraph
 }
 
+fun gatherNodes(sppfNode: ISppfNode): HashSet<Int> {
+    val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
+    val created: HashSet<Int> = HashSet()
+    var node: ISppfNode
+
+    while (queue.isNotEmpty()) {
+        node = queue.removeFirst()
+        if (!created.add(node.id)) continue
+
+        (node as? NonterminalSppfNode<*>)?.children?.forEach {
+            queue.addLast(it)
+        }
+
+        val leftChild = (node as? PackedSppfNode<*>)?.leftSppfNode
+        val rightChild = (node as? PackedSppfNode<*>)?.rightSppfNode
+
+        if (leftChild != null) {
+            queue.addLast(leftChild)
+        }
+        if (rightChild != null) {
+            queue.addLast(rightChild)
+        }
+    }
+
+    return created
+}
+
+fun getTokenStream(input: String): RecoveryLinearInput<Int, LinearInputLabel> {
+    val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
+    var vertexId = 0
+
+    inputGraph.addStartVertex(vertexId)
+    inputGraph.addVertex(vertexId)
+
+    for (ch in input) {
+        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(ch.toString())), ++vertexId)
+        inputGraph.addVertex(vertexId)
+    }
+
+    return inputGraph
+}
+
 fun main() {
-    val rsmAnBnStartState = AnBn().rsm
-    val rsmStackStartState = Stack().rsm
-    val startVertex = 0
-    val inputGraphAnBn = createAnBnExampleGraph(startVertex)
-    val inputGraphStack = createStackExampleGraph(startVertex)
-
-    // result = (root of SPPF, set of reachable vertices)
-    val resultAnBn: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll.gll(rsmAnBnStartState, inputGraphAnBn).parse()
-    val resultStack: Pair<SppfNode<Int>?, HashMap<Pair<Int, Int>, Int>> =
-        Gll.gll(rsmStackStartState, inputGraphStack).parse()
-
-    println("AnBn Language Grammar")
-    println("Reachability pairs : ")
-
-    resultAnBn.second.forEach { (pair, distance) ->
-        println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
-    }
-
-    println("\nStack Language Grammar")
-    println("Reachability pairs : ")
-
-    resultStack.second.forEach { (pair, distance) ->
-        println("from : ${pair.first} , to : ${pair.second} , distance : ${distance}")
-    }
 }
 

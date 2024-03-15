@@ -28,6 +28,7 @@ private fun getAllStates(startState: RsmState): HashSet<RsmState> {
     return states
 }
 
+<<<<<<< HEAD
 fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
     val states = getAllStates(startState)
     File(pathToTXT).printWriter().use { out ->
@@ -82,6 +83,8 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
 }
 
 
+=======
+>>>>>>> work
 fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
     val states = getAllStates(startState)
     val boxes: HashMap<Nonterminal, HashSet<RsmState>> = HashMap()

@@ -6,18 +6,21 @@ import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.input.RecoveryLinearInput
-import org.srcgll.lexer.JavaGrammar
-import org.srcgll.lexer.JavaLexer
-import org.srcgll.lexer.JavaToken
 import org.srcgll.parser.Gll
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.writeSppfToDot
+import org.srcgll.input.LinearInput
+import org.srcgll.lexer.*
 import java.io.File
 import java.io.StringReader
 
 enum class RecoveryMode {
     ON, OFF,
+}
+
+enum class ReachabilityMode {
+    REACHABILITY, ALLPAIRS,
 }
 
 fun main(args: Array<String>) {
@@ -27,8 +30,9 @@ fun main(args: Array<String>) {
         ArgType.Choice<RecoveryMode>(), fullName = "recovery", description = "Recovery mode"
     ).default(RecoveryMode.ON)
 
-    val pathToInput by parser.option(ArgType.String, fullName = "inputPath", description = "Path to input txt file")
-        .required()
+    val pathToInput by parser.option(
+        ArgType.String, fullName = "inputPath", description = "Path to input txt file"
+    ).required()
 
     val pathToGrammar by parser.option(
         ArgType.String, fullName = "grammarPath", description = "Path to grammar txt file"
@@ -43,7 +47,6 @@ fun main(args: Array<String>) {
     ).required()
 
     parser.parse(args)
-
 
     val input = File(pathToInput).readText().replace("\n", "").trim()
     val grammar = JavaGrammar().rsm
@@ -68,6 +71,4 @@ fun main(args: Array<String>) {
 
     val result = gll.parse()
     writeSppfToDot(result.first!!, "./result.dot")
-
-
 }

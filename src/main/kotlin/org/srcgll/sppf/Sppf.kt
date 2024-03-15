@@ -11,6 +11,73 @@ import org.srcgll.sppf.node.*
 open class Sppf<VertexType> {
     private val createdSppfNodes: HashMap<SppfNode<VertexType>, SppfNode<VertexType>> = HashMap()
     private val createdTerminalNodes: HashMap<VertexType, HashSet<TerminalSppfNode<VertexType>>> = HashMap()
+<<<<<<< HEAD
+=======
+    private val minDistanceRecognisedBySymbol: HashMap<SymbolSppfNode<VertexType>, Int> = HashMap()
+
+    // TODO: Resolve problem with HeapOverflow on large inputs
+    fun minDistance(root: ISppfNode): Int {
+        val cycle = HashSet<ISppfNode>()
+        val visited = HashSet<ISppfNode>()
+        val stack = ArrayDeque(listOf(root))
+        var curSPPFNode: ISppfNode
+        var minDistance = 0
+
+        while (stack.isNotEmpty()) {
+            curSPPFNode = stack.last()
+            visited.add(curSPPFNode)
+
+            if (!cycle.contains(curSPPFNode)) {
+                cycle.add(curSPPFNode)
+
+                when (curSPPFNode) {
+                    is TerminalSppfNode<*> -> {
+                        minDistance++
+                    }
+
+                    is PackedSppfNode<*> -> {
+                        if (curSPPFNode.rightSppfNode != null) stack.add(curSPPFNode.rightSppfNode!!)
+                        if (curSPPFNode.leftSppfNode != null) stack.add(curSPPFNode.leftSppfNode!!)
+                    }
+
+                    is ItemSppfNode<*> -> {
+                        if (curSPPFNode.kids.isNotEmpty()) {
+                            curSPPFNode.kids.findLast {
+                                it.rightSppfNode != curSPPFNode && it.leftSppfNode != curSPPFNode && !visited.contains(
+                                    it
+                                )
+                            }?.let { stack.add(it) }
+                            curSPPFNode.kids.forEach { visited.add(it) }
+                        }
+                    }
+
+                    is SymbolSppfNode<*> -> {
+                        if (minDistanceRecognisedBySymbol.containsKey(curSPPFNode)) {
+                            minDistance += minDistanceRecognisedBySymbol[curSPPFNode]!!
+                        } else {
+                            if (curSPPFNode.kids.isNotEmpty()) {
+                                curSPPFNode.kids.findLast {
+                                    it.rightSppfNode != curSPPFNode && it.leftSppfNode != curSPPFNode && !visited.contains(
+                                        it
+                                    )
+                                }?.let { stack.add(it) }
+                                curSPPFNode.kids.forEach { visited.add(it) }
+                            }
+                        }
+                    }
+                }
+            }
+            if (curSPPFNode == stack.last()) {
+                stack.removeLast()
+                cycle.remove(curSPPFNode)
+            }
+        }
+
+        minDistanceRecognisedBySymbol[root as SymbolSppfNode<VertexType>] = minDistance
+
+        return minDistance
+    }
+>>>>>>> work
 
     fun removeNode(sppfNode: SppfNode<VertexType>) {
         createdSppfNodes.remove(sppfNode)
@@ -115,7 +182,7 @@ open class Sppf<VertexType> {
     fun invalidate(vertex: VertexType, parseResult: ISppfNode) {
         val queue = ArrayDeque<ISppfNode>()
         val added = HashSet<ISppfNode>()
-        var curSPPFNode: ISppfNode? = parseResult
+        var curSPPFNode: ISppfNode?
 
         createdTerminalNodes[vertex]!!.forEach { node ->
             queue.add(node)

@@ -50,9 +50,8 @@ StringLiteral = \" {StringCharacter}* \"
 StringCharacter = {InputCharacter} | {EscapeSequence}
 WhiteSpace = {LineTerminator} | [\ \t\f]
 
-Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+Comment = {TraditionalComment} | {DocumentationComment}
 TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
-EndOfLineComment     = "//" [^\r\n]* {LineTerminator}?
 DocumentationComment = "/**" {CommentContent} "*"+ "/"
 CommentContent       = ( [^*] | \*+ [^/*] )*
 
@@ -75,9 +74,8 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "}"            { return JavaToken.CURLYRIGHT; }
 "extends"      { return JavaToken.EXTENDS; }
 "&"            { return JavaToken.ANDBIT; }
-"<"            { return JavaToken.DIAMONDLEFT; }
-">"            { return JavaToken.DIAMONDRIGHT; }
-"<>"           { return JavaToken.DIAMOND; }
+"<"            { return JavaToken.LT; }
+">"            { return JavaToken.GT; }
 ";"            { return JavaToken.SEMICOLON; }
 ":"            { return JavaToken.COLON; }
 "::"           { return JavaToken.DOUBLECOLON; }
@@ -103,6 +101,7 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "private"      { return JavaToken.PRIVATE; }
 "abstract"     { return JavaToken.ABSTRACT; }
 "final"        { return JavaToken.FINAL; }
+"const"        { return JavaToken.FINAL; }
 "strictfp"     { return JavaToken.STRICTFP; }
 "implements"   { return JavaToken.IMPLEMENTS; }
 "transient"    { return JavaToken.TRANSIENT; }
@@ -127,9 +126,6 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "<="           { return JavaToken.LESSEQ; }
 ">="           { return JavaToken.GREATEQ; }
 "instanceof"   { return JavaToken.INSTANCEOF; }
-">>"           { return JavaToken.RIGHTSHIT; }
-"<<"           { return JavaToken.LEFTSHIFT; }
-">>>"          { return JavaToken.USRIGHTSHIFT; }
 "synchronized" { return JavaToken.SYNCHRONIZED; }
 "native"       { return JavaToken.NATIVE; }
 "void"         { return JavaToken.VOID; }
