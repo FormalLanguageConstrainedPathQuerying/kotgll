@@ -20,6 +20,4 @@ class GenerationTest {
             Path.of("src", "test", "kotlin"), "parser.generator.generated"
         )
     }
-
-
 }

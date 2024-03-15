@@ -5,7 +5,7 @@ import org.srcgll.grammar.combinator.regexp.Many
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Term
 
-class AStar : Grammar() {
+class aStar : Grammar() {
     var S by Nt()
 
     init {

@@ -24,13 +24,6 @@ interface IDynamicGllTest {
             .map { concreteGrammarFolder -> handleFolder(concreteGrammarFolder) }
     }
 
-    fun toCamelCase(input: String, separator: String = "_"): String {
-        return input.split(separator)
-            .filter { it.isNotEmpty() }
-            .map { it[0].uppercase() }
-            .joinToString { "" }
-    }
-
     fun getFile(name: String, grammarFile: File): File {
         val file = grammarFile.listFiles()?.firstOrNull { it.name == name }
         if (file == null) {
