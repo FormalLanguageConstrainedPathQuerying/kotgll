@@ -3,7 +3,7 @@ package grammars.cAPlusBStar
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 
-class cAPlusBStar : Grammar() {
+class GrammarDsl : Grammar() {
     var S by Nt()
 
     init {

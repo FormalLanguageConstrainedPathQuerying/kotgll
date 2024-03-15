@@ -6,30 +6,32 @@ import java.io.File
 
 
 interface IDynamicGllTest {
+    val mainFileName: String
+
+    companion object {
+        const val GRAMMAR_FOLDER = "grammars"
+    }
+
     val oneLineTestsFileName: String
-        get() = "oneLineCorrectInputs.txt"
+        get() = "oneLineInputs.txt"
     val oneLineErrorsTestsFileName: String
         get() = "oneLineErrorInputs.txt"
     val grammarFolderName: String
         get() = "src/test/resources/grammars"
-    val unsupportedTests: List<String>
-        get() = listOf("abStar")
 
     @TestFactory
     fun testAll(): Collection<DynamicContainer> {
         val folders =
             File(grammarFolderName).listFiles() ?: throw Exception("Resource folder $grammarFolderName not found")
         return folders
-            .filter { !unsupportedTests.contains(it.name) }
+            .filter {
+                it.isDirectory && it.listFiles()?.any { file -> file.name == mainFileName } == true
+            }
             .map { concreteGrammarFolder -> handleFolder(concreteGrammarFolder) }
     }
 
-    fun getFile(name: String, grammarFile: File): File {
-        val file = grammarFile.listFiles()?.firstOrNull { it.name == name }
-        if (file == null) {
-            throw Exception("$name file missed in ${grammarFile.name}")
-        }
-        return file
+    fun getFile(name: String, grammarFile: File): File? {
+        return grammarFile.listFiles()?.firstOrNull { it.name == name }
     }
 
     fun getTestName(input: String): String {
@@ -41,4 +43,10 @@ interface IDynamicGllTest {
     }
 
     fun handleFolder(concreteGrammarFolder: File): DynamicContainer
+
+    fun getLines(fileName: String, folder: File): List<String> {
+        val file = getFile(fileName, folder) ?: return listOf()
+        return file.readLines()
+    }
+
 }
