@@ -30,7 +30,7 @@ interface IGll<VertexType, LabelType : ILabel> {
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
 
-    fun parse(curDescriptor: Descriptor<VertexType>)
+    fun parse(descriptor: Descriptor<VertexType>)
 
     /**
      *
@@ -155,6 +155,23 @@ interface IGll<VertexType, LabelType : ILabel> {
         targetStates: HashSet<RsmState>,
         curSppfNode: SppfNode<VertexType>?
     ) {
+        for (target in targetStates) {
+            val newDescriptor = Descriptor(
+                nonterminal.startState,
+                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
+                sppfNode = null,
+                descriptor.inputPosition
+            )
+            ctx.addDescriptor(newDescriptor)
+        }
+    }
+
+    fun handleNonterminalEdge(
+        descriptor: Descriptor<VertexType>,
+        nonterminal: Nonterminal,
+        curSppfNode: SppfNode<VertexType>?
+    ) {
+        val targetStates: HashSet<RsmState> = descriptor.rsmState.nonterminalEdges[nonterminal]!!
         for (target in targetStates) {
             val newDescriptor = Descriptor(
                 nonterminal.startState,

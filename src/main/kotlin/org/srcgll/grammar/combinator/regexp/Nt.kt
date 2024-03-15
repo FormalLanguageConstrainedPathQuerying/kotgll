@@ -1,7 +1,6 @@
 package org.srcgll.grammar.combinator.regexp
 
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.rsm.PrintableRsmState
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import kotlin.reflect.KProperty
@@ -18,12 +17,6 @@ open class Nt : DerivedSymbol {
 
     fun buildRsmBox() {
         nonterm.startState.buildRsmBox(rsmDescription)
-    }
-
-    fun buildPrintableRsmBox() {
-        val printableState = PrintableRsmState(nonterm.startState)
-        printableState.buildRsmBox(rsmDescription)
-        nonterm.startState = printableState
     }
 
     override fun getNonterminal(): Nonterminal? {

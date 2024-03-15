@@ -46,12 +46,12 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
     }
 
 
-    override fun parse(curDescriptor: Descriptor<VertexType>) {
-        val state = curDescriptor.rsmState
-        val pos = curDescriptor.inputPosition
-        val curSppfNode = curDescriptor.getCurSppfNode(ctx)
+    override fun parse(descriptor: Descriptor<VertexType>) {
+        val state = descriptor.rsmState
+        val pos = descriptor.inputPosition
+        val curSppfNode = descriptor.getCurSppfNode(ctx)
 
-        ctx.descriptors.addToHandled(curDescriptor)
+        ctx.descriptors.addToHandled(descriptor)
 
         val leftExtent = curSppfNode?.leftExtent
         val rightExtent = curSppfNode?.rightExtent
@@ -62,11 +62,11 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
             this::handleTerminalOrEpsilonEdge,
             this::handleNonterminalEdge,
             ctx,
-            curDescriptor,
+            descriptor,
             curSppfNode
         )
 
-        if (state.isFinal) pop(curDescriptor.gssNode, curSppfNode, pos)
+        if (state.isFinal) pop(descriptor.gssNode, curSppfNode, pos)
     }
 
 }

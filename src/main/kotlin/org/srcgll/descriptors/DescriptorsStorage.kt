@@ -1,6 +1,6 @@
 package org.srcgll.descriptors
 
-import org.srcgll.exceptions.ParsingException
+import org.srcgll.parser.ParsingException
 
 
 open class DescriptorsStorage<VertexType>{

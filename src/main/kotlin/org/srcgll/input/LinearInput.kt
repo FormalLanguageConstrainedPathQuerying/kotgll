@@ -1,5 +1,7 @@
 package org.srcgll.input
 
+import org.srcgll.rsm.symbol.Terminal
+
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
     override val vertices: MutableMap<VertexType, VertexType> = HashMap()
     override val edges: MutableMap<VertexType, MutableList<Edge<VertexType, LabelType>>> = HashMap()
@@ -47,4 +49,23 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
 
     override fun isStart(vertex: VertexType) = startVertices.contains(vertex)
     override fun isFinal(vertex: VertexType) = getEdges(vertex).isEmpty()
+
+
+    companion object {
+
+
+        fun buildFromString(input: String): IInputGraph<Int, LinearInputLabel> {
+            var curVertexId = 0
+            val inputGraph = LinearInput<Int, LinearInputLabel>()
+            inputGraph.addVertex(curVertexId)
+            for (x in input) {
+                inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+                inputGraph.addVertex(curVertexId)
+            }
+            inputGraph.addStartVertex(0)
+            return inputGraph
+        }
+
+    }
+
 }

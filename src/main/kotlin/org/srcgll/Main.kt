@@ -46,7 +46,7 @@ fun main(args: Array<String>) {
 
 
     val input = File(pathToInput).readText().replace("\n", "").trim()
-    val grammar = JavaGrammar().buildRsm()
+    val grammar = JavaGrammar().rsm
     val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
     val lexer = JavaLexer(StringReader(input))
     val gll = Gll.recoveryGll(grammar, inputGraph)
