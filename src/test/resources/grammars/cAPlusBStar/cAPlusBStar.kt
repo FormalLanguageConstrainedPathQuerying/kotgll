@@ -1,9 +1,9 @@
-package grammars.c_a_plus_b_star
+package grammars.cAPlusBStar
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 
-class CAPlusBStar : Grammar() {
+class cAPlusBStar : Grammar() {
     var S by Nt()
 
     init {
