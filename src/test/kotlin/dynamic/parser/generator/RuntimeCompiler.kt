@@ -5,7 +5,8 @@ import com.tschuchort.compiletesting.SourceFile
 import dynamic.parser.IDynamicGllTest
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.generator.GeneratedParser
-import org.srcgll.parser.generator.ParserGenerator
+import org.srcgll.parser.generator.IParserGenerator
+import org.srcgll.parser.generator.ScanerlessParserGenerator
 import java.io.File
 import java.net.URLClassLoader
 import java.nio.file.Path
@@ -34,12 +35,12 @@ object RuntimeCompiler {
         val clazz: Class<*>
         private val pkg = "$PARSER_PKG.${grammarInfo.name}"
         private val path = parserPath.resolve(grammarInfo.name)
-        private val name = ParserGenerator.getParserClassName(GllGeneratedTest.DSL_FILE_NAME)
+        private val name = IParserGenerator.getParserClassName(GllGeneratedTest.DSL_FILE_NAME)
         private val file = path.resolve("$name.kt").toFile()
         private val fqn = "$pkg.$name"
 
         init {
-            ParserGenerator(grammarInfo.clazz).generate(parsersFolder, pkg)
+            ScanerlessParserGenerator(grammarInfo.clazz).generate(parsersFolder, pkg)
             assert(file.exists()) {
                 "Parser file $file does not exist"
             }
