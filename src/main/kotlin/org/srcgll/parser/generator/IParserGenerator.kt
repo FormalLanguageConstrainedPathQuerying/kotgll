@@ -9,6 +9,7 @@ import org.srcgll.input.ILabel
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
@@ -18,7 +19,7 @@ interface IParserGenerator {
     val grammar: Grammar
 
     companion object {
-        const val PARSER = "Parser"
+        private const val PARSER = "Parser"
         val vertexType = TypeVariableName("VertexType")
         val labelType = TypeVariableName("LabelType", ILabel::class.java)
         val superClass = GeneratedParser::class.asTypeName().parameterizedBy(vertexType, labelType)
@@ -39,6 +40,7 @@ interface IParserGenerator {
         const val STATE_NAME = "state"
         const val ID_FIELD_NAME = "id"
         const val POS_VAR_NAME = "pos"
+        const val INPUT_EDGE_NAME = "inputEdge"
         fun getParseFunName(nonterminalName: String): String = "parse${nonterminalName}"
         fun getParserClassName(grammarSimpleName: String): String {
             return grammarSimpleName + PARSER
@@ -55,6 +57,7 @@ interface IParserGenerator {
         }
         val grammar = grammarClazz.getConstructor().newInstance()
         if (grammar is Grammar) {
+            grammar.rsm
             return grammar
         }
         throw ParserGeneratorException(ParserGeneratorException.grammarExpectedMsg)
@@ -188,13 +191,32 @@ interface IParserGenerator {
         generateTerminalParsing(state, funSpec)
         generateNonterminalParsing(state, funSpec)
         funSpec.endControlFlow()
-
     }
 
     /**
      * Generate and add to funSpec method that parse all terminals edge from current state
      */
-    fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder)
+    fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
+        if (state.terminalEdges.isNotEmpty()) {
+            funSpec.addComment("handle terminal edges")
+            funSpec.beginControlFlow(
+                "for (%L in %L.%L.getEdges(%L))",
+                INPUT_EDGE_NAME,
+                CTX_NAME,
+                INPUT_FIELD,
+                POS_VAR_NAME
+            )
+            for (term in state.terminalEdges.keys) {
+                funSpec.addStatement(generateTerminalHandling(term).toString())
+            }
+            funSpec.endControlFlow()
+        }
+    }
+
+    /**
+     * Generate code for handle one Edge with Terminal<*> label
+     */
+    fun generateTerminalHandling(terminal: Terminal<*>) : CodeBlock
 
 
     /**

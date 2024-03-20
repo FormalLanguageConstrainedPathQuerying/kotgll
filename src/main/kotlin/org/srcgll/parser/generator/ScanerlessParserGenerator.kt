@@ -3,48 +3,31 @@ package org.srcgll.parser.generator
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.rsm.RsmState
+import org.srcgll.parser.generator.IParserGenerator.Companion.INPUT_EDGE_NAME
 import org.srcgll.rsm.symbol.Terminal
 
+/**
+ * Scanerless parser generator
+ * Store @Grammar terminals as list of @Terminal<*> type
+ */
 class ScanerlessParserGenerator(override val grammarClazz: Class<*>) : IParserGenerator {
     override val grammar: Grammar = buildGrammar(grammarClazz)
     private val terminals: List<Terminal<*>> = grammar.getTerminals().toList()
 
-    @Override
     override fun generateProperties(): Iterable<PropertySpec> {
         return super.generateProperties() + generateTerminalsSpec()
     }
 
-    override fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
-        if (state.terminalEdges.isNotEmpty()) {
-            funSpec.addComment("handle terminal edges")
-            val inputEdge = "inputEdge"
-            funSpec.beginControlFlow(
-                "for (%L in %L.%L.getEdges(%L))",
-                inputEdge,
-                IParserGenerator.CTX_NAME,
-                IParserGenerator.INPUT_FIELD,
-                IParserGenerator.POS_VAR_NAME
-            )
-            for (term in state.terminalEdges.keys) {
-                generateTerminalHandling(funSpec, term, inputEdge)
-            }
-            funSpec.endControlFlow()
-        }
-    }
-
-    private fun generateTerminalHandling(
-        funSpec: FunSpec.Builder,
+    override fun generateTerminalHandling(
         terminal: Terminal<*>,
-        edgeName: String
-    ) {
-        funSpec.addStatement(
+    ): CodeBlock {
+        return CodeBlock.of(
             "%L(%L[%L], %L, %L, %L, %L)",
             IParserGenerator.HANDLE_TERMINAL,
             IParserGenerator.TERMINALS,
             terminals.indexOf(terminal),
             IParserGenerator.STATE_NAME,
-            edgeName,
+            INPUT_EDGE_NAME,
             IParserGenerator.DESCRIPTOR,
             IParserGenerator.SPPF_NODE
         )

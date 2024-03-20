@@ -16,7 +16,7 @@ import kotlin.test.assertNotNull
 
 open class GllGeneratedTest : IDynamicGllTest {
     companion object {
-        const val DSL_FILE_NAME = "GrammarDsl"
+        const val DSL_FILE_NAME = "ScanerlessGrammarDsl"
     }
 
     override val mainFileName: String
