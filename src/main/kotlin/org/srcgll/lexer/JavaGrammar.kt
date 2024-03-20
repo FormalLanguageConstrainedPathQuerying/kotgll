@@ -2,7 +2,6 @@ package org.srcgll.lexer
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
-import org.srcgll.rsm.symbol.Term
 
 class JavaGrammar : Grammar() {
     var CompilationUnit by Nt()
@@ -220,154 +219,154 @@ class JavaGrammar : Grammar() {
     var constantExpression by Nt()
 
     init {
-        identifier = Term(JavaToken.ID)
+        identifier = JavaToken.ID
 
-        Literal = Term(JavaToken.INTEGERLIT) or Term(JavaToken.FLOATINGLIT) or Term(JavaToken.BOOLEANLIT) or
-                Term(JavaToken.CHARLIT) or Term(JavaToken.STRINGLIT) or Term(JavaToken.NULLLIT)
+        Literal = JavaToken.INTEGERLIT or JavaToken.FLOATINGLIT or JavaToken.BOOLEANLIT or
+                JavaToken.CHARLIT or JavaToken.STRINGLIT or JavaToken.NULLLIT
 
         Type = PrimitiveType or ReferenceType
-        PrimitiveType = Many(Annotation) * NumericType or Many(Annotation) * Term(JavaToken.BOOLEAN)
+        PrimitiveType = Many(Annotation) * NumericType or Many(Annotation) * JavaToken.BOOLEAN
         NumericType = integralType or floatingPointType
-        integralType = Term(JavaToken.BYTE) or Term(JavaToken.SHORT) or Term(JavaToken.INT) or Term(JavaToken.LONG) or Term(JavaToken.CHAR)
-        floatingPointType = Term(JavaToken.FLOAT) or Term(JavaToken.DOUBLE)
+        integralType = JavaToken.BYTE or JavaToken.SHORT or JavaToken.INT or JavaToken.LONG or JavaToken.CHAR
+        floatingPointType = JavaToken.FLOAT or JavaToken.DOUBLE
         ReferenceType = classOrInterfaceType or TypeVariable or ArrayType
         classOrInterfaceType = ClassType or interfaceType
         ClassType = Many(Annotation) * identifier * Option(typeArguments) or
-                classOrInterfaceType * Term(JavaToken.DOT) * Many(Annotation) * identifier * Option(typeArguments)
+                classOrInterfaceType * JavaToken.DOT * Many(Annotation) * identifier * Option(typeArguments)
         interfaceType = ClassType
         TypeVariable = Many(Annotation) * identifier
         ArrayType = PrimitiveType * Dims or classOrInterfaceType * Dims or TypeVariable * Dims
-        Dims = Some(Many(Annotation) * Term(JavaToken.BRACKETLEFT) * Term(JavaToken.BRACKETRIGHT))
+        Dims = Some(Many(Annotation) * JavaToken.BRACKETLEFT * JavaToken.BRACKETRIGHT)
         TypeParameter  = Many(TypeParameterModifier) * identifier * Option(TypeBound)
         TypeParameterModifier = Annotation
-        TypeBound = Term(JavaToken.EXTENDS) * TypeVariable or Term(JavaToken.EXTENDS) * classOrInterfaceType * Many(AdditionalBound)
-        AdditionalBound = Term(JavaToken.ANDBIT) * interfaceType
-        typeArguments = Term(JavaToken.DIAMONDLEFT) * typeArgumentList * Term(JavaToken.DIAMONDRIGHT)
-        typeArgumentList = typeArgument * Many(Term(JavaToken.COMMA) * typeArgument)
+        TypeBound = JavaToken.EXTENDS * TypeVariable or JavaToken.EXTENDS * classOrInterfaceType * Many(AdditionalBound)
+        AdditionalBound = JavaToken.ANDBIT * interfaceType
+        typeArguments = JavaToken.DIAMONDLEFT * typeArgumentList * JavaToken.DIAMONDRIGHT
+        typeArgumentList = typeArgument * Many(JavaToken.COMMA * typeArgument)
         typeArgument = ReferenceType or Wildcard
-        Wildcard = Many(Annotation) * Term(JavaToken.QUESTIONMARK) * Option(WildcardBounds)
-        WildcardBounds = Term(JavaToken.EXTENDS) * ReferenceType or Term(JavaToken.SUPER) * ReferenceType
+        Wildcard = Many(Annotation) * JavaToken.QUESTIONMARK * Option(WildcardBounds)
+        WildcardBounds = JavaToken.EXTENDS * ReferenceType or JavaToken.SUPER * ReferenceType
 
-        TypeName = identifier or PackageOrTypeName * Term(JavaToken.DOT) * identifier
-        PackageOrTypeName = identifier or PackageOrTypeName * Term(JavaToken.DOT) * identifier
-        ExpressionName = identifier or AmbiguousName * Term(JavaToken.DOT) * identifier
+        TypeName = identifier or PackageOrTypeName * JavaToken.DOT * identifier
+        PackageOrTypeName = identifier or PackageOrTypeName * JavaToken.DOT * identifier
+        ExpressionName = identifier or AmbiguousName * JavaToken.DOT * identifier
         MethodName = identifier
-        PackageName = identifier or PackageName * Term(JavaToken.DOT) * identifier
-        AmbiguousName = identifier or AmbiguousName * Term(JavaToken.DOT) * identifier
+        PackageName = identifier or PackageName * JavaToken.DOT * identifier
+        AmbiguousName = identifier or AmbiguousName * JavaToken.DOT * identifier
 
         CompilationUnit = Option(PackageDeclaration) * Many(ImportDeclaration) * Many(TypeDeclaration)
-        PackageDeclaration = Many(PackageModifier) * Term(JavaToken.PACKAGE) * identifier * Many(Term(JavaToken.DOT) * identifier) * Term(JavaToken.SEMICOLON)
+        PackageDeclaration = Many(PackageModifier) * JavaToken.PACKAGE * identifier * Many(JavaToken.DOT * identifier) * JavaToken.SEMICOLON
         PackageModifier = Annotation
         ImportDeclaration = SingleTypeImportDeclaration or TypeImportOnDemandDeclaration or
                 SingleStaticImportDeclaration or StaticImportOnDemandDeclaration
-        SingleTypeImportDeclaration = Term(JavaToken.IMPORT) * TypeName * Term(JavaToken.SEMICOLON)
-        TypeImportOnDemandDeclaration = Term(JavaToken.IMPORT) * PackageOrTypeName * Term(JavaToken.DOT) * Term(JavaToken.STAR) * Term(JavaToken.SEMICOLON)
-        SingleStaticImportDeclaration = Term(JavaToken.IMPORT) * Term(JavaToken.STATIC) * TypeName * Term(JavaToken.DOT) * identifier * Term(JavaToken.SEMICOLON)
-        StaticImportOnDemandDeclaration = Term(JavaToken.IMPORT) * Term(JavaToken.STATIC) * TypeName * Term(JavaToken.DOT) * Term(JavaToken.STAR) * Term(JavaToken.SEMICOLON)
-        TypeDeclaration = ClassDeclaration or interfaceDeclaration or Term(JavaToken.SEMICOLON)
+        SingleTypeImportDeclaration = JavaToken.IMPORT * TypeName * JavaToken.SEMICOLON
+        TypeImportOnDemandDeclaration = JavaToken.IMPORT * PackageOrTypeName * JavaToken.DOT * JavaToken.STAR * JavaToken.SEMICOLON
+        SingleStaticImportDeclaration = JavaToken.IMPORT * JavaToken.STATIC * TypeName * JavaToken.DOT * identifier * JavaToken.SEMICOLON
+        StaticImportOnDemandDeclaration = JavaToken.IMPORT * JavaToken.STATIC * TypeName * JavaToken.DOT * JavaToken.STAR * JavaToken.SEMICOLON
+        TypeDeclaration = ClassDeclaration or interfaceDeclaration or JavaToken.SEMICOLON
 
         ClassDeclaration = NormalClassDeclaration or EnumDeclaration
-        NormalClassDeclaration = Many(ClassModifier) * Term(JavaToken.CLASS) * identifier *
+        NormalClassDeclaration = Many(ClassModifier) * JavaToken.CLASS * identifier *
                 Option(TypeParameters) * Option(Superclass) * Option(superinterfaces) * ClassBody
-        ClassModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.PROTECTED) or Term(JavaToken.PRIVATE) or
-                Term(JavaToken.ABSTRACT) or Term(JavaToken.STATIC) or Term(JavaToken.FINAL) or Term(JavaToken.STRICTFP)
-        TypeParameters = Term(JavaToken.DIAMONDLEFT) * TypeParameterList * Term(JavaToken.DIAMONDRIGHT)
-        TypeParameterList = TypeParameter  * Many(Term(JavaToken.COMMA) * TypeParameter)
-        Superclass = Term(JavaToken.EXTENDS) * ClassType
-        superinterfaces = Term(JavaToken.IMPLEMENTS) * interfaceTypeList
-        interfaceTypeList = interfaceType  * Many(Term(JavaToken.COMMA) * interfaceType)
-        ClassBody = Term(JavaToken.CURLYLEFT) * Many(ClassBodyDeclaration) * Term(JavaToken.CURLYRIGHT)
+        ClassModifier = Annotation or JavaToken.PUBLIC or JavaToken.PROTECTED or JavaToken.PRIVATE or
+                JavaToken.ABSTRACT or JavaToken.STATIC or JavaToken.FINAL or JavaToken.STRICTFP
+        TypeParameters = JavaToken.DIAMONDLEFT * TypeParameterList * JavaToken.DIAMONDRIGHT
+        TypeParameterList = TypeParameter  * Many(JavaToken.COMMA * TypeParameter)
+        Superclass = JavaToken.EXTENDS * ClassType
+        superinterfaces = JavaToken.IMPLEMENTS * interfaceTypeList
+        interfaceTypeList = interfaceType  * Many(JavaToken.COMMA * interfaceType)
+        ClassBody = JavaToken.CURLYLEFT * Many(ClassBodyDeclaration) * JavaToken.CURLYRIGHT
         ClassBodyDeclaration = ClassMemberDeclaration or InstanceInitializer or StaticInitializer or ConstructorDeclaration
-        ClassMemberDeclaration = FieldDeclaration or MethodDeclaration or ClassDeclaration or interfaceDeclaration or Term(JavaToken.SEMICOLON)
-        FieldDeclaration = Many(FieldModifier) * unannType * VariableDeclaratorList * Term(JavaToken.SEMICOLON)
-        FieldModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.PROTECTED) or Term(JavaToken.PRIVATE) or Term(JavaToken.STATIC) or
-                Term(JavaToken.FINAL) or Term(JavaToken.TRANSIENT) or Term(JavaToken.VOLATILE)
-        VariableDeclaratorList = VariableDeclarator * Many(Term(JavaToken.COMMA) * VariableDeclarator)
-        VariableDeclarator = VariableDeclaratorId * Option(Term(JavaToken.ASSIGN) * VariableInitializer)
+        ClassMemberDeclaration = FieldDeclaration or MethodDeclaration or ClassDeclaration or interfaceDeclaration or JavaToken.SEMICOLON
+        FieldDeclaration = Many(FieldModifier) * unannType * VariableDeclaratorList * JavaToken.SEMICOLON
+        FieldModifier = Annotation or JavaToken.PUBLIC or JavaToken.PROTECTED or JavaToken.PRIVATE or JavaToken.STATIC or
+                JavaToken.FINAL or JavaToken.TRANSIENT or JavaToken.VOLATILE
+        VariableDeclaratorList = VariableDeclarator * Many(JavaToken.COMMA * VariableDeclarator)
+        VariableDeclarator = VariableDeclaratorId * Option(JavaToken.ASSIGN * VariableInitializer)
         VariableDeclaratorId = identifier * Option(Dims)
         VariableInitializer = Expression or ArrayInitializer
         unannType = UnannPrimitiveType or UnannReferenceType
-        UnannPrimitiveType = NumericType or Term(JavaToken.BOOLEAN)
+        UnannPrimitiveType = NumericType or JavaToken.BOOLEAN
         UnannReferenceType = unannClassOrInterfaceType or unannTypeVariable or UnannArrayType
         unannClassOrInterfaceType = UnannClassType or unannInterfaceType
         UnannClassType = identifier * Option(typeArguments) or
-                unannClassOrInterfaceType * Term(JavaToken.DOT) * Many(Annotation) * identifier * Option(typeArguments)
+                unannClassOrInterfaceType * JavaToken.DOT * Many(Annotation) * identifier * Option(typeArguments)
         unannInterfaceType = UnannClassType
         unannTypeVariable = identifier
         UnannArrayType = UnannPrimitiveType * Dims or unannClassOrInterfaceType * Dims or unannTypeVariable * Dims
         MethodDeclaration = Many(MethodModifier) * MethodHeader * MethodBody
-        MethodModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.PROTECTED) or Term(JavaToken.PRIVATE) or Term(JavaToken.ABSTRACT) or
-                Term(JavaToken.STATIC) or Term(JavaToken.FINAL) or Term(JavaToken.SYNCHRONIZED) or Term(JavaToken.NATIVE) or Term(JavaToken.STRICTFP)
+        MethodModifier = Annotation or JavaToken.PUBLIC or JavaToken.PROTECTED or JavaToken.PRIVATE or JavaToken.ABSTRACT or
+                JavaToken.STATIC or JavaToken.FINAL or JavaToken.SYNCHRONIZED or JavaToken.NATIVE or JavaToken.STRICTFP
         MethodHeader = Result * MethodDeclarator * Option(Throws) or TypeParameters * Many(Annotation) * Result *
                 MethodDeclarator * Option(Throws)
-        Result = unannType or Term(JavaToken.VOID)
-        MethodDeclarator = identifier * Term(JavaToken.PARENTHLEFT) * Option(FormalParameterList) * Term(JavaToken.PARENTHRIGHT) * Option(Dims)
-        FormalParameterList = ReceiverParameter or FormalParameters * Term(JavaToken.COMMA) * LastFormalParameter or
+        Result = unannType or JavaToken.VOID
+        MethodDeclarator = identifier * JavaToken.PARENTHLEFT * Option(FormalParameterList) * JavaToken.PARENTHRIGHT * Option(Dims)
+        FormalParameterList = ReceiverParameter or FormalParameters * JavaToken.COMMA * LastFormalParameter or
                 LastFormalParameter
-        FormalParameters = FormalParameter * Many(Term(JavaToken.COMMA) * FormalParameter) or
-                ReceiverParameter * Many(Term(JavaToken.COMMA) * FormalParameter)
+        FormalParameters = FormalParameter * Many(JavaToken.COMMA * FormalParameter) or
+                ReceiverParameter * Many(JavaToken.COMMA * FormalParameter)
         FormalParameter = Many(VariableModifier) * unannType * VariableDeclaratorId
-        VariableModifier = Annotation or Term(JavaToken.FINAL)
-        LastFormalParameter = Many(VariableModifier) * unannType * Many(Annotation) * Term(JavaToken.ELLIPSIS) * VariableDeclaratorId or FormalParameter
-        ReceiverParameter = Many(Annotation) * unannType * Option(identifier * Term(JavaToken.DOT)) * Term(JavaToken.THIS)
-        Throws = Term(JavaToken.THROWS) * exceptionTypeList
-        exceptionTypeList = exceptionType * Many(Term(JavaToken.COMMA) * exceptionType)
+        VariableModifier = Annotation or JavaToken.FINAL
+        LastFormalParameter = Many(VariableModifier) * unannType * Many(Annotation) * JavaToken.ELLIPSIS * VariableDeclaratorId or FormalParameter
+        ReceiverParameter = Many(Annotation) * unannType * Option(identifier * JavaToken.DOT) * JavaToken.THIS
+        Throws = JavaToken.THROWS * exceptionTypeList
+        exceptionTypeList = exceptionType * Many(JavaToken.COMMA * exceptionType)
         exceptionType = ClassType or TypeVariable
-        MethodBody = Block or Term(JavaToken.SEMICOLON)
+        MethodBody = Block or JavaToken.SEMICOLON
         InstanceInitializer = Block
-        StaticInitializer = Term(JavaToken.STATIC) * Block
+        StaticInitializer = JavaToken.STATIC * Block
         ConstructorDeclaration = Many(ConstructorModifier) * ConstructorDeclarator * Option(Throws) * ConstructorBody
-        ConstructorModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.PROTECTED) or Term(JavaToken.PRIVATE)
-        ConstructorDeclarator = Option(TypeParameters) * SimpleTypeName * Term(JavaToken.PARENTHLEFT) * Option(FormalParameterList) * Term(JavaToken.PARENTHRIGHT)
+        ConstructorModifier = Annotation or JavaToken.PUBLIC or JavaToken.PROTECTED or JavaToken.PRIVATE
+        ConstructorDeclarator = Option(TypeParameters) * SimpleTypeName * JavaToken.PARENTHLEFT * Option(FormalParameterList) * JavaToken.PARENTHRIGHT
         SimpleTypeName = identifier
-        ConstructorBody = Term(JavaToken.CURLYLEFT) * Option(ExplicitConstructorInvocation) * Option(blockStatements) * Term(JavaToken.CURLYRIGHT)
-        ExplicitConstructorInvocation = Option(typeArguments) * Term(JavaToken.THIS) * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) * Term(JavaToken.SEMICOLON) or
-                Option(typeArguments) * Term(JavaToken.SUPER) * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) * Term(JavaToken.SEMICOLON) or
-                ExpressionName * Term(JavaToken.DOT) * Option(typeArguments) * Term(JavaToken.SUPER) * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) * Term(JavaToken.SEMICOLON) or
-                Primary * Term(JavaToken.DOT) * Option(typeArguments) * Term(JavaToken.SUPER) * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) * Term(JavaToken.SEMICOLON)
-        EnumDeclaration = Many(ClassModifier) * Term(JavaToken.ENUM) * identifier * Option(superinterfaces) * EnumBody
-        EnumBody = Term(JavaToken.CURLYLEFT) * Option(enumConstantList) * Option(Term(JavaToken.COMMA)) * Option(EnumBodyDeclarations) * Term(JavaToken.CURLYRIGHT)
-        enumConstantList = enumConstant * Many(Term(JavaToken.COMMA) * enumConstant)
-        enumConstant = Many(enumConstantModifier) * identifier * Option(Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) * Option(ClassBody))
+        ConstructorBody = JavaToken.CURLYLEFT * Option(ExplicitConstructorInvocation) * Option(blockStatements) * JavaToken.CURLYRIGHT
+        ExplicitConstructorInvocation = Option(typeArguments) * JavaToken.THIS * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT * JavaToken.SEMICOLON or
+                Option(typeArguments) * JavaToken.SUPER * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT * JavaToken.SEMICOLON or
+                ExpressionName * JavaToken.DOT * Option(typeArguments) * JavaToken.SUPER * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT * JavaToken.SEMICOLON or
+                Primary * JavaToken.DOT * Option(typeArguments) * JavaToken.SUPER * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT * JavaToken.SEMICOLON
+        EnumDeclaration = Many(ClassModifier) * JavaToken.ENUM * identifier * Option(superinterfaces) * EnumBody
+        EnumBody = JavaToken.CURLYLEFT * Option(enumConstantList) * Option(JavaToken.COMMA) * Option(EnumBodyDeclarations) * JavaToken.CURLYRIGHT
+        enumConstantList = enumConstant * Many(JavaToken.COMMA * enumConstant)
+        enumConstant = Many(enumConstantModifier) * identifier * Option(JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT * Option(ClassBody))
         enumConstantModifier = Annotation
-        EnumBodyDeclarations = Term(JavaToken.SEMICOLON) * Many(ClassBodyDeclaration)
+        EnumBodyDeclarations = JavaToken.SEMICOLON * Many(ClassBodyDeclaration)
 
         interfaceDeclaration = normalInterfaceDeclaration or annotationTypeDeclaration
         normalInterfaceDeclaration =
-            Many(interfaceModifier) * Term(JavaToken.INTERFACE) * identifier * Option(TypeParameters) * Option(extendsInterfaces) * interfaceBody
-        interfaceModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.PROTECTED) or Term(JavaToken.PRIVATE) or
-                Term(JavaToken.ABSTRACT) or Term(JavaToken.STATIC) or Term(JavaToken.STRICTFP)
-        extendsInterfaces = Term(JavaToken.EXTENDS) * interfaceTypeList
-        interfaceBody = Term(JavaToken.CURLYLEFT) * Many(interfaceMemberDeclaration) * Term(JavaToken.CURLYRIGHT)
-        interfaceMemberDeclaration = constantDeclaration or interfaceMethodDeclaration or ClassDeclaration or interfaceDeclaration or Term(JavaToken.SEMICOLON)
+            Many(interfaceModifier) * JavaToken.INTERFACE * identifier * Option(TypeParameters) * Option(extendsInterfaces) * interfaceBody
+        interfaceModifier = Annotation or JavaToken.PUBLIC or JavaToken.PROTECTED or JavaToken.PRIVATE or
+                JavaToken.ABSTRACT or JavaToken.STATIC or JavaToken.STRICTFP
+        extendsInterfaces = JavaToken.EXTENDS * interfaceTypeList
+        interfaceBody = JavaToken.CURLYLEFT * Many(interfaceMemberDeclaration) * JavaToken.CURLYRIGHT
+        interfaceMemberDeclaration = constantDeclaration or interfaceMethodDeclaration or ClassDeclaration or interfaceDeclaration or JavaToken.SEMICOLON
         interfaceMethodDeclaration = Many(interfaceMethodModifier) * MethodHeader * MethodBody
-        interfaceMethodModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.ABSTRACT) or Term(JavaToken.DEFAULT) or Term(JavaToken.STATIC) or Term(JavaToken.STRICTFP)
-        constantDeclaration = Many(constantModifier) * unannType * VariableDeclaratorList * Term(JavaToken.SEMICOLON)
-        constantModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.ABSTRACT) or Term(JavaToken.DEFAULT) or Term(JavaToken.STATIC) or Term(JavaToken.STRICTFP)
-        annotationTypeDeclaration = Many(interfaceModifier) * Term(JavaToken.AT) * Term(JavaToken.INTERFACE) * identifier * annotationTypeBody
-        annotationTypeBody = Term(JavaToken.CURLYLEFT) * Many(annotationTypeMemberDeclaration) * Term(JavaToken.CURLYRIGHT)
-        annotationTypeMemberDeclaration = annotationTypeElementDeclaration or constantDeclaration or ClassDeclaration or interfaceDeclaration or Term(JavaToken.SEMICOLON)
+        interfaceMethodModifier = Annotation or JavaToken.PUBLIC or JavaToken.ABSTRACT or JavaToken.DEFAULT or JavaToken.STATIC or JavaToken.STRICTFP
+        constantDeclaration = Many(constantModifier) * unannType * VariableDeclaratorList * JavaToken.SEMICOLON
+        constantModifier = Annotation or JavaToken.PUBLIC or JavaToken.ABSTRACT or JavaToken.DEFAULT or JavaToken.STATIC or JavaToken.STRICTFP
+        annotationTypeDeclaration = Many(interfaceModifier) * JavaToken.AT * JavaToken.INTERFACE * identifier * annotationTypeBody
+        annotationTypeBody = JavaToken.CURLYLEFT * Many(annotationTypeMemberDeclaration) * JavaToken.CURLYRIGHT
+        annotationTypeMemberDeclaration = annotationTypeElementDeclaration or constantDeclaration or ClassDeclaration or interfaceDeclaration or JavaToken.SEMICOLON
         annotationTypeElementDeclaration =
-            Many(annotationTypeElementModifier) * unannType * identifier * Term(JavaToken.PARENTHLEFT) * Term(JavaToken.PARENTHRIGHT) * Option(Dims) * Option(DefaultValue) * Term(JavaToken.SEMICOLON)
-        annotationTypeElementModifier = Annotation or Term(JavaToken.PUBLIC) or Term(JavaToken.ABSTRACT)
-        DefaultValue = Term(JavaToken.DEFAULT) * elementValue
+            Many(annotationTypeElementModifier) * unannType * identifier * JavaToken.PARENTHLEFT * JavaToken.PARENTHRIGHT * Option(Dims) * Option(DefaultValue) * JavaToken.SEMICOLON
+        annotationTypeElementModifier = Annotation or JavaToken.PUBLIC or JavaToken.ABSTRACT
+        DefaultValue = JavaToken.DEFAULT * elementValue
         Annotation = NormalAnnotation or MarkerAnnotation or singleElementAnnotation
-        NormalAnnotation = Term(JavaToken.AT) * TypeName * Term(JavaToken.PARENTHLEFT) * Option(elementValuePairList) * Term(JavaToken.PARENTHRIGHT)
-        elementValuePairList = elementValuePair * Many(Term(JavaToken.COMMA) * elementValuePair)
-        elementValuePair = identifier * Term(JavaToken.ASSIGN) * elementValue
+        NormalAnnotation = JavaToken.AT * TypeName * JavaToken.PARENTHLEFT * Option(elementValuePairList) * JavaToken.PARENTHRIGHT
+        elementValuePairList = elementValuePair * Many(JavaToken.COMMA * elementValuePair)
+        elementValuePair = identifier * JavaToken.ASSIGN * elementValue
         elementValue = ConditionalExpression or elementValueArrayInitializer or Annotation
-        elementValueArrayInitializer = Term(JavaToken.CURLYLEFT) * Option(elementValueList) * Option(Term(JavaToken.COMMA)) * Term(JavaToken.CURLYRIGHT)
-        elementValueList = elementValue * Many(Term(JavaToken.COMMA) * elementValue)
-        MarkerAnnotation = Term(JavaToken.AT) * TypeName
-        singleElementAnnotation = Term(JavaToken.AT) * TypeName * Term(JavaToken.PARENTHLEFT) * elementValue * Term(JavaToken.PARENTHRIGHT)
+        elementValueArrayInitializer = JavaToken.CURLYLEFT * Option(elementValueList) * Option(JavaToken.COMMA) * JavaToken.CURLYRIGHT
+        elementValueList = elementValue * Many(JavaToken.COMMA * elementValue)
+        MarkerAnnotation = JavaToken.AT * TypeName
+        singleElementAnnotation = JavaToken.AT * TypeName * JavaToken.PARENTHLEFT * elementValue * JavaToken.PARENTHRIGHT
 
-        ArrayInitializer = Term(JavaToken.CURLYLEFT) * Option(VariableInitializerList) * Option(Term(JavaToken.COMMA)) * Term(JavaToken.CURLYRIGHT)
-        VariableInitializerList = VariableInitializer * Many(Term(JavaToken.COMMA) * VariableInitializer)
+        ArrayInitializer = JavaToken.CURLYLEFT * Option(VariableInitializerList) * Option(JavaToken.COMMA) * JavaToken.CURLYRIGHT
+        VariableInitializerList = VariableInitializer * Many(JavaToken.COMMA * VariableInitializer)
 
-        Block = Term(JavaToken.CURLYLEFT) * Option(blockStatements) * Term(JavaToken.CURLYRIGHT)
+        Block = JavaToken.CURLYLEFT * Option(blockStatements) * JavaToken.CURLYRIGHT
         blockStatements = blockStatement * Many(blockStatement)
         blockStatement = localVariableDeclarationStatement or ClassDeclaration or statement
-        localVariableDeclarationStatement = LocalVariableDeclaration * Term(JavaToken.SEMICOLON)
+        localVariableDeclarationStatement = LocalVariableDeclaration * JavaToken.SEMICOLON
         LocalVariableDeclaration = Many(VariableModifier) * unannType * VariableDeclaratorList
         statement = statementWithoutTrailingSubstatement or labeledStatement or ifThenStatement or ifThenElseStatement or
                 whileStatement or forStatement
@@ -376,138 +375,138 @@ class JavaGrammar : Grammar() {
         statementWithoutTrailingSubstatement = Block or emptyStatement or expressionStatement or assertStatement or
                 switchStatement or doStatement or breakStatement or continueStatement or returnStatement or synchronizedStatement or
                 throwStatement or tryStatement
-        emptyStatement = Term(JavaToken.SEMICOLON)
-        labeledStatement = identifier * Term(JavaToken.COLON) * statement
-        labeledStatementNoShortIf = identifier * Term(JavaToken.COLON) * statementNoShortIf
-        expressionStatement = statementExpression * Term(JavaToken.SEMICOLON)
+        emptyStatement = JavaToken.SEMICOLON
+        labeledStatement = identifier * JavaToken.COLON * statement
+        labeledStatementNoShortIf = identifier * JavaToken.COLON * statementNoShortIf
+        expressionStatement = statementExpression * JavaToken.SEMICOLON
         statementExpression = assignment or preIncrementExpression or preDecrementExpression or postIncrementExpression or
                 postDecrementExpression or MethodInvocation or ClassInstanceCreationExpression
-        ifThenStatement = Term(JavaToken.IF) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * statement
-        ifThenElseStatement = Term(JavaToken.IF) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * statementNoShortIf * Term(JavaToken.ELSE) * statement
+        ifThenStatement = JavaToken.IF * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * statement
+        ifThenElseStatement = JavaToken.IF * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * statementNoShortIf * JavaToken.ELSE * statement
         ifThenElseStatementNoShortIf =
-            Term(JavaToken.IF) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * statementNoShortIf * Term(JavaToken.ELSE) * statementNoShortIf
-        assertStatement = Term(JavaToken.ASSERT) * Expression * Term(JavaToken.SEMICOLON) or
-                Term(JavaToken.ASSERT) * Expression * Term(JavaToken.COLON) * Expression * Term(JavaToken.SEMICOLON)
-        switchStatement = Term(JavaToken.SWITCH) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * SwitchBlock
-        SwitchBlock = Term(JavaToken.CURLYLEFT) * Many(switchBlockStatementGroup) * Many(SwitchLabel) * Term(JavaToken.CURLYRIGHT)
+            JavaToken.IF * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * statementNoShortIf * JavaToken.ELSE * statementNoShortIf
+        assertStatement = JavaToken.ASSERT * Expression * JavaToken.SEMICOLON or
+                JavaToken.ASSERT * Expression * JavaToken.COLON * Expression * JavaToken.SEMICOLON
+        switchStatement = JavaToken.SWITCH * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * SwitchBlock
+        SwitchBlock = JavaToken.CURLYLEFT * Many(switchBlockStatementGroup) * Many(SwitchLabel) * JavaToken.CURLYRIGHT
         switchBlockStatementGroup = SwitchLabels * blockStatements
         SwitchLabels = SwitchLabel * Many(SwitchLabel)
-        SwitchLabel = Term(JavaToken.CASE) * constantExpression * Term(JavaToken.COLON) or
-                Term(JavaToken.CASE) * enumConstantName * Term(JavaToken.COLON) or Term(JavaToken.DEFAULT) * Term(JavaToken.COLON)
+        SwitchLabel = JavaToken.CASE * constantExpression * JavaToken.COLON or
+                JavaToken.CASE * enumConstantName * JavaToken.COLON or JavaToken.DEFAULT * JavaToken.COLON
         enumConstantName = identifier
-        whileStatement = Term(JavaToken.WHILE) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * statement
-        whileStatementNoShortIf = Term(JavaToken.WHILE) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * statementNoShortIf
-        doStatement = Term(JavaToken.DO) * statement * Term(JavaToken.WHILE) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * Term(JavaToken.SEMICOLON)
+        whileStatement = JavaToken.WHILE * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * statement
+        whileStatementNoShortIf = JavaToken.WHILE * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * statementNoShortIf
+        doStatement = JavaToken.DO * statement * JavaToken.WHILE * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * JavaToken.SEMICOLON
         forStatement = basicForStatement or enhancedForStatement
         forStatementNoShortIf = basicForStatementNoShortIf or enhancedForStatementNoShortIf
-        basicForStatement = Term(JavaToken.FOR) * Term(JavaToken.PARENTHLEFT) * Option(ForInit) * Term(JavaToken.SEMICOLON) * Option(Expression) * Term(JavaToken.SEMICOLON) * Option(ForUpdate) * Term(JavaToken.PARENTHRIGHT) * statement
-        basicForStatementNoShortIf = Term(JavaToken.FOR) * Term(JavaToken.PARENTHLEFT) * Option(ForInit) * Term(JavaToken.SEMICOLON) * Option(Expression) * Term(JavaToken.SEMICOLON) * Option(ForUpdate) * Term(JavaToken.PARENTHRIGHT) * statementNoShortIf
+        basicForStatement = JavaToken.FOR * JavaToken.PARENTHLEFT * Option(ForInit) * JavaToken.SEMICOLON * Option(Expression) * JavaToken.SEMICOLON * Option(ForUpdate) * JavaToken.PARENTHRIGHT * statement
+        basicForStatementNoShortIf = JavaToken.FOR * JavaToken.PARENTHLEFT * Option(ForInit) * JavaToken.SEMICOLON * Option(Expression) * JavaToken.SEMICOLON * Option(ForUpdate) * JavaToken.PARENTHRIGHT * statementNoShortIf
         ForInit = statementExpressionList or LocalVariableDeclaration
         ForUpdate = statementExpressionList
-        statementExpressionList = statementExpression * Many(Term(JavaToken.COMMA) * statementExpression)
-        enhancedForStatement = Term(JavaToken.FOR) * Term(JavaToken.PARENTHLEFT) * Many(VariableModifier) * unannType * VariableDeclaratorId * Term(JavaToken.COLON) * Expression * Term(JavaToken.PARENTHRIGHT) * statement
-        enhancedForStatementNoShortIf = Term(JavaToken.FOR) * Term(JavaToken.PARENTHLEFT) * Many(VariableModifier) * unannType * VariableDeclaratorId * Term(JavaToken.COLON) * Expression * Term(JavaToken.PARENTHRIGHT) * statementNoShortIf
-        breakStatement = Term(JavaToken.BREAK) * Option(identifier) * Term(JavaToken.SEMICOLON)
-        continueStatement = Term(JavaToken.CONTINUE) * Option(identifier) * Term(JavaToken.SEMICOLON)
-        returnStatement = Term(JavaToken.RETURN) * Option(Expression) * Term(JavaToken.SEMICOLON)
-        throwStatement = Term(JavaToken.THROW) * Expression * Term(JavaToken.SEMICOLON)
-        synchronizedStatement = Term(JavaToken.SYNCHRONIZED) * Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) * Block
-        tryStatement = Term(JavaToken.TRY) * Block * Catches or Term(JavaToken.TRY) * Block * Option(Catches) * Finally or tryWithResourcesStatement
+        statementExpressionList = statementExpression * Many(JavaToken.COMMA * statementExpression)
+        enhancedForStatement = JavaToken.FOR * JavaToken.PARENTHLEFT * Many(VariableModifier) * unannType * VariableDeclaratorId * JavaToken.COLON * Expression * JavaToken.PARENTHRIGHT * statement
+        enhancedForStatementNoShortIf = JavaToken.FOR * JavaToken.PARENTHLEFT * Many(VariableModifier) * unannType * VariableDeclaratorId * JavaToken.COLON * Expression * JavaToken.PARENTHRIGHT * statementNoShortIf
+        breakStatement = JavaToken.BREAK * Option(identifier) * JavaToken.SEMICOLON
+        continueStatement = JavaToken.CONTINUE * Option(identifier) * JavaToken.SEMICOLON
+        returnStatement = JavaToken.RETURN * Option(Expression) * JavaToken.SEMICOLON
+        throwStatement = JavaToken.THROW * Expression * JavaToken.SEMICOLON
+        synchronizedStatement = JavaToken.SYNCHRONIZED * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * Block
+        tryStatement = JavaToken.TRY * Block * Catches or JavaToken.TRY * Block * Option(Catches) * Finally or tryWithResourcesStatement
         Catches = CatchClause * Many(CatchClause)
-        CatchClause = Term(JavaToken.CATCH) * Term(JavaToken.PARENTHLEFT) * CatchFormalParameter * Term(JavaToken.PARENTHRIGHT) * Block
+        CatchClause = JavaToken.CATCH * JavaToken.PARENTHLEFT * CatchFormalParameter * JavaToken.PARENTHRIGHT * Block
         CatchFormalParameter = Many(VariableModifier) * CatchType * VariableDeclaratorId
-        CatchType = UnannClassType * Many(Term(JavaToken.ORBIT) * ClassType)
-        Finally = Term(JavaToken.FINALLY) * Block
-        tryWithResourcesStatement = Term(JavaToken.TRY) * ResourceSpecification * Block * Option(Catches) * Option(Finally)
-        ResourceSpecification = Term(JavaToken.PARENTHLEFT) * ResourceList * Option(Term(JavaToken.SEMICOLON)) * Term(JavaToken.PARENTHRIGHT)
-        ResourceList = Resource * Many(Term(JavaToken.COMMA) * Resource)
-        Resource = Many(VariableModifier) * unannType * VariableDeclaratorId * Term(JavaToken.ASSIGN) * Expression
+        CatchType = UnannClassType * Many(JavaToken.ORBIT * ClassType)
+        Finally = JavaToken.FINALLY * Block
+        tryWithResourcesStatement = JavaToken.TRY * ResourceSpecification * Block * Option(Catches) * Option(Finally)
+        ResourceSpecification = JavaToken.PARENTHLEFT * ResourceList * Option(JavaToken.SEMICOLON) * JavaToken.PARENTHRIGHT
+        ResourceList = Resource * Many(JavaToken.COMMA * Resource)
+        Resource = Many(VariableModifier) * unannType * VariableDeclaratorId * JavaToken.ASSIGN * Expression
 
         Primary = PrimaryNoNewArray or ArrayCreationExpression
-        PrimaryNoNewArray = Literal or ClassLiteral or Term(JavaToken.THIS) or TypeName * Term(JavaToken.DOT) * Term(JavaToken.THIS) or
-                Term(JavaToken.PARENTHLEFT) * Expression * Term(JavaToken.PARENTHRIGHT) or ClassInstanceCreationExpression or FieldAccess or
+        PrimaryNoNewArray = Literal or ClassLiteral or JavaToken.THIS or TypeName * JavaToken.DOT * JavaToken.THIS or
+                JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT or ClassInstanceCreationExpression or FieldAccess or
                 ArrayAccess or MethodInvocation or MethodReference
-        ClassLiteral = TypeName * Many(Term(JavaToken.BRACKETLEFT) * Term(JavaToken.BRACKETRIGHT)) * Term(JavaToken.DOT) * Term(JavaToken.CLASS) or
-                NumericType * Many(Term(JavaToken.BRACKETLEFT) * Term(JavaToken.BRACKETRIGHT)) * Term(JavaToken.DOT) * Term(JavaToken.CLASS) or
-                Term(JavaToken.BOOLEAN) * Many(Term(JavaToken.BRACKETLEFT) * Term(JavaToken.BRACKETRIGHT)) * Term(JavaToken.DOT) * Term(JavaToken.CLASS) or
-                Term(JavaToken.VOID) * Term(JavaToken.DOT) * Term(JavaToken.CLASS)
+        ClassLiteral = TypeName * Many(JavaToken.BRACKETLEFT * JavaToken.BRACKETRIGHT) * JavaToken.DOT * JavaToken.CLASS or
+                NumericType * Many(JavaToken.BRACKETLEFT * JavaToken.BRACKETRIGHT) * JavaToken.DOT * JavaToken.CLASS or
+                JavaToken.BOOLEAN * Many(JavaToken.BRACKETLEFT * JavaToken.BRACKETRIGHT) * JavaToken.DOT * JavaToken.CLASS or
+                JavaToken.VOID * JavaToken.DOT * JavaToken.CLASS
         ClassInstanceCreationExpression = UnqualifiedClassInstanceCreationExpression or
-                ExpressionName * Term(JavaToken.DOT) * UnqualifiedClassInstanceCreationExpression or
-                Primary * Term(JavaToken.DOT) * UnqualifiedClassInstanceCreationExpression
+                ExpressionName * JavaToken.DOT * UnqualifiedClassInstanceCreationExpression or
+                Primary * JavaToken.DOT * UnqualifiedClassInstanceCreationExpression
         UnqualifiedClassInstanceCreationExpression =
-            Term(JavaToken.NEW) * Option(typeArguments) * classOrInterfaceTypeToInstantiate * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) * Option(ClassBody)
-        classOrInterfaceTypeToInstantiate = Many(Annotation) * identifier * Many(Term(JavaToken.DOT) * Many(Annotation) * identifier) * Option(typeArgumentsOrDiamond)
-        typeArgumentsOrDiamond = typeArguments or Term(JavaToken.DIAMOND)
-        FieldAccess = Primary * Term(JavaToken.DOT) * identifier or Term(JavaToken.SUPER) * Term(JavaToken.DOT) * identifier or
-                TypeName * Term(JavaToken.DOT) * Term(JavaToken.SUPER) * Term(JavaToken.DOT) * identifier
-        ArrayAccess = ExpressionName * Term(JavaToken.BRACKETLEFT) * Expression * Term(JavaToken.BRACKETRIGHT) or
-                PrimaryNoNewArray * Term(JavaToken.BRACKETLEFT) * Expression * Term(JavaToken.BRACKETRIGHT)
-        MethodInvocation = MethodName * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) or
-                TypeName * Term(JavaToken.DOT) * Option(typeArguments) * identifier * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) or
-                ExpressionName * Term(JavaToken.DOT) * Option(typeArguments) * identifier * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) or
-                Term(JavaToken.SUPER) * Term(JavaToken.DOT) * Option(typeArguments) * identifier * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT) or
-                TypeName * Term(JavaToken.DOT) * Term(JavaToken.SUPER) * Term(JavaToken.DOT) * Option(typeArguments) * identifier * Term(JavaToken.PARENTHLEFT) * Option(argumentList) * Term(JavaToken.PARENTHRIGHT)
-        argumentList = Expression * Many(Term(JavaToken.COMMA) * Expression)
-        MethodReference = ExpressionName * Term(JavaToken.DOUBLECOLON) * Option(typeArguments) * identifier or
-                ReferenceType * Term(JavaToken.DOUBLECOLON) * Option(typeArguments) * identifier or
-                Primary * Term(JavaToken.DOUBLECOLON) * Option(typeArguments) * identifier or
-                Term(JavaToken.SUPER) * Term(JavaToken.DOUBLECOLON) * Option(typeArguments) * identifier or
-                TypeName * Term(JavaToken.DOT) * Term(JavaToken.SUPER) * Term(JavaToken.DOUBLECOLON) * Option(typeArguments) * identifier or
-                ClassType * Term(JavaToken.DOUBLECOLON) * Option(typeArguments) * Term(JavaToken.NEW) or
-                ArrayType * Term(JavaToken.DOUBLECOLON) * Term(JavaToken.NEW)
-        ArrayCreationExpression = Term(JavaToken.NEW) * PrimitiveType * DimExprs * Option(Dims) or
-                Term(JavaToken.NEW) * classOrInterfaceType * DimExprs * Option(Dims) or
-                Term(JavaToken.NEW) * PrimitiveType * Dims * ArrayInitializer or
-                Term(JavaToken.NEW) * classOrInterfaceType * Dims * ArrayInitializer
+            JavaToken.NEW * Option(typeArguments) * classOrInterfaceTypeToInstantiate * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT * Option(ClassBody)
+        classOrInterfaceTypeToInstantiate = Many(Annotation) * identifier * Many(JavaToken.DOT * Many(Annotation) * identifier) * Option(typeArgumentsOrDiamond)
+        typeArgumentsOrDiamond = typeArguments or JavaToken.DIAMOND
+        FieldAccess = Primary * JavaToken.DOT * identifier or JavaToken.SUPER * JavaToken.DOT * identifier or
+                TypeName * JavaToken.DOT * JavaToken.SUPER * JavaToken.DOT * identifier
+        ArrayAccess = ExpressionName * JavaToken.BRACKETLEFT * Expression * JavaToken.BRACKETRIGHT or
+                PrimaryNoNewArray * JavaToken.BRACKETLEFT * Expression * JavaToken.BRACKETRIGHT
+        MethodInvocation = MethodName * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT or
+                TypeName * JavaToken.DOT * Option(typeArguments) * identifier * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT or
+                ExpressionName * JavaToken.DOT * Option(typeArguments) * identifier * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT or
+                JavaToken.SUPER * JavaToken.DOT * Option(typeArguments) * identifier * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT or
+                TypeName * JavaToken.DOT * JavaToken.SUPER * JavaToken.DOT * Option(typeArguments) * identifier * JavaToken.PARENTHLEFT * Option(argumentList) * JavaToken.PARENTHRIGHT
+        argumentList = Expression * Many(JavaToken.COMMA * Expression)
+        MethodReference = ExpressionName * JavaToken.DOUBLECOLON * Option(typeArguments) * identifier or
+                ReferenceType * JavaToken.DOUBLECOLON * Option(typeArguments) * identifier or
+                Primary * JavaToken.DOUBLECOLON * Option(typeArguments) * identifier or
+                JavaToken.SUPER * JavaToken.DOUBLECOLON * Option(typeArguments) * identifier or
+                TypeName * JavaToken.DOT * JavaToken.SUPER * JavaToken.DOUBLECOLON * Option(typeArguments) * identifier or
+                ClassType * JavaToken.DOUBLECOLON * Option(typeArguments) * JavaToken.NEW or
+                ArrayType * JavaToken.DOUBLECOLON * JavaToken.NEW
+        ArrayCreationExpression = JavaToken.NEW * PrimitiveType * DimExprs * Option(Dims) or
+                JavaToken.NEW * classOrInterfaceType * DimExprs * Option(Dims) or
+                JavaToken.NEW * PrimitiveType * Dims * ArrayInitializer or
+                JavaToken.NEW * classOrInterfaceType * Dims * ArrayInitializer
         DimExprs = DimExpr * Many(DimExpr)
-        DimExpr = Many(Annotation) * Term(JavaToken.BRACKETLEFT) * Expression * Term(JavaToken.BRACKETRIGHT)
+        DimExpr = Many(Annotation) * JavaToken.BRACKETLEFT * Expression * JavaToken.BRACKETRIGHT
         Expression = LambdaExpression or assignmentExpression
-        LambdaExpression = LambdaParameters * Term(JavaToken.ARROW) * LambdaBody
-        LambdaParameters = identifier or Term(JavaToken.PARENTHLEFT) * Option(FormalParameterList) * Term(JavaToken.PARENTHRIGHT) or
-                Term(JavaToken.PARENTHLEFT) * InferredFormalParameterList * Term(JavaToken.PARENTHRIGHT)
-        InferredFormalParameterList = identifier * Many(Term(JavaToken.COMMA) * identifier)
+        LambdaExpression = LambdaParameters * JavaToken.ARROW * LambdaBody
+        LambdaParameters = identifier or JavaToken.PARENTHLEFT * Option(FormalParameterList) * JavaToken.PARENTHRIGHT or
+                JavaToken.PARENTHLEFT * InferredFormalParameterList * JavaToken.PARENTHRIGHT
+        InferredFormalParameterList = identifier * Many(JavaToken.COMMA * identifier)
         LambdaBody = Expression or Block
         assignmentExpression = ConditionalExpression or assignment
         assignment = LeftHandSide * assignmentOperator * Expression
         LeftHandSide = ExpressionName or FieldAccess or ArrayAccess
-        assignmentOperator = Term(JavaToken.ASSIGN) or Term(JavaToken.STARASSIGN) or Term(JavaToken.SLASHASSIGN) or Term(JavaToken.PERCENTASSIGN) or Term(JavaToken.PLUSASSIGN) or Term(JavaToken.MINUSASSIGN) or
-                Term(JavaToken.SHIFTLEFTASSIGN) or Term(JavaToken.SHIFTRIGHTASSIGN) or Term(JavaToken.USRIGHTSHIFTASSIGN) or Term(JavaToken.ANDASSIGN) or Term(JavaToken.XORASSIGN) or Term(JavaToken.ORASSIGN)
+        assignmentOperator = JavaToken.ASSIGN or JavaToken.STARASSIGN or JavaToken.SLASHASSIGN or JavaToken.PERCENTASSIGN or JavaToken.PLUSASSIGN or JavaToken.MINUSASSIGN or
+                JavaToken.SHIFTLEFTASSIGN or JavaToken.SHIFTRIGHTASSIGN or JavaToken.USRIGHTSHIFTASSIGN or JavaToken.ANDASSIGN or JavaToken.XORASSIGN or JavaToken.ORASSIGN
         ConditionalExpression = ConditionalOrExpression or
-                ConditionalOrExpression * Term(JavaToken.QUESTIONMARK) * Expression * Term(JavaToken.COLON) * ConditionalExpression or
-                ConditionalOrExpression * Term(JavaToken.QUESTIONMARK) * Expression * Term(JavaToken.COLON) * LambdaExpression
+                ConditionalOrExpression * JavaToken.QUESTIONMARK * Expression * JavaToken.COLON * ConditionalExpression or
+                ConditionalOrExpression * JavaToken.QUESTIONMARK * Expression * JavaToken.COLON * LambdaExpression
         ConditionalOrExpression = ConditionalAndExpression or
-                ConditionalOrExpression * Term(JavaToken.OR) * ConditionalAndExpression
+                ConditionalOrExpression * JavaToken.OR * ConditionalAndExpression
         ConditionalAndExpression = InclusiveOrExpression or
-                ConditionalAndExpression * Term(JavaToken.AND) * InclusiveOrExpression
+                ConditionalAndExpression * JavaToken.AND * InclusiveOrExpression
         InclusiveOrExpression = ExclusiveOrExpression or
-                InclusiveOrExpression * Term(JavaToken.ORBIT) * ExclusiveOrExpression
-        ExclusiveOrExpression = AndExpression or ExclusiveOrExpression * Term(JavaToken.XORBIT) * AndExpression
-        AndExpression = EqualityExpression or AndExpression * Term(JavaToken.ANDBIT) * EqualityExpression
-        EqualityExpression = RelationalExpression or EqualityExpression * Term(JavaToken.EQ) * RelationalExpression or
-                EqualityExpression * Term(JavaToken.NOTEQ) * RelationalExpression
-        RelationalExpression = ShiftExpression or RelationalExpression * Term(JavaToken.DIAMONDLEFT) * ShiftExpression or
-                RelationalExpression * Term(JavaToken.DIAMONDRIGHT) * ShiftExpression or RelationalExpression * Term(JavaToken.LESSEQ) * ShiftExpression or
-                RelationalExpression * Term(JavaToken.GREATEQ) * ShiftExpression or RelationalExpression * Term(JavaToken.INSTANCEOF) * ReferenceType
-        ShiftExpression = AdditiveExpression or ShiftExpression * Term(JavaToken.LEFTSHIFT) * AdditiveExpression or
-                ShiftExpression * Term(JavaToken.RIGHTSHIT) * AdditiveExpression or
-                ShiftExpression * Term(JavaToken.USRIGHTSHIFT) * AdditiveExpression
-        AdditiveExpression = MultiplicativeExpression or AdditiveExpression * Term(JavaToken.PLUS) * MultiplicativeExpression or
-                AdditiveExpression * Term(JavaToken.MINUS) * MultiplicativeExpression
-        MultiplicativeExpression = UnaryExpression or MultiplicativeExpression * Term(JavaToken.STAR) * UnaryExpression or
-                MultiplicativeExpression * Term(JavaToken.SLASH) * UnaryExpression or
-                MultiplicativeExpression * Term(JavaToken.PERCENT) * UnaryExpression
-        UnaryExpression = preIncrementExpression or preDecrementExpression or Term(JavaToken.PLUS) * UnaryExpression or
-                Term(JavaToken.MINUS) * UnaryExpression or UnaryExpressionNotPlusMinus
-        preIncrementExpression = Term(JavaToken.PLUSPLUS) * UnaryExpression
-        preDecrementExpression = Term(JavaToken.MINUSMINUS) * UnaryExpression
-        UnaryExpressionNotPlusMinus = PostfixExpression or Term(JavaToken.TILDA) * UnaryExpression or Term(JavaToken.EXCLAMATIONMARK) * UnaryExpression or
+                InclusiveOrExpression * JavaToken.ORBIT * ExclusiveOrExpression
+        ExclusiveOrExpression = AndExpression or ExclusiveOrExpression * JavaToken.XORBIT * AndExpression
+        AndExpression = EqualityExpression or AndExpression * JavaToken.ANDBIT * EqualityExpression
+        EqualityExpression = RelationalExpression or EqualityExpression * JavaToken.EQ * RelationalExpression or
+                EqualityExpression * JavaToken.NOTEQ * RelationalExpression
+        RelationalExpression = ShiftExpression or RelationalExpression * JavaToken.DIAMONDLEFT * ShiftExpression or
+                RelationalExpression * JavaToken.DIAMONDRIGHT * ShiftExpression or RelationalExpression * JavaToken.LESSEQ * ShiftExpression or
+                RelationalExpression * JavaToken.GREATEQ * ShiftExpression or RelationalExpression * JavaToken.INSTANCEOF * ReferenceType
+        ShiftExpression = AdditiveExpression or ShiftExpression * JavaToken.LEFTSHIFT * AdditiveExpression or
+                ShiftExpression * JavaToken.RIGHTSHIT * AdditiveExpression or
+                ShiftExpression * JavaToken.USRIGHTSHIFT * AdditiveExpression
+        AdditiveExpression = MultiplicativeExpression or AdditiveExpression * JavaToken.PLUS * MultiplicativeExpression or
+                AdditiveExpression * JavaToken.MINUS * MultiplicativeExpression
+        MultiplicativeExpression = UnaryExpression or MultiplicativeExpression * JavaToken.STAR * UnaryExpression or
+                MultiplicativeExpression * JavaToken.SLASH * UnaryExpression or
+                MultiplicativeExpression * JavaToken.PERCENT * UnaryExpression
+        UnaryExpression = preIncrementExpression or preDecrementExpression or JavaToken.PLUS * UnaryExpression or
+                JavaToken.MINUS * UnaryExpression or UnaryExpressionNotPlusMinus
+        preIncrementExpression = JavaToken.PLUSPLUS * UnaryExpression
+        preDecrementExpression = JavaToken.MINUSMINUS * UnaryExpression
+        UnaryExpressionNotPlusMinus = PostfixExpression or JavaToken.TILDA * UnaryExpression or JavaToken.EXCLAMATIONMARK * UnaryExpression or
                 CastExpression
         PostfixExpression = Primary or ExpressionName or postIncrementExpression or postDecrementExpression
-        postIncrementExpression = PostfixExpression * Term(JavaToken.PLUSPLUS)
-        postDecrementExpression = PostfixExpression * Term(JavaToken.MINUSMINUS)
-        CastExpression = Term(JavaToken.PARENTHLEFT) * PrimitiveType * Term(JavaToken.PARENTHRIGHT) * UnaryExpression or
-                Term(JavaToken.PARENTHLEFT) * ReferenceType * Many(AdditionalBound) * Term(JavaToken.PARENTHRIGHT) * UnaryExpressionNotPlusMinus or
-                Term(JavaToken.PARENTHLEFT) * ReferenceType * Many(AdditionalBound) * Term(JavaToken.PARENTHRIGHT) * LambdaExpression
+        postIncrementExpression = PostfixExpression * JavaToken.PLUSPLUS
+        postDecrementExpression = PostfixExpression * JavaToken.MINUSMINUS
+        CastExpression = JavaToken.PARENTHLEFT * PrimitiveType * JavaToken.PARENTHRIGHT * UnaryExpression or
+                JavaToken.PARENTHLEFT * ReferenceType * Many(AdditionalBound) * JavaToken.PARENTHRIGHT * UnaryExpressionNotPlusMinus or
+                JavaToken.PARENTHLEFT * ReferenceType * Many(AdditionalBound) * JavaToken.PARENTHRIGHT * LambdaExpression
         constantExpression = Expression
 
         setStart(CompilationUnit)

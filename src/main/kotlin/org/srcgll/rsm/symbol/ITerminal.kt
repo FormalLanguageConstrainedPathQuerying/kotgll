@@ -1,3 +1,5 @@
 package org.srcgll.rsm.symbol
 
-interface ITerminal : Symbol
+import org.srcgll.grammar.combinator.regexp.DerivedSymbol
+
+interface ITerminal : Symbol, DerivedSymbol
