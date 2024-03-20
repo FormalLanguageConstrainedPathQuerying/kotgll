@@ -3,7 +3,7 @@ package rsm.builder
 import org.junit.jupiter.api.Test
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.grammar.combinator.regexp.Term
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.grammar.combinator.regexp.or
 import org.srcgll.grammar.combinator.regexp.times
 import rsm.RsmTest

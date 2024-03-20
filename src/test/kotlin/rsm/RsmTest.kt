@@ -2,8 +2,9 @@ package rsm
 
 import org.junit.jupiter.api.Test
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -26,7 +27,7 @@ interface RsmTest {
         }
         for ((expectedSymbol, originDestStates) in expected.outgoingEdges) {
             val actualDestStates: HashSet<RsmState> = when (expectedSymbol) {
-                is Terminal<*> -> actual.outgoingEdges[expectedSymbol]
+                is ITerminal -> actual.outgoingEdges[expectedSymbol]
                 is Nonterminal -> {
                     actual.outgoingEdges.entries.firstOrNull { (actualSymbol, _) ->
                         actualSymbol is Nonterminal && actualSymbol.name == expectedSymbol.name
@@ -58,7 +59,7 @@ interface RsmTest {
 
     fun getAStarRsm(stateName: String): RsmState {
         val s = Nonterminal(stateName)
-        val a = Terminal("a")
+        val a = Term("a")
         val st0 = RsmState(s, isStart = true)
         s.startState = st0
         val st1 = RsmState(s, isFinal = true)

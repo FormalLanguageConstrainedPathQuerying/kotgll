@@ -1,11 +1,13 @@
 package org.srcgll.rsm.symbol
 
-class Terminal<TerminalType>(val value: TerminalType) : Symbol {
-    override fun toString() = "Literal($value)"
+import org.srcgll.grammar.combinator.regexp.DerivedSymbol
+
+class Term<TerminalType>(val value: TerminalType) : ITerminal, DerivedSymbol {
+    override fun toString() = value.toString()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Terminal<*>) return false
+        if (other !is Term<*>) return false
         return value == other.value
     }
 

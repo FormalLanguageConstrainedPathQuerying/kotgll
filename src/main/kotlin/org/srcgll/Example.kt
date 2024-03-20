@@ -6,7 +6,7 @@ import org.srcgll.input.Edge
 import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.Gll
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.sppf.node.SppfNode
 
 /**
@@ -62,9 +62,9 @@ class SimpleInputLabel(
     label: String?,
 ) : ILabel {
     // null terminal represents epsilon edge in Graph
-    override val terminal: Terminal<String>? = when (label) {
+    override val terminal: Term<String>? = when (label) {
         null -> null
-        else -> Terminal(label)
+        else -> Term(label)
     }
 
     override fun equals(other: Any?): Boolean {

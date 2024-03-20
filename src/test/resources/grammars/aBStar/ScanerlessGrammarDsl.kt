@@ -3,7 +3,7 @@ package grammars.aBStar
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Many
 import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.grammar.combinator.regexp.Term
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.grammar.combinator.regexp.times
 
 class ScanerlessGrammarDsl : Grammar(){

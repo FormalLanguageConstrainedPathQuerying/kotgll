@@ -4,7 +4,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.parser.Gll
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
 import kotlin.test.Ignore
@@ -132,13 +132,13 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_1")
     fun `test BracketStarX grammar`(input: String) {
-        incrementalityTest(input, "bracket_star_x.txt", Terminal("["))
+        incrementalityTest(input, "bracket_star_x.txt", Term("["))
     }
 
     @ParameterizedTest
     @MethodSource("test_2")
     fun `test CAStarBStar grammar`(input: String) {
-        val (result, static) = incrementalityTest(input, "c_a_star_b_star.txt", Terminal("a"))
+        val (result, static) = incrementalityTest(input, "c_a_star_b_star.txt", Term("a"))
 
         if (input == "caabb") {
             writeSppfToDot(result, "debug_incr.dot")
@@ -150,40 +150,40 @@ class TestIncrementality {
     @ParameterizedTest
     @MethodSource("test_3")
     fun `test AB grammar`(input: String) {
-        incrementalityTest(input, "ab.txt", Terminal("ab"))
+        incrementalityTest(input, "ab.txt", Term("ab"))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_4")
     fun `test Dyck grammar`(input: String) {
-        incrementalityTest(input, "dyck.txt", Terminal("("))
+        incrementalityTest(input, "dyck.txt", Term("("))
     }
 
     @ParameterizedTest
     @MethodSource("test_5")
     fun `test Ambiguous grammar`(input: String) {
-        incrementalityTest(input, "ambiguous.txt", Terminal("a"))
+        incrementalityTest(input, "ambiguous.txt", Term("a"))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_6")
     fun `test MultiDyck grammar`(input: String) {
-        incrementalityTest(input, "multi_dyck.txt", Terminal("{"))
+        incrementalityTest(input, "multi_dyck.txt", Term("{"))
     }
 
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_7")
     fun `test SimpleGolang grammar`(input: String) {
-        incrementalityTest(input, "simple_golang.txt", Terminal("1"))
+        incrementalityTest(input, "simple_golang.txt", Term("1"))
     }
 
     private fun incrementalityTest(
         input: String,
         pathToRsm: String,
-        additionalLabel: Terminal<*>
+        additionalLabel: Term<*>
     ): Pair<SppfNode<Int>, SppfNode<Int>> {
         val startState = getRsm(pathToRsm)
 
@@ -193,7 +193,7 @@ class TestIncrementality {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)

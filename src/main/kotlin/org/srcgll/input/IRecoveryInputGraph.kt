@@ -4,7 +4,7 @@ import org.srcgll.descriptors.Descriptor
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.sppf.TerminalRecoveryEdge
 import org.srcgll.sppf.node.SppfNode
 
@@ -13,7 +13,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
         handleTerminalOrEpsilonEdge: (
             curDescriptor: Descriptor<VertexType>,
             curSppfNode: SppfNode<VertexType>?,
-            terminal: Terminal<*>?,
+            terminal: ITerminal?,
             targetState: RsmState,
             targetVertex: VertexType,
             targetWeight: Int,
@@ -38,12 +38,12 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
         )
     }
 
-    private fun createRecoveryEdges(curDescriptor: Descriptor<VertexType>): HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>> {
+    private fun createRecoveryEdges(curDescriptor: Descriptor<VertexType>): HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>> {
         val pos = curDescriptor.inputPosition
         val state = curDescriptor.rsmState
         val terminalEdges = state.terminalEdges
 
-        val errorRecoveryEdges = HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>()
+        val errorRecoveryEdges = HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>>()
         val currentEdges = getEdges(pos)
 
         if (currentEdges.isNotEmpty()) {
@@ -56,8 +56,8 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
     }
 
     private fun addEpsilonRecoveryEdges(
-        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
-        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
+        terminalEdges: HashMap<ITerminal, HashSet<RsmState>>,
+        errorRecoveryEdges: HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>>,
         pos: VertexType,
         state: RsmState
     ) {
@@ -72,8 +72,8 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * Trying to reach states that were previously inaccessible using recovery terminal
      */
     private fun addTerminalRecoveryEdges(
-        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
-        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
+        terminalEdges: HashMap<ITerminal, HashSet<RsmState>>,
+        errorRecoveryEdges: HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>>,
         pos: VertexType,
         state: RsmState,
         currentEdges: MutableList<Edge<VertexType, LabelType>>
@@ -100,17 +100,17 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
     }
 
     private fun handleRecoveryEdges(
-        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
+        errorRecoveryEdges: HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>>,
         handleTerminalOrEpsilonEdge: (
             curDescriptor: Descriptor<VertexType>,
             curSppfNode: SppfNode<VertexType>?,
-            terminal: Terminal<*>?,
+            terminal: ITerminal?,
             targetState: RsmState,
             targetVertex: VertexType,
             targetWeight: Int,
         ) -> Unit,
         curDescriptor: Descriptor<VertexType>,
-        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>
+        terminalEdges: HashMap<ITerminal, HashSet<RsmState>>
     ) {
         for ((terminal, errorRecoveryEdge) in errorRecoveryEdges) {
             if (terminal == null) {

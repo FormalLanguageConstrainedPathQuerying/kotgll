@@ -4,7 +4,8 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.parser.generator.IParserGenerator.Companion.INPUT_EDGE_NAME
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.ITerminal
+import org.srcgll.rsm.symbol.Term
 
 /**
  * Scanerless parser generator
@@ -12,14 +13,14 @@ import org.srcgll.rsm.symbol.Terminal
  */
 class ScanerlessParserGenerator(override val grammarClazz: Class<*>) : IParserGenerator {
     override val grammar: Grammar = buildGrammar(grammarClazz)
-    private val terminals: List<Terminal<*>> = grammar.getTerminals().toList()
+    private val terminals: List<ITerminal> = grammar.getTerminals().toList()
 
     override fun generateProperties(): Iterable<PropertySpec> {
         return super.generateProperties() + generateTerminalsSpec()
     }
 
     override fun generateTerminalHandling(
-        terminal: Terminal<*>,
+        terminal: ITerminal,
     ): CodeBlock {
         return CodeBlock.of(
             "%L(%L[%L], %L, %L, %L, %L)",
@@ -40,7 +41,7 @@ class ScanerlessParserGenerator(override val grammarClazz: Class<*>) : IParserGe
     private fun generateTerminalsSpec(): PropertySpec {
         val termListType = List::class.asTypeName()
             .parameterizedBy(
-                Terminal::class.asTypeName().parameterizedBy(STAR)
+                ITerminal::class.asTypeName()
             )
         val propertyBuilder =
             PropertySpec.builder(IParserGenerator.TERMINALS, termListType)

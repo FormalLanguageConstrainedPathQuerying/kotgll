@@ -10,7 +10,7 @@ import org.srcgll.lexer.JavaGrammar
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
 import org.srcgll.parser.Gll
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.writeSppfToDot
 import java.io.File
@@ -62,7 +62,7 @@ fun main(args: Array<String>) {
         token = lexer.yylex() as JavaToken
         if (token == JavaToken.EOF) break
         println(token.name)
-        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
+        inputGraph.addEdge(vertexId, LinearInputLabel(Term(token)), ++vertexId)
         inputGraph.addVertex(vertexId)
     }
 

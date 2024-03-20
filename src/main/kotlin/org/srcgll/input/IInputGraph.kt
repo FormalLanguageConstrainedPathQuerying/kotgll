@@ -4,7 +4,7 @@ import org.srcgll.descriptors.Descriptor
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.sppf.node.SppfNode
 
 interface IInputGraph<VertexType, LabelType : ILabel> {
@@ -31,7 +31,7 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
         handleTerminalOrEpsilonEdge: (
             curDescriptor: Descriptor<VertexType>,
             curSppfNode: SppfNode<VertexType>?,
-            terminal: Terminal<*>?,
+            terminal: ITerminal?,
             targetState: RsmState,
             targetVertex: VertexType,
             targetWeight: Int,

@@ -8,8 +8,8 @@ import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.input.ILabel
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
@@ -216,7 +216,7 @@ interface IParserGenerator {
     /**
      * Generate code for handle one Edge with Terminal<*> label
      */
-    fun generateTerminalHandling(terminal: Terminal<*>) : CodeBlock
+    fun generateTerminalHandling(terminal: ITerminal) : CodeBlock
 
 
     /**

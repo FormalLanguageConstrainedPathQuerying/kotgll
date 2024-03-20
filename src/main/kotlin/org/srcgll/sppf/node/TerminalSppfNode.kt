@@ -1,10 +1,10 @@
 package org.srcgll.sppf.node
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.ITerminal
 import java.util.*
 
 class TerminalSppfNode<VertexType>(
-    val terminal: Terminal<*>?,
+    val terminal: ITerminal?,
     leftExtent: VertexType,
     rightExtent: VertexType,
     weight: Int = 0,

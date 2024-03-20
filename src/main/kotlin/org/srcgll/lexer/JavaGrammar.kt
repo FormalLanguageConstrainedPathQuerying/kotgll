@@ -2,6 +2,7 @@ package org.srcgll.lexer
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
+import org.srcgll.rsm.symbol.Term
 
 class JavaGrammar : Grammar() {
     var CompilationUnit by Nt()

@@ -10,7 +10,7 @@ import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.parser.Gll
 import org.srcgll.rsm.readRsmFromTxt
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.sppf.writeSppfToDot
 import java.io.File
 import java.io.StringReader
@@ -81,7 +81,7 @@ fun runRsmWithSppf(
         while (true) {
             token = lexer.yylex() as SymbolCode
             if (token == SymbolCode.EOF) break
-            inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
+            inputGraph.addEdge(vertexId, LinearInputLabel(Term(token)), ++vertexId)
         }
 
 

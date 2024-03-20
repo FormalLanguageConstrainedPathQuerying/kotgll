@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
     override val vertices: MutableMap<VertexType, VertexType> = HashMap()
@@ -59,7 +59,7 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
             val inputGraph = LinearInput<Int, LinearInputLabel>()
             inputGraph.addVertex(curVertexId)
             for (x in input) {
-                inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+                inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
                 inputGraph.addVertex(curVertexId)
             }
             inputGraph.addStartVertex(0)

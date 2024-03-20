@@ -10,7 +10,7 @@ class GrammarDsl : Grammar(){
     var S by Nt()
     init{
         setStart(S)
-        S = Many(Term("a") * Term("b"))
+        S = Many(Term(Tokens.A) * Term(Tokens.B))
     }
 
 }

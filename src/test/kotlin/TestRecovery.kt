@@ -7,7 +7,7 @@ import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.parser.Gll
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.readRsmFromTxt
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import org.srcgll.sppf.buildStringsFromSppf
 import java.io.IOException
 import kotlin.io.path.Path
@@ -73,7 +73,7 @@ class TestRecovery {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -87,7 +87,7 @@ class TestRecovery {
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
         for (x in recoveredString) {
-            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
+            recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Term(x)), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)

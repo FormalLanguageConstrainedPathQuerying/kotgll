@@ -9,8 +9,8 @@ import org.srcgll.parser.IGll
 import org.srcgll.parser.ParsingException
 import org.srcgll.parser.context.Context
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
@@ -56,7 +56,7 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     }
 
     protected fun handleTerminal(
-        terminal: Terminal<*>,
+        terminal: ITerminal,
         state: RsmState,
         inputEdge: Edge<VertexType, LabelType>,
         descriptor: Descriptor<VertexType>,

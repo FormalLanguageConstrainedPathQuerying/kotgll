@@ -6,7 +6,7 @@ import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.Gll
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import kotlin.test.assertNull
 
 class TestFail {
@@ -26,7 +26,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -44,7 +44,7 @@ class TestFail {
         )
         nonterminalS.startState = rsmState0
         rsmState0.addEdge(
-            symbol = Terminal("a"), destinationState = RsmState(
+            symbol = Term("a"), destinationState = RsmState(
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -55,7 +55,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -77,11 +77,11 @@ class TestFail {
             nonterminal = nonterminalS,
         )
         rsmState0.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState1,
         )
         rsmState1.addEdge(
-            symbol = Terminal("b"), destinationState = RsmState(
+            symbol = Term("b"), destinationState = RsmState(
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -92,7 +92,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -117,11 +117,11 @@ class TestFail {
             isFinal = true,
         )
         rsmState0.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState1,
         )
         rsmState1.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState1,
         )
 
@@ -130,7 +130,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -153,11 +153,11 @@ class TestFail {
             isFinal = true,
         )
         rsmState0.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState1,
         )
         rsmState1.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState1,
         )
 
@@ -166,7 +166,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -209,11 +209,11 @@ class TestFail {
             isFinal = true,
         )
         rsmState0.addEdge(
-            symbol = Terminal("ab"),
+            symbol = Term("ab"),
             destinationState = rsmState1,
         )
         rsmState1.addEdge(
-            symbol = Terminal("ab"),
+            symbol = Term("ab"),
             destinationState = rsmState1,
         )
 
@@ -222,7 +222,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -283,7 +283,7 @@ class TestFail {
         )
 
         rsmState0.addEdge(
-            symbol = Terminal("("),
+            symbol = Term("("),
             destinationState = rsmState1,
         )
         rsmState1.addEdge(
@@ -291,7 +291,7 @@ class TestFail {
             destinationState = rsmState2,
         )
         rsmState2.addEdge(
-            symbol = Terminal(")"),
+            symbol = Term(")"),
             destinationState = rsmState3,
         )
         rsmState3.addEdge(
@@ -304,7 +304,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -350,15 +350,15 @@ class TestFail {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
-        rsmState0.addEdge(symbol = Terminal("cd"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("ab"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("cd"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -383,14 +383,14 @@ class TestFail {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -450,7 +450,7 @@ class TestFail {
         )
 
         rsmState0.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState1,
         )
         rsmState1.addEdge(
@@ -458,7 +458,7 @@ class TestFail {
             destinationState = rsmState2,
         )
         rsmState2.addEdge(
-            symbol = Terminal("c"),
+            symbol = Term("c"),
             destinationState = rsmState3,
         )
         rsmState0.addEdge(
@@ -466,21 +466,21 @@ class TestFail {
             destinationState = rsmState4,
         )
         rsmState4.addEdge(
-            symbol = Terminal("c"),
+            symbol = Term("c"),
             destinationState = rsmState5,
         )
 
         rsmState6.addEdge(
-            symbol = Terminal("a"),
+            symbol = Term("a"),
             destinationState = rsmState7,
         )
         rsmState7.addEdge(
-            symbol = Terminal("b"),
+            symbol = Term("b"),
             destinationState = rsmState8,
         )
 
         rsmState9.addEdge(
-            symbol = Terminal("b"),
+            symbol = Term("b"),
             destinationState = rsmState10,
         )
 
@@ -489,7 +489,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -573,19 +573,19 @@ class TestFail {
             destinationState = rsmState2,
         )
         rsmState3.addEdge(
-            symbol = Terminal("ab"),
+            symbol = Term("ab"),
             destinationState = rsmState4,
         )
         rsmState3.addEdge(
-            symbol = Terminal("cd"),
+            symbol = Term("cd"),
             destinationState = rsmState5,
         )
         rsmState6.addEdge(
-            symbol = Terminal("ab"),
+            symbol = Term("ab"),
             destinationState = rsmState7,
         )
         rsmState6.addEdge(
-            symbol = Terminal("cd"),
+            symbol = Term("cd"),
             destinationState = rsmState8,
         )
 
@@ -594,7 +594,7 @@ class TestFail {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
