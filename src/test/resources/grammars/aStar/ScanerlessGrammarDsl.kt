@@ -3,9 +3,9 @@ package grammars.aStar
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Many
 import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.grammar.combinator.regexp.Term
+import org.srcgll.rsm.symbol.Term
 
-class GrammarDsl : Grammar() {
+class ScanerlessGrammarDsl : Grammar() {
     var S by Nt()
 
     init {

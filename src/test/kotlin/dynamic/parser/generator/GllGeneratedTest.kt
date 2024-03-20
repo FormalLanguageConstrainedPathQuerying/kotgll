@@ -1,6 +1,7 @@
 package dynamic.parser.generator
 
 import dynamic.parser.IDynamicGllTest
+import dynamic.parser.generator.compilation.RuntimeCompiler
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
@@ -45,7 +46,7 @@ open class GllGeneratedTest : IDynamicGllTest {
         val inputs = getLines(oneLineTestsFileName, concreteGrammarFolder)
         val errorInputs = getLines(oneLineErrorsTestsFileName, concreteGrammarFolder)
         val gll: GeneratedParser<Int, LinearInputLabel> =
-            RuntimeCompiler.generateParser(concreteGrammarFolder, grammarName)
+            RuntimeCompiler.generateScanerlessParser(concreteGrammarFolder, grammarName)
         return DynamicContainer.dynamicContainer(
             grammarName, inputs
                 .map { getCorrectTestContainer(it, gll) } +

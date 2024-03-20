@@ -2,8 +2,9 @@ package grammars.cAPlusBStar
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
+import org.srcgll.rsm.symbol.Term
 
-class GrammarDsl : Grammar() {
+class ScanerlessGrammarDsl : Grammar() {
     var S by Nt()
 
     init {
