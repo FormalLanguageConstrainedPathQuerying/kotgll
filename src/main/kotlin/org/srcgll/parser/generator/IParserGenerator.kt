@@ -68,6 +68,14 @@ interface IParserGenerator {
      * Generate all parser properties and methods
      */
     fun generate(location: Path, pkg: String) {
+        val file = getFileBuilder(location, pkg).build()
+        file.writeTo(location)
+    }
+
+    /**
+     * Build file builder
+     */
+    fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
         val fileName = getParserClassName(grammarClazz.simpleName)
         val parserClass = ClassName(pkg, fileName).parameterizedBy(vertexType, labelType)
 
@@ -85,8 +93,7 @@ interface IParserGenerator {
         // KotlinPoet set `public` modifier to class by default (wontFix)
         // https://github.com/square/kotlinpoet/issues/1098
         fileBuilder.suppressWarningTypes("RedundantVisibilityModifier")
-        val file = fileBuilder.build()
-        file.writeTo(location)
+        return fileBuilder
     }
 
     /**
@@ -216,7 +223,7 @@ interface IParserGenerator {
     /**
      * Generate code for handle one Edge with Terminal<*> label
      */
-    fun generateTerminalHandling(terminal: ITerminal) : CodeBlock
+    fun generateTerminalHandling(terminal: ITerminal): CodeBlock
 
 
     /**

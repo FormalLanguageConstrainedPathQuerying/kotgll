@@ -1,7 +1,8 @@
 package dynamic.parser
 
+import dynamic.parser.IDynamicGllTest.Companion.ONE_LINE_ERRORS_INPUTS
+import dynamic.parser.IDynamicGllTest.Companion.ONE_LINE_INPUTS
 import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.srcgll.input.LinearInput
@@ -15,17 +16,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 
-open class GllRsmTest : IDynamicGllTest {
+class GllRsmTest : IDynamicGllTest {
     override val mainFileName: String
         get() = "grammar.rsm"
+
 
     private fun getGll(input: String, rsm: RsmState): Gll<Int, LinearInputLabel> {
         return Gll.gll(rsm, LinearInput.buildFromString(input))
     }
 
     private fun getRsm(concreteGrammarFolder: File): RsmState {
-        val rsmFile = getFile(mainFileName, concreteGrammarFolder) ?:
-        throw Exception("Folder $concreteGrammarFolder not contains $mainFileName")
+        val rsmFile = getFile(mainFileName, concreteGrammarFolder)
+            ?: throw Exception("Folder $concreteGrammarFolder not contains $mainFileName")
         return readRsmFromTxt(rsmFile.toPath())
     }
 
@@ -45,14 +47,10 @@ open class GllRsmTest : IDynamicGllTest {
     }
 
 
-    override fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
-        val inputs = getLines(oneLineTestsFileName, concreteGrammarFolder)
-        val errorInputs = getLines(oneLineErrorsTestsFileName, concreteGrammarFolder)
+    override fun getTestCases(concreteGrammarFolder: File): Iterable<DynamicNode> {
+        val inputs = getLines(ONE_LINE_INPUTS, concreteGrammarFolder)
+        val errorInputs = getLines(ONE_LINE_ERRORS_INPUTS, concreteGrammarFolder)
         val rsm = getRsm(concreteGrammarFolder)
-        return DynamicContainer.dynamicContainer(
-            concreteGrammarFolder.name,
-            inputs.map { getCorrectTestContainer(it, rsm) }
-                    + (errorInputs.map { getErrorTestContainer(it, rsm) })
-        )
+        return inputs.map { getCorrectTestContainer(it, rsm) } + (errorInputs.map { getErrorTestContainer(it, rsm) })
     }
 }

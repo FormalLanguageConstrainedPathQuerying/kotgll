@@ -1,8 +1,10 @@
 package org.srcgll.parser.generator
 
 import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FileSpec
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.rsm.symbol.ITerminal
+import java.nio.file.Path
 
 /**
  * Generator for a parser that uses a third-party lexer.
@@ -13,11 +15,10 @@ class  ParserGenerator(override val grammarClazz: Class<*>, private val terminal
 
     init{
         buildGrammar(grammarClazz)
-
     }
     override fun generateTerminalHandling(terminal: ITerminal): CodeBlock {
 
-        var terminalName: String = "${terminalsEnum.simpleName}.$terminal"
+        val terminalName = "${terminalsEnum.simpleName}.$terminal"
         return CodeBlock.of(
             "%L(%L, %L, %L, %L, %L)",
             IParserGenerator.HANDLE_TERMINAL,
@@ -29,5 +30,10 @@ class  ParserGenerator(override val grammarClazz: Class<*>, private val terminal
         )
     }
 
+    override fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
+        val builder = super.getFileBuilder(location, pkg)
+        builder.addImport(terminalsEnum.packageName, terminalsEnum.simpleName)
+        return builder
+    }
     override val grammar: Grammar = buildGrammar(grammarClazz)
 }

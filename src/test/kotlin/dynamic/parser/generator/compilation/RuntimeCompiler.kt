@@ -2,7 +2,9 @@ package dynamic.parser.generator.compilation
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import dynamic.parser.generator.compilation.GrammarInfo.Companion.getGrammarInfo
 import dynamic.parser.generator.compilation.GrammarInfo.Companion.getScanerlessGrammarInfo
+import dynamic.parser.generator.compilation.ParserInfo.Companion.getParserInfo
 import dynamic.parser.generator.compilation.ParserInfo.Companion.getScanerlessParserInfo
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.generator.GeneratedParser
@@ -21,6 +23,17 @@ object RuntimeCompiler {
     fun generateScanerlessParser(grammarFolderFile: File, grammarName: String): GeneratedParser<Int, LinearInputLabel> {
         val grammarInfo = getScanerlessGrammarInfo(grammarFolderFile, grammarName)
         val parserInfo = getScanerlessParserInfo(grammarInfo)
+        val parser = parserInfo.clazz.getDeclaredConstructor().newInstance()
+        if (parser !is (GeneratedParser<*, *>)) {
+            throw Exception("Loader exception: the generated parser is not inherited from the ${GeneratedParser::class} ")
+        }
+        return parser as (GeneratedParser<Int, LinearInputLabel>)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun generateParser(grammarFolderFile: File, grammarName: String): GeneratedParser<Int, LinearInputLabel> {
+        val grammarInfo = getGrammarInfo(grammarFolderFile, grammarName)
+        val parserInfo = getParserInfo(grammarInfo)
         val parser = parserInfo.clazz.getDeclaredConstructor().newInstance()
         if (parser !is (GeneratedParser<*, *>)) {
             throw Exception("Loader exception: the generated parser is not inherited from the ${GeneratedParser::class} ")

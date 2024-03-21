@@ -62,7 +62,11 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         descriptor: Descriptor<VertexType>,
         curSppfNode: SppfNode<VertexType>?
     ) {
-        val newStates = state.terminalEdges[terminal]!!
+
+        val newStates = state.terminalEdges[terminal] ?:
+            throw ParsingException("State $state does not contains edges by terminal $terminal\n" +
+                    "accessible edges: ${state.terminalEdges}")
+
 
         if (inputEdge.label.terminal == terminal) {
             for (target in newStates) {
