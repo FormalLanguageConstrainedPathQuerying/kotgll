@@ -1,9 +1,9 @@
 package org.srcgll.input
 
-import org.srcgll.rsm.symbol.Term
+import org.srcgll.rsm.symbol.ITerminal
 
 class LinearInputLabel(
-    override val terminal: Term<*>,
+    override val terminal: ITerminal,
 ) : ILabel {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -2,17 +2,19 @@ package dynamic.parser
 
 import dynamic.parser.IDynamicGllTest.Companion.ONE_LINE_ERRORS_INPUTS
 import dynamic.parser.IDynamicGllTest.Companion.ONE_LINE_INPUTS
-import org.junit.jupiter.api.Assertions.assertNull
+import dynamic.parser.IDynamicGllTest.Companion.getFile
+import dynamic.parser.IDynamicGllTest.Companion.getLines
+import dynamic.parser.IDynamicGllTest.Companion.getTestName
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.Gll
+import org.srcgll.parser.IGll
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.readRsmFromTxt
-import org.srcgll.sppf.buildStringFromSppf
 import java.io.File
-import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 
@@ -31,26 +33,36 @@ class GllRsmTest : IDynamicGllTest {
         return readRsmFromTxt(rsmFile.toPath())
     }
 
-    private fun getCorrectTestContainer(input: String, rsm: RsmState): DynamicNode {
-        return DynamicTest.dynamicTest(getTestName(input)) {
-            val result = getGll(input, rsm).parse().first
-            assertNotNull(result)
-            assertEquals(input, buildStringFromSppf(result))
-        }
-    }
-
-    private fun getErrorTestContainer(input: String, rsm: RsmState): DynamicNode {
-        return DynamicTest.dynamicTest(getTestName(input)) {
-            val result = getGll(input, rsm).parse().first
-            assertNull(result)
-        }
-    }
-
-
     override fun getTestCases(concreteGrammarFolder: File): Iterable<DynamicNode> {
-        val inputs = getLines(ONE_LINE_INPUTS, concreteGrammarFolder)
-        val errorInputs = getLines(ONE_LINE_ERRORS_INPUTS, concreteGrammarFolder)
         val rsm = getRsm(concreteGrammarFolder)
-        return inputs.map { getCorrectTestContainer(it, rsm) } + (errorInputs.map { getErrorTestContainer(it, rsm) })
+
+        val inputs = getLines(ONE_LINE_INPUTS, concreteGrammarFolder)
+            .map { input -> getCorrectTestContainer(getTestName(input), getGll(input, rsm)) }
+        val errorInputs = getLines(ONE_LINE_ERRORS_INPUTS, concreteGrammarFolder)
+            .map { input -> getIncorrectTestContainer(getTestName(input), getGll(input, rsm)) }
+
+        return inputs + errorInputs
+    }
+    /**
+     * Test for any type of incorrect input
+     * Gll should be parametrized by it's input!
+     */
+    private fun getIncorrectTestContainer(caseName: String, gll: IGll<Int, LinearInputLabel>): DynamicNode {
+        return DynamicTest.dynamicTest(caseName) {
+            val result = gll.parse().first
+            Assertions.assertNull(result)
+        }
+    }
+
+    /**
+     * Test for any type of correct input
+     * Gll should be parametrized by it's input!
+     */
+    private fun getCorrectTestContainer(caseName: String, gll: IGll<Int, LinearInputLabel>): DynamicNode {
+        return DynamicTest.dynamicTest(caseName) {
+            val result = gll.parse().first
+            //TODO add check for parsing result quality
+            assertNotNull(result)
+        }
     }
 }

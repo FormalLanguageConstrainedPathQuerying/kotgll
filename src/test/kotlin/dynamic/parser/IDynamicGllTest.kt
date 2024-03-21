@@ -16,6 +16,31 @@ interface IDynamicGllTest {
         const val GRAMMAR_FOLDER = "src/test/resources/grammars"
         const val INPUTS = "correctInputs"
         const val INCORRECT_INPUTS = "incorrectInputs"
+        fun getTestName(input: String): String {
+            return when (input.length) {
+                0 -> "empty"
+                in 1..10 -> input
+                else -> "${input.take(10)}..."
+            }
+        }
+
+        fun getFile(name: String, grammarFile: File): File? {
+            return grammarFile.listFiles()?.firstOrNull { it.name == name }
+        }
+
+        fun getLines(fileName: String, folder: File): List<String> {
+            val file = getFile(fileName, folder) ?: return listOf()
+            return file.readLines()
+        }
+
+        fun getFiles(fileName: String, folder: File): Array<out File>? {
+            val file = getFile(fileName, folder) ?: return arrayOf()
+            return file.listFiles()
+        }
+
+        fun readFile(file: File): String {
+            return file.inputStream().reader().readText()
+        }
     }
 
     @TestFactory
@@ -29,17 +54,6 @@ interface IDynamicGllTest {
             .map { concreteGrammarFolder -> handleFolder(concreteGrammarFolder) }
     }
 
-    fun getFile(name: String, grammarFile: File): File? {
-        return grammarFile.listFiles()?.firstOrNull { it.name == name }
-    }
-
-    fun getTestName(input: String): String {
-        return when (input.length) {
-            0 -> "empty"
-            in 1..10 -> input
-            else -> "${input.take(10)}..."
-        }
-    }
 
     fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
         val grammarName = concreteGrammarFolder.name
@@ -47,20 +61,6 @@ interface IDynamicGllTest {
             grammarName, getTestCases(concreteGrammarFolder)
         )
 
-    }
-
-    fun getLines(fileName: String, folder: File): List<String> {
-        val file = getFile(fileName, folder) ?: return listOf()
-        return file.readLines()
-    }
-
-    fun getFiles(fileName: String, folder: File): Array<out File>? {
-        val file = getFile(fileName, folder) ?: return arrayOf()
-        return file.listFiles()
-    }
-
-    fun readFile(file: File): String {
-        return file.inputStream().reader().readText()
     }
 
     fun getTestCases(concreteGrammarFolder: File): Iterable<DynamicNode>
