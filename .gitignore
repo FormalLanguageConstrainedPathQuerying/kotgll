@@ -4,17 +4,6 @@
 # Python scripts
 *.py
 
-<<<<<<< HEAD
-# Input file
-input.txt
-
-# Benchmark resources
-/src/jmh/resources
-
-# antlr & iguana
-/src/main/kotlin/org/antlr
-/src/main/kotlin/org/iguana
-=======
 # input file
 
 input.txt
@@ -35,7 +24,6 @@ src/main/kotlin/org/antlr/Java8Lexer.interp
 src/main/kotlin/org/antlr/Java8Lexer.tokens
 src/main/kotlin/org/antlr/Java8Listener.java
 src/main/kotlin/org/antlr/Java8Parser.java
->>>>>>> work
 
 # Lexer
 /src/main/kotlin/org/srcgll/lexer/*.java
