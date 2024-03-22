@@ -1,3 +1,4 @@
-caaaba
-ba
-cab
+ba ab
+ab dc ac
+ba ba ca
+ba ab ad

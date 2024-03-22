@@ -1,2 +1,6 @@
-cab
-caabb
+c a b
+c a a b b
+c a
+c a b b
+c a a a a b b b
+c a a a a

@@ -1,6 +1,6 @@
 
 ab
-abab
-ababab
-abababab
-ababababab
+ab ab
+ab ab ab
+ab ab ab ab
+ab ab ab ab ab

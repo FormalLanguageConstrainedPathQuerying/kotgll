@@ -1,3 +1,5 @@
-caaaba
-ab
-ccab
+aa
+c b a
+a b c
+b b a
+cd a
