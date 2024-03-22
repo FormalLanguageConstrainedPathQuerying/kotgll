@@ -14,7 +14,8 @@ open class Descriptor<VertexType>(
 ) {
     val hashCode = 23 * (23 * (23 * 17 + rsmState.hashCode()) + inputPosition.hashCode()) + gssNode.hashCode()
 
-    fun weight(): Int = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
+    val weight: Int
+        get() = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
 
     override fun hashCode() = hashCode
 
@@ -31,7 +32,7 @@ open class Descriptor<VertexType>(
 
     fun <LabelType : ILabel> getCurSppfNode(ctx: IContext<VertexType, LabelType>): SppfNode<VertexType>? {
         return if (rsmState.isStart && rsmState.isFinal) {
-            // if nonterminal accept epsilon
+            // if nonterminal accepts epsilon
             ctx.sppf.getParentNode(
                 rsmState,
                 sppfNode,

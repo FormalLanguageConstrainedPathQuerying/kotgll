@@ -26,7 +26,8 @@ open class RsmState(
         }
     }
 
-    val outgoingEdges get() = terminalEdges.plus(nonterminalEdges)
+    val outgoingEdges
+        get() = terminalEdges.plus(nonterminalEdges)
 
     /**
      * map from terminal to edges set
@@ -47,7 +48,7 @@ open class RsmState(
      * A set of terminals that can be used to move from a given state to other states.
      * Moreover, if there are several different edges that can be used to move to one state,
      * then only 1 is chosen non-deterministically.
-     * Uses for error-recovery
+     * Used for error-recovery
      * TODO Maybe you can get rid of it or find a better optimization (?)
      */
     val errorRecoveryLabels: HashSet<Terminal<*>> = HashSet()

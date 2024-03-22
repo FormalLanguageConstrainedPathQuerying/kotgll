@@ -12,30 +12,6 @@ import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
 import java.io.File
 
-class Dyck : Grammar() {
-    var S by Nt()
-
-    init {
-        S = Epsilon or "(" * S * ")"
-        setStart(S)
-    }
-}
-class SimpleGolang : Grammar() {
-
-    var Program by Nt()
-    var Block by Nt()
-    var Statement by Nt()
-    var IntExpr by Nt()
-
-    init {
-        Program = Block
-        Block = Many(Statement)
-        Statement = IntExpr * ";" or "r" * IntExpr * ";"
-        IntExpr = "1" or "1" * "+" * "1"
-        setStart(Program)
-    }
-}
-
 /**
  * Define Class for a^n b^n Language CF-Grammar
  */
@@ -108,7 +84,7 @@ class SimpleInputLabel(
  */
  
 class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
-    override val vertices: MutableMap<Int, Int> = HashMap()
+    override val vertices: MutableSet<Int> = HashSet()
     override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
 
     override val startVertices: MutableSet<Int> = HashSet()
@@ -140,7 +116,7 @@ class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     }
 
     override fun addVertex(vertex: Int) {
-        vertices[vertex] = vertex
+        vertices.add(vertex)
     }
 
     override fun addStartVertex(vertex: Int) {
@@ -148,7 +124,7 @@ class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     }
 
     override fun getVertex(vertex: Int?): Int? {
-        return vertices.getOrDefault(vertex, null)
+        return vertices.find {it == vertex}
     }
 }
 
@@ -213,48 +189,6 @@ fun createStackExampleGraph(startVertex: Int): SimpleGraph {
     }
 
     inputGraph.addStartVertex(startVertex)
-
-    return inputGraph
-}
-
-fun gatherNodes(sppfNode: ISppfNode): HashSet<Int> {
-    val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
-    val created: HashSet<Int> = HashSet()
-    var node: ISppfNode
-
-    while (queue.isNotEmpty()) {
-        node = queue.removeFirst()
-        if (!created.add(node.id)) continue
-
-        (node as? NonterminalSppfNode<*>)?.children?.forEach {
-            queue.addLast(it)
-        }
-
-        val leftChild = (node as? PackedSppfNode<*>)?.leftSppfNode
-        val rightChild = (node as? PackedSppfNode<*>)?.rightSppfNode
-
-        if (leftChild != null) {
-            queue.addLast(leftChild)
-        }
-        if (rightChild != null) {
-            queue.addLast(rightChild)
-        }
-    }
-
-    return created
-}
-
-fun getTokenStream(input: String): RecoveryLinearInput<Int, LinearInputLabel> {
-    val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
-    var vertexId = 0
-
-    inputGraph.addStartVertex(vertexId)
-    inputGraph.addVertex(vertexId)
-
-    for (ch in input) {
-        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(ch.toString())), ++vertexId)
-        inputGraph.addVertex(vertexId)
-    }
 
     return inputGraph
 }

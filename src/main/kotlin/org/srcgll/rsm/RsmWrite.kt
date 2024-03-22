@@ -4,7 +4,10 @@ import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
 import java.io.File
-
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import kotlin.io.path.Path
 
 private fun getAllStates(startState: RsmState): HashSet<RsmState> {
     val states: HashSet<RsmState> = HashSet()
@@ -28,64 +31,7 @@ private fun getAllStates(startState: RsmState): HashSet<RsmState> {
     return states
 }
 
-<<<<<<< HEAD
-fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
-    val states = getAllStates(startState)
-    File(pathToTXT).printWriter().use { out ->
-        out.println(
-            """StartState(
-            |id=${startState.id},
-            |nonterminal=Nonterminal("${startState.nonterminal.name}"),
-            |isStart=${startState.isStart},
-            |isFinal=${startState.isFinal}
-            |)"""
-                .trimMargin()
-                .replace("\n", "")
-        )
-
-        states.forEach { state ->
-            out.println(
-                """State(
-                |id=${state.id},
-                |nonterminal=Nonterminal("${state.nonterminal.name}"),
-                |isStart=${state.isStart},
-                |isFinal=${state.isFinal}
-                |)"""
-                    .trimMargin()
-                    .replace("\n", "")
-            )
-        }
-
-        fun getSymbolView(symbol: Symbol): Triple<String, String, String> {
-            return when (symbol) {
-                is Terminal<*> -> Triple("Terminal", symbol.value.toString(), "terminal")
-                is Nonterminal -> Triple("Nonterminal", symbol.name ?: "NON_TERM", "nonterminal")
-                else -> throw Exception("Unsupported implementation of Symbol instance: ${symbol.javaClass}")
-            }
-        }
-
-        for (state in states) {
-            for ((symbol, destStates) in state.outgoingEdges) {
-                val (typeView, symbolView, typeLabel) = getSymbolView(symbol)
-                for (destState in destStates) {
-                    out.println(
-                        """${typeView}Edge(
-                        |tail=${state.id},
-                        |head=${destState.id},
-                        |$typeLabel=$typeView("$symbolView")
-                        |)""".trimMargin().replace("\n", "")
-                    )
-                }
-            }
-        }
-    }
-
-}
-
-
-=======
->>>>>>> work
-fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
+fun writeRsmToDot(startState: RsmState, filePath: String) {
     val states = getAllStates(startState)
     val boxes: HashMap<Nonterminal, HashSet<RsmState>> = HashMap()
 
@@ -96,7 +42,10 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
         boxes.getValue(state.nonterminal).add(state)
     }
 
-    File(pathToTXT).printWriter().use { out ->
+    Files.createDirectories(Paths.get("gen"))
+    val file = File(Path.of("gen", filePath).toUri())
+
+    file.printWriter().use { out ->
         out.println("digraph g {")
 
         states.forEach { state ->

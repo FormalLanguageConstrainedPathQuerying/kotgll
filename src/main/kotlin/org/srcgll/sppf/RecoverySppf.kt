@@ -5,7 +5,6 @@ import org.srcgll.sppf.node.*
 
 class RecoverySppf<VertexType> : Sppf<VertexType>() {
 
-
     override fun getParentNode(
         state: RsmState,
         sppfNode: SppfNode<VertexType>?,
@@ -17,7 +16,7 @@ class RecoverySppf<VertexType> : Sppf<VertexType>() {
     }
 
     /**
-     * ??
+     * Traverse from given node all the way up to root, updating weights when necessary
      */
     fun updateWeights(sppfNode: ISppfNode) {
         val added = HashSet<ISppfNode>(listOf(sppfNode))

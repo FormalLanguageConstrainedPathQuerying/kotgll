@@ -6,7 +6,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-
 fun writeSppfToDot(sppfNode: ISppfNode, filePath: String, label: String = "") {
     val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
     val edges: HashMap<Int, HashSet<Int>> = HashMap()

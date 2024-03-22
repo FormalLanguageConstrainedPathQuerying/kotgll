@@ -12,15 +12,12 @@ import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.writeSppfToDot
 import org.srcgll.input.LinearInput
 import org.srcgll.lexer.*
+import org.srcgll.rsm.readRsmFromDot
 import java.io.File
 import java.io.StringReader
 
 enum class RecoveryMode {
     ON, OFF,
-}
-
-enum class ReachabilityMode {
-    REACHABILITY, ALLPAIRS,
 }
 
 fun main(args: Array<String>) {
@@ -47,28 +44,4 @@ fun main(args: Array<String>) {
     ).required()
 
     parser.parse(args)
-
-    val input = File(pathToInput).readText().replace("\n", "").trim()
-    val grammar = JavaGrammar().rsm
-    val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
-    val lexer = JavaLexer(StringReader(input))
-    val gll = Gll.recoveryGll(grammar, inputGraph)
-    var vertexId = 0
-    var token: JavaToken
-
-    writeRsmToDot(grammar, "./rsm.dot")
-
-    inputGraph.addStartVertex(vertexId)
-    inputGraph.addVertex(vertexId)
-
-    while (true) {
-        token = lexer.yylex() as JavaToken
-        if (token == JavaToken.EOF) break
-        println(token.name)
-        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
-        inputGraph.addVertex(vertexId)
-    }
-
-    val result = gll.parse()
-    writeSppfToDot(result.first!!, "./result.dot")
 }

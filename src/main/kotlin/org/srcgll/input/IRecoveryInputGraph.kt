@@ -11,8 +11,8 @@ import org.srcgll.sppf.node.SppfNode
 interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
     override fun handleEdges(
         handleTerminalOrEpsilonEdge: (
-            curDescriptor: Descriptor<VertexType>,
-            curSppfNode: SppfNode<VertexType>?,
+            descriptor: Descriptor<VertexType>,
+            sppfNode: SppfNode<VertexType>?,
             terminal: Terminal<*>?,
             targetState: RsmState,
             targetVertex: VertexType,
@@ -22,25 +22,25 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
             descriptor: Descriptor<VertexType>,
             nonterminal: Nonterminal,
             targetStates: HashSet<RsmState>,
-            curSppfNode: SppfNode<VertexType>?
+            sppfNode: SppfNode<VertexType>?
         ) -> Unit,
         ctx: IContext<VertexType, LabelType>,
-        curDescriptor: Descriptor<VertexType>,
-        curSppfNode: SppfNode<VertexType>?
+        descriptor: Descriptor<VertexType>,
+        sppfNode: SppfNode<VertexType>?
     ) {
-        super.handleEdges(handleTerminalOrEpsilonEdge, handleNonterminalEdge, ctx, curDescriptor, curSppfNode)
-        val errorRecoveryEdges = createRecoveryEdges(curDescriptor)
+        super.handleEdges(handleTerminalOrEpsilonEdge, handleNonterminalEdge, ctx, descriptor, sppfNode)
+        val errorRecoveryEdges = createRecoveryEdges(descriptor)
         handleRecoveryEdges(
             errorRecoveryEdges,
             handleTerminalOrEpsilonEdge,
-            curDescriptor,
-            curDescriptor.rsmState.terminalEdges
+            descriptor,
+            descriptor.rsmState.terminalEdges
         )
     }
 
-    private fun createRecoveryEdges(curDescriptor: Descriptor<VertexType>): HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>> {
-        val pos = curDescriptor.inputPosition
-        val state = curDescriptor.rsmState
+    private fun createRecoveryEdges(descriptor: Descriptor<VertexType>): HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>> {
+        val pos = descriptor.inputPosition
+        val state = descriptor.rsmState
         val terminalEdges = state.terminalEdges
 
         val errorRecoveryEdges = HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>()
@@ -102,44 +102,39 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
     private fun handleRecoveryEdges(
         errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
         handleTerminalOrEpsilonEdge: (
-            curDescriptor: Descriptor<VertexType>,
-            curSppfNode: SppfNode<VertexType>?,
+            descriptor: Descriptor<VertexType>,
+            sppfNode: SppfNode<VertexType>?,
             terminal: Terminal<*>?,
             targetState: RsmState,
             targetVertex: VertexType,
             targetWeight: Int,
         ) -> Unit,
-        curDescriptor: Descriptor<VertexType>,
+        descriptor: Descriptor<VertexType>,
         terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>
     ) {
         for ((terminal, errorRecoveryEdge) in errorRecoveryEdges) {
             if (terminal == null) {
                 handleTerminalOrEpsilonEdge(
-                    curDescriptor,
-                    curDescriptor.sppfNode,
+                    descriptor,
+                    descriptor.sppfNode,
                     null,
-                    curDescriptor.rsmState,
+                    descriptor.rsmState,
                     errorRecoveryEdge.head,
                     errorRecoveryEdge.weight
                 )
-            } else {
-
-                if (terminalEdges.containsKey(terminal)) {
-                    for (targetState in terminalEdges.getValue(terminal)) {
-                        handleTerminalOrEpsilonEdge(
-                            curDescriptor,
-                            curDescriptor.sppfNode,
-                            terminal,
-                            targetState,
-                            errorRecoveryEdge.head,
-                            errorRecoveryEdge.weight
-                        )
-                    }
+            } else if (terminalEdges.containsKey(terminal)) {
+                for (targetState in terminalEdges.getValue(terminal)) {
+                    handleTerminalOrEpsilonEdge(
+                        descriptor,
+                        descriptor.sppfNode,
+                        terminal,
+                        targetState,
+                        errorRecoveryEdge.head,
+                        errorRecoveryEdge.weight
+                    )
                 }
             }
         }
 
     }
-
-
 }

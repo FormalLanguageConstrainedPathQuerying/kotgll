@@ -17,7 +17,7 @@ open class DescriptorsStorage<VertexType>{
 
     open fun next(): Descriptor<VertexType> {
         if (defaultDescriptorsStorageIsEmpty()) {
-            throw ParsingException("Access to empty descriptor storage")
+            throw ParsingException("Descriptor storage is empty")
         }
         return defaultDescriptorsStorage.removeLast()
     }
@@ -25,7 +25,7 @@ open class DescriptorsStorage<VertexType>{
     fun isAlreadyHandled(descriptor: Descriptor<VertexType>): Boolean {
         val handledDescriptor = descriptor.gssNode.handledDescriptors.find { descriptor.hashCode() == it.hashCode() }
 
-        return handledDescriptor != null && handledDescriptor.weight() <= descriptor.weight()
+        return handledDescriptor != null && handledDescriptor.weight <= descriptor.weight
     }
 
     fun addToHandled(descriptor: Descriptor<VertexType>) {

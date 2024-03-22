@@ -3,9 +3,8 @@ package org.srcgll.input
 import org.srcgll.rsm.symbol.Terminal
 
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
-    override val vertices: MutableMap<VertexType, VertexType> = HashMap()
+    override val vertices: MutableSet<VertexType> = HashSet()
     override val edges: MutableMap<VertexType, MutableList<Edge<VertexType, LabelType>>> = HashMap()
-
     override val startVertices: MutableSet<VertexType> = HashSet()
 
     override fun getInputStartVertices(): MutableSet<VertexType> {
@@ -13,7 +12,7 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     }
 
     override fun getVertex(vertex: VertexType?): VertexType? {
-        return vertices.getOrDefault(vertex, null)
+        return if (vertices.contains(vertex)) vertex else null
     }
 
     override fun addStartVertex(vertex: VertexType) {
@@ -21,7 +20,7 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     }
 
     override fun addVertex(vertex: VertexType) {
-        vertices[vertex] = vertex
+        vertices.add(vertex)
     }
 
     override fun removeVertex(vertex: VertexType) {
@@ -50,22 +49,24 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     override fun isStart(vertex: VertexType) = startVertices.contains(vertex)
     override fun isFinal(vertex: VertexType) = getEdges(vertex).isEmpty()
 
-
     companion object {
-
-
+        /**
+         * Split CharSequence into stream of strings, separated by space symbol
+         */
         fun buildFromString(input: String): IInputGraph<Int, LinearInputLabel> {
-            var curVertexId = 0
             val inputGraph = LinearInput<Int, LinearInputLabel>()
+            var curVertexId = 0
+
+            inputGraph.addStartVertex(curVertexId)
             inputGraph.addVertex(curVertexId)
-            for (x in input) {
-                inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
-                inputGraph.addVertex(curVertexId)
+
+            for (x in input.trim().split(' ')) {
+                if (x.isNotEmpty()) {
+                    inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
+                    inputGraph.addVertex(curVertexId)
+                }
             }
-            inputGraph.addStartVertex(0)
             return inputGraph
         }
-
     }
-
 }

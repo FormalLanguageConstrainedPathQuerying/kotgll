@@ -6,7 +6,7 @@ class RecoveringDescriptorsStorage<VertexType> : DescriptorsStorage<VertexType>(
 
     override fun addToHandling(descriptor: Descriptor<VertexType>) {
         if (!isAlreadyHandled(descriptor)) {
-            val pathWeight = descriptor.weight()
+            val pathWeight = descriptor.weight
 
             if (pathWeight == 0) {
                 defaultDescriptorsStorage.addLast(descriptor)

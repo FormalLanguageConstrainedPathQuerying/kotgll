@@ -25,7 +25,7 @@ open class GllRsmTest : IDynamicGllTest {
 
     private fun getRsm(concreteGrammarFolder: File): RsmState {
         val rsmFile = getFile(mainFileName, concreteGrammarFolder) ?:
-        throw Exception("Folder $concreteGrammarFolder not contains $mainFileName")
+            throw Exception("Folder $concreteGrammarFolder not contains $mainFileName")
         return readRsmFromTxt(rsmFile.toPath())
     }
 
@@ -33,7 +33,7 @@ open class GllRsmTest : IDynamicGllTest {
         return DynamicTest.dynamicTest(getTestName(input)) {
             val result = getGll(input, rsm).parse().first
             assertNotNull(result)
-            assertEquals(input, buildStringFromSppf(result))
+            assertEquals(input.replace(" ", ""), buildStringFromSppf(result))
         }
     }
 

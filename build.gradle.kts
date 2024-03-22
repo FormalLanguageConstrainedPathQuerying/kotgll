@@ -26,6 +26,8 @@ dependencies {
     jmhImplementation("org.openjdk.jmh:jmh-core:1.36")
     jmhImplementation("org.openjdk.jmh:jmh-generator-annprocess:1.36")
     jmhImplementation("org.openjdk.jmh:jmh-generator-bytecode:1.36")
+    implementation("com.squareup:kotlinpoet:1.16.0")
+    testImplementation("com.github.tschuchortdev:kotlin-compile-testing:1.5.0")
 }
 
 tasks.test { useJUnitPlatform() }

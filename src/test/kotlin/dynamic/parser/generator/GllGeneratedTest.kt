@@ -27,7 +27,7 @@ open class GllGeneratedTest : IDynamicGllTest {
             gll.input = LinearInput.buildFromString(input)
             val result = gll.parse().first
             assertNotNull(result)
-            assertEquals(input, buildStringFromSppf(result))
+            assertEquals(input.replace(" ", ""), buildStringFromSppf(result))
         }
     }
 

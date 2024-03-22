@@ -33,7 +33,7 @@ interface IGll<VertexType, LabelType : ILabel> {
     fun parse(descriptor: Descriptor<VertexType>)
 
     /**
-     *
+     * Create descriptors for all starting vertices in input graph
      */
     fun initDescriptors(input: IInputGraph<VertexType, LabelType>) {
         for (startVertex in input.getInputStartVertices()) {
@@ -87,24 +87,11 @@ interface IGll<VertexType, LabelType : ILabel> {
         return newNode
     }
 
-    /**
-     *
-     */
     fun addDescriptor(descriptor: Descriptor<VertexType>) {
-        val sppfNode = descriptor.sppfNode
-        val state = descriptor.rsmState
-        val leftExtent = sppfNode?.leftExtent
-        val rightExtent = sppfNode?.rightExtent
-
-        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal && ctx.input.isStart(
-                leftExtent!!
-            ) && ctx.input.isFinal(rightExtent!!)
-        ) {
-            ctx.descriptors.removeFromHandled(descriptor)
-        }
-        ctx.descriptors.addToHandling(descriptor)
+        ctx.addDescriptor(descriptor)
     }
 
+    //TODO: Add logic for handling null sppfNode passed to pop
     fun pop(gssNode: GssNode<VertexType>, sppfNode: SppfNode<VertexType>?, pos: VertexType) {
         if (!ctx.poppedGssNodes.containsKey(gssNode)) ctx.poppedGssNodes[gssNode] = HashSet()
         ctx.poppedGssNodes.getValue(gssNode).add(sppfNode)
@@ -153,12 +140,12 @@ interface IGll<VertexType, LabelType : ILabel> {
         descriptor: Descriptor<VertexType>,
         nonterminal: Nonterminal,
         targetStates: HashSet<RsmState>,
-        curSppfNode: SppfNode<VertexType>?
+        sppfNode: SppfNode<VertexType>?
     ) {
         for (target in targetStates) {
             val newDescriptor = Descriptor(
                 nonterminal.startState,
-                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
+                createGssNode(nonterminal, target, descriptor.gssNode, sppfNode, descriptor.inputPosition),
                 sppfNode = null,
                 descriptor.inputPosition
             )
@@ -169,13 +156,13 @@ interface IGll<VertexType, LabelType : ILabel> {
     fun handleNonterminalEdge(
         descriptor: Descriptor<VertexType>,
         nonterminal: Nonterminal,
-        curSppfNode: SppfNode<VertexType>?
+        sppfNode: SppfNode<VertexType>?
     ) {
         val targetStates: HashSet<RsmState> = descriptor.rsmState.nonterminalEdges[nonterminal]!!
         for (target in targetStates) {
             val newDescriptor = Descriptor(
                 nonterminal.startState,
-                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
+                createGssNode(nonterminal, target, descriptor.gssNode, sppfNode, descriptor.inputPosition),
                 sppfNode = null,
                 descriptor.inputPosition
             )
@@ -187,7 +174,7 @@ interface IGll<VertexType, LabelType : ILabel> {
 
     fun handleTerminalOrEpsilonEdge(
         curDescriptor: Descriptor<VertexType>,
-        curSppfNode: SppfNode<VertexType>?,
+        sppfNode: SppfNode<VertexType>?,
         terminal: Terminal<*>?,
         targetState: RsmState,
         targetVertex: VertexType,
@@ -195,7 +182,7 @@ interface IGll<VertexType, LabelType : ILabel> {
     ) {
         val descriptor = Descriptor(
             targetState, curDescriptor.gssNode, ctx.sppf.getParentNode(
-                targetState, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
+                targetState, sppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
                     terminal, curDescriptor.inputPosition, targetVertex, targetWeight
                 )
             ), targetVertex
