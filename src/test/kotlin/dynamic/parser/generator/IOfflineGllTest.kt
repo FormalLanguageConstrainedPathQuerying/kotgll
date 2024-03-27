@@ -37,9 +37,12 @@ interface IOfflineGllTest : IDynamicGllTest {
     ): DynamicNode {
         return DynamicTest.dynamicTest(caseName) {
             gll.input = input
-            val result = gll.parse().first
+            val result = gll.parse()
+            if(result.first == null){
+                System.err.println("input: $input")
+            }
             //TODO add check for parsing result quality
-            assertNotNull(result)
+            assertNotNull(result.first)
         }
     }
 }

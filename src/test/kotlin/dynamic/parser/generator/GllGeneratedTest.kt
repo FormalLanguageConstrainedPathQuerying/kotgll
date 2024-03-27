@@ -14,6 +14,7 @@ import org.srcgll.parser.generator.GeneratedParser
 import org.srcgll.parser.generator.ParserGeneratorException
 import org.srcgll.rsm.symbol.ITerminal
 import java.io.File
+import java.io.Reader
 
 
 open class GllGeneratedTest : IOfflineGllTest {
@@ -35,12 +36,15 @@ open class GllGeneratedTest : IOfflineGllTest {
         val inputGraph = LinearInput<Int, LinearInputLabel>()
 
         //equals to val lexer = Lexer(input.reader())
-        val lexer = lexerInfo.clazz.getDeclaredConstructor().newInstance(input.reader())
+        val lexer = lexerInfo.clazz.getConstructor(Reader::class.java).newInstance(input.reader())
         val yylex = lexerInfo.clazz.methods.firstOrNull { it.name == "yylex" }
             ?: throw ParserGeneratorException("cant find jflex class ${lexerInfo.path}")
 
         var token: ITerminal
         var vertexId = 0
+        inputGraph.addStartVertex(vertexId)
+        inputGraph.addVertex(vertexId)
+
         while (true) {
             try {
                 val tkn = yylex.invoke(lexer)
@@ -59,27 +63,27 @@ open class GllGeneratedTest : IOfflineGllTest {
     }
 
     override fun getTestCases(concreteGrammarFolder: File): Iterable<DynamicNode> {
-        val gll: GeneratedParser<Int, LinearInputLabel> = getGll(concreteGrammarFolder)
         val lexerInfo = LexerInfo.getLexerInfo(concreteGrammarFolder.name)
+        val gll: GeneratedParser<Int, LinearInputLabel> = getGll(concreteGrammarFolder)
 
         val correctOneLineInputs = getLines(IDynamicGllTest.ONE_LINE_INPUTS, concreteGrammarFolder)
             .map {
-                getCorrectTestContainer(IDynamicGllTest.getTestName(it), gll, tokenizeInput(it, lexerInfo))
+                getCorrectTestContainer("[ok]${IDynamicGllTest.getTestName(it)}", gll, tokenizeInput(it, lexerInfo))
             }
 
         val incorrectOneLineInputs = getLines(IDynamicGllTest.ONE_LINE_ERRORS_INPUTS, concreteGrammarFolder)
             .map {
-                getIncorrectTestContainer(IDynamicGllTest.getTestName(it), gll, tokenizeInput(it, lexerInfo))
+                getIncorrectTestContainer("[fail]${IDynamicGllTest.getTestName(it)}", gll, tokenizeInput(it, lexerInfo))
             }
 
         val correctInputs =
             getFiles(IDynamicGllTest.INPUTS, concreteGrammarFolder)?.map { file ->
-                getCorrectTestContainer(file.name, gll, tokenizeInput(readFile(file), lexerInfo))
+                getCorrectTestContainer("[ok]${file.name}", gll, tokenizeInput(readFile(file), lexerInfo))
             } ?: emptyList()
 
         val incorrectInputs =
             getFiles(IDynamicGllTest.INPUTS, concreteGrammarFolder)?.map { file ->
-                getIncorrectTestContainer(file.name, gll, tokenizeInput(readFile(file), lexerInfo))
+                getIncorrectTestContainer("[fail]${file.name}", gll, tokenizeInput(readFile(file), lexerInfo))
             } ?: emptyList()
 
         return correctOneLineInputs + incorrectOneLineInputs + correctInputs + incorrectInputs

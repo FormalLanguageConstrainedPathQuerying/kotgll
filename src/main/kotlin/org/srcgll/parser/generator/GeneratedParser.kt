@@ -64,8 +64,9 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     ) {
 
         val newStates = state.terminalEdges[terminal] ?:
-            throw ParsingException("State $state does not contains edges by terminal $terminal\n" +
-                    "accessible edges: ${state.terminalEdges}")
+            throw ParsingException("State $state does not contains edges " +
+                    "\nby terminal $terminal" +
+                    "\naccessible edges: ${state.terminalEdges}\n")
 
 
         if (inputEdge.label.terminal == terminal) {

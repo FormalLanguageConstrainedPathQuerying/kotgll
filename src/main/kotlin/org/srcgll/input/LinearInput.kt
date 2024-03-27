@@ -50,6 +50,20 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     override fun isStart(vertex: VertexType) = startVertices.contains(vertex)
     override fun isFinal(vertex: VertexType) = getEdges(vertex).isEmpty()
 
+    override fun toString(): String {
+        if(startVertices.isEmpty()){
+            return "${this.javaClass}: empty"
+        }
+        var v: VertexType = startVertices.first()
+        val sb = StringBuilder()
+        while(v != null){
+            val e = edges[v]?.first() ?: break
+            sb.append("\n")
+            sb.append(e.label)
+            v = e.head
+        }
+        return sb.toString()
+    }
 
     companion object {
 
@@ -65,7 +79,5 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
             inputGraph.addStartVertex(0)
             return inputGraph
         }
-
     }
-
 }

@@ -15,4 +15,8 @@ class LinearInputLabel(
 
     val hashCode: Int = terminal.hashCode()
     override fun hashCode() = hashCode
+
+    override fun toString(): String {
+        return terminal.toString()
+    }
 }
