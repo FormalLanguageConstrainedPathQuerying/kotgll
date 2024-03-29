@@ -19,7 +19,7 @@ interface IOfflineGllTest : IDynamicGllTest {
         gll: GeneratedParser<VertexType, LabelType>,
         input: IInputGraph<VertexType, LabelType>
     ): DynamicNode {
-        return DynamicTest.dynamicTest(caseName) {
+        return DynamicTest.dynamicTest("[fail] $caseName") {
             gll.input = input
             val result = gll.parse().first
             Assertions.assertNull(result)
@@ -35,10 +35,10 @@ interface IOfflineGllTest : IDynamicGllTest {
         gll: GeneratedParser<VertexType, LabelType>,
         input: IInputGraph<VertexType, LabelType>
     ): DynamicNode {
-        return DynamicTest.dynamicTest(caseName) {
+        return DynamicTest.dynamicTest("[ok] $caseName") {
             gll.input = input
             val result = gll.parse()
-            if(result.first == null){
+            if (result.first == null) {
                 System.err.println("input: $input")
             }
             //TODO add check for parsing result quality

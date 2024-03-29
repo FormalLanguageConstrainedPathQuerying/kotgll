@@ -2,7 +2,6 @@ package dynamic.parser.generator
 
 import dynamic.parser.IDynamicGllTest
 import dynamic.parser.IDynamicGllTest.Companion.getLines
-import dynamic.parser.generator.compilation.RuntimeCompiler
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.srcgll.input.LinearInput
@@ -38,8 +37,8 @@ class ScanerlessGllGeneratedTest : IOfflineGllTest {
     }
 
     private fun getGll(concreteGrammarFolder: File): GeneratedParser<Int, LinearInputLabel> {
-        val grammarName = concreteGrammarFolder.name
-        return RuntimeCompiler.generateScanerlessParser(concreteGrammarFolder, grammarName)
+        val parserClass = RuntimeCompiler.loadScanerlessParser(concreteGrammarFolder)
+        return RuntimeCompiler.instantiateParser(parserClass)
     }
 
     /**
