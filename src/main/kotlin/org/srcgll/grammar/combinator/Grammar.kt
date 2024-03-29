@@ -41,8 +41,8 @@ open class Grammar {
     /**
      * Get all terminals used in RSM from current state (recursive)
      */
-    fun getTerminals(): HashSet<ITerminal> {
-        return incrementalDfs(
+    fun getTerminals(): Iterable<ITerminal> {
+        val terms : HashSet<ITerminal> = incrementalDfs(
             rsm,
             { state: RsmState ->
                 state.outgoingEdges.values.flatten() +
@@ -51,6 +51,8 @@ open class Grammar {
             hashSetOf(),
             { state, set -> set.addAll(state.terminalEdges.keys) }
         )
+        val comparator = terms.firstOrNull()?.getComparator() ?: return emptyList()
+        return terms.toSortedSet(comparator).toList()
     }
 
 }
