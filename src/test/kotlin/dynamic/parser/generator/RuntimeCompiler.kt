@@ -22,14 +22,10 @@ object RuntimeCompiler {
         )
     }
 
-    fun getParserPkg(grammarName: String): String = "gen.parser.$grammarName"
-    val parsersFolder = resourceOf("/")
-    val generationPath = {
-        val genFolder = Paths.get("${parsersFolder.toAbsolutePath()}/gen/parser")
-        Files.createDirectories(genFolder)
-        resourceOf("/gen/parser")
-    }
-
+    private fun getParserPkg(grammarName: String): String = "gen.parser.$grammarName"
+    private val parsersFolder = resourceOf("/")
+    private val generationPath: Path = Files
+        .createDirectories(Paths.get("${parsersFolder.toAbsolutePath()}/gen/parser"))
 
     /**
      * Compile ScanerlessGrammarDsl and generate ScanerlessParser,
@@ -52,7 +48,7 @@ object RuntimeCompiler {
         }
 
         var compilationResult = generateParserCode()
-        val parser = getKtSource(generationPath().resolve(grammarName).toFile(), parserName)
+        val parser = getKtSource(generationPath.resolve(grammarName).toFile(), parserName)
 
         compilationResult = compileClasses(
             listOf(parser),
@@ -93,7 +89,7 @@ object RuntimeCompiler {
 
         var compilationResult = generateParserCode()
         val lexer = getKtSource(grammarFolderFile, LEXER_NAME)
-        val parser = getKtSource(generationPath().resolve(grammarName).toFile(), parserName)
+        val parser = getKtSource(generationPath.resolve(grammarName).toFile(), parserName)
 
         compilationResult = compileClasses(
             listOf(parser, lexer),

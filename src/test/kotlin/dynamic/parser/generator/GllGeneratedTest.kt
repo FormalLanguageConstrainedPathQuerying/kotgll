@@ -78,7 +78,7 @@ open class GllGeneratedTest : IOfflineGllTest {
             } ?: emptyList()
 
         val incorrectInputs =
-            getFiles(IDynamicGllTest.INPUTS, concreteGrammarFolder)?.map { file ->
+            getFiles(IDynamicGllTest.INCORRECT_INPUTS, concreteGrammarFolder)?.map { file ->
                 getIncorrectTestContainer(file.name, gll, tokenizeInput(readFile(file), classes.lexer))
             } ?: emptyList()
 
