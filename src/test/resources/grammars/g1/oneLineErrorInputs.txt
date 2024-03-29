@@ -1,0 +1,7 @@
+
+subClassOf
+subClassOf_r
+subClassOf_r type_r type
+subClassOf_r type subClassOf
+type_r subClassOf type subClassOf_r
+subClassOf type subClassOf type_r subClassOf_r
