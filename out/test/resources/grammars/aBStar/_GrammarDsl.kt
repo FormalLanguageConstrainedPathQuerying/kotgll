@@ -1,15 +1,15 @@
-package grammars.aStar
+package grammars.aBStar
 
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Many
 import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.grammar.combinator.regexp.Term
+import org.srcgll.grammar.combinator.regexp.times
 
-class GrammarDsl : Grammar() {
+class _GrammarDsl : Grammar(){
     var S by Nt()
-
-    init {
+    init{
         setStart(S)
-        S = Many(Term("a"))
+        S = Many(Token.A * Token.B)
     }
+
 }

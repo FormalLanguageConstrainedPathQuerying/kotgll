@@ -2,7 +2,7 @@ package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import java.io.File
 
 
@@ -57,7 +57,7 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
 
         fun getSymbolView(symbol: Symbol): Triple<String, String, String> {
             return when (symbol) {
-                is Terminal<*> -> Triple("Terminal", symbol.value.toString(), "terminal")
+                is Term<*> -> Triple("Terminal", symbol.value.toString(), "terminal")
                 is Nonterminal -> Triple("Nonterminal", symbol.name ?: "NON_TERM", "nonterminal")
                 else -> throw Exception("Unsupported implementation of Symbol instance: ${symbol.javaClass}")
             }
@@ -107,7 +107,7 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
         fun getView(symbol: Symbol): String {
             return when (symbol) {
                 is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
-                is Terminal<*> -> symbol.value.toString()
+                is Term<*> -> symbol.value.toString()
                 else -> symbol.toString()
             }
         }

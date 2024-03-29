@@ -1,7 +1,7 @@
 package org.srcgll.rsm
 
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import java.nio.file.Path
 
 fun readRsmFromTxt(pathToTXT: Path): RsmState {
@@ -112,7 +112,7 @@ fun readRsmFromTxt(pathToTXT: Path): RsmState {
             val tailRsmState = idToState[tailId.toInt()]!!
             val headRsmState = idToState[headId.toInt()]!!
 
-            tailRsmState.addEdge(Terminal(terminalValue),headRsmState)
+            tailRsmState.addEdge(Term(terminalValue),headRsmState)
         } else if (rsmNonterminalEdgeRegex.matches(line)) {
             val (tailId, headId, nonterminalValue) =
                 rsmNonterminalEdgeRegex.matchEntire(line)!!.destructured

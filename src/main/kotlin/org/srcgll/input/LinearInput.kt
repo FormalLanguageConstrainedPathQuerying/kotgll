@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
     override val vertices: MutableMap<VertexType, VertexType> = HashMap()
@@ -50,6 +50,20 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     override fun isStart(vertex: VertexType) = startVertices.contains(vertex)
     override fun isFinal(vertex: VertexType) = getEdges(vertex).isEmpty()
 
+    override fun toString(): String {
+        if(startVertices.isEmpty()){
+            return "${this.javaClass}: empty"
+        }
+        var v: VertexType = startVertices.first()
+        val sb = StringBuilder()
+        while(v != null){
+            val e = edges[v]?.first() ?: break
+            sb.append("\n")
+            sb.append(e.label)
+            v = e.head
+        }
+        return sb.toString()
+    }
 
     companion object {
 
@@ -59,13 +73,11 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
             val inputGraph = LinearInput<Int, LinearInputLabel>()
             inputGraph.addVertex(curVertexId)
             for (x in input) {
-                inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+                inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
                 inputGraph.addVertex(curVertexId)
             }
             inputGraph.addStartVertex(0)
             return inputGraph
         }
-
     }
-
 }

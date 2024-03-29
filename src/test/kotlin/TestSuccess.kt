@@ -6,7 +6,7 @@ import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.Gll
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import kotlin.test.assertNotNull
 
 class TestSuccess {
@@ -16,7 +16,7 @@ class TestSuccess {
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -50,7 +50,7 @@ class TestSuccess {
         )
         nonterminalS.startState = rsmState0
         rsmState0.addEdge(
-            symbol = Terminal("a"), destinationState = RsmState(
+            symbol = Term("a"), destinationState = RsmState(
                 nonterminal = nonterminalS,
                 isFinal = true,
             )
@@ -71,9 +71,9 @@ class TestSuccess {
         val rsmState1 = RsmState(
             nonterminal = nonterminalS,
         )
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
         rsmState1.addEdge(
-            symbol = Terminal("b"), destinationState = RsmState(
+            symbol = Term("b"), destinationState = RsmState(
                 nonterminal = nonterminalS, isFinal = true
             )
         )
@@ -95,8 +95,8 @@ class TestSuccess {
             nonterminal = nonterminalS,
             isFinal = true,
         )
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
-        rsmState1.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = Term("a"), destinationState = rsmState1)
 
         testOffRecovery(input, rsmState0)
     }
@@ -114,8 +114,8 @@ class TestSuccess {
             nonterminal = nonterminalS,
             isFinal = true,
         )
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
-        rsmState1.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = Term("a"), destinationState = rsmState1)
 
         testOffRecovery(input, rsmState0)
     }
@@ -134,8 +134,8 @@ class TestSuccess {
             nonterminal = nonterminalS,
             isFinal = true,
         )
-        rsmState0.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
-        rsmState1.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("ab"), destinationState = rsmState1)
+        rsmState1.addEdge(symbol = Term("ab"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -151,7 +151,7 @@ class TestSuccess {
                 pos += 1
                 label = input[pos].toString()
             }
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(label)), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -185,9 +185,9 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = Terminal("("), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("("), destinationState = rsmState1)
         rsmState1.addEdge(symbol = nonterminalS, destinationState = rsmState2)
-        rsmState2.addEdge(symbol = Terminal(")"), destinationState = rsmState3)
+        rsmState2.addEdge(symbol = Term(")"), destinationState = rsmState3)
         rsmState3.addEdge(symbol = nonterminalS, destinationState = rsmState4)
 
         testOffRecovery(input, rsmState0)
@@ -208,8 +208,8 @@ class TestSuccess {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("ab"), destinationState = rsmState1)
-        rsmState0.addEdge(symbol = Terminal("cd"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("ab"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("cd"), destinationState = rsmState1)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -228,7 +228,7 @@ class TestSuccess {
                 pos += 1
                 label = input[pos].toString()
             }
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(label)), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
@@ -252,7 +252,7 @@ class TestSuccess {
 
         nonterminalS.startState = rsmState0
 
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
 
         testOffRecovery(input, rsmState0)
     }
@@ -307,16 +307,16 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
         rsmState1.addEdge(symbol = nonterminalB, destinationState = rsmState2)
-        rsmState2.addEdge(symbol = Terminal("c"), destinationState = rsmState3)
+        rsmState2.addEdge(symbol = Term("c"), destinationState = rsmState3)
         rsmState0.addEdge(symbol = nonterminalA, destinationState = rsmState4)
-        rsmState4.addEdge(symbol = Terminal("c"), destinationState = rsmState5)
+        rsmState4.addEdge(symbol = Term("c"), destinationState = rsmState5)
 
-        rsmState6.addEdge(symbol = Terminal("a"), destinationState = rsmState7)
-        rsmState7.addEdge(symbol = Terminal("b"), destinationState = rsmState8)
+        rsmState6.addEdge(symbol = Term("a"), destinationState = rsmState7)
+        rsmState7.addEdge(symbol = Term("b"), destinationState = rsmState8)
 
-        rsmState9.addEdge(symbol = Terminal("b"), destinationState = rsmState10)
+        rsmState9.addEdge(symbol = Term("b"), destinationState = rsmState10)
 
         testOffRecovery(input, rsmState0)
     }
@@ -367,10 +367,10 @@ class TestSuccess {
 
         rsmState0.addEdge(symbol = nonterminalA, destinationState = rsmState1)
         rsmState0.addEdge(symbol = nonterminalB, destinationState = rsmState2)
-        rsmState3.addEdge(symbol = Terminal("ab"), destinationState = rsmState4)
-        rsmState3.addEdge(symbol = Terminal("cd"), destinationState = rsmState5)
-        rsmState6.addEdge(symbol = Terminal("ab"), destinationState = rsmState7)
-        rsmState6.addEdge(symbol = Terminal("cd"), destinationState = rsmState8)
+        rsmState3.addEdge(symbol = Term("ab"), destinationState = rsmState4)
+        rsmState3.addEdge(symbol = Term("cd"), destinationState = rsmState5)
+        rsmState6.addEdge(symbol = Term("ab"), destinationState = rsmState7)
+        rsmState6.addEdge(symbol = Term("cd"), destinationState = rsmState8)
 
         val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
@@ -390,7 +390,7 @@ class TestSuccess {
                 pos += 1
                 label = input[pos].toString()
             }
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Term(label)), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
 
@@ -430,9 +430,9 @@ class TestSuccess {
             isFinal = true,
         )
 
-        rsmState0.addEdge(symbol = Terminal("a"), destinationState = rsmState1)
+        rsmState0.addEdge(symbol = Term("a"), destinationState = rsmState1)
         rsmState1.addEdge(symbol = nonterminalA, destinationState = rsmState2)
-        rsmState3.addEdge(symbol = Terminal("b"), destinationState = rsmState4)
+        rsmState3.addEdge(symbol = Term("b"), destinationState = rsmState4)
 
         rsmState4.addEdge(symbol = nonterminalA, destinationState = rsmState3)
 

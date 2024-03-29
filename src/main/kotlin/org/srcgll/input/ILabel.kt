@@ -1,8 +1,8 @@
 package org.srcgll.input
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.ITerminal
 
 interface ILabel {
-    val terminal: Terminal<*>?
+    val terminal: ITerminal?
     override fun equals(other: Any?): Boolean
 }

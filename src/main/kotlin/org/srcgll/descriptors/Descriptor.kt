@@ -41,6 +41,16 @@ open class Descriptor<VertexType>(
             sppfNode
         }
     }
+
+    override fun toString(): String {
+        val sb = StringBuilder()
+        sb.append(javaClass)
+        sb.append("\n\tstate: $rsmState")
+        sb.append("\n\tgssNode: $gssNode")
+        sb.append("\n\tsppfNode: $sppfNode")
+        sb.append("\n\tinputPosition: $inputPosition")
+        return sb.toString()
+    }
 }
 
 

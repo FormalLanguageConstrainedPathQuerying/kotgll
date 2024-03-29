@@ -1,5 +1,7 @@
 package org.srcgll.grammar.combinator.regexp
 
+import org.srcgll.rsm.symbol.Term
+
 
 data class Alternative(
     internal val left: Regexp,
