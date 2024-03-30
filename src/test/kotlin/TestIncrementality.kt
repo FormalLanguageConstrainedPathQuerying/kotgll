@@ -4,130 +4,23 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.input.RecoveryLinearInput
 import org.srcgll.parser.Gll
+import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.readRsmFromTxt
 import org.srcgll.rsm.symbol.Term
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.writeSppfToDot
+import java.io.IOException
+import kotlin.io.path.Path
 import kotlin.test.Ignore
 
-fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
-    val queue = ArrayDeque<ISppfNode>()
-    val added = HashSet<ISppfNode>()
-    val lhsTreeMetrics = IntArray(5) { 0 }
-    val rhsTreeMetrics = IntArray(5) { 0 }
-    var curSppfNode: ISppfNode
-
-    queue.addLast(lhs)
-
-    while (queue.isNotEmpty()) {
-        curSppfNode = queue.last()
-
-        if (curSppfNode.weight > 0) {
-            lhsTreeMetrics[4]++
-        }
-
-        when (curSppfNode) {
-            is NonterminalSppfNode<*> -> {
-
-                if (curSppfNode is SymbolSppfNode<*>) {
-                    lhsTreeMetrics[2]++
-                } else {
-                    lhsTreeMetrics[1]++
-                }
-
-                curSppfNode.children.forEach { kid ->
-                    if (!added.contains(kid)) {
-                        queue.addLast(kid)
-                        added.add(kid)
-                    }
-                }
-            }
-
-            is PackedSppfNode<*> -> {
-                lhsTreeMetrics[3]++
-                if (curSppfNode.rightSppfNode != null) {
-                    if (!added.contains(curSppfNode.rightSppfNode!!)) {
-                        queue.addLast(curSppfNode.rightSppfNode!!)
-                        added.add(curSppfNode.rightSppfNode!!)
-                    }
-                }
-                if (curSppfNode.leftSppfNode != null) {
-                    if (!added.contains(curSppfNode.leftSppfNode!!)) {
-                        queue.addLast(curSppfNode.leftSppfNode!!)
-                        added.add(curSppfNode.leftSppfNode!!)
-                    }
-                }
-            }
-
-            is TerminalSppfNode<*> -> {
-                lhsTreeMetrics[0]++
-            }
-        }
-
-        if (curSppfNode == queue.last()) {
-            queue.removeLast()
-        }
-    }
-
-    added.clear()
-    queue.clear()
-
-    queue.addLast(rhs)
-
-    while (queue.isNotEmpty()) {
-        curSppfNode = queue.last()
-
-        if (curSppfNode.weight > 0) {
-            rhsTreeMetrics[4]++
-        }
-
-        when (curSppfNode) {
-            is NonterminalSppfNode<*> -> {
-
-                if (curSppfNode is SymbolSppfNode<*>) {
-                    rhsTreeMetrics[2]++
-                } else {
-                    rhsTreeMetrics[1]++
-                }
-
-                curSppfNode.children.forEach { kid ->
-                    if (!added.contains(kid)) {
-                        queue.addLast(kid)
-                        added.add(kid)
-                    }
-                }
-            }
-
-            is PackedSppfNode<*> -> {
-                rhsTreeMetrics[3]++
-                if (curSppfNode.rightSppfNode != null) {
-                    if (!added.contains(curSppfNode.rightSppfNode!!)) {
-                        queue.addLast(curSppfNode.rightSppfNode!!)
-                        added.add(curSppfNode.rightSppfNode!!)
-                    }
-                }
-                if (curSppfNode.leftSppfNode != null) {
-                    if (!added.contains(curSppfNode.leftSppfNode!!)) {
-                        queue.addLast(curSppfNode.leftSppfNode!!)
-                        added.add(curSppfNode.leftSppfNode!!)
-                    }
-                }
-            }
-
-            is TerminalSppfNode<*> -> {
-                rhsTreeMetrics[0]++
-            }
-        }
-
-        if (curSppfNode == queue.last()) {
-            queue.removeLast()
-        }
-    }
-
-    val result = lhsTreeMetrics.zip(rhsTreeMetrics) { x, y -> x == y }
-    return !result.contains(false)
-}
-
 class TestIncrementality {
+    val pathToGrammars = "/textRsmGrammar/"
+
+    fun getRsm(fileName: String): RsmState {
+        val fullName = pathToGrammars + fileName
+        val url = object {}.javaClass.getResource(fullName) ?: throw IOException("Not find $fullName in project resources")
+        return readRsmFromTxt(Path(url.path))
+    }
     @Ignore("not implemented in parser")
     @ParameterizedTest
     @MethodSource("test_1")
@@ -290,5 +183,124 @@ class TestIncrementality {
             Arguments.of("1+1;;"),
             Arguments.of("rr;")
         )
+
+        fun sameStructure(lhs: ISppfNode, rhs: ISppfNode): Boolean {
+            val queue = ArrayDeque<ISppfNode>()
+            val added = HashSet<ISppfNode>()
+            val lhsTreeMetrics = IntArray(5) { 0 }
+            val rhsTreeMetrics = IntArray(5) { 0 }
+            var curSppfNode: ISppfNode
+
+            queue.addLast(lhs)
+
+            while (queue.isNotEmpty()) {
+                curSppfNode = queue.last()
+
+                if (curSppfNode.weight > 0) {
+                    lhsTreeMetrics[4]++
+                }
+
+                when (curSppfNode) {
+                    is NonterminalSppfNode<*> -> {
+
+                        if (curSppfNode is SymbolSppfNode<*>) {
+                            lhsTreeMetrics[2]++
+                        } else {
+                            lhsTreeMetrics[1]++
+                        }
+
+                        curSppfNode.children.forEach { kid ->
+                            if (!added.contains(kid)) {
+                                queue.addLast(kid)
+                                added.add(kid)
+                            }
+                        }
+                    }
+
+                    is PackedSppfNode<*> -> {
+                        lhsTreeMetrics[3]++
+                        if (curSppfNode.rightSppfNode != null) {
+                            if (!added.contains(curSppfNode.rightSppfNode!!)) {
+                                queue.addLast(curSppfNode.rightSppfNode!!)
+                                added.add(curSppfNode.rightSppfNode!!)
+                            }
+                        }
+                        if (curSppfNode.leftSppfNode != null) {
+                            if (!added.contains(curSppfNode.leftSppfNode!!)) {
+                                queue.addLast(curSppfNode.leftSppfNode!!)
+                                added.add(curSppfNode.leftSppfNode!!)
+                            }
+                        }
+                    }
+
+                    is TerminalSppfNode<*> -> {
+                        lhsTreeMetrics[0]++
+                    }
+                }
+
+                if (curSppfNode == queue.last()) {
+                    queue.removeLast()
+                }
+            }
+
+            added.clear()
+            queue.clear()
+
+            queue.addLast(rhs)
+
+            while (queue.isNotEmpty()) {
+                curSppfNode = queue.last()
+
+                if (curSppfNode.weight > 0) {
+                    rhsTreeMetrics[4]++
+                }
+
+                when (curSppfNode) {
+                    is NonterminalSppfNode<*> -> {
+
+                        if (curSppfNode is SymbolSppfNode<*>) {
+                            rhsTreeMetrics[2]++
+                        } else {
+                            rhsTreeMetrics[1]++
+                        }
+
+                        curSppfNode.children.forEach { kid ->
+                            if (!added.contains(kid)) {
+                                queue.addLast(kid)
+                                added.add(kid)
+                            }
+                        }
+                    }
+
+                    is PackedSppfNode<*> -> {
+                        rhsTreeMetrics[3]++
+                        if (curSppfNode.rightSppfNode != null) {
+                            if (!added.contains(curSppfNode.rightSppfNode!!)) {
+                                queue.addLast(curSppfNode.rightSppfNode!!)
+                                added.add(curSppfNode.rightSppfNode!!)
+                            }
+                        }
+                        if (curSppfNode.leftSppfNode != null) {
+                            if (!added.contains(curSppfNode.leftSppfNode!!)) {
+                                queue.addLast(curSppfNode.leftSppfNode!!)
+                                added.add(curSppfNode.leftSppfNode!!)
+                            }
+                        }
+                    }
+
+                    is TerminalSppfNode<*> -> {
+                        rhsTreeMetrics[0]++
+                    }
+                }
+
+                if (curSppfNode == queue.last()) {
+                    queue.removeLast()
+                }
+            }
+
+            val result = lhsTreeMetrics.zip(rhsTreeMetrics) { x, y -> x == y }
+            return !result.contains(false)
+        }
     }
+
 }

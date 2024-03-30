@@ -5,6 +5,7 @@ import dynamic.parser.IDynamicGllTest.Companion.getLines
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.srcgll.input.LinearInput
+import org.srcgll.input.LinearInput.Companion.SPACE
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.parser.generator.GeneratedParser
 import org.srcgll.sppf.buildStringFromSppf
@@ -50,11 +51,11 @@ class ScanerlessGllGeneratedTest : IOfflineGllTest {
         caseName: String,
         gll: GeneratedParser<Int, LinearInputLabel>
     ): DynamicNode {
-        return DynamicTest.dynamicTest(caseName) {
+        return DynamicTest.dynamicTest("[ok] $caseName") {
             gll.input = LinearInput.buildFromString(input)
             val result = gll.parse().first
             assertNotNull(result)
-            assertEquals(input, buildStringFromSppf(result))
+            assertEquals(input.replace(SPACE, ""), buildStringFromSppf(result))
         }
     }
 

@@ -1,16 +1,16 @@
 package grammars.aBStar
 
 import org.srcgll.grammar.combinator.Grammar
+import org.srcgll.grammar.combinator.extension.StringExtension.times
 import org.srcgll.grammar.combinator.regexp.Many
 import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.rsm.symbol.Term
-import org.srcgll.grammar.combinator.regexp.times
 
-class ScanerlessGrammarDsl : Grammar(){
+class ScanerlessGrammarDsl : Grammar() {
     var S by Nt()
-    init{
+
+    init {
         setStart(S)
-        S = Many(Term("a") * Term("b"))
+        S = Many("a" * "b")
     }
 
 }

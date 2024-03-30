@@ -1,0 +1,3 @@
+subClassOf
+subClassOf_r subClassOf subClassOf
+subClassOf_r subClassOf_r subClassOf subClassOf subClassOf

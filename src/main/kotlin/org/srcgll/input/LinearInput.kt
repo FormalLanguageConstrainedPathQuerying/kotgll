@@ -66,18 +66,24 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     }
 
     companion object {
-
-
+        /**
+         * Split CharSequence into stream of strings, separated by space symbol
+         */
         fun buildFromString(input: String): IInputGraph<Int, LinearInputLabel> {
-            var curVertexId = 0
             val inputGraph = LinearInput<Int, LinearInputLabel>()
+            var curVertexId = 0
+
+            inputGraph.addStartVertex(curVertexId)
             inputGraph.addVertex(curVertexId)
-            for (x in input) {
-                inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x.toString())), ++curVertexId)
-                inputGraph.addVertex(curVertexId)
+
+            for (x in input.trim().split(SPACE).filter { it.isNotEmpty() }) {
+                if (x.isNotEmpty()) {
+                    inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x)), ++curVertexId)
+                    inputGraph.addVertex(curVertexId)
+                }
             }
-            inputGraph.addStartVertex(0)
             return inputGraph
         }
+        const val SPACE = " "
     }
 }
