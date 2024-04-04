@@ -24,7 +24,7 @@ class GllRsmTest : IDynamicGllTest {
 
 
     private fun getGll(input: String, rsm: RsmState): Gll<Int, LinearInputLabel> {
-        return Gll.gll(rsm, LinearInput.buildFromString(input))
+        return Gll.gll(rsm, LinearInput.buildFromSeparatedString(input))
     }
 
     private fun getRsm(concreteGrammarFolder: File): RsmState {

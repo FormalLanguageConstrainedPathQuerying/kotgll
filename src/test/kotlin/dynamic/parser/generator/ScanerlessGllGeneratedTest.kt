@@ -31,7 +31,7 @@ class ScanerlessGllGeneratedTest : IOfflineGllTest {
 
         val incorrectOneLineInputs = getLines(IDynamicGllTest.ONE_LINE_ERRORS_INPUTS, concreteGrammarFolder)
             .map { input ->
-                getIncorrectTestContainer(IDynamicGllTest.getTestName(input), gll, LinearInput.buildFromString(input))
+                getIncorrectTestContainer(IDynamicGllTest.getTestName(input), gll, LinearInput.buildFromSeparatedString(input))
             }
 
         return correctOneLineInputs + incorrectOneLineInputs
@@ -52,7 +52,7 @@ class ScanerlessGllGeneratedTest : IOfflineGllTest {
         gll: GeneratedParser<Int, LinearInputLabel>
     ): DynamicNode {
         return DynamicTest.dynamicTest("[ok] $caseName") {
-            gll.input = LinearInput.buildFromString(input)
+            gll.input = LinearInput.buildFromSeparatedString(input)
             val result = gll.parse().first
             assertNotNull(result)
             assertEquals(input.replace(SPACE, ""), buildStringFromSppf(result))

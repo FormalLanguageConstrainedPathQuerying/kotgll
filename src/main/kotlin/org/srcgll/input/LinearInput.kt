@@ -67,16 +67,16 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
 
     companion object {
         /**
-         * Split CharSequence into stream of strings, separated by space symbol
+         * Split CharSequence into stream of strings, separated by given symbol
          */
-        fun buildFromString(input: String): IInputGraph<Int, LinearInputLabel> {
+        fun buildFromSeparatedString(input: String, separator: String = SPACE): IInputGraph<Int, LinearInputLabel> {
             val inputGraph = LinearInput<Int, LinearInputLabel>()
             var curVertexId = 0
 
             inputGraph.addStartVertex(curVertexId)
             inputGraph.addVertex(curVertexId)
 
-            for (x in input.trim().split(SPACE).filter { it.isNotEmpty() }) {
+            for (x in input.trim().split(separator).filter { it.isNotEmpty() }) {
                 if (x.isNotEmpty()) {
                     inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x)), ++curVertexId)
                     inputGraph.addVertex(curVertexId)
