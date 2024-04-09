@@ -1,4 +1,27 @@
 package org.srcgll.input
 
+import org.srcgll.rsm.symbol.Terminal
+
 class RecoveryLinearInput<VertexType, LabelType : ILabel>
-    : LinearInput<VertexType, LabelType>(), IRecoveryInputGraph<VertexType, LabelType>
+    : LinearInput<VertexType, LabelType>(), IRecoveryInputGraph<VertexType, LabelType> {
+    companion object {
+        /**
+         * Split CharSequence into stream of strings, separated by space symbol
+         */
+        fun buildFromString(input: String): IRecoveryInputGraph<Int, LinearInputLabel> {
+            val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
+            var curVertexId = 0
+
+            inputGraph.addStartVertex(curVertexId)
+            inputGraph.addVertex(curVertexId)
+
+            for (x in input.trim().split(' ')) {
+                if (x.isNotEmpty()) {
+                    inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
+                    inputGraph.addVertex(curVertexId)
+                }
+            }
+            return inputGraph
+        }
+    }
+}

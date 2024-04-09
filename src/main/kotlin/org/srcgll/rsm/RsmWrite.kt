@@ -31,6 +31,14 @@ private fun getAllStates(startState: RsmState): HashSet<RsmState> {
     return states
 }
 
+fun getView(symbol: Symbol): String {
+    return when (symbol) {
+        is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
+        is Terminal<*> -> symbol.value.toString()
+        else -> symbol.toString()
+    }
+}
+
 fun writeRsmToDot(startState: RsmState, filePath: String) {
     val states = getAllStates(startState)
     val boxes: HashMap<Nonterminal, HashSet<RsmState>> = HashMap()
@@ -50,19 +58,13 @@ fun writeRsmToDot(startState: RsmState, filePath: String) {
 
         states.forEach { state ->
             val shape = if (state.isFinal) "doublecircle" else "circle"
-            val color = if (state.isStart) "green" else if (state.isFinal) "red" else "black"
+            val color =
+                if (state == startState) "purple" else if (state.isStart) "green" else if (state.isFinal) "red" else "black"
             val id = state.id
             val name = state.nonterminal.name
             out.println("$id [label = \"$name,$id\", shape = $shape, color = $color]")
         }
 
-        fun getView(symbol: Symbol): String {
-            return when (symbol) {
-                is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
-                is Terminal<*> -> symbol.value.toString()
-                else -> symbol.toString()
-            }
-        }
         states.forEach { state ->
             state.outgoingEdges.forEach { (symbol, destStates) ->
                 destStates.forEach { destState ->

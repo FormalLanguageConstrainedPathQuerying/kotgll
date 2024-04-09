@@ -11,12 +11,11 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
         return startVertices
     }
 
-    override fun getVertex(vertex: VertexType?): VertexType? {
-        return if (vertices.contains(vertex)) vertex else null
-    }
+    override fun getAllVertices(): MutableSet<VertexType> = vertices
 
     override fun addStartVertex(vertex: VertexType) {
         startVertices.add(vertex)
+        vertices.add(vertex)
     }
 
     override fun addVertex(vertex: VertexType) {

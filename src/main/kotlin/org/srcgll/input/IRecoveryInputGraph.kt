@@ -5,10 +5,26 @@ import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.TerminalRecoveryEdge
 import org.srcgll.sppf.node.SppfNode
 
+/**
+ * Part of error recovery mechanism.
+ * Input graph interface with additional methods to support error recovery logic
+ * @param VertexType - type of vertex in input graph
+ * @param LabelType - type of label on edges in input graph
+ */
 interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
+    /**
+     * Process outgoing edges from input position in given descriptor, according to processing logic, represented as
+     * separate functions for processing both  outgoing terminal and nonterminal edges from rsmState in descriptor.
+     * Additionally, considers error recovering edges in input graph. Those are the edges that were not present in
+     * initial graph, but could be useful later to successfully parse input
+     * @param handleTerminalOrEpsilonEdge - function for processing terminal and epsilon edges in RSM
+     * @param handleNonterminalEdge - function for processing nonterminal edges in RSM
+     * @param ctx - configuration of Gll parser instance
+     * @param descriptor - descriptor, represents current parsing stage
+     * @param sppfNode - root node of derivation tree, corresponds to already parsed portion of input
+     */
     override fun handleEdges(
         handleTerminalOrEpsilonEdge: (
             descriptor: Descriptor<VertexType>,
@@ -33,74 +49,96 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
         handleRecoveryEdges(
             errorRecoveryEdges,
             handleTerminalOrEpsilonEdge,
-            descriptor,
-            descriptor.rsmState.terminalEdges
+            descriptor
         )
     }
 
-    private fun createRecoveryEdges(descriptor: Descriptor<VertexType>): HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>> {
-        val pos = descriptor.inputPosition
-        val state = descriptor.rsmState
-        val terminalEdges = state.terminalEdges
+    /**
+     * Collects all possible edges, via which we can traverse in RSM
+     * @param descriptor - current parsing stage
+     * @return Map terminal -> (destination, weight)
+     */
+    private fun createRecoveryEdges(descriptor: Descriptor<VertexType>): HashSet<RecoveryEdge<VertexType>> {
+        val inputPosition = descriptor.inputPosition
+        val rsmState = descriptor.rsmState
+        val terminalEdges = rsmState.terminalEdges
 
-        val errorRecoveryEdges = HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>()
-        val currentEdges = getEdges(pos)
+        val errorRecoveryEdges = HashSet<RecoveryEdge<VertexType>>()
+        val currentEdges = getEdges(inputPosition)
 
         if (currentEdges.isNotEmpty()) {
-            addTerminalRecoveryEdges(terminalEdges, errorRecoveryEdges, pos, state, currentEdges)
+            addTerminalRecoveryEdges(terminalEdges, errorRecoveryEdges, inputPosition, rsmState, currentEdges)
         } else {
-            addEpsilonRecoveryEdges(terminalEdges, errorRecoveryEdges, pos, state)
+            addEpsilonRecoveryEdges(terminalEdges, errorRecoveryEdges, inputPosition, rsmState)
         }
 
         return errorRecoveryEdges
     }
 
+    /**
+     * Collects edges with epsilon on label. This corresponds to deletion in input
+     * @param terminalEdges - outgoing terminal edges from current rsmState
+     * @param errorRecoveryEdges - reference to map of all error recovery edges
+     * @param inputPosition - current vertex in input graph
+     * @param rsmState - current rsmState
+     */
     private fun addEpsilonRecoveryEdges(
         terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
-        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
-        pos: VertexType,
-        state: RsmState
+        errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
+        inputPosition: VertexType,
+        rsmState: RsmState
     ) {
-        for (terminal in state.errorRecoveryLabels) {
+        for (terminal in rsmState.errorRecoveryLabels) {
             if (!terminalEdges[terminal].isNullOrEmpty()) {
-                errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
+                errorRecoveryEdges.add(RecoveryEdge(terminal, inputPosition, weight = 1))
             }
         }
     }
 
     /**
-     * Trying to reach states that were previously inaccessible using recovery terminal
+     * Collects edges with terminal on label. This corresponds to insertion in input
+     * @param terminalEdges - outgoing terminal edges from current rsmState
+     * @param errorRecoveryEdges - reference to map of all error recovery edges
+     * @param inputPosition - current vertex in input graph
+     * @param rsmState - current rsmState
+     * @param currentEdges - outgoing edges from current vertex in input graph
      */
     private fun addTerminalRecoveryEdges(
         terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
-        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
-        pos: VertexType,
-        state: RsmState,
+        errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
+        inputPosition: VertexType,
+        rsmState: RsmState,
         currentEdges: MutableList<Edge<VertexType, LabelType>>
     ) {
         for (currentEdge in currentEdges) {
             if (currentEdge.label.terminal == null) continue
             val currentTerminal = currentEdge.label.terminal!!
 
-            val coveredByCurrentTerminal: HashSet<RsmState> = terminalEdges[currentTerminal] ?: hashSetOf()
+            val coveredByCurrentTerminal: HashSet<RsmState> = terminalEdges[currentTerminal] ?: HashSet()
 
-            for (terminal in state.errorRecoveryLabels) {
+            for (terminal in rsmState.errorRecoveryLabels) {
                 //accessible states
                 val coveredByTerminal = HashSet(terminalEdges[terminal] as HashSet<RsmState>)
 
                 coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
 
                 if (terminal != currentTerminal && coveredByTerminal.isNotEmpty()) {
-                    errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
+                    errorRecoveryEdges.add(RecoveryEdge(terminal, inputPosition, weight = 1))
                 }
             }
 
-            errorRecoveryEdges[null] = TerminalRecoveryEdge(currentEdge.head, weight = 1)
+            errorRecoveryEdges.add(RecoveryEdge(null, currentEdge.head, weight = 1))
         }
     }
 
+    /**
+     * Processes created error recovery edges and adds corresponding error recovery descriptors to handling
+     * @param errorRecoveryEdges - collection of created error recovery edges
+     * @param handleTerminalOrEpsilonEdge - function to process error recovery edges
+     * @param descriptor - current parsing stage
+     */
     private fun handleRecoveryEdges(
-        errorRecoveryEdges: HashMap<Terminal<*>?, TerminalRecoveryEdge<VertexType>>,
+        errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
         handleTerminalOrEpsilonEdge: (
             descriptor: Descriptor<VertexType>,
             sppfNode: SppfNode<VertexType>?,
@@ -109,32 +147,36 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
             targetVertex: VertexType,
             targetWeight: Int,
         ) -> Unit,
-        descriptor: Descriptor<VertexType>,
-        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>
+        descriptor: Descriptor<VertexType>
     ) {
-        for ((terminal, errorRecoveryEdge) in errorRecoveryEdges) {
+        val terminalEdges = descriptor.rsmState.terminalEdges
+
+        for (errorRecoveryEdge in errorRecoveryEdges) {
+            val terminal = errorRecoveryEdge.label
+            val head = errorRecoveryEdge.head
+            val weight = errorRecoveryEdge.weight
+
             if (terminal == null) {
                 handleTerminalOrEpsilonEdge(
                     descriptor,
                     descriptor.sppfNode,
                     null,
                     descriptor.rsmState,
-                    errorRecoveryEdge.head,
-                    errorRecoveryEdge.weight
+                    head,
+                    weight
                 )
-            } else if (terminalEdges.containsKey(terminal)) {
+            } else if (terminalEdges.containsKey(errorRecoveryEdge.label)) {
                 for (targetState in terminalEdges.getValue(terminal)) {
                     handleTerminalOrEpsilonEdge(
                         descriptor,
                         descriptor.sppfNode,
                         terminal,
                         targetState,
-                        errorRecoveryEdge.head,
-                        errorRecoveryEdge.weight
+                        head,
+                        weight
                     )
                 }
             }
         }
-
     }
 }

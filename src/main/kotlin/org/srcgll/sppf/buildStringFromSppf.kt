@@ -5,6 +5,10 @@ import org.srcgll.sppf.node.PackedSppfNode
 import org.srcgll.sppf.node.NonterminalSppfNode
 import org.srcgll.sppf.node.TerminalSppfNode
 
+/**
+ * Collects leaves of the derivation tree in order from left to right.
+ * @return Ordered collection of terminals
+ */
 fun buildTokenStreamFromSppf(sppfNode: ISppfNode): MutableList<String> {
     val visited: HashSet<ISppfNode> = HashSet()
     val stack: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
@@ -41,6 +45,10 @@ fun buildTokenStreamFromSppf(sppfNode: ISppfNode): MutableList<String> {
     return result
 }
 
+/**
+ * Collects leaves of the derivation tree in order from left to right and joins them into one string
+ * @return String value of recognized subrange
+ */
 fun buildStringFromSppf(sppfNode: ISppfNode): String {
     return buildTokenStreamFromSppf(sppfNode).joinToString(separator = "")
 }

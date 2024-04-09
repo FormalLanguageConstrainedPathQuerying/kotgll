@@ -3,20 +3,35 @@ package org.srcgll.sppf
 import org.srcgll.rsm.RsmState
 import org.srcgll.sppf.node.*
 
+/**
+ * Part of error recovery mechanism.
+ * Sppf with additional support for updating weights, when necessary
+ * @param VertexType - type of vertex in input graph
+ */
 class RecoverySppf<VertexType> : Sppf<VertexType>() {
-
+    /**
+     * Part of error recovery mechanism.
+     * Receives two subtrees of SPPF and connects them via PackedNode. Additionally, for newly created/retrieved
+     * parent sppfNode traverses upwards, updating weights on the path, when necessary
+     * @param rsmState - current rsmState
+     * @param sppfNode - left subtree
+     * @param nextSppfNode - right subtree
+     * @return ParentNode, which has combined subtree as alternative derivation
+     */
     override fun getParentNode(
-        state: RsmState,
+        rsmState: RsmState,
         sppfNode: SppfNode<VertexType>?,
         nextSppfNode: SppfNode<VertexType>,
     ): SppfNode<VertexType> {
-        val parent = super.getParentNode(state, sppfNode, nextSppfNode)
+        val parent = super.getParentNode(rsmState, sppfNode, nextSppfNode)
         updateWeights(parent)
         return parent
     }
 
     /**
-     * Traverse from given node all the way up to root, updating weights when necessary
+     * Part of error recovery mechanism.
+     * Traverses from given node all the way up to the root, updating weights on the path when necessary
+     * @param sppfNode - given sppfNode to start traverse from
      */
     fun updateWeights(sppfNode: ISppfNode) {
         val added = HashSet<ISppfNode>(listOf(sppfNode))

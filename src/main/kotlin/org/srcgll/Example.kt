@@ -3,14 +3,16 @@ package org.srcgll
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
 import org.srcgll.input.*
-import org.srcgll.parser.Gll
-import org.srcgll.parser.context.RecoveryContext
 import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.rsm.writeRsmToDot
-import org.srcgll.sppf.buildStringFromSppf
-import org.srcgll.sppf.node.*
-import org.srcgll.sppf.writeSppfToDot
-import java.io.File
+
+class Dyck : Grammar() {
+    var S by Nt()
+
+    init {
+        setStart(S)
+        S = Epsilon or "(" * S * ")" * S
+    }
+}
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
@@ -82,7 +84,7 @@ class SimpleInputLabel(
  * VertexType   = Int
  * LabelType    = SimpleInputLabel
  */
- 
+
 class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     override val vertices: MutableSet<Int> = HashSet()
     override val edges: MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
@@ -90,6 +92,7 @@ class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     override val startVertices: MutableSet<Int> = HashSet()
 
     override fun getInputStartVertices(): MutableSet<Int> = startVertices
+    override fun getAllVertices(): MutableSet<Int> = vertices
 
     override fun isFinal(vertex: Int): Boolean = true
 
@@ -112,6 +115,7 @@ class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     }
 
     override fun removeVertex(vertex: Int) {
+        startVertices.remove(vertex)
         vertices.remove(vertex)
     }
 
@@ -120,11 +124,8 @@ class SimpleGraph : IInputGraph<Int, SimpleInputLabel> {
     }
 
     override fun addStartVertex(vertex: Int) {
+        vertices.add(vertex)
         startVertices.add(vertex)
-    }
-
-    override fun getVertex(vertex: Int?): Int? {
-        return vertices.find {it == vertex}
     }
 }
 

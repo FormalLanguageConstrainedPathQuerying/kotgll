@@ -1,6 +1,6 @@
 package org.srcgll.rsm.symbol
 
-class Terminal<TerminalType>(val value: TerminalType) : Symbol {
+class Terminal<TerminalType>(val value: TerminalType): Symbol {
     override fun toString() = "Literal($value)"
 
     override fun equals(other: Any?): Boolean {

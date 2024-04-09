@@ -9,6 +9,11 @@ import org.srcgll.rsm.RsmState
 import org.srcgll.sppf.Sppf
 import org.srcgll.sppf.node.SppfNode
 
+/**
+ * Default context for parsing without error recovery
+ * @param VertexType - type of vertex in input graph
+ * @param LabelType - type of label on edges in input graph
+ */
 class Context<VertexType, LabelType : ILabel>(
     override val startState: RsmState,
     override val input: IInputGraph<VertexType, LabelType>

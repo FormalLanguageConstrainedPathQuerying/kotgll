@@ -4,20 +4,31 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
-import org.srcgll.input.LinearInputLabel
-import org.srcgll.input.RecoveryLinearInput
+import org.srcgll.input.*
 import org.srcgll.parser.Gll
 import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.writeSppfToDot
-import org.srcgll.input.LinearInput
 import org.srcgll.lexer.*
+import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.readRsmFromDot
+import org.srcgll.sppf.node.SppfNode
 import java.io.File
 import java.io.StringReader
 
 enum class RecoveryMode {
     ON, OFF,
+}
+
+fun testDyck(input: String) {
+    val rsm = Dyck().rsm
+    val inputGraph = RecoveryLinearInput.buildFromString(input)
+    val gll = Gll.recoveryGll(rsm, inputGraph)
+
+    val result = gll.parse()
+
+    writeSppfToDot(result.first!!, "./result.dot")
+    writeRsmToDot(rsm, "./rsm.dot")
 }
 
 fun main(args: Array<String>) {
@@ -44,4 +55,7 @@ fun main(args: Array<String>) {
     ).required()
 
     parser.parse(args)
+    val input: String = File(pathToInput).readText()
+
+    testDyck(input)
 }

@@ -10,12 +10,30 @@ class SppfNodeId private constructor() {
     }
 }
 
+/**
+ * Abstract class of sppfNode, generalizes all sppfNodes, except packed ones
+ * @param VertexType - type of vertex in input graph
+ */
 abstract class SppfNode<VertexType>(
+    /**
+     * Left limit of subrange
+     */
     val leftExtent: VertexType,
+    /**
+     * Right limit of subrange
+     */
     val rightExtent: VertexType,
+    /**
+     * Part of error recovery mechanism.
+     * Represents minimum number of insertions/deletions that are needed for the subrange leftExtent - rightExtent
+     * to be recognized
+     */
     override var weight: Int,
     override var id: Int = SppfNodeId.getFirstFreeSppfNodeId(),
 ) : ISppfNode {
+    /**
+     * Set of all node that have current one as a child
+     */
     override val parents: HashSet<ISppfNode> = HashSet()
 
     override fun toString() = "SppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent)"
@@ -30,7 +48,6 @@ abstract class SppfNode<VertexType>(
         return true
     }
 
-    // TODO: Think about redefining hash := (Prime * leftHash + rightHash)
     open val hashCode: Int = Objects.hash(leftExtent, rightExtent)
     override fun hashCode() = hashCode
 }

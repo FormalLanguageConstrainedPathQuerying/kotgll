@@ -4,7 +4,6 @@ import org.srcgll.grammar.combinator.regexp.Empty
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
 import org.srcgll.grammar.combinator.regexp.Term
-import org.srcgll.incrementalDfs
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Terminal
@@ -30,31 +29,36 @@ open class RsmState(
         get() = terminalEdges.plus(nonterminalEdges)
 
     /**
-     * map from terminal to edges set
+     * Map from terminal to edges set
      */
     val terminalEdges = HashMap<Terminal<*>, HashSet<RsmState>>()
 
     /**
-     * map from nonterminal to edges set
+     * Map from nonterminal to edges set
      */
     val nonterminalEdges = HashMap<Nonterminal, HashSet<RsmState>>()
 
     /**
      * Keep a list of all available RsmStates
      */
-    private val targetStates: HashSet<RsmState> = HashSet()
+    val targetStates: HashSet<RsmState> = HashSet()
 
     /**
+     * Part of error recovery mechanism.
      * A set of terminals that can be used to move from a given state to other states.
      * Moreover, if there are several different edges that can be used to move to one state,
      * then only 1 is chosen non-deterministically.
-     * Used for error-recovery
      * TODO Maybe you can get rid of it or find a better optimization (?)
      */
     val errorRecoveryLabels: HashSet<Terminal<*>> = HashSet()
 
     override fun toString() = "RsmState(nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
+    /**
+     * Adds edge from current rsmState to given destinationState via given symbol, terminal or nonterminal
+     * @param symbol - symbol to store on edge
+     * @param destinationState - head of edge
+     */
     open fun addEdge(symbol: Symbol, destinationState: RsmState) {
         val destinationStates: HashSet<RsmState>
         when (symbol) {
@@ -72,9 +76,15 @@ open class RsmState(
         destinationStates.add(destinationState)
     }
 
-    private fun addRecoveryInfo(symbol: Terminal<*>, head: RsmState) {
+    /**
+     * Part of error recovery mechanism.
+     * Adds given rsmState to set of available rsmStates from current one, via given terminal
+     * @param terminal - terminal on edge
+     * @param head - destination state
+     */
+    private fun addRecoveryInfo(terminal: Terminal<*>, head: RsmState) {
         if (!targetStates.contains(head)) {
-            errorRecoveryLabels.add(symbol)
+            errorRecoveryLabels.add(terminal)
             targetStates.add(head)
         }
     }
@@ -84,7 +94,8 @@ open class RsmState(
     }
 
     /**
-     * Build RSM from current state
+     * Builds RSM from current state
+     * @param rsmDescription - right hand side of the rule in GrammarDsl in the form of regular expression
      */
     fun buildRsmBox(rsmDescription: Regexp) {
         val regexpToProcess = Stack<Regexp>()
@@ -124,5 +135,4 @@ open class RsmState(
             }
         }
     }
-
 }
