@@ -71,13 +71,13 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
         val pos = descriptor.inputPosition
         val sppfNode = descriptor.sppfNode
         val epsilonSppfNode = ctx.sppf.getEpsilonSppfNode(descriptor)
+        val leftExtent = sppfNode?.leftExtent
+        val rightExtent = sppfNode?.rightExtent
 
         if (state.isFinal) {
             pop(descriptor.gssNode, sppfNode ?: epsilonSppfNode, pos)
         }
 
-        val leftExtent = sppfNode?.leftExtent
-        val rightExtent = sppfNode?.rightExtent
 
         ctx.descriptors.addToHandled(descriptor)
 

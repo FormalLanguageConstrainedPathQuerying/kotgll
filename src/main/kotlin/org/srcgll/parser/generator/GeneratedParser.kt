@@ -37,13 +37,18 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         val pos = descriptor.inputPosition
 
         ctx.descriptors.addToHandled(descriptor)
-        val curSppfNode = ctx.sppf.getEpsilonSppfNode(descriptor)
+        val curSppfNode = descriptor.sppfNode
+        val epsilonSppfNode = ctx.sppf.getEpsilonSppfNode(descriptor)
 
         val leftExtent = curSppfNode?.leftExtent
         val rightExtent = curSppfNode?.rightExtent
 
-        if (state.isStart && state.isFinal) {
+        if (state.isFinal) {
+            pop(descriptor.gssNode, curSppfNode ?: epsilonSppfNode, pos)
+        }
 
+        if (state.isStart && state.isFinal) {
+            checkAcceptance(epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal)
         }
         checkAcceptance(curSppfNode, leftExtent, rightExtent, state.nonterminal)
 
@@ -54,9 +59,6 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
             }
         }
         handleEdges(descriptor, curSppfNode)
-
-        if (state.isFinal) pop(descriptor.gssNode, curSppfNode, pos)
-
     }
 
     protected fun handleTerminal(
@@ -81,20 +83,4 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
             }
         }
     }
-    fun handleEpsilonEdge(
-        descriptor: Descriptor<VertexType>,
-        sppfNode: SppfNode<VertexType>?,
-        inputEdge: Edge<VertexType, LabelType>,
-        ctx: IContext<VertexType, LabelType>
-    ) {
-        val newDescriptor = Descriptor(
-            descriptor.rsmState, descriptor.gssNode, ctx.sppf.getParentNode(
-                descriptor.rsmState, sppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
-                    terminal = null, descriptor.inputPosition, inputEdge.head
-                )
-            ), inputEdge.head
-        )
-        ctx.addDescriptor(newDescriptor)
-    }
-
 }

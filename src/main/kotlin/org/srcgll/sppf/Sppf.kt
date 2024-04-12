@@ -59,7 +59,9 @@ open class Sppf<VertexType> {
     }
 
     /**
-     * Receives two subtrees of SPPF and connects them via PackedNode
+     * Receives two subtrees of SPPF and connects them via PackedNode.
+     * If given subtrees repesent derivation tree for nonterminal and state is final, then retrieves or creates
+     * Symbol sppfNode, otherwise retrieves or creates Intermediate sppfNode
      * @param rsmState - current rsmState
      * @param sppfNode - left subtree
      * @param nextSppfNode - right subtree
