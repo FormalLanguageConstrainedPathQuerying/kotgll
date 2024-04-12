@@ -9,7 +9,7 @@ class ScanerlessGrammarDsl: Grammar() {
 
     init {
         setStart(S)
-        S = "subClassOf_r" * Option(S) * "subClassOf" or
-                "type_r" * Option(S) * "type"
+        S = "subClassOf_r" * opt(S) * "subClassOf" or
+                "type_r" * opt(S) * "type"
     }
 }

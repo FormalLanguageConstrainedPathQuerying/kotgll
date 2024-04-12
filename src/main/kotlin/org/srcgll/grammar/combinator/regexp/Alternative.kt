@@ -1,9 +1,7 @@
 package org.srcgll.grammar.combinator.regexp
 
-import org.srcgll.rsm.symbol.Term
 
-
-data class Alternative(
+open class Alternative(
     internal val left: Regexp,
     internal val right: Regexp,
 ) : Regexp {
@@ -25,10 +23,14 @@ data class Alternative(
     override fun derive(symbol: DerivedSymbol): Regexp {
         return makeAlternative(left.derive(symbol), right.derive(symbol))
     }
+}
 
+class Optional private constructor(val exp: Regexp): Alternative(Epsilon, exp){
+    companion object{
+        fun create(exp: Regexp): Alternative = Optional(exp)
+    }
 }
 
 infix fun Regexp.or(other: Regexp): Regexp = Alternative.makeAlternative(left = this, other)
 
-
-fun Option(exp: Regexp) = Alternative.makeAlternative(Epsilon, exp)
+fun opt(exp: Regexp): Alternative = Optional.create(exp)

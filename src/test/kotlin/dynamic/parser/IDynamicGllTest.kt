@@ -51,11 +51,14 @@ interface IDynamicGllTest {
             .filter {
                 it.isDirectory && it.listFiles()?.any { file -> file.name == mainFileName } == true
             }
-            .map { concreteGrammarFolder -> handleFolder(concreteGrammarFolder) }
+            .map { concreteGrammarFolder -> testConcreteGrammar(concreteGrammarFolder) }
     }
 
 
-    fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
+    /**
+     * Accumulate grammar test cases in Dynamic container
+     */
+    fun testConcreteGrammar(concreteGrammarFolder: File): DynamicContainer {
         val grammarName = concreteGrammarFolder.name
         return DynamicContainer.dynamicContainer(
             grammarName, getTestCases(concreteGrammarFolder)
@@ -63,6 +66,10 @@ interface IDynamicGllTest {
 
     }
 
+    /**
+     * Creates test cases for concrete grammar
+     * Handle files in grammars resources
+     */
     fun getTestCases(concreteGrammarFolder: File): Iterable<DynamicNode>
 
 }

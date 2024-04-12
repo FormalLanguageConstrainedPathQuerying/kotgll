@@ -1,8 +1,11 @@
-package org.srcgll.parser.generator
+package org.srcgll.generators.parser
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import org.srcgll.descriptors.Descriptor
+import org.srcgll.generators.GeneratorException
+import org.srcgll.generators.IGeneratorFromGrammar
+import org.srcgll.generators.suppressWarningTypes
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.input.ILabel
@@ -14,8 +17,7 @@ import org.srcgll.sppf.node.SppfNode
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
 
-interface IParserGenerator {
-    val grammarClazz: Class<*>
+interface IParserGenerator : IGeneratorFromGrammar {
     val grammar: Grammar
 
     companion object {
@@ -49,33 +51,17 @@ interface IParserGenerator {
 
 
     /**
-     * Build a grammar object from Class<*>
-     */
-    fun buildGrammar(grammarClazz: Class<*>): Grammar {
-        if (!Grammar::class.java.isAssignableFrom(grammarClazz)) {
-            throw ParserGeneratorException(ParserGeneratorException.grammarExpectedMsg)
-        }
-        val grammar = grammarClazz.getConstructor().newInstance()
-        if (grammar is Grammar) {
-            grammar.rsm
-            return grammar
-        }
-        throw ParserGeneratorException(ParserGeneratorException.grammarExpectedMsg)
-    }
-
-
-    /**
      * Generate all parser properties and methods
      */
-    fun generate(location: Path, pkg: String) {
-        val file = getFileBuilder(location, pkg).build()
+    override fun generate(location: Path, pkg: String) {
+        val file = getFileBuilder(pkg).build()
         file.writeTo(location)
     }
 
     /**
      * Build file builder
      */
-    fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
+    fun getFileBuilder(pkg: String): FileSpec.Builder {
         val fileName = getParserClassName(grammarClazz.simpleName)
         val parserClass = ClassName(pkg, fileName).parameterizedBy(vertexType, labelType)
 
@@ -149,7 +135,7 @@ interface IParserGenerator {
             .addStatement("hashMapOf(")
         for (nt in grammar.nonTerms) {
             val ntName = nt.nonterm.name
-                ?: throw ParserGeneratorException("Unnamed nonterminal in grammar ${grammarClazz.simpleName}")
+                ?: throw GeneratorException("Unnamed nonterminal in grammar ${grammarClazz.simpleName}")
             mapInitializer.addStatement("%L to ::%L,", ntName, getParseFunName(ntName))
         }
         mapInitializer.addStatement(")")
@@ -166,7 +152,6 @@ interface IParserGenerator {
     fun generateParseFunctions(): Iterable<FunSpec> {
         return grammar.nonTerms.map { generateParseFunction(it) }
     }
-
 
     /**
      * Generate Parse method for concrete nonterminal
@@ -269,17 +254,5 @@ interface IParserGenerator {
     }
 }
 
-internal fun FileSpec.Builder.suppressWarningTypes(vararg types: String) {
-    if (types.isEmpty()) {
-        return
-    }
-
-    val format = "%S,".repeat(types.count()).trimEnd(',')
-    addAnnotation(
-        AnnotationSpec.builder(ClassName("", "Suppress"))
-            .addMember(format, *types)
-            .build()
-    )
-}
 
 

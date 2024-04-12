@@ -9,7 +9,7 @@ open class Nt : DerivedSymbol {
     lateinit var nonterm: Nonterminal
         private set
 
-    private lateinit var rsmDescription: Regexp
+    lateinit var rsmDescription: Regexp
 
     fun isInitialized(): Boolean {
         return ::nonterm.isInitialized

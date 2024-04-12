@@ -1,4 +1,4 @@
-package org.srcgll.parser.generator
+package org.srcgll.generators.parser
 
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.grammar.combinator.Grammar

@@ -6,19 +6,19 @@ import dynamic.parser.generator.GllGeneratedTest.Companion.DSL_FILE_NAME
 import dynamic.parser.generator.GllGeneratedTest.Companion.LEXER_NAME
 import dynamic.parser.generator.GllGeneratedTest.Companion.TOKENS
 import dynamic.parser.generator.ScanerlessGllGeneratedTest.Companion.SCANERLESS_DSL_FILE_NAME
+import org.srcgll.generators.GeneratorException
+import org.srcgll.generators.parser.*
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.parser.generator.*
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
 object RuntimeCompiler {
-
     private fun resourceOf(name: String): Path {
         return Path.of(
             this.javaClass.getResource(name)?.path
-                ?: throw ParserGeneratorException("Can't find $name file in test resources")
+                ?: throw GeneratorException("Can't find $name file in test resources")
         )
     }
 
@@ -103,6 +103,7 @@ object RuntimeCompiler {
         )
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun instantiateParser(parserClass: Class<*>): GeneratedParser<Int, LinearInputLabel> {
         val parser = parserClass.getConstructor().newInstance()
         if (parser !is (GeneratedParser<*, *>)) {
@@ -127,7 +128,7 @@ object RuntimeCompiler {
     /**
      * Compile all files for given sources
      */
-    fun compileClasses(sourceFiles: List<SourceFile>, classpath: List<File> = emptyList()): KotlinCompilation.Result {
+    private fun compileClasses(sourceFiles: List<SourceFile>, classpath: List<File> = emptyList()): KotlinCompilation.Result {
         val compileResult = KotlinCompilation().apply {
             sources = sourceFiles
             //use application classpath

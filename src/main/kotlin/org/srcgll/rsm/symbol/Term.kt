@@ -1,7 +1,7 @@
 package org.srcgll.rsm.symbol
 
+import org.srcgll.generators.GeneratorException
 import org.srcgll.grammar.combinator.regexp.DerivedSymbol
-import org.srcgll.parser.generator.ParserGeneratorException
 
 class Term<TerminalType>(val value: TerminalType) : ITerminal, DerivedSymbol {
     override fun toString() = value.toString()
@@ -10,7 +10,7 @@ class Term<TerminalType>(val value: TerminalType) : ITerminal, DerivedSymbol {
         return object : Comparator<ITerminal> {
             override fun compare(a: ITerminal, b: ITerminal): Int {
                 if (a !is Term<*> || b !is Term<*>) {
-                    throw ParserGeneratorException(
+                    throw GeneratorException(
                         "used comparator for $javaClass, " +
                                 "but got elements of ${a.javaClass}$ and ${b.javaClass}\$"
                     )

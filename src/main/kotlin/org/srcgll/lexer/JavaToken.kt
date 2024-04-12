@@ -1,6 +1,6 @@
 package org.srcgll.lexer
 
-import org.srcgll.parser.generator.ParserGeneratorException
+import org.srcgll.generators.GeneratorException
 import org.srcgll.rsm.symbol.ITerminal
 
 enum class JavaToken : ITerminal {
@@ -20,7 +20,7 @@ enum class JavaToken : ITerminal {
         return object : Comparator<ITerminal> {
             override fun compare(a: ITerminal, b: ITerminal): Int {
                 if (a !is JavaToken || b !is JavaToken) {
-                    throw ParserGeneratorException(
+                    throw GeneratorException(
                         "used comparator for $javaClass, " +
                                 "but got elements of ${a.javaClass}$ and ${b.javaClass}\$"
                     )

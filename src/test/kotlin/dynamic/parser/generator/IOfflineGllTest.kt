@@ -4,9 +4,9 @@ import dynamic.parser.IDynamicGllTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
+import org.srcgll.generators.parser.GeneratedParser
 import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
-import org.srcgll.parser.generator.GeneratedParser
 import kotlin.test.assertNotNull
 
 interface IOfflineGllTest : IDynamicGllTest {
@@ -20,10 +20,17 @@ interface IOfflineGllTest : IDynamicGllTest {
         input: IInputGraph<VertexType, LabelType>
     ): DynamicNode {
         return DynamicTest.dynamicTest("[fail] $caseName") {
-            gll.input = input
-            val result = gll.parse().first
-            Assertions.assertNull(result)
+            testError(gll, input)
         }
+    }
+
+    fun <VertexType, LabelType : ILabel> testError(
+        gll: GeneratedParser<VertexType, LabelType>,
+        input: IInputGraph<VertexType, LabelType>
+    ) {
+        gll.input = input
+        val result = gll.parse().first
+        Assertions.assertNull(result)
     }
 
     /**
@@ -36,13 +43,21 @@ interface IOfflineGllTest : IDynamicGllTest {
         input: IInputGraph<VertexType, LabelType>
     ): DynamicNode {
         return DynamicTest.dynamicTest("[ok] $caseName") {
-            gll.input = input
-            val result = gll.parse()
-            if (result.first == null) {
-                System.err.println("input: $input")
-            }
-            //TODO add check for parsing result quality
-            assertNotNull(result.first)
+            testSuccess(gll, input)
         }
     }
+
+    fun <VertexType, LabelType : ILabel> testSuccess(
+        gll: GeneratedParser<VertexType, LabelType>,
+        input: IInputGraph<VertexType, LabelType>
+    ) {
+        gll.input = input
+        val result = gll.parse()
+        if (result.first == null) {
+            System.err.println("input: $input")
+        }
+        //TODO add check for parsing result quality
+        assertNotNull(result.first)
+    }
+
 }

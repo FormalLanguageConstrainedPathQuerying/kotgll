@@ -1,11 +1,10 @@
-package org.srcgll.parser.generator
+package org.srcgll.generators.parser
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.parser.generator.IParserGenerator.Companion.INPUT_EDGE_NAME
+import org.srcgll.generators.parser.IParserGenerator.Companion.INPUT_EDGE_NAME
 import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Term
 
 /**
  * Scanerless parser generator

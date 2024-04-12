@@ -9,6 +9,6 @@ class ScanerlessGrammarDsl: Grammar() {
 
     init {
         setStart(S)
-        S = "broaderTransitive" * Option(S) * "broaderTransitive_r"
+        S = "broaderTransitive" * opt(S) * "broaderTransitive_r"
     }
 }

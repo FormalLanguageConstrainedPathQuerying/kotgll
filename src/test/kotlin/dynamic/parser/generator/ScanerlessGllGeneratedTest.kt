@@ -4,10 +4,10 @@ import dynamic.parser.IDynamicGllTest
 import dynamic.parser.IDynamicGllTest.Companion.getLines
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
+import org.srcgll.generators.parser.GeneratedParser
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInput.Companion.SPACE
 import org.srcgll.input.LinearInputLabel
-import org.srcgll.parser.generator.GeneratedParser
 import org.srcgll.sppf.buildStringFromSppf
 import java.io.File
 import kotlin.test.assertEquals

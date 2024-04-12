@@ -10,7 +10,6 @@ import org.srcgll.lexer.JavaGrammar
 import org.srcgll.lexer.JavaLexer
 import org.srcgll.lexer.JavaToken
 import org.srcgll.parser.Gll
-import org.srcgll.parser.generator.ParserGenerator
 import org.srcgll.rsm.symbol.Term
 import org.srcgll.rsm.writeRsmToDot
 import org.srcgll.sppf.writeSppfToDot
@@ -24,11 +23,7 @@ enum class RecoveryMode {
 
 fun main(args: Array<String>) {
 
-    writeRsmToDot(JavaGrammar().rsm, "gen/javaGrammar.dot")
-    ParserGenerator(JavaGrammar::class.java, JavaToken::class.java).generate(
-        Path("src", "main", "kotlin"),
-        "org.srcgll.lexer"
-    )
+
     val parser = ArgParser("srcgll")
 
     val recoveryMode by parser.option(

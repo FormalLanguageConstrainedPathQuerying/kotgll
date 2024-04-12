@@ -1,4 +1,4 @@
-package org.srcgll.parser.generator
+package org.srcgll.generators.parser
 
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -30,8 +30,8 @@ class  ParserGenerator(override val grammarClazz: Class<*>, private val terminal
         )
     }
 
-    override fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
-        val builder = super.getFileBuilder(location, pkg)
+    private fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
+        val builder = super.getFileBuilder(pkg)
         builder.addImport(terminalsEnum.packageName, terminalsEnum.simpleName)
         return builder
     }
