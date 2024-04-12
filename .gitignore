@@ -4,12 +4,18 @@
 # Python scripts
 *.py
 
+# input file
+
+input.txt
+
+/src/main/kotlin/org/srcgll/Example.kt
+
 # Benchmarks
-/src/main/kotlin/org/srcgll/benchmarks/test.kt
-/src/main/kotlin/org/srcgll/benchmarks/bloated
-/src/main/kotlin/org/srcgll/benchmarks/cfgOutput
-/src/main/kotlin/org/srcgll/benchmarks/rsmOutput
-*.csv
+/src/jmh/resources/
+
+# antlr and iguana
+/src/main/kotlin/org/antlr
+/src/main/kotlin/org/iguana
 
 # Lexer
 /src/main/kotlin/org/srcgll/lexer/*.java
@@ -48,6 +54,7 @@ hs_err_pid*
 
 .gradle
 build/
+out/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

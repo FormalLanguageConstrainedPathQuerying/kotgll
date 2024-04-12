@@ -3,7 +3,7 @@ package org.srcgll.input
 import org.srcgll.rsm.symbol.Term
 
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
-    override val vertices: MutableMap<VertexType, VertexType> = HashMap()
+    override val vertices: MutableSet<VertexType> = HashSet()
     override val edges: MutableMap<VertexType, MutableList<Edge<VertexType, LabelType>>> = HashMap()
 
     override val startVertices: MutableSet<VertexType> = HashSet()
@@ -12,16 +12,15 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
         return startVertices
     }
 
-    override fun getVertex(vertex: VertexType?): VertexType? {
-        return vertices.getOrDefault(vertex, null)
-    }
+    override fun getAllVertices(): MutableSet<VertexType> = vertices
 
     override fun addStartVertex(vertex: VertexType) {
         startVertices.add(vertex)
+        vertices.add(vertex)
     }
 
     override fun addVertex(vertex: VertexType) {
-        vertices[vertex] = vertex
+        vertices.add(vertex)
     }
 
     override fun removeVertex(vertex: VertexType) {

@@ -12,15 +12,24 @@ import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
 /**
- * Interface for Gll parser with helper functions and main parsing loop
+ * Interface for Gll parser
+ * @param VertexType - type of vertex in input graph
+ * @param LabelType - type of label on edges in input graph
  */
 interface IGll<VertexType, LabelType : ILabel> {
+    /**
+     * Parser configuration
+     */
     var ctx: IContext<VertexType, LabelType>
 
+    /**
+     * Main parsing loop. Iterates over available descriptors and processes them
+     * @return Pair of derivation tree root and collection of reachability pairs
+     */
     fun parse(): Pair<SppfNode<VertexType>?, HashMap<Pair<VertexType, VertexType>, Int>> {
         initDescriptors(ctx.input)
 
-        // Continue parsing until all descriptors processed
+        // Continue parsing until all default descriptors processed
         var curDescriptor = ctx.nextDescriptorToHandle()
         while (curDescriptor != null) {
             parse(curDescriptor)
@@ -30,10 +39,15 @@ interface IGll<VertexType, LabelType : ILabel> {
         return Pair(ctx.parseResult, ctx.reachabilityPairs)
     }
 
+    /**
+     * Processes descriptor
+     * @param descriptor - descriptor to process
+     */
     fun parse(descriptor: Descriptor<VertexType>)
 
     /**
-     *
+     * Creates descriptors for all starting vertices in input graph
+     * @param input - input graph
      */
     fun initDescriptors(input: IInputGraph<VertexType, LabelType>) {
         for (startVertex in input.getInputStartVertices()) {
@@ -47,6 +61,13 @@ interface IGll<VertexType, LabelType : ILabel> {
         }
     }
 
+    /**
+     * Creates or retrieves gssNode with given parameters
+     * @param nonterminal - nonterminal, corresponding to grammar slot aA·b
+     * @param inputPosition - vertex in input graph
+     * @param weight - weight of minimal left part, i.e. derivation tree with minimum weight
+     * @return gssNode
+     */
     fun getOrCreateGssNode(
         nonterminal: Nonterminal,
         inputPosition: VertexType,
@@ -63,21 +84,29 @@ interface IGll<VertexType, LabelType : ILabel> {
         return ctx.createdGssNodes.getValue(gssNode)
     }
 
+    /**
+     * Creates gssNode with given parameters, along with corresponding edge
+     * @param nonterminal - nonterminal, corresponding to grammar slot aA·b
+     * @param rsmState - rsmState
+     * @param gssNode - tail of the edge in Gss
+     * @param sppfNode - derivation tree to store on edge in Gss
+     * @param inputPosition - vertex in input graph
+     */
     fun createGssNode(
         nonterminal: Nonterminal,
-        state: RsmState,
+        rsmState: RsmState,
         gssNode: GssNode<VertexType>,
         sppfNode: SppfNode<VertexType>?,
-        pos: VertexType,
+        inputPosition: VertexType,
     ): GssNode<VertexType> {
         val newNode =
-            getOrCreateGssNode(nonterminal, pos, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
+            getOrCreateGssNode(nonterminal, inputPosition, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
 
-        if (newNode.addEdge(state, sppfNode, gssNode)) {
+        if (newNode.addEdge(rsmState, sppfNode, gssNode)) {
             if (ctx.poppedGssNodes.containsKey(newNode)) {
                 for (popped in ctx.poppedGssNodes[newNode]!!) {
                     val descriptor = Descriptor(
-                        state, gssNode, ctx.sppf.getParentNode(state, sppfNode, popped!!), popped.rightExtent
+                        rsmState, gssNode, ctx.sppf.getParentNode(rsmState, sppfNode, popped!!), popped.rightExtent
                     )
                     addDescriptor(descriptor)
                 }
@@ -88,31 +117,28 @@ interface IGll<VertexType, LabelType : ILabel> {
     }
 
     /**
-     *
+     * Adds descriptor to processing
+     * @param descriptor - descriptor to add
      */
     fun addDescriptor(descriptor: Descriptor<VertexType>) {
-        val sppfNode = descriptor.sppfNode
-        val state = descriptor.rsmState
-        val leftExtent = sppfNode?.leftExtent
-        val rightExtent = sppfNode?.rightExtent
-
-        if (ctx.parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == ctx.startState.nonterminal && ctx.input.isStart(
-                leftExtent!!
-            ) && ctx.input.isFinal(rightExtent!!)
-        ) {
-            ctx.descriptors.removeFromHandled(descriptor)
-        }
-        ctx.descriptors.addToHandling(descriptor)
+        ctx.addDescriptor(descriptor)
     }
 
-    fun pop(gssNode: GssNode<VertexType>, sppfNode: SppfNode<VertexType>?, pos: VertexType) {
+    /**
+     * Iterates over all outgoing edges from current gssNode, collects derivation trees, stored on edges and
+     * combines them with current derivation tree, given as sppfNode
+     * @param gssNode - current node in top layer of Graph Structured Stack
+     * @param sppfNode - derivation tree, corresponding to parsed portion of input
+     * @param inputPosition - vertex in input graph
+     */
+    fun pop(gssNode: GssNode<VertexType>, sppfNode: SppfNode<VertexType>?, inputPosition: VertexType) {
         if (!ctx.poppedGssNodes.containsKey(gssNode)) ctx.poppedGssNodes[gssNode] = HashSet()
         ctx.poppedGssNodes.getValue(gssNode).add(sppfNode)
 
         for ((label, target) in gssNode.edges) {
             for (node in target) {
                 val descriptor = Descriptor(
-                    label.first, node, ctx.sppf.getParentNode(label.first, label.second, sppfNode!!), pos
+                    label.first, node, ctx.sppf.getParentNode(label.first, label.second, sppfNode!!), inputPosition
                 )
                 addDescriptor(descriptor)
             }
@@ -120,8 +146,12 @@ interface IGll<VertexType, LabelType : ILabel> {
     }
 
     /**
-     * Check that parsed nonterminal accepts whole input
-     * Update result of parsing
+     * Check whether range leftExtent - rightExtent belongs to the language, defined by given nonterminal. And if so -
+     * updates parseResult field in context with given sppfNode, i.e. derivation tree of corresponding range
+     * @param sppfNode - derivation tree of the range leftExtent - rightExtent
+     * @param leftExtent - left limit of the range
+     * @param rightExtent - right limit of the range
+     * @param nonterminal - nonterminal, which defines language we check belonging to
      */
     fun checkAcceptance(
         sppfNode: SppfNode<VertexType>?,
@@ -142,23 +172,32 @@ interface IGll<VertexType, LabelType : ILabel> {
             val pair = Pair(leftExtent, rightExtent)
             val distance = ctx.sppf.minDistance(sppfNode)
 
-            ctx.reachabilityPairs[pair] = if (ctx.reachabilityPairs.containsKey(pair)) {
-                minOf(distance, ctx.reachabilityPairs[pair]!!)
-            } else {
-                distance
-            }
+            ctx.reachabilityPairs[pair] =
+                if (ctx.reachabilityPairs.containsKey(pair)) {
+                    minOf(distance, ctx.reachabilityPairs[pair]!!)
+                } else {
+                    distance
+                }
         }
     }
+
+    /**
+     * Function for processing nonterminal edges in RSM
+     * @param descriptor - current parsing stage
+     * @param nonterminal - nonterminal, defining box in RSM
+     * @param targetStates - set of all adjacent nodes in RSM
+     * @param sppfNode - derivation tree of already parsed portion of input
+     */
     fun handleNonterminalEdge(
         descriptor: Descriptor<VertexType>,
         nonterminal: Nonterminal,
         targetStates: HashSet<RsmState>,
-        curSppfNode: SppfNode<VertexType>?
+        sppfNode: SppfNode<VertexType>?
     ) {
         for (target in targetStates) {
             val newDescriptor = Descriptor(
                 nonterminal.startState,
-                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
+                createGssNode(nonterminal, target, descriptor.gssNode, sppfNode, descriptor.inputPosition),
                 sppfNode = null,
                 descriptor.inputPosition
             )
@@ -166,41 +205,31 @@ interface IGll<VertexType, LabelType : ILabel> {
         }
     }
 
-    fun handleNonterminalEdge(
-        descriptor: Descriptor<VertexType>,
-        nonterminal: Nonterminal,
-        curSppfNode: SppfNode<VertexType>?
-    ) {
-        val targetStates: HashSet<RsmState> = descriptor.rsmState.nonterminalEdges[nonterminal]!!
-        for (target in targetStates) {
-            val newDescriptor = Descriptor(
-                nonterminal.startState,
-                createGssNode(nonterminal, target, descriptor.gssNode, curSppfNode, descriptor.inputPosition),
-                sppfNode = null,
-                descriptor.inputPosition
-            )
-            ctx.addDescriptor(newDescriptor)
-        }
-    }
-
-
-
+    /**
+     * Function for processing terminal edges in RSM, with respect to terminal or epsilon value on label
+     * in input graph edges
+     * @param descriptor - current parsing stage
+     * @param sppfNode - derivation tree of already parsed portion of input
+     * @param terminal - value on label in input graph
+     * @param targetState - head of edge in RSM
+     * @param targetVertex - head of edge in input graph
+     * @param targetWeight - weight that should be assigned to newly created nodes in sppf
+     */
     fun handleTerminalOrEpsilonEdge(
-        curDescriptor: Descriptor<VertexType>,
-        curSppfNode: SppfNode<VertexType>?,
+        descriptor: Descriptor<VertexType>,
+        sppfNode: SppfNode<VertexType>?,
         terminal: ITerminal?,
         targetState: RsmState,
         targetVertex: VertexType,
-        targetWeight: Int = 0,
+        targetWeight: Int,
     ) {
-        val descriptor = Descriptor(
-            targetState, curDescriptor.gssNode, ctx.sppf.getParentNode(
-                targetState, curSppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
-                    terminal, curDescriptor.inputPosition, targetVertex, targetWeight
+        val newDescriptor = Descriptor(
+            targetState, descriptor.gssNode, ctx.sppf.getParentNode(
+                targetState, sppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
+                    terminal, descriptor.inputPosition, targetVertex, targetWeight
                 )
             ), targetVertex
         )
-        addDescriptor(descriptor)
+        addDescriptor(newDescriptor)
     }
-
 }

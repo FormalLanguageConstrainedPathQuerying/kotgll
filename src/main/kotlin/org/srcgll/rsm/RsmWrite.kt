@@ -1,10 +1,13 @@
 package org.srcgll.rsm
 
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
 import org.srcgll.rsm.symbol.Term
 import java.io.File
-
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 private fun getAllStates(startState: RsmState): HashSet<RsmState> {
     val states: HashSet<RsmState> = HashSet()
@@ -26,6 +29,14 @@ private fun getAllStates(startState: RsmState): HashSet<RsmState> {
         }
     }
     return states
+}
+
+fun getView(symbol: Symbol): String {
+    return when (symbol) {
+        is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
+        is Term<*> -> symbol.value.toString()
+        else -> symbol.toString()
+    }
 }
 
 fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
@@ -78,11 +89,9 @@ fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
             }
         }
     }
-
 }
 
-
-fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
+fun writeRsmToDot(startState: RsmState, filePath: String) {
     val states = getAllStates(startState)
     val boxes: HashMap<Nonterminal, HashSet<RsmState>> = HashMap()
 
@@ -93,24 +102,21 @@ fun writeRsmToDot(startState: RsmState, pathToTXT: String) {
         boxes.getValue(state.nonterminal).add(state)
     }
 
-    File(pathToTXT).printWriter().use { out ->
+    Files.createDirectories(Paths.get("gen"))
+    val file = File(Path.of("gen", filePath).toUri())
+
+    file.printWriter().use { out ->
         out.println("digraph g {")
 
         states.forEach { state ->
             val shape = if (state.isFinal) "doublecircle" else "circle"
-            val color = if (state.isStart) "green" else if (state.isFinal) "red" else "black"
+            val color =
+                if (state == startState) "purple" else if (state.isStart) "green" else if (state.isFinal) "red" else "black"
             val id = state.id
             val name = state.nonterminal.name
             out.println("$id [label = \"$name,$id\", shape = $shape, color = $color]")
         }
 
-        fun getView(symbol: Symbol): String {
-            return when (symbol) {
-                is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
-                is Term<*> -> symbol.value.toString()
-                else -> symbol.toString()
-            }
-        }
         states.forEach { state ->
             state.outgoingEdges.forEach { (symbol, destStates) ->
                 destStates.forEach { destState ->

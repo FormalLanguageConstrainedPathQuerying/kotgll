@@ -1,17 +1,56 @@
 package org.srcgll.sppf
 
+import org.srcgll.descriptors.Descriptor
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.sppf.node.*
 
 /**
- * Incremental by default
+ * Default sppf
+ * @param VertexType - type of vertex in input graph
  */
 open class Sppf<VertexType> {
+    /**
+     * Collection of created sppfNodes with access and search in O(1) time
+     */
     private val createdSppfNodes: HashMap<SppfNode<VertexType>, SppfNode<VertexType>> = HashMap()
+
+    /**
+     * Part of incrementality mechanism.
+     * Map vertex in input graph -> set of all created terminal nodes that have vertex as their leftExtent
+     */
     private val createdTerminalNodes: HashMap<VertexType, HashSet<TerminalSppfNode<VertexType>>> = HashMap()
 
+    /**
+     * Used when rsmState in descriptor is both starting and final. In such case this function creates special
+     * epsilon node which is used to produce correct derivation tree
+     * @param descriptor - current parsing stage
+     * @return created epsilonNode
+     */
+    fun getEpsilonSppfNode(descriptor: Descriptor<VertexType>): SppfNode<VertexType>? {
+        val rsmState = descriptor.rsmState
+        val sppfNode = descriptor.sppfNode
+        val inputPosition = descriptor.inputPosition
+
+        return if (rsmState.isStart && rsmState.isFinal) {
+            // if nonterminal accepts epsilon
+            getParentNode(
+                rsmState,
+                sppfNode,
+                getOrCreateIntermediateSppfNode(rsmState, inputPosition, inputPosition, weight = 0)
+            )
+        } else {
+            sppfNode
+        }
+    }
+
+    /**
+     * Part of incrementality mechanism.
+     * Removes given node from collection of created. If the sppfNode is terminal, additionally removes it
+     * from set in createdTerminalNodes, corresponding to it's leftExtent
+     * @param sppfNode - sppfNode to remove
+     */
     fun removeNode(sppfNode: SppfNode<VertexType>) {
         createdSppfNodes.remove(sppfNode)
         if (sppfNode is TerminalSppfNode<*>) {
@@ -21,30 +60,28 @@ open class Sppf<VertexType> {
 
     /**
      * Receives two subtrees of SPPF and connects them via PackedNode.
-     *
-     * Get or create ParentNode. If given subtrees parse Nonterminal and state is final, then getOrCreate SymbolNode.
-     * Otherwise, getOrCreate IntermediateNode.
-     *
-     * PackedNode then attached to ParentNode as a child
-     *
-     * @return ParentNode
+     * If given subtrees repesent derivation tree for nonterminal and state is final, then retrieves or creates
+     * Symbol sppfNode, otherwise retrieves or creates Intermediate sppfNode
+     * @param rsmState - current rsmState
+     * @param sppfNode - left subtree
+     * @param nextSppfNode - right subtree
+     * @return ParentNode, which has combined subtree as alternative derivation
      */
     open fun getParentNode(
-        state: RsmState,
+        rsmState: RsmState,
         sppfNode: SppfNode<VertexType>?,
         nextSppfNode: SppfNode<VertexType>,
     ): SppfNode<VertexType> {
         val leftExtent = sppfNode?.leftExtent ?: nextSppfNode.leftExtent
         val rightExtent = nextSppfNode.rightExtent
 
-        val packedNode = PackedSppfNode(nextSppfNode.leftExtent, state, sppfNode, nextSppfNode)
+        val packedNode = PackedSppfNode(nextSppfNode.leftExtent, rsmState, sppfNode, nextSppfNode)
 
         val parent: NonterminalSppfNode<VertexType> =
-            if (state.isFinal) getOrCreateSymbolSppfNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
-            else getOrCreateIntermediateSppfNode(state, leftExtent, rightExtent, packedNode.weight)
+            if (rsmState.isFinal) getOrCreateSymbolSppfNode(rsmState.nonterminal, leftExtent, rightExtent, packedNode.weight)
+            else getOrCreateIntermediateSppfNode(rsmState, leftExtent, rightExtent, packedNode.weight)
 
-        //  Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
-        if (sppfNode != null || parent != nextSppfNode) {
+        if (sppfNode != null || parent != nextSppfNode) { // Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
             sppfNode?.parents?.add(packedNode)
             nextSppfNode.parents.add(packedNode)
             packedNode.parents.add(parent)
@@ -55,6 +92,14 @@ open class Sppf<VertexType> {
         return parent
     }
 
+    /**
+     * Creates or retrieves Terminal sppfNode with given parameters
+     * @param terminal - terminal value
+     * @param leftExtent - left limit subrange
+     * @param rightExtent - right limit subrange
+     * @param weight - weight of the node, default value is 0
+     * @return Terminal sppfNode
+     */
     fun getOrCreateTerminalSppfNode(
         terminal: ITerminal?,
         leftExtent: VertexType,
@@ -74,6 +119,13 @@ open class Sppf<VertexType> {
         return createdSppfNodes[node]!!
     }
 
+    /**
+     * Creates of retrieves Intermediate sppfNode with given parameters
+     * @param state - current rsmState
+     * @param leftExtent - left limit of subrange
+     * @param rightExtent - right limit of subrange
+     * @param weight - weight of the node, default value is Int.MAX_VALUE
+     */
     fun getOrCreateIntermediateSppfNode(
         state: RsmState,
         leftExtent: VertexType,
@@ -81,8 +133,7 @@ open class Sppf<VertexType> {
         weight: Int = Int.MAX_VALUE,
     ): NonterminalSppfNode<VertexType> {
         val node = IntermediateSppfNode(state, leftExtent, rightExtent)
-        //needed to set 0 when intermediateNode accept epsilon
-        //in other case Int.MAX_VALUE like all other parentNodes
+
         node.weight = weight
 
         if (!createdSppfNodes.containsKey(node)) {
@@ -92,6 +143,13 @@ open class Sppf<VertexType> {
         return createdSppfNodes[node]!! as IntermediateSppfNode
     }
 
+    /**
+     * Creates or retrieves Symbol sppfNode with given parameters
+     * @param nonterminal - nonterminal
+     * @param leftExtent - left limit of subrange
+     * @param rightExtent - right limit of subrange
+     * @param weight - weight of the node, default value is Int.MAX_VALUE
+     */
     fun getOrCreateSymbolSppfNode(
         nonterminal: Nonterminal,
         leftExtent: VertexType,
@@ -99,7 +157,7 @@ open class Sppf<VertexType> {
         weight: Int = Int.MAX_VALUE,
     ): SymbolSppfNode<VertexType> {
         val node = SymbolSppfNode(nonterminal, leftExtent, rightExtent)
-        //??
+
         node.weight = weight
 
         if (!createdSppfNodes.containsKey(node)) {
@@ -110,12 +168,17 @@ open class Sppf<VertexType> {
     }
 
     /**
-     * ??
+     * Part of incrementality mechanism.
+     * Traverses all the way up to the root from all Terminal sppfNodes, which have given vertex as their leftExtent,
+     * deconstructing the derivation trees on the path.
+     * parseResult is given to restrict algorithm from deleting parents of parseResult node
+     * @param vertex - position in input graph
+     * @param parseResult - current derivation tree
      */
     fun invalidate(vertex: VertexType, parseResult: ISppfNode) {
         val queue = ArrayDeque<ISppfNode>()
         val added = HashSet<ISppfNode>()
-        var curSPPFNode: ISppfNode? = parseResult
+        var curSPPFNode: ISppfNode?
 
         createdTerminalNodes[vertex]!!.forEach { node ->
             queue.add(node)
@@ -175,7 +238,11 @@ open class Sppf<VertexType> {
 
 
     /**
-     * Uses for reachability problem
+     * Part of reachability mechanism.
+     * Calculates minimal distance between two vertices in input graph amongst all paths that are recognized by
+     * accepting nonterminal of RSM (intersection of language, defined by RSM, and input graph).
+     * @param root - root of the derivation tree
+     * @return minimal distance in number of edges in the path
      */
     fun minDistance(root: ISppfNode): Int {
         val minDistanceRecognisedBySymbol: HashMap<SymbolSppfNode<VertexType>, Int> = HashMap()

@@ -8,6 +8,7 @@ import org.srcgll.input.ILabel
 import org.srcgll.parser.IGll
 import org.srcgll.parser.ParsingException
 import org.srcgll.parser.context.Context
+import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
@@ -36,23 +37,28 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         val pos = descriptor.inputPosition
 
         ctx.descriptors.addToHandled(descriptor)
-        val curSppfNode = descriptor.getCurSppfNode(ctx)
+        val curSppfNode = descriptor.sppfNode
+        val epsilonSppfNode = ctx.sppf.getEpsilonSppfNode(descriptor)
 
         val leftExtent = curSppfNode?.leftExtent
         val rightExtent = curSppfNode?.rightExtent
 
+        if (state.isFinal) {
+            pop(descriptor.gssNode, curSppfNode ?: epsilonSppfNode, pos)
+        }
+
+        if (state.isStart && state.isFinal) {
+            checkAcceptance(epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal)
+        }
         checkAcceptance(curSppfNode, leftExtent, rightExtent, state.nonterminal)
 
         for (inputEdge in ctx.input.getEdges(pos)) {
             if (inputEdge.label.terminal == null) {
-                input.handleNullLabel(descriptor, curSppfNode, inputEdge, ctx)
+                handleTerminalOrEpsilonEdge(descriptor, curSppfNode, null, descriptor.rsmState, inputEdge.head, 0)
                 continue
             }
         }
         handleEdges(descriptor, curSppfNode)
-
-        if (state.isFinal) pop(descriptor.gssNode, curSppfNode, pos)
-
     }
 
     protected fun handleTerminal(
@@ -82,5 +88,4 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
             }
         }
     }
-
 }

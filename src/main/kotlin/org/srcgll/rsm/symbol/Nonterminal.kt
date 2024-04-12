@@ -1,6 +1,5 @@
 package org.srcgll.rsm.symbol
 
-import org.srcgll.incrementalDfs
 import org.srcgll.rsm.RsmState
 import java.util.*
 

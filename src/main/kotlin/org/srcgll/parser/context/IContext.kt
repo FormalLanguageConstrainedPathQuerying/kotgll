@@ -1,6 +1,5 @@
 package org.srcgll.parser.context
 
-import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.descriptors.DescriptorsStorage
 import org.srcgll.gss.GssNode
@@ -11,22 +10,62 @@ import org.srcgll.sppf.Sppf
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
+/**
+ * Context interface. Represents configuration of Gll parser instance
+ * @param VertexType - type of vertex in input graph
+ * @param LabelType - type of label on edges in input graph
+ */
 interface IContext<VertexType, LabelType : ILabel> {
+    /**
+     * Starting state of accepting Nonterminal in RSM
+     */
     val startState: RsmState
+
+    /**
+     * Input graph
+     */
     val input: IInputGraph<VertexType, LabelType>
-    val recovery: RecoveryMode
+
+    /**
+     * Collection of descriptors
+     */
     val descriptors: DescriptorsStorage<VertexType>
+
+    /**
+     * Derivation tree
+     */
     val sppf: Sppf<VertexType>
+
+    /**
+     * Map gssNode -> Set of derivation trees that were obtained in gssNode, i.e. when processing descriptors,
+     * which contained gssNode as value in their field.
+     */
     val poppedGssNodes: HashMap<GssNode<VertexType>, HashSet<SppfNode<VertexType>?>>
+
+    /**
+     * Collection of created gssNodes, with O(1)-time access and search
+     */
     val createdGssNodes: HashMap<GssNode<VertexType>, GssNode<VertexType>>
+
+    /**
+     * Part of incrementality mechanism.
+     * Map (vertex, vertex) -> weight. Essentially, for every pair (first, second) stores weight of
+     * minimal path between first and second, such that corresponding path is accepted
+     */
     val reachabilityPairs: HashMap<Pair<VertexType, VertexType>, Int>
+
+    /**
+     * Parsing result. Either root of derivation tree of null
+     */
     var parseResult: SppfNode<VertexType>?
 
     /**
-     * An attempt to support incrementality.
-     * If the previous attempt failed -- remove the descriptor from the processed ones and try again.
+     * Part of incrementality mechanism
+     * Adds descriptors to process. If the descriptor is "final", i.e. can be used to make a derivation, then
+     * remove from already handled and process again
      * TODO get only the descriptors you need at the right time.
      * TODO remove unnecessary descriptor processing. It's broke GLL invariant
+     * @param descriptor - descriptor to add
      */
     fun addDescriptor(descriptor: Descriptor<VertexType>) {
         val sppfNode = descriptor.sppfNode
@@ -34,17 +73,19 @@ interface IContext<VertexType, LabelType : ILabel> {
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal && input.isStart(
-                leftExtent!!
-            ) && input.isFinal(rightExtent!!)
+        if (parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal &&
+            input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
         ) {
             descriptors.removeFromHandled(descriptor)
         }
         descriptors.addToHandling(descriptor)
     }
 
-    fun nextDescriptorToHandle(): Descriptor<VertexType>?{
-        // Continue parsing until all default descriptors processed
+    /**
+     * Gets next descriptor to handle
+     * @return default descriptor if there is available one, null otherwise
+     */
+    fun nextDescriptorToHandle(): Descriptor<VertexType>? {
         if (!descriptors.defaultDescriptorsStorageIsEmpty()) {
             return descriptors.next()
         }

@@ -6,15 +6,33 @@ import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
 import org.srcgll.sppf.node.SppfNode
 
+/**
+ * Descriptor represents current parsing stage
+ * @param VertexType - type of vertex in input graph
+ */
 open class Descriptor<VertexType>(
+    /**
+     * State in RSM, corresponds to slot in CF grammar
+     */
     val rsmState: RsmState,
+    /**
+     * Pointer to node in top layer of graph structured stack
+     */
     val gssNode: GssNode<VertexType>,
+    /**
+     * Pointer to already parsed portion of input, represented as derivation tree, which shall be connected afterwards
+     * to derivation trees, stored on edges of GSS, it corresponds to return from recursive function
+     */
     val sppfNode: SppfNode<VertexType>?,
+    /**
+     * Pointer to vertex in input graph
+     */
     val inputPosition: VertexType,
 ) {
     val hashCode = 23 * (23 * (23 * 17 + rsmState.hashCode()) + inputPosition.hashCode()) + gssNode.hashCode()
 
-    fun weight(): Int = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
+    val weight: Int
+        get() = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
 
     override fun hashCode() = hashCode
 
@@ -27,29 +45,6 @@ open class Descriptor<VertexType>(
         if (other.inputPosition != inputPosition) return false
 
         return true
-    }
-
-    fun <LabelType : ILabel> getCurSppfNode(ctx: IContext<VertexType, LabelType>): SppfNode<VertexType>? {
-        return if (rsmState.isStart && rsmState.isFinal) {
-            // if nonterminal accept epsilon
-            ctx.sppf.getParentNode(
-                rsmState,
-                sppfNode,
-                ctx.sppf.getOrCreateIntermediateSppfNode(rsmState, inputPosition, inputPosition, weight = 0)
-            )
-        } else {
-            sppfNode
-        }
-    }
-
-    override fun toString(): String {
-        val sb = StringBuilder()
-        sb.append(javaClass)
-        sb.append("\n\tstate: $rsmState")
-        sb.append("\n\tgssNode: $gssNode")
-        sb.append("\n\tsppfNode: $sppfNode")
-        sb.append("\n\tinputPosition: $inputPosition")
-        return sb.toString()
     }
 }
 

@@ -6,8 +6,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-
-fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
+fun writeSppfToDot(sppfNode: ISppfNode, filePath: String, label: String = "") {
     val queue: ArrayDeque<ISppfNode> = ArrayDeque(listOf(sppfNode))
     val edges: HashMap<Int, HashSet<Int>> = HashMap()
     val visited: HashSet<Int> = HashSet()
@@ -19,6 +18,8 @@ fun writeSppfToDot(sppfNode: ISppfNode, filePath: String) {
 
     file.printWriter().use { out ->
         out.println("digraph g {")
+        out.println("labelloc=\"t\"")
+        out.println("label=\"$label\"")
 
         while (queue.isNotEmpty()) {
             node = queue.removeFirst()

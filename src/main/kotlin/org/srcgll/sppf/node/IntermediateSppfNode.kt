@@ -3,9 +3,22 @@ package org.srcgll.sppf.node
 import org.srcgll.rsm.RsmState
 import java.util.*
 
+/**
+ * Intermediate node in sppf. Ensures that the resulting derivation tree has at most cubic complexity
+ * @param VertexType - type of vertex in input graph
+ */
 class IntermediateSppfNode<VertexType>(
+    /**
+     * rsmState, corresponding to grammar slot in CFG
+     */
     val rsmState: RsmState,
+    /**
+     * Left limit of the subrange
+     */
     leftExtent: VertexType,
+    /**
+     * Right limit of the subrange
+     */
     rightExtent: VertexType,
 ) : NonterminalSppfNode<VertexType>(leftExtent, rightExtent) {
     override fun toString() = "IntermediateSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"

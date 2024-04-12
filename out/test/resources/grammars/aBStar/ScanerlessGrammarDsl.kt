@@ -10,7 +10,6 @@ class ScanerlessGrammarDsl : Grammar(){
     var S by Nt()
     init{
         setStart(S)
-        S = Many(Term("a") * Term("b"))
+        S = Many(Term("ab"))
     }
-
 }
