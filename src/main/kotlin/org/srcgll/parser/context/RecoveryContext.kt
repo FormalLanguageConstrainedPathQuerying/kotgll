@@ -1,6 +1,5 @@
 package org.srcgll.parser.context
 
-import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.descriptors.RecoveringDescriptorsStorage
 import org.srcgll.gss.GssNode
@@ -19,7 +18,6 @@ class RecoveryContext<VertexType, LabelType : ILabel>(
     override val startState: RsmState,
     override val input: IRecoveryInputGraph<VertexType, LabelType>
 ) : IContext<VertexType, LabelType> {
-    override val recovery: RecoveryMode = RecoveryMode.ON
     override val descriptors: RecoveringDescriptorsStorage<VertexType> = RecoveringDescriptorsStorage()
     override val sppf: RecoverySppf<VertexType> = RecoverySppf()
     override val poppedGssNodes: HashMap<GssNode<VertexType>, HashSet<SppfNode<VertexType>?>> = HashMap()

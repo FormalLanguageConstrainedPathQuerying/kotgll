@@ -4,8 +4,7 @@ import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
 import org.srcgll.incrementalDfs
 import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.Terminal
-import java.util.HashSet
+import org.srcgll.rsm.symbol.ITerminal
 
 
 open class Grammar {
@@ -42,14 +41,18 @@ open class Grammar {
     /**
      * Get all terminals used in RSM from current state (recursive)
      */
-    fun getTerminals(): HashSet<Terminal<*>> {
-        return incrementalDfs(
+    fun getTerminals(): Iterable<ITerminal> {
+        val terms : HashSet<ITerminal> = incrementalDfs(
             rsm,
-            { state: RsmState -> state.outgoingEdges.values.flatten() +
-            state.nonterminalEdges.keys.map{it.startState}},
+            { state: RsmState ->
+                state.outgoingEdges.values.flatten() +
+                        state.nonterminalEdges.keys.map { it.startState }
+            },
             hashSetOf(),
             { state, set -> set.addAll(state.terminalEdges.keys) }
         )
+        val comparator = terms.firstOrNull()?.getComparator() ?: return emptyList()
+        return terms.toSortedSet(comparator).toList()
     }
 
 }

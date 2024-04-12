@@ -1,6 +1,6 @@
 package org.srcgll.sppf.node
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.ITerminal
 import java.util.*
 
 /**
@@ -10,7 +10,7 @@ class TerminalSppfNode<VertexType>(
     /**
      * Terminal, recognized by parser
      */
-    val terminal: Terminal<*>?,
+    val terminal: ITerminal?,
     /**
      * Left limit of the subrange
      */

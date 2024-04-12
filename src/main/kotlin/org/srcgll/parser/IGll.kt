@@ -6,8 +6,8 @@ import org.srcgll.input.IInputGraph
 import org.srcgll.input.ILabel
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 import org.srcgll.sppf.node.SymbolSppfNode
 
@@ -218,7 +218,7 @@ interface IGll<VertexType, LabelType : ILabel> {
     fun handleTerminalOrEpsilonEdge(
         descriptor: Descriptor<VertexType>,
         sppfNode: SppfNode<VertexType>?,
-        terminal: Terminal<*>?,
+        terminal: ITerminal?,
         targetState: RsmState,
         targetVertex: VertexType,
         targetWeight: Int,

@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 
 class RecoveryLinearInput<VertexType, LabelType : ILabel>
     : LinearInput<VertexType, LabelType>(), IRecoveryInputGraph<VertexType, LabelType> {
@@ -17,7 +17,7 @@ class RecoveryLinearInput<VertexType, LabelType : ILabel>
 
             for (x in input.trim().split(' ')) {
                 if (x.isNotEmpty()) {
-                    inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
+                    inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x)), ++curVertexId)
                     inputGraph.addVertex(curVertexId)
                 }
             }

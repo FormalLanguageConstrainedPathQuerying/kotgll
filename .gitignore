@@ -86,4 +86,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-/src/test/resources/gen/parser/

@@ -1,10 +1,11 @@
 package org.srcgll.input
 
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
     override val vertices: MutableSet<VertexType> = HashSet()
     override val edges: MutableMap<VertexType, MutableList<Edge<VertexType, LabelType>>> = HashMap()
+
     override val startVertices: MutableSet<VertexType> = HashSet()
 
     override fun getInputStartVertices(): MutableSet<VertexType> {
@@ -48,6 +49,21 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
     override fun isStart(vertex: VertexType) = startVertices.contains(vertex)
     override fun isFinal(vertex: VertexType) = getEdges(vertex).isEmpty()
 
+    override fun toString(): String {
+        if(startVertices.isEmpty()){
+            return "${this.javaClass}: empty"
+        }
+        var v: VertexType = startVertices.first()
+        val sb = StringBuilder()
+        while(v != null){
+            val e = edges[v]?.first() ?: break
+            sb.append("\n")
+            sb.append(e.label)
+            v = e.head
+        }
+        return sb.toString()
+    }
+
     companion object {
         /**
          * Split CharSequence into stream of strings, separated by space symbol
@@ -59,13 +75,14 @@ open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType,
             inputGraph.addStartVertex(curVertexId)
             inputGraph.addVertex(curVertexId)
 
-            for (x in input.trim().split(' ')) {
+            for (x in input.trim().split(SPACE).filter { it.isNotEmpty() }) {
                 if (x.isNotEmpty()) {
-                    inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x)), ++curVertexId)
+                    inputGraph.addEdge(curVertexId, LinearInputLabel(Term(x)), ++curVertexId)
                     inputGraph.addVertex(curVertexId)
                 }
             }
             return inputGraph
         }
+        const val SPACE = " "
     }
 }

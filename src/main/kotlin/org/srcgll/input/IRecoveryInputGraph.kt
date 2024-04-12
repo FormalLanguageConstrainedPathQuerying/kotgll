@@ -3,8 +3,8 @@ package org.srcgll.input
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 
 /**
@@ -27,9 +27,9 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      */
     override fun handleEdges(
         handleTerminalOrEpsilonEdge: (
-            descriptor: Descriptor<VertexType>,
-            sppfNode: SppfNode<VertexType>?,
-            terminal: Terminal<*>?,
+            curDescriptor: Descriptor<VertexType>,
+            curSppfNode: SppfNode<VertexType>?,
+            terminal: ITerminal?,
             targetState: RsmState,
             targetVertex: VertexType,
             targetWeight: Int,
@@ -83,7 +83,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param rsmState - current rsmState
      */
     private fun addEpsilonRecoveryEdges(
-        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
+        terminalEdges: HashMap<ITerminal, HashSet<RsmState>>,
         errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
         inputPosition: VertexType,
         rsmState: RsmState
@@ -104,7 +104,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param currentEdges - outgoing edges from current vertex in input graph
      */
     private fun addTerminalRecoveryEdges(
-        terminalEdges: HashMap<Terminal<*>, HashSet<RsmState>>,
+        terminalEdges: HashMap<ITerminal, HashSet<RsmState>>,
         errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
         inputPosition: VertexType,
         rsmState: RsmState,
@@ -142,7 +142,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
         handleTerminalOrEpsilonEdge: (
             descriptor: Descriptor<VertexType>,
             sppfNode: SppfNode<VertexType>?,
-            terminal: Terminal<*>?,
+            terminal: ITerminal?,
             targetState: RsmState,
             targetVertex: VertexType,
             targetWeight: Int,
@@ -178,5 +178,8 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
                 }
             }
         }
+
     }
+
+
 }

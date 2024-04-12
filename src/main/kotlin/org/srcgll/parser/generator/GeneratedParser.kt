@@ -10,8 +10,8 @@ import org.srcgll.parser.ParsingException
 import org.srcgll.parser.context.Context
 import org.srcgll.parser.context.IContext
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.SppfNode
 
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
@@ -62,13 +62,18 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     }
 
     protected fun handleTerminal(
-        terminal: Terminal<*>,
+        terminal: ITerminal,
         state: RsmState,
         inputEdge: Edge<VertexType, LabelType>,
         descriptor: Descriptor<VertexType>,
         curSppfNode: SppfNode<VertexType>?
     ) {
-        val newStates = state.terminalEdges[terminal]!!
+
+        val newStates = state.terminalEdges[terminal] ?:
+            throw ParsingException("State $state does not contains edges " +
+                    "\nby terminal $terminal" +
+                    "\naccessible edges: ${state.terminalEdges}\n")
+
 
         if (inputEdge.label.terminal == terminal) {
             for (target in newStates) {

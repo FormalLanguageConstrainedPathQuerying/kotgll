@@ -1,6 +1,7 @@
 package dynamic.parser
 
 import org.junit.jupiter.api.DynamicContainer
+import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.TestFactory
 import java.io.File
 
@@ -9,20 +10,43 @@ interface IDynamicGllTest {
     val mainFileName: String
 
     companion object {
-        const val GRAMMAR_FOLDER = "grammars"
-    }
+        const val GRAMMARS_FOLDER = "grammars"
+        const val ONE_LINE_INPUTS = "oneLineInputs.txt"
+        const val ONE_LINE_ERRORS_INPUTS = "oneLineErrorInputs.txt"
+        const val GRAMMAR_FOLDER = "src/test/resources/grammars"
+        const val INPUTS = "correctInputs"
+        const val INCORRECT_INPUTS = "incorrectInputs"
+        fun getTestName(input: String): String {
+            return when (input.length) {
+                0 -> "empty"
+                in 1..10 -> input
+                else -> "${input.take(10)}..."
+            }
+        }
 
-    val oneLineTestsFileName: String
-        get() = "oneLineInputs.txt"
-    val oneLineErrorsTestsFileName: String
-        get() = "oneLineErrorInputs.txt"
-    val grammarFolderName: String
-        get() = "src/test/resources/grammars"
+        fun getFile(name: String, grammarFile: File): File? {
+            return grammarFile.listFiles()?.firstOrNull { it.name == name }
+        }
+
+        fun getLines(fileName: String, folder: File): List<String> {
+            val file = getFile(fileName, folder) ?: return listOf()
+            return file.readLines()
+        }
+
+        fun getFiles(fileName: String, folder: File): Array<out File>? {
+            val file = getFile(fileName, folder) ?: return arrayOf()
+            return file.listFiles()
+        }
+
+        fun readFile(file: File): String {
+            return file.inputStream().reader().readText()
+        }
+    }
 
     @TestFactory
     fun testAll(): Collection<DynamicContainer> {
         val folders =
-            File(grammarFolderName).listFiles() ?: throw Exception("Resource folder $grammarFolderName not found")
+            File(GRAMMAR_FOLDER).listFiles() ?: throw Exception("Resource folder $GRAMMAR_FOLDER not found")
         return folders
             .filter {
                 it.isDirectory && it.listFiles()?.any { file -> file.name == mainFileName } == true
@@ -30,23 +54,15 @@ interface IDynamicGllTest {
             .map { concreteGrammarFolder -> handleFolder(concreteGrammarFolder) }
     }
 
-    fun getFile(name: String, grammarFile: File): File? {
-        return grammarFile.listFiles()?.firstOrNull { it.name == name }
+
+    fun handleFolder(concreteGrammarFolder: File): DynamicContainer {
+        val grammarName = concreteGrammarFolder.name
+        return DynamicContainer.dynamicContainer(
+            grammarName, getTestCases(concreteGrammarFolder)
+        )
+
     }
 
-    fun getTestName(input: String): String {
-        return when (input.length) {
-            0 -> "empty"
-            in 1..10 -> input
-            else -> "${input.take(10)}..."
-        }
-    }
-
-    fun handleFolder(concreteGrammarFolder: File): DynamicContainer
-
-    fun getLines(fileName: String, folder: File): List<String> {
-        val file = getFile(fileName, folder) ?: return listOf()
-        return file.readLines()
-    }
+    fun getTestCases(concreteGrammarFolder: File): Iterable<DynamicNode>
 
 }

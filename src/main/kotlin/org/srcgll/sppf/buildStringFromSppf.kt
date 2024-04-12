@@ -21,7 +21,7 @@ fun buildTokenStreamFromSppf(sppfNode: ISppfNode): MutableList<String> {
 
         when (curNode) {
             is TerminalSppfNode<*> -> {
-                if (curNode.terminal != null) result.add(curNode.terminal!!.value.toString())
+                if (curNode.terminal != null) result.add(curNode.terminal!!.toString())
             }
 
             is PackedSppfNode<*> -> {

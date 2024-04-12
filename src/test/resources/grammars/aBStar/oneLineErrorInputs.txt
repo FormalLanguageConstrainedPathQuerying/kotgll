@@ -2,3 +2,6 @@ ba ab
 ab dc ac
 ba ba ca
 ba ab ad
+c a a a b a
+b a
+c a b

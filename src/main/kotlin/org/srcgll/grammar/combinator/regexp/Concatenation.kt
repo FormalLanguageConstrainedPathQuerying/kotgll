@@ -27,6 +27,3 @@ data class Concat(
 }
 
 infix operator fun Regexp.times(other: Regexp): Concat = Concat(head = this, other)
-infix operator fun String.times(other: Regexp): Concat = Concat(head = Term(this), other)
-infix operator fun Regexp.times(other: String): Concat = Concat(head = this, Term(other))
-infix operator fun String.times(other: String): Concat = Concat(head = Term(this), Term(other))

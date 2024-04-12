@@ -1,6 +1,5 @@
 package org.srcgll.parser.context
 
-import org.srcgll.RecoveryMode
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.descriptors.DescriptorsStorage
 import org.srcgll.gss.GssNode
@@ -26,11 +25,6 @@ interface IContext<VertexType, LabelType : ILabel> {
      * Input graph
      */
     val input: IInputGraph<VertexType, LabelType>
-
-    /**
-     * Flag to indicate working mode of parser: with error recovery, or without
-     */
-    val recovery: RecoveryMode
 
     /**
      * Collection of descriptors

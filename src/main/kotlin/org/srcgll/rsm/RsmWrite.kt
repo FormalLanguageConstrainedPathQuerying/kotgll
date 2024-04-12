@@ -1,13 +1,13 @@
 package org.srcgll.rsm
 
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
-import org.srcgll.rsm.symbol.Terminal
+import org.srcgll.rsm.symbol.Term
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.Path
 
 private fun getAllStates(startState: RsmState): HashSet<RsmState> {
     val states: HashSet<RsmState> = HashSet()
@@ -34,8 +34,60 @@ private fun getAllStates(startState: RsmState): HashSet<RsmState> {
 fun getView(symbol: Symbol): String {
     return when (symbol) {
         is Nonterminal -> symbol.name ?: "unnamed nonterminal ${symbol.hashCode()}"
-        is Terminal<*> -> symbol.value.toString()
+        is Term<*> -> symbol.value.toString()
         else -> symbol.toString()
+    }
+}
+
+fun writeRsmToTxt(startState: RsmState, pathToTXT: String) {
+    val states = getAllStates(startState)
+    File(pathToTXT).printWriter().use { out ->
+        out.println(
+            """StartState(
+            |id=${startState.id},
+            |nonterminal=Nonterminal("${startState.nonterminal.name}"),
+            |isStart=${startState.isStart},
+            |isFinal=${startState.isFinal}
+            |)"""
+                .trimMargin()
+                .replace("\n", "")
+        )
+
+        states.forEach { state ->
+            out.println(
+                """State(
+                |id=${state.id},
+                |nonterminal=Nonterminal("${state.nonterminal.name}"),
+                |isStart=${state.isStart},
+                |isFinal=${state.isFinal}
+                |)"""
+                    .trimMargin()
+                    .replace("\n", "")
+            )
+        }
+
+        fun getSymbolView(symbol: Symbol): Triple<String, String, String> {
+            return when (symbol) {
+                is Term<*> -> Triple("Terminal", symbol.value.toString(), "terminal")
+                is Nonterminal -> Triple("Nonterminal", symbol.name ?: "NON_TERM", "nonterminal")
+                else -> throw Exception("Unsupported implementation of Symbol instance: ${symbol.javaClass}")
+            }
+        }
+
+        for (state in states) {
+            for ((symbol, destStates) in state.outgoingEdges) {
+                val (typeView, symbolView, typeLabel) = getSymbolView(symbol)
+                for (destState in destStates) {
+                    out.println(
+                        """${typeView}Edge(
+                        |tail=${state.id},
+                        |head=${destState.id},
+                        |$typeLabel=$typeView("$symbolView")
+                        |)""".trimMargin().replace("\n", "")
+                    )
+                }
+            }
+        }
     }
 }
 

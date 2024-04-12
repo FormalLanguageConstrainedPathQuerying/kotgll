@@ -2,8 +2,8 @@ package org.srcgll.sppf
 
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.rsm.RsmState
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
 
 /**
@@ -101,7 +101,7 @@ open class Sppf<VertexType> {
      * @return Terminal sppfNode
      */
     fun getOrCreateTerminalSppfNode(
-        terminal: Terminal<*>?,
+        terminal: ITerminal?,
         leftExtent: VertexType,
         rightExtent: VertexType,
         weight: Int = 0,

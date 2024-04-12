@@ -1,5 +1,7 @@
 package org.srcgll.grammar.combinator.regexp
 
+import org.srcgll.rsm.symbol.Term
+
 
 data class Alternative(
     internal val left: Regexp,
@@ -31,13 +33,6 @@ infix fun String.or(other: Regexp): Regexp = Alternative.makeAlternative(left = 
 infix fun Regexp.or(other: String): Regexp = Alternative.makeAlternative(left = this, Term(other))
 infix fun String.or(other: String): Regexp = Alternative.makeAlternative(left = Term(this), Term(other))
 
-fun makeAlternative(literals: Iterable<String>): Regexp {
-    val terms = literals.map { Term(it) }
-    val initial: Regexp = terms[0] or terms[1]
-
-    return terms.subList(2, terms.size)
-        .fold(initial) { acc: Regexp, i: Term<String> -> Alternative.makeAlternative(acc, i) }
-}
 
 fun Option(exp: Regexp) = Alternative.makeAlternative(Epsilon, exp)
 fun Option(exp: String) = Alternative.makeAlternative(Epsilon, Term(exp))

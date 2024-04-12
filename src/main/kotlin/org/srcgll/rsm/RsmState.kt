@@ -3,10 +3,9 @@ package org.srcgll.rsm
 import org.srcgll.grammar.combinator.regexp.Empty
 import org.srcgll.grammar.combinator.regexp.Nt
 import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.grammar.combinator.regexp.Term
+import org.srcgll.rsm.symbol.ITerminal
 import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.rsm.symbol.Symbol
-import org.srcgll.rsm.symbol.Terminal
 import java.util.*
 
 open class RsmState(
@@ -31,7 +30,7 @@ open class RsmState(
     /**
      * Map from terminal to edges set
      */
-    val terminalEdges = HashMap<Terminal<*>, HashSet<RsmState>>()
+    val terminalEdges = HashMap<ITerminal, HashSet<RsmState>>()
 
     /**
      * Map from nonterminal to edges set
@@ -50,7 +49,7 @@ open class RsmState(
      * then only 1 is chosen non-deterministically.
      * TODO Maybe you can get rid of it or find a better optimization (?)
      */
-    val errorRecoveryLabels: HashSet<Terminal<*>> = HashSet()
+    val errorRecoveryLabels: HashSet<ITerminal> = HashSet()
 
     override fun toString() = "RsmState(nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
@@ -62,7 +61,7 @@ open class RsmState(
     open fun addEdge(symbol: Symbol, destinationState: RsmState) {
         val destinationStates: HashSet<RsmState>
         when (symbol) {
-            is Terminal<*> -> {
+            is ITerminal -> {
                 destinationStates = terminalEdges.getOrPut(symbol) { hashSetOf() }
                 addRecoveryInfo(symbol, destinationState)
             }
@@ -82,7 +81,7 @@ open class RsmState(
      * @param terminal - terminal on edge
      * @param head - destination state
      */
-    private fun addRecoveryInfo(terminal: Terminal<*>, head: RsmState) {
+    private fun addRecoveryInfo(terminal: ITerminal, head: RsmState) {
         if (!targetStates.contains(head)) {
             errorRecoveryLabels.add(terminal)
             targetStates.add(head)
@@ -119,9 +118,8 @@ open class RsmState(
                     val destinationState = regexpToRsmState.getOrPut(newState) { getNewState(newState) }
 
                     when (symbol) {
-                        is Term<*> -> {
-
-                            state?.addEdge(symbol.terminal as Terminal<*>, destinationState)
+                        is ITerminal -> {
+                            state?.addEdge(symbol, destinationState)
                         }
 
                         is Nt -> {
