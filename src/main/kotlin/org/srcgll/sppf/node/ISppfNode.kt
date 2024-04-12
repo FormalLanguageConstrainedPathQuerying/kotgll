@@ -1,4 +1,4 @@
-package org.srcgll.sppf.node
+package org.ucfs.sppf.node
 
 /**
  * SppfNode interface

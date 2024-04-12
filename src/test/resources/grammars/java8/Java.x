@@ -1,4 +1,4 @@
-package org.srcgll.lexer;
+package org.ucfs.lexer;
 
 import java.io.*;
 

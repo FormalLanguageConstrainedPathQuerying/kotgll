@@ -4,11 +4,11 @@ import dynamic.parser.IDynamicGllTest
 import dynamic.parser.IDynamicGllTest.Companion.getLines
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
-import org.srcgll.input.LinearInput
-import org.srcgll.input.LinearInput.Companion.SPACE
-import org.srcgll.input.LinearInputLabel
-import org.srcgll.parser.generator.GeneratedParser
-import org.srcgll.sppf.buildStringFromSppf
+import org.ucfs.input.LinearInput
+import org.ucfs.input.LinearInput.Companion.SPACE
+import org.ucfs.input.LinearInputLabel
+import org.ucfs.parser.generator.GeneratedParser
+import org.ucfs.sppf.buildStringFromSppf
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

@@ -1,11 +1,11 @@
-package org.srcgll.input
+package org.ucfs.input
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.parser.context.IContext
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.parser.context.IContext
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.sppf.node.SppfNode
 
 /**
  * Part of error recovery mechanism.

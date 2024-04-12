@@ -1,6 +1,6 @@
-package org.srcgll.grammar.combinator.regexp
+package org.ucfs.grammar.combinator.regexp
 
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.rsm.symbol.Term
 
 
 data class Alternative(

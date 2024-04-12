@@ -1,16 +1,16 @@
-package org.srcgll.parser.generator
+package org.ucfs.parser.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.input.ILabel
-import org.srcgll.parser.context.IContext
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.grammar.combinator.regexp.Nt
+import org.ucfs.input.ILabel
+import org.ucfs.parser.context.IContext
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.sppf.node.SppfNode
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
 

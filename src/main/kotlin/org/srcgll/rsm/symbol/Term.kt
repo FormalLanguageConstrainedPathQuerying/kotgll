@@ -1,7 +1,7 @@
-package org.srcgll.rsm.symbol
+package org.ucfs.rsm.symbol
 
-import org.srcgll.grammar.combinator.regexp.DerivedSymbol
-import org.srcgll.parser.generator.ParserGeneratorException
+import org.ucfs.grammar.combinator.regexp.DerivedSymbol
+import org.ucfs.parser.generator.ParserGeneratorException
 
 class Term<TerminalType>(val value: TerminalType) : ITerminal, DerivedSymbol {
     override fun toString() = value.toString()

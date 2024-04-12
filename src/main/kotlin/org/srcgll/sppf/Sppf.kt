@@ -1,10 +1,10 @@
-package org.srcgll.sppf
+package org.ucfs.sppf
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.node.*
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.sppf.node.*
 
 /**
  * Default sppf

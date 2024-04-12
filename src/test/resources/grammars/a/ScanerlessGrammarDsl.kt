@@ -1,8 +1,8 @@
 package grammars.a
 
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.grammar.combinator.regexp.Nt
+import org.ucfs.rsm.symbol.Term
 
 class ScanerlessGrammarDsl : Grammar() {
     var S by Nt()

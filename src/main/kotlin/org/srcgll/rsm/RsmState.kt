@@ -1,11 +1,11 @@
-package org.srcgll.rsm
+package org.ucfs.rsm
 
-import org.srcgll.grammar.combinator.regexp.Empty
-import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Symbol
+import org.ucfs.grammar.combinator.regexp.Empty
+import org.ucfs.grammar.combinator.regexp.Nt
+import org.ucfs.grammar.combinator.regexp.Regexp
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.rsm.symbol.Symbol
 import java.util.*
 
 open class RsmState(

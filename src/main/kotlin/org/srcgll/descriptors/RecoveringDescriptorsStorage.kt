@@ -1,4 +1,4 @@
-package org.srcgll.descriptors
+package org.ucfs.descriptors
 
 /**
  * Collection of error recovery descriptors

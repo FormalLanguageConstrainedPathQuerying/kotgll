@@ -1,6 +1,6 @@
-package org.srcgll.sppf.node
+package org.ucfs.sppf.node
 
-import org.srcgll.rsm.RsmState
+import org.ucfs.rsm.RsmState
 import java.util.*
 
 /**

@@ -8,7 +8,7 @@
 
 input.txt
 
-/src/main/kotlin/org/srcgll/Example.kt
+/src/main/kotlin/org/ucfs/Example.kt
 
 # Benchmarks
 /src/jmh/resources/
@@ -18,8 +18,8 @@ input.txt
 /src/main/kotlin/org/iguana
 
 # Lexer
-/src/main/kotlin/org/srcgll/lexer/*.java
-/src/main/kotlin/org/srcgll/lexer/*.java~
+/src/main/kotlin/org/ucfs/lexer/*.java
+/src/main/kotlin/org/ucfs/lexer/*.java~
 
 # No idea wtf is this
 *.attach*

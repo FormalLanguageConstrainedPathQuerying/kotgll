@@ -33,7 +33,7 @@ dependencies {
 tasks.test { useJUnitPlatform() }
 
 kotlin { jvmToolchain(11) }
-application { mainClass.set("org.srcgll.MainKt") }
+application { mainClass.set("org.ucfs.MainKt") }
 
 configure<SourceSetContainer> {
     named("main") {

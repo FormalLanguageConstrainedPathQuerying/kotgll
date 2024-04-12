@@ -8,12 +8,12 @@ import dynamic.parser.IDynamicGllTest.Companion.getTestName
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
-import org.srcgll.input.LinearInput
-import org.srcgll.input.LinearInputLabel
-import org.srcgll.parser.Gll
-import org.srcgll.parser.IGll
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.readRsmFromTxt
+import org.ucfs.input.LinearInput
+import org.ucfs.input.LinearInputLabel
+import org.ucfs.parser.Gll
+import org.ucfs.parser.IGll
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.readRsmFromTxt
 import java.io.File
 import kotlin.test.assertNotNull
 

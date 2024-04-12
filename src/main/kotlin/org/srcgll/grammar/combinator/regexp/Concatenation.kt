@@ -1,4 +1,4 @@
-package org.srcgll.grammar.combinator.regexp
+package org.ucfs.grammar.combinator.regexp
 
 data class Concat(
     internal val head: Regexp,

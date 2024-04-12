@@ -6,8 +6,8 @@ import dynamic.parser.generator.GllGeneratedTest.Companion.DSL_FILE_NAME
 import dynamic.parser.generator.GllGeneratedTest.Companion.LEXER_NAME
 import dynamic.parser.generator.GllGeneratedTest.Companion.TOKENS
 import dynamic.parser.generator.ScanerlessGllGeneratedTest.Companion.SCANERLESS_DSL_FILE_NAME
-import org.srcgll.input.LinearInputLabel
-import org.srcgll.parser.generator.*
+import org.ucfs.input.LinearInputLabel
+import org.ucfs.parser.generator.*
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

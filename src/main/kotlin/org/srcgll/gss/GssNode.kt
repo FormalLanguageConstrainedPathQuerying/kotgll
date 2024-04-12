@@ -1,9 +1,9 @@
-package org.srcgll.gss
+package org.ucfs.gss
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.sppf.node.SppfNode
 import java.util.*
 
 /**

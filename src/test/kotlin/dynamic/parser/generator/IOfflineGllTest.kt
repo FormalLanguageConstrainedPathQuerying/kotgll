@@ -4,9 +4,9 @@ import dynamic.parser.IDynamicGllTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
-import org.srcgll.input.IInputGraph
-import org.srcgll.input.ILabel
-import org.srcgll.parser.generator.GeneratedParser
+import org.ucfs.input.IInputGraph
+import org.ucfs.input.ILabel
+import org.ucfs.parser.generator.GeneratedParser
 import kotlin.test.assertNotNull
 
 interface IOfflineGllTest : IDynamicGllTest {

@@ -1,13 +1,13 @@
-package org.srcgll.parser.context
+package org.ucfs.parser.context
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.descriptors.RecoveringDescriptorsStorage
-import org.srcgll.gss.GssNode
-import org.srcgll.input.ILabel
-import org.srcgll.input.IRecoveryInputGraph
-import org.srcgll.rsm.RsmState
-import org.srcgll.sppf.RecoverySppf
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.descriptors.RecoveringDescriptorsStorage
+import org.ucfs.gss.GssNode
+import org.ucfs.input.ILabel
+import org.ucfs.input.IRecoveryInputGraph
+import org.ucfs.rsm.RsmState
+import org.ucfs.sppf.RecoverySppf
+import org.ucfs.sppf.node.SppfNode
 
 /**
  * Recovery context for parsing with enabled error recovery

@@ -1,15 +1,15 @@
-package org.srcgll.parser
+package org.ucfs.parser
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.gss.GssNode
-import org.srcgll.input.IInputGraph
-import org.srcgll.input.ILabel
-import org.srcgll.parser.context.IContext
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.node.SppfNode
-import org.srcgll.sppf.node.SymbolSppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.gss.GssNode
+import org.ucfs.input.IInputGraph
+import org.ucfs.input.ILabel
+import org.ucfs.parser.context.IContext
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.sppf.node.SppfNode
+import org.ucfs.sppf.node.SymbolSppfNode
 
 /**
  * Interface for Gll parser

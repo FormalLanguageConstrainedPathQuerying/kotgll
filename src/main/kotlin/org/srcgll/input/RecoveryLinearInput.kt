@@ -1,6 +1,6 @@
-package org.srcgll.input
+package org.ucfs.input
 
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.rsm.symbol.Term
 
 class RecoveryLinearInput<VertexType, LabelType : ILabel>
     : LinearInput<VertexType, LabelType>(), IRecoveryInputGraph<VertexType, LabelType> {

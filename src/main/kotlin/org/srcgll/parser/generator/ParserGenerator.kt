@@ -1,9 +1,9 @@
-package org.srcgll.parser.generator
+package org.ucfs.parser.generator
 
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.rsm.symbol.ITerminal
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.rsm.symbol.ITerminal
 import java.nio.file.Path
 
 /**

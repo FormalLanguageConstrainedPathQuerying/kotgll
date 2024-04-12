@@ -1,11 +1,11 @@
 package rsm.builder
 
 import org.junit.jupiter.api.Test
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.rsm.symbol.Term
-import org.srcgll.grammar.combinator.regexp.or
-import org.srcgll.grammar.combinator.regexp.times
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.grammar.combinator.regexp.Nt
+import org.ucfs.rsm.symbol.Term
+import org.ucfs.grammar.combinator.regexp.or
+import org.ucfs.grammar.combinator.regexp.times
 import rsm.RsmTest
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue

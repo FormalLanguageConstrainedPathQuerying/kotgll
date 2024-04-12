@@ -1,6 +1,6 @@
-package org.srcgll.descriptors
+package org.ucfs.descriptors
 
-import org.srcgll.parser.ParsingException
+import org.ucfs.parser.ParsingException
 
 /**
  * Collection of default descriptors

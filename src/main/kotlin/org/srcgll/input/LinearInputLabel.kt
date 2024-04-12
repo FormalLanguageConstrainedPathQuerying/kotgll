@@ -1,6 +1,6 @@
-package org.srcgll.input
+package org.ucfs.input
 
-import org.srcgll.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.ITerminal
 
 class LinearInputLabel(
     override val terminal: ITerminal,

@@ -1,7 +1,7 @@
-package org.srcgll.sppf
+package org.ucfs.sppf
 
-import org.srcgll.rsm.RsmState
-import org.srcgll.sppf.node.*
+import org.ucfs.rsm.RsmState
+import org.ucfs.sppf.node.*
 
 /**
  * Part of error recovery mechanism.

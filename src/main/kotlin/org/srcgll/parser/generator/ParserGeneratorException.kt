@@ -1,4 +1,4 @@
-package org.srcgll.parser.generator
+package org.ucfs.parser.generator
 
 class ParserGeneratorException(msg: String? = "") : Exception("Parser generator exception: $msg") {
     companion object{

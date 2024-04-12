@@ -1,6 +1,6 @@
-package org.srcgll.input
+package org.ucfs.input
 
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.rsm.symbol.Term
 
 open class LinearInput<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
     override val vertices: MutableSet<VertexType> = HashSet()

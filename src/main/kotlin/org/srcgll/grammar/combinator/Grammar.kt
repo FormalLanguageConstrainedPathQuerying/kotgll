@@ -1,10 +1,10 @@
-package org.srcgll.grammar.combinator
+package org.ucfs.grammar.combinator
 
-import org.srcgll.grammar.combinator.regexp.Nt
-import org.srcgll.grammar.combinator.regexp.Regexp
-import org.srcgll.incrementalDfs
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
+import org.ucfs.grammar.combinator.regexp.Nt
+import org.ucfs.grammar.combinator.regexp.Regexp
+import org.ucfs.incrementalDfs
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
 
 
 open class Grammar {

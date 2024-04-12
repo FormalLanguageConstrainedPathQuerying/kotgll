@@ -1,6 +1,6 @@
 package grammars.java8
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.grammar.combinator.regexp.*
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.grammar.combinator.regexp.*
 
 class GrammarDsl : Grammar() {
     var CompilationUnit by Nt()

@@ -1,14 +1,14 @@
-package org.srcgll.parser.context
+package org.ucfs.parser.context
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.descriptors.DescriptorsStorage
-import org.srcgll.gss.GssNode
-import org.srcgll.input.IInputGraph
-import org.srcgll.input.ILabel
-import org.srcgll.rsm.RsmState
-import org.srcgll.sppf.Sppf
-import org.srcgll.sppf.node.SppfNode
-import org.srcgll.sppf.node.SymbolSppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.descriptors.DescriptorsStorage
+import org.ucfs.gss.GssNode
+import org.ucfs.input.IInputGraph
+import org.ucfs.input.ILabel
+import org.ucfs.rsm.RsmState
+import org.ucfs.sppf.Sppf
+import org.ucfs.sppf.node.SppfNode
+import org.ucfs.sppf.node.SymbolSppfNode
 
 /**
  * Context interface. Represents configuration of Gll parser instance

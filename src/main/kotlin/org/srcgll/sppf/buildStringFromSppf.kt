@@ -1,9 +1,9 @@
-package org.srcgll.sppf
+package org.ucfs.sppf
 
-import org.srcgll.sppf.node.ISppfNode
-import org.srcgll.sppf.node.PackedSppfNode
-import org.srcgll.sppf.node.NonterminalSppfNode
-import org.srcgll.sppf.node.TerminalSppfNode
+import org.ucfs.sppf.node.ISppfNode
+import org.ucfs.sppf.node.PackedSppfNode
+import org.ucfs.sppf.node.NonterminalSppfNode
+import org.ucfs.sppf.node.TerminalSppfNode
 
 /**
  * Collects leaves of the derivation tree in order from left to right.

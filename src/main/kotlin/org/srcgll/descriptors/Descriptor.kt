@@ -1,10 +1,10 @@
-package org.srcgll.descriptors
+package org.ucfs.descriptors
 
-import org.srcgll.gss.GssNode
-import org.srcgll.input.ILabel
-import org.srcgll.parser.context.IContext
-import org.srcgll.rsm.RsmState
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.gss.GssNode
+import org.ucfs.input.ILabel
+import org.ucfs.parser.context.IContext
+import org.ucfs.rsm.RsmState
+import org.ucfs.sppf.node.SppfNode
 
 /**
  * Descriptor represents current parsing stage

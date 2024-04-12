@@ -1,7 +1,7 @@
 package grammars.java8
 
-import org.srcgll.parser.generator.ParserGeneratorException
-import org.srcgll.rsm.symbol.ITerminal
+import org.ucfs.parser.generator.ParserGeneratorException
+import org.ucfs.rsm.symbol.ITerminal
 
 enum class Token : ITerminal {
     ID, EOF, INTEGERLIT, FLOATINGLIT, BOOLEANLIT, CHARLIT, STRINGLIT, NULLLIT,

@@ -1,10 +1,10 @@
 package rsm
 
 import org.junit.jupiter.api.Test
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.rsm.symbol.Term
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

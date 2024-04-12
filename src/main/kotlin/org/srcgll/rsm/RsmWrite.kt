@@ -1,9 +1,9 @@
-package org.srcgll.rsm
+package org.ucfs.rsm
 
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Symbol
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.rsm.symbol.Symbol
+import org.ucfs.rsm.symbol.Term
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

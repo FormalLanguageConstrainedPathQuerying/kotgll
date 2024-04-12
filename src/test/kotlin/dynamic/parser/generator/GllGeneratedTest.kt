@@ -5,11 +5,11 @@ import dynamic.parser.IDynamicGllTest.Companion.getFiles
 import dynamic.parser.IDynamicGllTest.Companion.getLines
 import dynamic.parser.IDynamicGllTest.Companion.readFile
 import org.junit.jupiter.api.DynamicNode
-import org.srcgll.input.LinearInput
-import org.srcgll.input.LinearInputLabel
-import org.srcgll.parser.ParsingException
-import org.srcgll.parser.generator.ParserGeneratorException
-import org.srcgll.rsm.symbol.ITerminal
+import org.ucfs.input.LinearInput
+import org.ucfs.input.LinearInputLabel
+import org.ucfs.parser.ParsingException
+import org.ucfs.parser.generator.ParserGeneratorException
+import org.ucfs.rsm.symbol.ITerminal
 import java.io.File
 import java.io.Reader
 

@@ -1,6 +1,6 @@
-package org.srcgll.rsm.symbol
+package org.ucfs.rsm.symbol
 
-import org.srcgll.rsm.RsmState
+import org.ucfs.rsm.RsmState
 import java.util.*
 
 class Nonterminal(val name: String?) : Symbol {

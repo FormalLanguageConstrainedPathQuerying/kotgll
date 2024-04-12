@@ -1,3 +1,3 @@
-package org.srcgll.rsm.symbol
+package org.ucfs.rsm.symbol
 
 interface Symbol

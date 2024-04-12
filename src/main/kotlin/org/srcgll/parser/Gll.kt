@@ -1,15 +1,15 @@
-package org.srcgll.parser
+package org.ucfs.parser
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.input.IInputGraph
-import org.srcgll.input.ILabel
-import org.srcgll.input.IRecoveryInputGraph
-import org.srcgll.parser.context.Context
-import org.srcgll.parser.context.IContext
-import org.srcgll.parser.context.RecoveryContext
-import org.srcgll.rsm.RsmState
-import org.srcgll.sppf.node.ISppfNode
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.input.IInputGraph
+import org.ucfs.input.ILabel
+import org.ucfs.input.IRecoveryInputGraph
+import org.ucfs.parser.context.Context
+import org.ucfs.parser.context.IContext
+import org.ucfs.parser.context.RecoveryContext
+import org.ucfs.rsm.RsmState
+import org.ucfs.sppf.node.ISppfNode
+import org.ucfs.sppf.node.SppfNode
 
 /**
  * Gll Factory

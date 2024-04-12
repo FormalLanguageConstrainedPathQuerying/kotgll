@@ -1,7 +1,7 @@
-package org.srcgll.rsm
+package org.ucfs.rsm
 
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.rsm.symbol.Term
 import java.nio.file.Path
 
 fun readRsmFromDot(filePath: String): RsmState = readRsmFromDot(Path.of(filePath))

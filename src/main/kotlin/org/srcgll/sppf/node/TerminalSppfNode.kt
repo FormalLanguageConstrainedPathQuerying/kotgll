@@ -1,6 +1,6 @@
-package org.srcgll.sppf.node
+package org.ucfs.sppf.node
 
-import org.srcgll.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.ITerminal
 import java.util.*
 
 /**

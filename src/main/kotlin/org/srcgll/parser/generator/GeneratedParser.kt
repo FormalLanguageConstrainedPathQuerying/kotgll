@@ -1,18 +1,18 @@
-package org.srcgll.parser.generator
+package org.ucfs.parser.generator
 
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.input.Edge
-import org.srcgll.input.IInputGraph
-import org.srcgll.input.ILabel
-import org.srcgll.parser.IGll
-import org.srcgll.parser.ParsingException
-import org.srcgll.parser.context.Context
-import org.srcgll.parser.context.IContext
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.ITerminal
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.input.Edge
+import org.ucfs.input.IInputGraph
+import org.ucfs.input.ILabel
+import org.ucfs.parser.IGll
+import org.ucfs.parser.ParsingException
+import org.ucfs.parser.context.Context
+import org.ucfs.parser.context.IContext
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.ITerminal
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.sppf.node.SppfNode
 
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     IGll<VertexType, LabelType> {

@@ -1,8 +1,8 @@
-package org.srcgll.grammar.combinator.regexp
+package org.ucfs.grammar.combinator.regexp
 
-import org.srcgll.grammar.combinator.Grammar
-import org.srcgll.rsm.RsmState
-import org.srcgll.rsm.symbol.Nonterminal
+import org.ucfs.grammar.combinator.Grammar
+import org.ucfs.rsm.RsmState
+import org.ucfs.rsm.symbol.Nonterminal
 import kotlin.reflect.KProperty
 
 open class Nt : DerivedSymbol {

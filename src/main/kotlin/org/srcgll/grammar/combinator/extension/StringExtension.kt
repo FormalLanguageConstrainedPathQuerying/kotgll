@@ -1,7 +1,7 @@
-package org.srcgll.grammar.combinator.extension
+package org.ucfs.grammar.combinator.extension
 
-import org.srcgll.grammar.combinator.regexp.*
-import org.srcgll.rsm.symbol.Term
+import org.ucfs.grammar.combinator.regexp.*
+import org.ucfs.rsm.symbol.Term
 
 object StringExtension {
     fun makeAlternative(literals: Iterable<String>): Regexp {

@@ -6,13 +6,13 @@ import grammars.dyck.GrammarDsl
 import java.util.HashMap
 import kotlin.Unit
 import kotlin.collections.List
-import org.srcgll.descriptors.Descriptor
-import org.srcgll.input.ILabel
-import org.srcgll.parser.context.IContext
-import org.srcgll.parser.generator.GeneratedParser
-import org.srcgll.rsm.symbol.Nonterminal
-import org.srcgll.rsm.symbol.Terminal
-import org.srcgll.sppf.node.SppfNode
+import org.ucfs.descriptors.Descriptor
+import org.ucfs.input.ILabel
+import org.ucfs.parser.context.IContext
+import org.ucfs.parser.generator.GeneratedParser
+import org.ucfs.rsm.symbol.Nonterminal
+import org.ucfs.rsm.symbol.Terminal
+import org.ucfs.sppf.node.SppfNode
 
 public class GrammarDslParser<VertexType, LabelType : ILabel> :
     GeneratedParser<VertexType, LabelType>() {
