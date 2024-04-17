@@ -94,33 +94,33 @@ class DyckGrammar : Grammar() {
     }    
 ``` 
 ### Production
-$A \Longrightarrow B \,\overset{def}{=}\, A = B$
+$A \Longrightarrow B \hspace{4pt} \overset{def}{=} \hspace{4pt} A = B$
 
 ### Concatenation
-$(\, \cdot \,) : \sum_∗ \times \sum_∗ → \sum_∗$
+$( \hspace{4pt} \cdot \hspace{4pt} ) : \sum_∗ \times \sum_∗ → \sum_∗$
 
-$a \cdot b \,\overset{def}{=}\, a * b$
+$a \cdot b \hspace{4pt} \overset{def}{=} \hspace{4pt} a * b$
 
 ### Alternative
-$(\, | \,) : \sum_∗ \times \sum_∗ → \sum_∗$
+$( \hspace{4pt} | \hspace{4pt} ) : \sum_∗ \times \sum_∗ → \sum_∗$
 
-$a \, | \, b \,\overset{def}{=}\, a \,\, or \,\, b$
+$a \hspace{4pt} | \hspace{4pt} b \hspace{4pt} \overset{def}{=} \hspace{4pt} a \hspace{4pt} or \hspace{4pt} b$
 
 ### Kleene Star
-$(\, ^* \,) : \sum→ \sum_∗$
+$( \hspace{4pt} ^* \hspace{4pt} ) : \sum→ \sum_∗$
 
-$a^* \,\overset{def}{=}\, \displaystyle\bigcup_{i \,=\, 0}^{\infty}a^i$
+$a^* \hspace{4pt} \overset{def}{=} \hspace{4pt} \displaystyle\bigcup_{i = 0}^{\infty}a^i$
 
-$a^* \,\overset{def}{=}\, Many(a)$
+$a^* \hspace{4pt} \overset{def}{=} \hspace{4pt} Many(a)$
 
-$a^+ \,\overset{def}{=}\, Some(a)$
+$a^+ \hspace{4pt} \overset{def}{=} \hspace{4pt} Some(a)$
 
 ### Optional
-$a? \,\overset{def}{=}\, a \,\, or \,\, Epsilon$
+$a? \hspace{4pt} \overset{def}{=} \hspace{4pt} a \hspace{4pt} or \hspace{4pt} Epsilon$
 
 Epsilon -- constant terminal with behavior corresponding to the $\varepsilon$ -- terminal (empty string).
 
-$a? \,\overset{def}{=}\, Opt(a)$
+$a? \hspace{4pt} \overset{def}{=} \hspace{4pt} Opt(a)$
 
 ### RSM
 DSL provides access to the RSM corresponding to the grammar using the `getRsm` method.    
