@@ -7,6 +7,7 @@ import org.srcgll.generators.IGeneratorFromGrammar
 import org.srcgll.generators.suppressWarningTypes
 import org.srcgll.grammar.combinator.Grammar
 import org.srcgll.grammar.combinator.regexp.*
+import org.srcgll.rsm.symbol.Nonterminal
 import java.nio.file.Path
 
 /**
@@ -19,7 +20,8 @@ class AstClassesGenerator(override val grammarClazz: Class<*>) :
     private val superClass: Class<*> = Node::class.java
 
     companion object {
-        private fun getClassName(nt: Nt): String = "${nt.nonterm.name}Node"
+        fun getClassName(nt: Nt): String = getClassName(nt.nonterm)
+        fun getClassName(nt: Nonterminal): String = "${nt.name}Node"
 
         //TODO add extensions `TerminalType: ITerminal`
         val terminalType = TypeVariableName("TerminalType")
