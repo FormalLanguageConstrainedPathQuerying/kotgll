@@ -32,6 +32,9 @@ Error recovery.
             └── resources   -- grammars' description and inputs
 ```
 
+## Core Algorithm
+UCFS is based on Generalized LL (GLL) parsing algorithm modified to handle language specification in form of Recursive State Machines (RSM-s) and input in form of arbitratry directed edge-labelled graph. Basic ideas described [here](https://arxiv.org/pdf/2312.11925.pdf). 
+
 ## Grammar Combinator
 
 Kotlin DSL for describing context-free grammars.
@@ -61,9 +64,9 @@ class AStar : Grammar() {
 ``` 
 ### Non-terminals
 
-val S by NT()
+`val S by NT()`
 
-Non-terminals must be fields of the grammar class. Make sure to declare using delegation `by NT()`!!!
+Non-terminals must be fields of the grammar class. Make sure to declare using delegation `by NT()`!
 
 Start non-terminal set with method `setStart(nt)`. Can be set only once for grammar.
 
