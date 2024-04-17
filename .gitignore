@@ -8,14 +8,14 @@
 
 input.txt
 
-/src/main/kotlin/org/ucfs/Example.kt
+/buildSrc/src/main/kotlin/org/ucfs/Example.kt
 
 # Benchmarks
-/src/jmh/resources/
+/buildSrc/src/jmh/resources/
 
 # antlr and iguana
-/src/main/kotlin/org/antlr
-/src/main/kotlin/org/iguana
+/buildSrc/src/main/kotlin/org/antlr
+/buildSrc/src/main/kotlin/org/iguana
 
 # Lexer
 /src/main/kotlin/org/ucfs/lexer/*.java

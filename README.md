@@ -1,24 +1,25 @@
+
 # UCFS
 
 > Note: project under heavy development!
 
 ## About
-**UCFS** is an **U**nuversal **C**ontext-**F**ree **S**olver: a tool to solve problems related to context-free and regular language intersection. Examples of such problems:
+**UCFS** is an **U**niversal **C**ontext-**F**ree **S**olver: a tool to solve problems related to context-free and regular language intersection. Examples of such problems:
 - Parsing
 - Context-free path querying (CFPQ)
-- Context-free language reachability (CFL-r)
+- Context-free language reachability (CFL-R)
 
-<!-- Online -- offline modes.
-
-All-pairs, multiple-source. All-paths, reachability. 
-
-Incrementality. Both the graph and RSM
-
-Error recovery.
-
- GLL-based
- RSM
--->
+<!-- Online -- offline modes.    
+    
+All-pairs, multiple-source. All-paths, reachability.     
+    
+Incrementality. Both the graph and RSM    
+    
+Error recovery.    
+    
+ GLL-based    
+ RSM    
+-->    
 
 ## Grammar Combinator
 
@@ -31,37 +32,37 @@ Kotlin DSL for describing context-free grammars.
 Example for A* grammar
 
 *EBNF*
-```
-A = "a"
-S = A* 
-```
-*DSL*
-```kotlin
-class AStar : Grammar() {
-        var A = Term("a")
-        var S by NT()
-
-        init {
-            setStart(S)
-            S = Many(A)
-        }
-    }
-```
+``` 
+A = "a"    
+S = A*     
+``` 
+*DSL*  
+```kotlin 
+class AStar : Grammar() {    
+        var A = Term("a")    
+        var S by NT()    
+    
+        init {    
+            setStart(S)    
+            S = Many(A)    
+        }    
+    }    
+``` 
 ### Non-terminals
 
-`val S by NT()`
+val S by NT()
 
-Non-terminals must be fields of the grammar class. Be sure to declare using delegation `by NT()`!!!
+Non-terminals must be fields of the grammar class. Make sure to declare using delegation `by NT()`!!!
 
-Start non-terminal set with method `setStart(nt)`. Can be set once for grammar.
+Start non-terminal set with method `setStart(nt)`. Can be set only once for grammar.
 
-### Terminals 
+### Terminals
 
 `val A = Term("a")`
 
 `val B = Term(42)`
 
-Terminal is a generic class. Can store terminals of any type. Terminals are compared based on their content. 
+Terminal is a generic class. Can store terminals of any type. Terminals are compared based on their content.
 
 They can be declared as fields of a grammar class or directly in productions.
 
@@ -69,54 +70,58 @@ They can be declared as fields of a grammar class or directly in productions.
 Example for Dyck language
 
 *EBNF*
-```
-S = S1 | S2 | S3 | ϵ
-S1 = '(' S ')' S 
-S2 = '[' S ']' S 
-S3 = '{' S '}' S 
-```
+``` 
+S = S1 | S2 | S3 | ε    
+S1 = '(' S ')' S     
+S2 = '[' S ']' S     
+S3 = '{' S '}' S     
+``` 
 *DSL*
-```kotlin
-class DyckGrammar : Grammar() {
-        var S by NT()
-        var S1 by NT()
-        var S2 by NT()
-        var S3 by NT()
-
-        init {
-            setStart(S)
-            S = S1 or S2 or S3 or Epsilon
-            S1 = Term("(") * S * Term(")") * S
-            S2 = Term("[") * S * Term("]") * S
-            S3 = Term("{") * S * Term("}") * S
-        }
-    }
-```
+```kotlin 
+class DyckGrammar : Grammar() {    
+        var S by NT()    
+        var S1 by NT()    
+        var S2 by NT()    
+        var S3 by NT()    
+    
+        init {    
+            setStart(S)    
+            S = S1 or S2 or S3 or Epsilon    
+            S1 = Term("(") * S * Term(")") * S    
+            S2 = Term("[") * S * Term("]") * S    
+            S3 = Term("{") * S * Term("}") * S    
+        }    
+    }    
+``` 
 ### Production
-A → B = A = B
+$A \Longrightarrow B \,\overset{def}{=}\, A = B$
 
 ### Concatenation
-(.): Σ∗ × Σ∗ → Σ∗
+$(\, \cdot \,) : \sum_∗ \times \sum_∗ → \sum_∗$
 
-a . b = a * b
+$a \cdot b \,\overset{def}{=}\, a * b$
 
 ### Alternative
-a | b = a or b
+$(\, | \,) : \sum_∗ \times \sum_∗ → \sum_∗$
+
+$a \, | \, b \,\overset{def}{=}\, a \,\, or \,\, b$
 
 ### Kleene Star
-$a* = U_{i=0}^{\inf}a^i$
+$(\, ^* \,) : \sum→ \sum_∗$
 
-a* = Many(a)
+$a^* \,\overset{def}{=}\, \displaystyle\bigcup_{i \,=\, 0}^{\infty}a^i$
 
-`todo: a+ = some(a)`
+$a^* \,\overset{def}{=}\, Many(a)$
 
-### Optional 
-a? -> a | Epsilon
+$a^+ \,\overset{def}{=}\, Some(a)$
 
-Epsilon -- constant terminal with behavior corresponding to the $\epsilon$ terminal (empty string).
+### Optional
+$a? \,\overset{def}{=}\, a \,\, or \,\, Epsilon$
 
-`todo: a? = opt(a)`
+Epsilon -- constant terminal with behavior corresponding to the $\varepsilon$ -- terminal (empty string).
 
-### RSM 
-DSL allows to get the RSM corresponding to the grammar using the `getRsm` method.
-The algorithm of RSM construction is based on Brzozowski derivations.
+$a? \,\overset{def}{=}\, Opt(a)$
+
+### RSM
+DSL provides access to the RSM corresponding to the grammar using the `getRsm` method.    
+The algorithm for RSM construction is based on Brzozowski derivations.
