@@ -22,6 +22,9 @@ jobs:
         run: |
           sudo apt-get install -y jflex
           ./benchmarks.generate_lexers.sh
+
+      - name: Generate ANTLR4 files
+        run: |
           sudo apt-get install antlr4
           ./benchmarks.generate_antlr_classes.sh
 
