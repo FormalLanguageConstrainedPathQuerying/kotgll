@@ -25,12 +25,6 @@ open class Alternative(
     }
 }
 
-class Optional private constructor(val exp: Regexp): Alternative(Epsilon, exp){
-    companion object{
-        fun create(exp: Regexp): Alternative = Optional(exp)
-    }
-}
-
 infix fun Regexp.or(other: Regexp): Regexp = Alternative.makeAlternative(left = this, other)
 
-fun opt(exp: Regexp): Alternative = Optional.create(exp)
+fun opt(exp: Regexp): Alternative = Alternative(Epsilon, exp)
