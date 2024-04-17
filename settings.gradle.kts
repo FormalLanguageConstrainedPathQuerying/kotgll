@@ -1,8 +1,2 @@
-pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
 rootProject.name = "ucfs"
+include("benchmarks", "solver")

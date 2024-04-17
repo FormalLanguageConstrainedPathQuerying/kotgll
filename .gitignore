@@ -5,21 +5,20 @@
 *.py
 
 # input file
-
 input.txt
 
-/src/main/kotlin/org/ucfs/Example.kt
-
 # Benchmarks
-/src/jmh/resources/
+/benchmarks/build/
+/benchmarks/src/jmh/kotlin/antlr4/*
+!/benchmarks/src/jmh/kotlin/antlr4/*.g4
 
-# antlr and iguana
-/src/main/kotlin/org/antlr
-/src/main/kotlin/org/iguana
+# Lexers
+/benchmarks/src/jmh/kotlin/lexers/*.java
+/benchmarks/src/jmh/kotlin/lexers/*.~java
 
-# Lexer
-/src/main/kotlin/org/ucfs/lexer/*.java
-/src/main/kotlin/org/ucfs/lexer/*.java~
+solver/build/
+build/
+out/
 
 # No idea wtf is this
 *.attach*
