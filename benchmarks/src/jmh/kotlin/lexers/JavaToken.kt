@@ -1,6 +1,6 @@
 package lexers
 
-import org.ucfs.parser.generator.ParserGeneratorException
+import org.ucfs.parser.ParsingException
 import org.ucfs.rsm.symbol.ITerminal
 
 enum class JavaToken : ITerminal {
@@ -19,7 +19,7 @@ enum class JavaToken : ITerminal {
         return object : Comparator<ITerminal> {
             override fun compare(a: ITerminal, b: ITerminal): Int {
                 if (a !is JavaToken || b !is JavaToken) {
-                    throw ParserGeneratorException(
+                    throw ParsingException(
                         "used comparator for $javaClass, " +
                                 "but got elements of ${a.javaClass}$ and ${b.javaClass}\$"
                     )
