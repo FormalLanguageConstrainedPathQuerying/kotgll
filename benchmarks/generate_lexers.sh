@@ -1,6 +1,8 @@
 #!/bin/bash
 
 shopt -s nullglob     #ingore failed patterns
+echo "\nCurrent directory: "
+echo "$PWD"
 
 cd ./src/jmh/kotlin/lexers
 
