@@ -1,2 +1,8 @@
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+}
 rootProject.name = "ucfs"
-include("benchmarks", "solver")
+include("solver")
+include("benchmarks")
+include("generator")
+include("test-shared")

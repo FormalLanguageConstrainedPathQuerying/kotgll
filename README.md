@@ -21,6 +21,17 @@ Error recovery.
  RSM    
 -->    
 
+## Project structure 
+```
+├── solver                  -- base ucfs logic
+├── benchmarks              -- comparison with antlr4
+├── generator               -- parser and ast node classes generator
+└── test-shared             -- test cases 
+    └── src
+        └── test
+            └── resources   -- grammars' description and inputs
+```
+
 ## Grammar Combinator
 
 Kotlin DSL for describing context-free grammars.
