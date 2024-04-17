@@ -18,6 +18,7 @@ dependencies {
     jmhImplementation("org.openjdk.jmh:jmh-generator-annprocess:1.36")
     jmhImplementation("org.openjdk.jmh:jmh-generator-bytecode:1.36")
 }
+kotlin { jvmToolchain(11) }
 
 configure<SourceSetContainer> {
     named("jmh") {

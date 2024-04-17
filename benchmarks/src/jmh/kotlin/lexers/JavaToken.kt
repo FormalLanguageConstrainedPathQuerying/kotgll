@@ -3,7 +3,7 @@ package lexers
 import org.ucfs.parser.generator.ParserGeneratorException
 import org.ucfs.rsm.symbol.ITerminal
 
-enum class Token : ITerminal {
+enum class JavaToken : ITerminal {
     ID, EOF, INTEGERLIT, FLOATINGLIT, BOOLEANLIT, CHARLIT, STRINGLIT, NULLLIT,
     BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE, DOT, BRACKETLEFT, BRACKETRIGHT,
     PARENTHLEFT, PARENTHRIGHT, CURLYLEFT, CURLYRIGHT, EXTENDS, ANDBIT, LT, GT,
@@ -18,7 +18,7 @@ enum class Token : ITerminal {
     override fun getComparator(): Comparator<ITerminal> {
         return object : Comparator<ITerminal> {
             override fun compare(a: ITerminal, b: ITerminal): Int {
-                if (a !is Token || b !is Token) {
+                if (a !is JavaToken || b !is JavaToken) {
                     throw ParserGeneratorException(
                         "used comparator for $javaClass, " +
                                 "but got elements of ${a.javaClass}$ and ${b.javaClass}\$"

@@ -9,11 +9,12 @@ input.txt
 
 # Benchmarks
 /benchmarks/build/
-/benchmarks/src/jmh/kotlin/antlr4/*.interp
-/benchmarks/src/jmh/kotlin/antlr4/*.tokens
-/benchmarks/src/jmh/kotlin/antlr4/*.java
+/benchmarks/src/jmh/kotlin/antlr4/*
+!/benchmarks/src/jmh/kotlin/antlr4/*.g4
+
+# Lexers
 /benchmarks/src/jmh/kotlin/lexers/*.java
-/benchmarks/src/jmh/kotlin/lexers*.~java
+/benchmarks/src/jmh/kotlin/lexers/*.~java
 
 solver/build/
 build/

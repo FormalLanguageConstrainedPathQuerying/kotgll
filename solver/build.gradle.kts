@@ -23,11 +23,6 @@ dependencies {
     testImplementation("com.github.tschuchortdev:kotlin-compile-testing:1.5.0")
 }
 
-
-configure<SourceSetContainer> {
-    named("main") {
-        java.srcDir("solver/src/main/kotlin")
-    }
-}
+kotlin { jvmToolchain(11) }
 
 tasks.test { useJUnitPlatform() }

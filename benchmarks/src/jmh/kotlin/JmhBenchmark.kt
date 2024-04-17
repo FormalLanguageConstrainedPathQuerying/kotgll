@@ -3,8 +3,8 @@ package jmh.kotlin
 
 import antlr4.Java8Parser
 import antlr4.Java8Lexer
-import lexers.Lexer
-import lexers.Token
+import lexers.JavaLexer
+import lexers.JavaToken
 import grammars.JavaGrammar
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
@@ -22,16 +22,16 @@ val pathToInput = "benchmarks/src/jmh/resources/srcFiles/"
 
 fun getTokenStream(input: String): RecoveryLinearInput<Int, LinearInputLabel> {
     val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
-    val lexer = Lexer(StringReader(input))
+    val lexer = JavaLexer(StringReader(input))
     var vertexId = 0
-    var token: Token
+    var token: JavaToken
 
     inputGraph.addStartVertex(vertexId)
     inputGraph.addVertex(vertexId)
 
     while (true) {
-        token = lexer.yylex() as Token
-        if (token == Token.EOF) break
+        token = lexer.yylex() as JavaToken
+        if (token == JavaToken.EOF) break
         println(token.name)
         inputGraph.addEdge(vertexId, LinearInputLabel(Term(token)), ++vertexId)
         inputGraph.addVertex(vertexId)
