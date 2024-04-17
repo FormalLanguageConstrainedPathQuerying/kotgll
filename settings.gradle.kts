@@ -1,2 +1,2 @@
 rootProject.name = "ucfs"
-include("benchmarks")
+include("benchmarks", "solver")

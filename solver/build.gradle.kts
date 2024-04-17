@@ -26,10 +26,7 @@ dependencies {
 
 configure<SourceSetContainer> {
     named("main") {
-        java.srcDir("buildSrc/src/main/kotlin")
-    }
-    named("test") {
-        kotlin.srcDir("buildSrc/src/test/kotlin")
+        java.srcDir("solver/src/main/kotlin")
     }
 }
 

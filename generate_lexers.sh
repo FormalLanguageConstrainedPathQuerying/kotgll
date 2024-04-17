@@ -2,7 +2,7 @@
 
 shopt -s nullglob     #ingore failed patterns
 
-cd src/main/kotlin/org/ucfs/lexer
+cd benchmarks/src/jmh/kotlin/lexers
 
 for lexer_name in *.jflex *.jlex *.lex *.flex *.x
 do

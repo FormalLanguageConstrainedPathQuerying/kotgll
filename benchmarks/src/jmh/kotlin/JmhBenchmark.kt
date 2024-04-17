@@ -1,38 +1,39 @@
 package jmh.kotlin
 
-import org.antlr.Java8Lexer
-import org.antlr.Java8Parser
+
+import antlr4.Java8Parser
+import antlr4.Java8Lexer
+import lexers.Lexer
+import lexers.Token
+import grammars.JavaGrammar
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.ucfs.parser.Gll
-import org.ucfs.lexer.JavaGrammar
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
 import org.ucfs.input.LinearInputLabel
 import org.ucfs.input.RecoveryLinearInput
-import org.ucfs.lexer.JavaLexer
-import org.ucfs.lexer.JavaToken
-import org.ucfs.rsm.symbol.Terminal
+import org.ucfs.rsm.symbol.Term
 import java.io.File
 import java.io.StringReader
 import java.util.concurrent.TimeUnit
 
-val pathToInput = "/src/jmh/resources/junit4SourcesProcessedErrorFree/"
+val pathToInput = "benchmarks/src/jmh/resources/srcFiles/"
 
 fun getTokenStream(input: String): RecoveryLinearInput<Int, LinearInputLabel> {
     val inputGraph = RecoveryLinearInput<Int, LinearInputLabel>()
-    val lexer = JavaLexer(StringReader(input))
+    val lexer = Lexer(StringReader(input))
     var vertexId = 0
-    var token: JavaToken
+    var token: Token
 
     inputGraph.addStartVertex(vertexId)
     inputGraph.addVertex(vertexId)
 
     while (true) {
-        token = lexer.yylex() as JavaToken
-        if (token == JavaToken.EOF) break
+        token = lexer.yylex() as Token
+        if (token == Token.EOF) break
         println(token.name)
-        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
+        inputGraph.addEdge(vertexId, LinearInputLabel(Term(token)), ++vertexId)
         inputGraph.addVertex(vertexId)
     }
 

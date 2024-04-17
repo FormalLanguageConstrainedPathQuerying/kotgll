@@ -1,5 +1,3 @@
-//apply(from = rootProject.file("buildSrc/build.gradle.kts"))
-
 plugins {
     java
     kotlin("jvm") version "1.9.20"
@@ -13,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":solver"))
     implementation("java_cup:java_cup:0.9e")
     implementation("org.antlr:antlr4:4.13.1")
     jmhImplementation("org.openjdk.jmh:jmh-core:1.36")
@@ -22,8 +21,8 @@ dependencies {
 
 configure<SourceSetContainer> {
     named("jmh") {
-        kotlin.srcDir(rootProject.path + "benchmarks/src/jmh/kotlin")
-        resources.srcDir(rootProject.path + "benchmarks/src/jmh/resources")
+        kotlin.srcDir("benchmarks/src/jmh/kotlin")
+        resources.srcDir("benchmarks/src/jmh/resources")
     }
 }
 
