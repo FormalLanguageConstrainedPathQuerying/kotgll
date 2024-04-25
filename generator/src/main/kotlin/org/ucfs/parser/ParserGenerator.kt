@@ -1,10 +1,9 @@
-package org.pl.parser
+package org.ucfs.parser
 
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.rsm.symbol.ITerminal
-import org.ucfs.parser.IParserGenerator
 import java.nio.file.Path
 
 /**
@@ -12,11 +11,12 @@ import java.nio.file.Path
  * Unlike the scannerless parser , it uses scanner enumeration objects as terminals.
  * @see ScanerlessParserGenerator
  */
-class  ParserGenerator(override val grammarClazz: Class<*>, private val terminalsEnum: Class<*>) : IParserGenerator {
+class ParserGenerator(override val grammarClazz: Class<*>, private val terminalsEnum: Class<*>) : IParserGenerator {
 
-    init{
+    init {
         buildGrammar(grammarClazz)
     }
+
     override fun generateTerminalHandling(terminal: ITerminal): CodeBlock {
 
         val terminalName = "${terminalsEnum.simpleName}.$terminal"
@@ -31,10 +31,11 @@ class  ParserGenerator(override val grammarClazz: Class<*>, private val terminal
         )
     }
 
-    override fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
-        val builder = super.getFileBuilder(location, pkg)
+    private fun getFileBuilder(location: Path, pkg: String): FileSpec.Builder {
+        val builder = super.getFileBuilder(pkg)
         builder.addImport(terminalsEnum.packageName, terminalsEnum.simpleName)
         return builder
     }
+
     override val grammar: Grammar = buildGrammar(grammarClazz)
 }

@@ -23,4 +23,6 @@ object StringExtension {
     fun many(some: String): Regexp {
         return many(Term(some))
     }
+    fun Option(exp: String) = Alternative.makeAlternative(Epsilon, Term(exp))
+
 }

@@ -45,7 +45,12 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         }
 
         if (state.isStart && state.isFinal) {
-            checkAcceptance(epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal)
+            checkAcceptance(
+                epsilonSppfNode,
+                epsilonSppfNode!!.leftExtent,
+                epsilonSppfNode!!.rightExtent,
+                state.nonterminal
+            )
         }
         checkAcceptance(curSppfNode, leftExtent, rightExtent, state.nonterminal)
 
@@ -66,10 +71,11 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         curSppfNode: SppfNode<VertexType>?
     ) {
 
-        val newStates = state.terminalEdges[terminal] ?:
-            throw ParsingException("State $state does not contains edges " +
+        val newStates = state.terminalEdges[terminal] ?: throw ParsingException(
+            "State $state does not contains edges " +
                     "\nby terminal $terminal" +
-                    "\naccessible edges: ${state.terminalEdges}\n")
+                    "\naccessible edges: ${state.terminalEdges}\n"
+        )
 
 
         if (inputEdge.label.terminal == terminal) {

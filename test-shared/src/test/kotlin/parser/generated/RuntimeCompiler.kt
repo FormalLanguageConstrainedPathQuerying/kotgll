@@ -2,11 +2,11 @@ package parser.generated
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
-import org.pl.parser.ParserGenerator
+import org.ucfs.GeneratorException
 import org.ucfs.input.LinearInputLabel
 import org.ucfs.parser.GeneratedParser
 import org.ucfs.parser.IParserGenerator
-import org.ucfs.parser.ParserGeneratorException
+import org.ucfs.parser.ParserGenerator
 import org.ucfs.parser.ScanerlessParserGenerator
 import parser.generated.GllGeneratedTest.Companion.DSL_FILE_NAME
 import parser.generated.GllGeneratedTest.Companion.LEXER_NAME
@@ -22,7 +22,7 @@ object RuntimeCompiler {
     private fun resourceOf(name: String): Path {
         return Path.of(
             this.javaClass.getResource(name)?.path
-                ?: throw ParserGeneratorException("Can't find $name file in test resources")
+                ?: throw GeneratorException("Can't find $name file in test resources")
         )
     }
 

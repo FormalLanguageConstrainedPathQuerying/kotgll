@@ -85,3 +85,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Generated files ###
+/gen/
