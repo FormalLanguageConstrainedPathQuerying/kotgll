@@ -11,9 +11,9 @@ fun writeSppfToDot(sppfNode: ISppfNode, filePath: String, label: String = "") {
     val edges: HashMap<Int, HashSet<Int>> = HashMap()
     val visited: HashSet<Int> = HashSet()
     var node: ISppfNode
-
-    Files.createDirectories(Paths.get("gen"))
-    val file = File(Path.of("gen", filePath).toUri())
+    val genPath = Path.of("gen", "sppf")
+    Files.createDirectories(genPath)
+    val file = genPath.resolve(filePath).toFile()
 
 
     file.printWriter().use { out ->

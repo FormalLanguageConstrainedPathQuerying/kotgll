@@ -1,7 +1,10 @@
 package org.ucfs.parser
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.asTypeName
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.parser.IParserGenerator.Companion.INPUT_EDGE_NAME
 import org.ucfs.rsm.symbol.ITerminal

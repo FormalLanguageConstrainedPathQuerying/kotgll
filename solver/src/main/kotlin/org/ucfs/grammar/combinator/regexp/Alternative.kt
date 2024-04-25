@@ -4,8 +4,8 @@ import org.ucfs.rsm.symbol.Term
 
 
 data class Alternative(
-    internal val left: Regexp,
-    internal val right: Regexp,
+    val left: Regexp,
+    val right: Regexp,
 ) : Regexp {
     companion object {
         fun makeAlternative(left: Regexp, right: Regexp): Regexp {
@@ -29,10 +29,5 @@ data class Alternative(
 }
 
 infix fun Regexp.or(other: Regexp): Regexp = Alternative.makeAlternative(left = this, other)
-infix fun String.or(other: Regexp): Regexp = Alternative.makeAlternative(left = Term(this), other)
-infix fun Regexp.or(other: String): Regexp = Alternative.makeAlternative(left = this, Term(other))
-infix fun String.or(other: String): Regexp = Alternative.makeAlternative(left = Term(this), Term(other))
-
 
 fun Option(exp: Regexp) = Alternative.makeAlternative(Epsilon, exp)
-fun Option(exp: String) = Alternative.makeAlternative(Epsilon, Term(exp))

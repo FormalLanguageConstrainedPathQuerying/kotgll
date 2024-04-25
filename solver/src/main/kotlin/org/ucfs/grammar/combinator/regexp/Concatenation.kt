@@ -1,8 +1,8 @@
 package org.ucfs.grammar.combinator.regexp
 
 data class Concat(
-    internal val head: Regexp,
-    internal val tail: Regexp,
+    val head: Regexp,
+    val tail: Regexp,
 ) : Regexp {
 
     /*

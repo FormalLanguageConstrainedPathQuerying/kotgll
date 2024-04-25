@@ -1,13 +1,13 @@
 package parser.generated
 
 import org.junit.jupiter.api.DynamicNode
+import org.ucfs.GeneratorException
 import org.ucfs.IDynamicGllTest
 import org.ucfs.IDynamicGllTest.Companion.getFiles
 import org.ucfs.IDynamicGllTest.Companion.getLines
 import org.ucfs.IDynamicGllTest.Companion.readFile
 import org.ucfs.input.LinearInput
 import org.ucfs.input.LinearInputLabel
-import org.ucfs.parser.ParserGeneratorException
 import org.ucfs.parser.ParsingException
 import org.ucfs.rsm.symbol.ITerminal
 import java.io.File
@@ -30,7 +30,7 @@ open class GllGeneratedTest : IOfflineGllTest {
         //equals to `val lexer = Lexer(input.reader())`
         val lexer = lexerClass.getConstructor(Reader::class.java).newInstance(input.reader())
         val yylex = lexerClass.methods.firstOrNull { it.name == "yylex" }
-            ?: throw ParserGeneratorException("cant find jflex class $lexerClass")
+            ?: throw GeneratorException("cant find jflex class $lexerClass")
 
         var token: ITerminal
         var vertexId = 0
