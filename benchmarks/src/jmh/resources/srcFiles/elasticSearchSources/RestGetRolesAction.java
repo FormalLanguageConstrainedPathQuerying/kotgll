@@ -1,0 +1,93 @@
+/*
+ * Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+ * or more contributor license agreements. Licensed under the Elastic License
+ * 2.0; you may not use this file except in compliance with the Elastic License
+ * 2.0.
+ */
+package org.elasticsearch.xpack.security.rest.action.role;
+
+import org.elasticsearch.client.internal.node.NodeClient;
+import org.elasticsearch.cluster.node.DiscoveryNode;
+import org.elasticsearch.common.Strings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.core.RestApiVersion;
+import org.elasticsearch.license.XPackLicenseState;
+import org.elasticsearch.rest.RestRequest;
+import org.elasticsearch.rest.RestResponse;
+import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.rest.Scope;
+import org.elasticsearch.rest.ServerlessScope;
+import org.elasticsearch.rest.action.RestBuilderListener;
+import org.elasticsearch.xcontent.XContentBuilder;
+import org.elasticsearch.xpack.core.security.action.role.GetRolesRequestBuilder;
+import org.elasticsearch.xpack.core.security.action.role.GetRolesResponse;
+import org.elasticsearch.xpack.core.security.authz.RoleDescriptor;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.elasticsearch.rest.RestRequest.Method.GET;
+
+/**
+ * Rest endpoint to retrieve a Role from the security index
+ */
+@ServerlessScope(Scope.PUBLIC)
+public class RestGetRolesAction extends NativeRoleBaseRestHandler {
+
+    public RestGetRolesAction(Settings settings, XPackLicenseState licenseState) {
+        super(settings, licenseState);
+    }
+
+    @Override
+    public List<Route> routes() {
+        return List.of(
+            Route.builder(GET, "/_security/role/").replaces(GET, "/_xpack/security/role/", RestApiVersion.V_7).build(),
+            Route.builder(GET, "/_security/role/{name}").replaces(GET, "/_xpack/security/role/{name}", RestApiVersion.V_7).build()
+        );
+    }
+
+    @Override
+    public String getName() {
+        return "security_get_roles_action";
+    }
+
+    @Override
+    public RestChannelConsumer innerPrepareRequest(RestRequest request, NodeClient client) throws IOException {
+        final String[] roles = request.paramAsStringArray("name", Strings.EMPTY_ARRAY);
+        final boolean restrictRequest = isPathRestricted(request);
+        return channel -> new GetRolesRequestBuilder(client).names(roles)
+            .nativeOnly(restrictRequest)
+            .execute(new RestBuilderListener<>(channel) {
+                @Override
+                public RestResponse buildResponse(GetRolesResponse response, XContentBuilder builder) throws Exception {
+                    builder.startObject();
+                    for (RoleDescriptor role : response.roles()) {
+                        builder.field(role.getName(), role);
+                    }
+                    builder.endObject();
+
+                    if (roles.length != 0 && response.roles().length == 0) {
+                        return new RestResponse(RestStatus.NOT_FOUND, builder);
+                    }
+
+                    return new RestResponse(RestStatus.OK, builder);
+                }
+            });
+    }
+
+    @Override
+    protected Exception innerCheckFeatureAvailable(RestRequest request) {
+        final boolean restrictPath = isPathRestricted(request);
+        if (false == restrictPath) {
+            return null;
+        } else {
+            return super.innerCheckFeatureAvailable(request);
+        }
+    }
+
+    private boolean isPathRestricted(RestRequest request) {
+        final boolean restrictRequest = request.hasParam(RestRequest.PATH_RESTRICTED);
+        assert false == restrictRequest || DiscoveryNode.isStateless(settings);
+        return restrictRequest;
+    }
+}

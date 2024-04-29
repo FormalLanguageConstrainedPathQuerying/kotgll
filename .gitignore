@@ -7,6 +7,9 @@
 # input file
 input.txt
 
+# Main
+solver/src/main/kotlin/org/ucfs/Main.kt
+
 # Benchmarks
 /benchmarks/build/
 /benchmarks/src/jmh/kotlin/antlr4/*

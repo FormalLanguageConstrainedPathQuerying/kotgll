@@ -13,7 +13,8 @@ repositories {
 dependencies {
     implementation(project(":solver"))
     implementation("java_cup:java_cup:0.9e")
-    implementation("org.antlr:antlr4:4.13.1")
+    implementation("org.antlr:antlr4:4.7.2")
+    implementation("io.klogging:klogging-jvm:0.5.11")
     jmhImplementation("org.openjdk.jmh:jmh-core:1.36")
     jmhImplementation("org.openjdk.jmh:jmh-generator-annprocess:1.36")
     jmhImplementation("org.openjdk.jmh:jmh-generator-bytecode:1.36")

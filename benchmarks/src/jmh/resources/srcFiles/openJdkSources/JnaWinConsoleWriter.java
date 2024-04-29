@@ -1,0 +1,34 @@
+/*
+ * Copyright (c) 2002-2017, the original author or authors.
+ *
+ * This software is distributable under the BSD license. See the terms of the
+ * BSD license in the documentation provided with this software.
+ *
+ * https:
+ */
+package jdk.internal.org.jline.terminal.impl.jna.win;
+
+import jdk.internal.org.jline.terminal.impl.AbstractWindowsConsoleWriter;
+import jdk.internal.org.jline.terminal.impl.jna.LastErrorException;
+
+import java.io.IOException;
+
+class JnaWinConsoleWriter extends AbstractWindowsConsoleWriter {
+
+    private final Pointer console;
+    private final IntByReference writtenChars = new IntByReference();
+
+    JnaWinConsoleWriter(Pointer console) {
+        this.console = console;
+    }
+
+    @Override
+    protected void writeConsole(char[] text, int len) throws IOException {
+        try {
+            Kernel32.INSTANCE.WriteConsoleW(this.console, text, len, this.writtenChars, null);
+        } catch (LastErrorException e) {
+            throw new IOException("Failed to write to console", e);
+        }
+    }
+
+}
