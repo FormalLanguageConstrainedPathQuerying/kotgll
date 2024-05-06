@@ -1,4 +1,4 @@
-package lexers;
+package org.ucfs;
 
 import java.io.*;
 

@@ -88,3 +88,5 @@ bin/
 
 ### Generated files ###
 /gen/
+/benchmarks/src/main/java/org/antlr/*
+!/benchmarks/src/main/java/org/antlr/Java8.g4

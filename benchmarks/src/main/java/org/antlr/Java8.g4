@@ -55,7 +55,7 @@ Total lexer+parser time 30844ms.
 grammar Java8;
 
 @header {
-package antlr4;
+package org.antlr;
 }
 
 /*

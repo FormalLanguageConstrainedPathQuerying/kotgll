@@ -1,4 +1,4 @@
-package lexers
+package org.ucfs
 
 import org.ucfs.parser.ParsingException
 import org.ucfs.rsm.symbol.ITerminal

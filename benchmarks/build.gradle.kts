@@ -1,7 +1,7 @@
 plugins {
     java
     kotlin("jvm") version "1.9.20"
-    id("me.champeau.jmh") version "0.7.2"
+    id("org.jetbrains.kotlinx.benchmark") version "0.4.10"
     kotlin("plugin.allopen") version "1.9.20"
 }
 
@@ -11,42 +11,47 @@ repositories {
 }
 
 dependencies {
+    //benchmarks tool
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.10")
+    //compared projects
+    // 1. for ucfs
     implementation(project(":solver"))
+    // 2. for java_cup (?)
     implementation("java_cup:java_cup:0.9e")
+    // 3. for antlr
     implementation("org.antlr:antlr4:4.13.1")
-    jmhImplementation("org.openjdk.jmh:jmh-core:1.36")
-    jmhImplementation("org.openjdk.jmh:jmh-generator-annprocess:1.36")
-    jmhImplementation("org.openjdk.jmh:jmh-generator-bytecode:1.36")
+    // 4. for iguana
+    implementation("io.usethesource:capsule:0.6.3")
+    implementation("info.picocli:picocli:4.7.0")
+    implementation("com.google.guava:guava-testlib:23.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.14.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
 }
-kotlin { jvmToolchain(11) }
 
-configure<SourceSetContainer> {
-    named("jmh") {
-        kotlin.srcDir("benchmarks/src/jmh/kotlin")
-        resources.srcDir("benchmarks/src/jmh/resources")
+fun getArgs(): Array<String>{
+    val resourcesDir = sourceSets["main"].resources.srcDirs.first()
+    val files = resourcesDir.listFiles()!!
+    return files.map { it.name }.sorted().toTypedArray()
+}
+
+benchmark {
+    configurations {
+        named("main"){
+            param("fileName", *getArgs())
+            this.reportFormat = "csv"
+        }
+    }
+    targets {
+        register("main")
     }
 }
 
-jmh {
-    duplicateClassesStrategy = DuplicatesStrategy.EXCLUDE
-    zip64 = true
-    warmupForks = 0
-    warmupBatchSize = 1
-    warmupIterations = 5
-    warmup = "0s"
-    timeOnIteration = "0s"
-    fork = 1
-    batchSize = 1
-    iterations = 15
-    verbosity = "EXTRA"
-    jmhTimeout = "300s"
-    benchmarkMode.addAll("ss")
-    failOnError = false
-    forceGC = true
-    resultFormat = "CSV"
-    jvmArgs.addAll("-Xmx4096m", "-Xss4m", "-XX:+UseG1GC")
+allOpen {
+    annotation("org.openjdk.jmh.annotations.State")
 }
 
-tasks.processJmhResources {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+kotlin { jvmToolchain(11) }
+
+
+

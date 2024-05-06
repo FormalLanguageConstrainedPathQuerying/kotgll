@@ -1,9 +1,8 @@
-package grammars
-import lexers.JavaToken
+package org.ucfs
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.regexp.*
 
-class JavaGrammar : Grammar() {
+class Java8 : Grammar() {
     var CompilationUnit by Nt()
     var Identifier by Nt()
     var Literal by Nt()
