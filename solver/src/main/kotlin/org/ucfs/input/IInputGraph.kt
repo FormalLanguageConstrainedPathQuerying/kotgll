@@ -13,6 +13,10 @@ import org.ucfs.sppf.node.SppfNode
  * @param LabelType - type of label on edges in input graph
  */
 interface IInputGraph<VertexType, LabelType : ILabel> {
+    fun log(msg: String) {
+       // println(msg)
+    }
+
     /**
      * Collection of all vertices in graph
      */
@@ -123,14 +127,18 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
         val inputPosition = descriptor.inputPosition
         val terminalEdges = rsmState.terminalEdges
         val nonterminalEdges = rsmState.nonterminalEdges
-
+        log("\n$descriptor")
         for (inputEdge in ctx.input.getEdges(inputPosition)) {
             if (inputEdge.label.terminal == null) {
+                log("Epsilon terminal")
                 handleTerminalOrEpsilonEdge(descriptor, sppfNode, null, descriptor.rsmState, inputEdge.head, 0)
                 continue
             }
+            log("Compare terminal: current ${inputEdge.label.terminal}$")
             for ((edgeTerminal, targetStates) in terminalEdges) {
+                log("edgeTerminal ${edgeTerminal}$")
                 if (inputEdge.label.terminal == edgeTerminal) {
+                    log("EQUALS!")
                     for (target in targetStates) {
                         handleTerminalOrEpsilonEdge(descriptor, sppfNode, edgeTerminal, target, inputEdge.head, 0)
                     }

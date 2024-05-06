@@ -42,7 +42,7 @@ fun <G : IInputGraph<Int, LinearInputLabel>> getTokenStream(input: String, input
     while (true) {
         token = lexer.yylex() as JavaToken
         if (token == JavaToken.EOF) break
-        inputGraph.addEdge(vertexId, LinearInputLabel(Term(token)), ++vertexId)
+        inputGraph.addEdge(vertexId, LinearInputLabel(token), ++vertexId)
     }
 
     return inputGraph

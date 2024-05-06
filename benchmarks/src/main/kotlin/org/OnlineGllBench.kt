@@ -3,6 +3,8 @@ package org
 import kotlinx.benchmark.*
 import org.openjdk.jmh.annotations.Threads
 import org.ucfs.Java8
+import org.ucfs.input.LinearInput
+import org.ucfs.input.LinearInputLabel
 import org.ucfs.parser.Gll
 import org.ucfs.sppf.buildStringFromSppf
 
@@ -22,23 +24,23 @@ class OnlineGllBench {
     lateinit var fileContents: String
 
     val startState = Java8().rsm
+    lateinit var tokens: LinearInput<Int, LinearInputLabel>
 
     @Setup
     fun prepare() {
-        val srcText: String = OnlineGllBench::class.java.classLoader
+        fileContents = OnlineGllBench::class.java.classLoader
             .getResource(fileName)?.readText() ?: throw Exception("File $fileName does not exists")
+        tokens = getTokenStream(fileContents)
         val gll = Gll.gll(
             startState,
-            getTokenStream(srcText)
+            tokens
         )
-        val parseResult = gll.parse().first ?: throw Exception("File $fileName cant be parsed by online gll")
-        fileContents = buildStringFromSppf(parseResult)
+        gll.parse().first ?: throw Exception("File $fileName cant be parsed by online gll")
     }
 
     @Benchmark
     fun measureGll(blackhole: Blackhole) {
-        val inputGraph = getTokenStream(fileContents)
-        val gll = Gll.gll(startState, inputGraph)
+        val gll = Gll.gll(startState, getTokenStream(fileContents))
         blackhole.consume(gll.parse())
     }
 }

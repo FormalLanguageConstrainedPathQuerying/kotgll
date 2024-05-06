@@ -54,9 +54,9 @@ Comment = {TraditionalComment} | {DocumentationComment}
 TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 DocumentationComment = "/**" {CommentContent} "*"+ "/"
 CommentContent       = ( [^*] | \*+ [^/*] )*
-
 %%
 
+"//".*         { /* DO NOTHING */ }
 "boolean"      { return JavaToken.BOOLEAN; }
 "byte"         { return JavaToken.BYTE; }
 "short"        { return JavaToken.SHORT; }

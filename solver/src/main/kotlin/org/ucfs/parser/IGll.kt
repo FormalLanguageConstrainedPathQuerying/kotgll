@@ -100,7 +100,11 @@ interface IGll<VertexType, LabelType : ILabel> {
         inputPosition: VertexType,
     ): GssNode<VertexType> {
         val newNode =
-            getOrCreateGssNode(nonterminal, inputPosition, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
+            getOrCreateGssNode(
+                nonterminal,
+                inputPosition,
+                weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0)
+            )
 
         if (newNode.addEdge(rsmState, sppfNode, gssNode)) {
             if (ctx.poppedGssNodes.containsKey(newNode)) {
