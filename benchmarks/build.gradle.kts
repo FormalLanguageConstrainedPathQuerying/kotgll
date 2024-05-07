@@ -17,6 +17,8 @@ dependencies {
     //compared projects
     // 1. for ucfs
     implementation(project(":solver"))
+    implementation(project(":generator"))
+
     // 2. for java_cup (?)
     implementation("java_cup:java_cup:0.9e")
     // 3. for antlr
@@ -38,8 +40,15 @@ fun getArgs(): Array<String>{
 benchmark {
     configurations {
         named("main"){
-            param("fileName", *getArgs())
+            param("fileName", "BaseTestRunner.java")
             this.reportFormat = "csv"
+            iterations = 10
+            iterationTime = 2000
+            iterationTimeUnit = "ms"
+            warmups = 15
+            outputTimeUnit = "ms"
+            mode = "avgt"
+            include(".*Online.*")
         }
     }
     targets {

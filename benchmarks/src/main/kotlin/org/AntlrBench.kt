@@ -8,12 +8,6 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.openjdk.jmh.annotations.Threads
 
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(BenchmarkTimeUnit.MICROSECONDS)
-
-@Warmup(iterations = 1, time = 50, timeUnit = BenchmarkTimeUnit.MILLISECONDS)
-@Measurement(iterations = 1, time = 100, timeUnit = BenchmarkTimeUnit.MILLISECONDS)
-@Threads(Threads.MAX)
 @State(Scope.Benchmark)
 class AntlrBench {
 
