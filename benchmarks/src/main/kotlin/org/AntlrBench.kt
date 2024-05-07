@@ -5,7 +5,6 @@ import org.antlr.Java8Parser
 import kotlinx.benchmark.*
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import org.openjdk.jmh.annotations.Threads
 
 
 @State(Scope.Benchmark)
