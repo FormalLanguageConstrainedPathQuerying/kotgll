@@ -21,6 +21,12 @@ import java.util.stream.Collectors.toList
 interface IParserGenerator : IGeneratorFromGrammar {
     val grammar: Grammar
 
+    /**
+     * Define a way to store relation between nonterminal
+     * and their parsing method
+     */
+    fun mappingAsFunction(): Boolean = true
+
     companion object {
         private const val PARSER = "Parser"
         val vertexType = TypeVariableName("VertexType")
@@ -71,6 +77,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
             .addTypeVariable(labelType)
             .superclass(superClass)
             .addProperties(generateProperties())
+            .addNtMapping()
             .addFunctions(generateParseFunctions())
 
         val fileBuilder = FileSpec
@@ -83,6 +90,15 @@ interface IParserGenerator : IGeneratorFromGrammar {
         return fileBuilder
     }
 
+    fun TypeSpec.Builder.addNtMapping(): TypeSpec.Builder {
+        if (mappingAsFunction()) {
+            addFunction(generateCallNtFuncs())
+        } else {
+            addProperty(generateNtFuncsProperty())
+        }
+        return this
+    }
+
     /**
      * Add properties in Parser class
      */
@@ -90,8 +106,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
         return listOf(
             generateCtxProperty(),
             generateGrammarProperty(grammarClazz)
-        ) + generateNonterminalsSpec() +
-                generateNtFuncsProperty()
+        ) + generateNonterminalsSpec()
     }
 
     /**
@@ -117,6 +132,22 @@ interface IParserGenerator : IGeneratorFromGrammar {
             .build()
     }
 
+    fun generateCallNtFuncs(): FunSpec {
+        val funSpec = FunSpec.builder("callNtFuncs")
+        funSpec.addModifiers(KModifier.OVERRIDE)
+            .addParameter("nt", Nonterminal::class.asTypeName())
+            .addParameter(DESCRIPTOR, descriptorType)
+            .addParameter(SPPF_NODE, sppfType)
+            .beginControlFlow("when(nt.name)", STATE_NAME, ID_FIELD_NAME)
+        for (nt in grammar.nonTerms) {
+            val ntName = nt.nonterm.name
+                ?: throw GeneratorException("Unnamed nonterminal in grammar ${grammarClazz.simpleName}")
+            funSpec.addStatement("%S -> %L($DESCRIPTOR, $SPPF_NODE)", ntName, getParseFunName(ntName))
+        }
+        funSpec.endControlFlow()
+        return funSpec.build()
+    }
+
     /**
      * Generate overriding of property that map nonterminal to it's handling function.
      * And initialize it.
@@ -131,13 +162,13 @@ interface IParserGenerator : IGeneratorFromGrammar {
         )
         val mapType = HashMap::class
             .asTypeName()
-            .parameterizedBy(Nonterminal::class.asTypeName(), funcType)
+            .parameterizedBy(String::class.asTypeName(), funcType)
         val mapInitializer = CodeBlock.builder()
             .addStatement("hashMapOf(")
         for (nt in grammar.nonTerms) {
             val ntName = nt.nonterm.name
                 ?: throw GeneratorException("Unnamed nonterminal in grammar ${grammarClazz.simpleName}")
-            mapInitializer.addStatement("%L to ::%L,", ntName, getParseFunName(ntName))
+            mapInitializer.addStatement("%S to ::%L,", ntName, getParseFunName(ntName))
         }
         mapInitializer.addStatement(")")
 
@@ -164,7 +195,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
             .addParameter(SPPF_NODE, sppfType)
             .addStatement("val %L = %L.%L", STATE_NAME, DESCRIPTOR, RSM_FIELD)
             .addStatement("val %L = %L.%L", POS_VAR_NAME, DESCRIPTOR, POS_FIELD)
-            .beginControlFlow("when(%L.%L)", STATE_NAME, ID_FIELD_NAME)
+            .beginControlFlow("when(%L.%L)", STATE_NAME, "numId")
 
         for (state in nt.nonterm.getStates()) {
             generateParseForState(state, funSpec)
@@ -179,7 +210,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
      * (handle parsing for concrete state)
      */
     fun generateParseForState(state: RsmState, funSpec: FunSpec.Builder) {
-        funSpec.addStatement("%S -> ", state.id)
+        funSpec.addStatement("%L -> ", state.numId)
         funSpec.beginControlFlow("")
         generateTerminalParsing(state, funSpec)
         generateNonterminalParsing(state, funSpec)

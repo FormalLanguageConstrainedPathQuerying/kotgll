@@ -23,13 +23,18 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
             ctx = Context(grammar.rsm, value)
         }
 
-    protected abstract val ntFuncs: HashMap<Nonterminal, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
+    //protected abstract val ntFuncs: HashMap<String, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
+    protected abstract fun callNtFuncs(
+        nt: Nonterminal,
+        descriptor: Descriptor<VertexType>,
+        curSppfNode: SppfNode<VertexType>?
+    ): Unit
 
     override fun parse(descriptor: Descriptor<VertexType>) {
         val state = descriptor.rsmState
         val nt = state.nonterminal
 
-        val handleEdges = ntFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
+//        val handleEdges = ntFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
 
         val pos = descriptor.inputPosition
 
@@ -49,18 +54,18 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
                 epsilonSppfNode,
                 epsilonSppfNode!!.leftExtent,
                 epsilonSppfNode!!.rightExtent,
-                state.nonterminal
+                nt
             )
         }
-        checkAcceptance(curSppfNode, leftExtent, rightExtent, state.nonterminal)
+        checkAcceptance(curSppfNode, leftExtent, rightExtent, nt)
 
-        for (inputEdge in ctx.input.getEdges(pos)) {
-            if (inputEdge.label.terminal == null) {
-                handleTerminalOrEpsilonEdge(descriptor, curSppfNode, null, descriptor.rsmState, inputEdge.head, 0)
-                continue
-            }
-        }
-        handleEdges(descriptor, curSppfNode)
+//        for (inputEdge in ctx.input.getEdges(pos)) {
+//            if (inputEdge.label.terminal == null) {
+//                handleTerminalOrEpsilonEdge(descriptor, curSppfNode, null, descriptor.rsmState, inputEdge.head, 0)
+//            }
+//        }
+        callNtFuncs(nt, descriptor, curSppfNode)
+        // ntFuncs[nt.name]!!(descriptor, curSppfNode)
     }
 
     protected fun handleTerminal(
@@ -71,14 +76,13 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         curSppfNode: SppfNode<VertexType>?
     ) {
 
-        val newStates = state.terminalEdges[terminal] ?: throw ParsingException(
-            "State $state does not contains edges " +
-                    "\nby terminal $terminal" +
-                    "\naccessible edges: ${state.terminalEdges}\n"
-        )
-
 
         if (inputEdge.label.terminal == terminal) {
+            val newStates = state.terminalEdges[terminal] ?: throw ParsingException(
+                "State $state does not contains edges " +
+                        "\nby terminal $terminal" +
+                        "\naccessible edges: ${state.terminalEdges}\n"
+            )
             for (target in newStates) {
                 handleTerminalOrEpsilonEdge(
                     descriptor,

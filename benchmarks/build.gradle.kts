@@ -1,3 +1,4 @@
+
 plugins {
     java
     kotlin("jvm") version "1.9.20"
@@ -40,21 +41,27 @@ fun getArgs(): Array<String>{
 benchmark {
     configurations {
         named("main"){
-            param("fileName", "BaseTestRunner.java")
+            param("fileName", *getArgs())
             this.reportFormat = "csv"
-            iterations = 10
+            iterations = 15
             iterationTime = 2000
             iterationTimeUnit = "ms"
-            warmups = 15
+            warmups = 5
             outputTimeUnit = "ms"
             mode = "avgt"
-                // include(".*Online.*")
+            val tools = "toolName"
+            if(hasProperty(tools)){
+                println("Run benchmarks for: .*${property(tools)}.*")
+                include(".*${property(tools)}.*")
+            }
         }
     }
     targets {
         register("main")
     }
+
 }
+
 
 allOpen {
     annotation("org.openjdk.jmh.annotations.State")

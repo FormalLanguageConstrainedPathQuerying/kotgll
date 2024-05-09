@@ -13,14 +13,15 @@ open class RsmState(
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
 ) {
-    val id: String = getId(nonterminal)
+    val numId: Int = getId(nonterminal)
+    val id: String = "${nonterminal.name}_${(numId)}"
 
     companion object {
         private val counters = HashMap<Nonterminal, Int>()
-        private fun getId(nt: Nonterminal): String {
+        private fun getId(nt: Nonterminal): Int {
             val id = counters.getOrPut(nt) { 0 }
             counters[nt] = id + 1
-            return "${nt.name}_${(id)}"
+            return id
         }
     }
 
