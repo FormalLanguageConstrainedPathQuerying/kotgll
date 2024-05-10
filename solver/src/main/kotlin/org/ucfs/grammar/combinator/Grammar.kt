@@ -27,15 +27,22 @@ open class Grammar {
         } else throw IllegalArgumentException("Only NT object can be start state for Grammar")
     }
 
+    fun Nt.asStart(): Nt {
+        if (this@Grammar::startNt.isInitialized) {
+            throw Exception("Nonterminal ${nonterm.name} is already initialized")
+        }
+        startNt = this
+        return this
+    }
+
 
     /**
      * Builds a Rsm for the grammar
      */
     private fun buildRsm(): RsmState {
         nonTerms.forEach { it.buildRsmBox() }
-        val startState = startNt.getNonterminal()?.startState
         //if nonterminal not initialized -- it will be checked in buildRsmBox()
-        return startState!!
+        return startNt.nonterm.startState
     }
 
     /**

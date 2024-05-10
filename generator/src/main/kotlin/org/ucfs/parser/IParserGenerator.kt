@@ -42,7 +42,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
         const val RSM_FIELD = "rsmState"
         const val POS_FIELD = "inputPosition"
         const val INPUT_FIELD = "input"
-        const val GET_NONTERMINAL = "getNonterminal"
+        const val NONTERMINAL = "nonterm"
         const val GET_TERMINALS = "getTerminals"
         const val TERMINALS = "terminals"
         const val HANDLE_TERMINAL = "handleTerminal"
@@ -281,7 +281,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
         val propertyBuilder =
             PropertySpec.builder(ntName, Nonterminal::class.asTypeName())
                 .addModifiers(KModifier.PRIVATE)
-                .initializer("%L.%L.%L()!!", GRAMMAR_NAME, ntName, GET_NONTERMINAL)
+                .initializer("%L.%L.%L", GRAMMAR_NAME, ntName, NONTERMINAL)
         return propertyBuilder.build()
     }
 }

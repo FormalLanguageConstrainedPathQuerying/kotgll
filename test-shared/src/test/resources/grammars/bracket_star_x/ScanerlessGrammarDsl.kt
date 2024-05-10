@@ -6,12 +6,10 @@ import org.ucfs.grammar.combinator.extension.StringExtension.times
 import org.ucfs.grammar.combinator.regexp.Nt
 
 class ScanerlessGrammarDsl : Grammar() {
-    var List by Nt()
-    var Elem by Nt()
+    val List by Nt().asStart()
+    val Elem by Nt("x" or List)
 
     init {
-        setStart(List)
-        List = "[" * Elem
-        Elem = "x" or List
+        List /= "[" * Elem
     }
 }

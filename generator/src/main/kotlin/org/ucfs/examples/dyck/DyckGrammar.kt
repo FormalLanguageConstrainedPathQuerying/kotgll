@@ -7,16 +7,12 @@ import org.ucfs.grammar.combinator.regexp.many
 import org.ucfs.grammar.combinator.regexp.or
 
 class DyckGrammar : Grammar() {
-    var S by Nt()
-    var Round by Nt()
-    var Quadrat by Nt()
-    var Curly by Nt()
+    val S by Nt().asStart()
+    val Round by Nt("(" * S * ")")
+    val Quadrat by Nt("[" * S * "]")
+    val Curly by Nt("{" * S * "}")
 
     init {
-        setStart(S)
-        S = many(Round or Quadrat or Curly)
-        Round = "(" * S * ")"
-        Quadrat = "[" * S * "]"
-        Curly = "{" * S * "}"
+        S /= many(Round or Quadrat or Curly)
     }
 }

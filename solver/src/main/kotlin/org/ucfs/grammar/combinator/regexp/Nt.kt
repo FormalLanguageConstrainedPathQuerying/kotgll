@@ -5,35 +5,41 @@ import org.ucfs.rsm.RsmState
 import org.ucfs.rsm.symbol.Nonterminal
 import kotlin.reflect.KProperty
 
-open class Nt : DerivedSymbol {
+open class Nt() : DerivedSymbol {
+    private lateinit var name : String
+    constructor(lhs: Regexp) : this() {
+        rsmDescription = lhs
+    }
+
     lateinit var nonterm: Nonterminal
         private set
 
     private lateinit var rsmDescription: Regexp
 
     fun isInitialized(): Boolean {
-        return ::nonterm.isInitialized
+        return ::rsmDescription.isInitialized
     }
 
     fun buildRsmBox() {
+        nonterm.startState = RsmState(nonterm, isStart = true, rsmDescription.acceptEpsilon())
         nonterm.startState.buildRsmBox(rsmDescription)
     }
 
-    override fun getNonterminal(): Nonterminal? {
-        return nonterm
-    }
+    operator fun getValue(grammar: Grammar, property: KProperty<*>): Nt = this
 
-    operator fun setValue(grammar: Grammar, property: KProperty<*>, lrh: Regexp) {
-        if (!this::nonterm.isInitialized) {
-            nonterm = Nonterminal(property.name)
-            grammar.nonTerms.add(this)
-            rsmDescription = lrh
-            nonterm.startState = RsmState(nonterm, isStart = true, rsmDescription.acceptEpsilon())
-        } else {
-            throw Exception("Nonterminal ${property.name} is already initialized")
+    operator fun divAssign(lhs: Regexp) {
+        if (isInitialized()) {
+            throw Exception("Nonterminal '${nonterm.name}' is already initialized")
         }
-
+        rsmDescription = lhs
     }
 
-    operator fun getValue(grammar: Grammar, property: KProperty<*>): Regexp = this
+    operator fun provideDelegate(
+        grammar: Grammar, property: KProperty<*>
+    ): Nt {
+        name = property.name
+        nonterm = Nonterminal(property.name)
+        grammar.nonTerms.add(this)
+        return this
+    }
 }

@@ -13,17 +13,8 @@ open class RsmState(
     val isStart: Boolean = false,
     val isFinal: Boolean = false,
 ) {
-    val numId: Int = getId(nonterminal)
+    val numId: Int = nonterminal.getNextRsmStateId()
     val id: String = "${nonterminal.name}_${(numId)}"
-
-    companion object {
-        private val counters = HashMap<Nonterminal, Int>()
-        private fun getId(nt: Nonterminal): Int {
-            val id = counters.getOrPut(nt) { 0 }
-            counters[nt] = id + 1
-            return id
-        }
-    }
 
     val outgoingEdges
         get() = terminalEdges.plus(nonterminalEdges)

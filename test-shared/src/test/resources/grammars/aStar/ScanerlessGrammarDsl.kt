@@ -5,10 +5,5 @@ import org.ucfs.grammar.combinator.extension.StringExtension.many
 import org.ucfs.grammar.combinator.regexp.Nt
 
 class ScanerlessGrammarDsl : Grammar() {
-    var S by Nt()
-
-    init {
-        setStart(S)
-        S = many("a")
-    }
+    val S by Nt(many("a")).asStart()
 }

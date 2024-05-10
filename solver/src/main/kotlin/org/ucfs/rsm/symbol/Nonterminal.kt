@@ -3,9 +3,16 @@ package org.ucfs.rsm.symbol
 import org.ucfs.rsm.RsmState
 import java.util.*
 
-class Nonterminal(val name: String?) : Symbol {
+data class Nonterminal(val name: String?) : Symbol {
     lateinit var startState: RsmState
+    private var rsmStateLastId = 0
     override fun toString() = "Nonterminal(${name ?: this.hashCode()})"
+
+    fun getNextRsmStateId(): Int {
+        val id = rsmStateLastId
+        rsmStateLastId++
+        return id
+    }
 
     /**
      * Get all states from RSM for current nonterminal

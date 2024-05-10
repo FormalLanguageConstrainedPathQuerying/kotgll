@@ -5,16 +5,12 @@ import org.ucfs.grammar.combinator.extension.StringExtension.times
 import org.ucfs.grammar.combinator.regexp.*
 
 class ScanerlessGrammarDsl: Grammar() {
-    var S by Nt()
-    var S1 by Nt()
-    var S2 by Nt()
-    var S3 by Nt()
+    val S by Nt().asStart()
+    val S1 by Nt("(" * S * ")" * S)
+    val S2 by Nt("{" * S * "}" * S)
+    val S3 by Nt("[" * S * "]" * S)
 
     init {
-        setStart(S)
-        S = Epsilon or S1 or S2 or S3
-        S1 = "(" * S * ")" * S
-        S2 = "{" * S * "}" * S
-        S3 = "[" * S * "]" * S
+        S /= Epsilon or S1 or S2 or S3
     }
 }

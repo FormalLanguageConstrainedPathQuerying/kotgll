@@ -14,7 +14,7 @@ import org.ucfs.sppf.node.SppfNode
  */
 interface IInputGraph<VertexType, LabelType : ILabel> {
     fun log(msg: () -> String) {
-       // println(msg)
+        // println(msg)
     }
 
     /**
@@ -127,18 +127,18 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
         val inputPosition = descriptor.inputPosition
         val terminalEdges = rsmState.terminalEdges
         val nonterminalEdges = rsmState.nonterminalEdges
-        log{"\n$descriptor"}
+        log { "\n$descriptor" }
         for (inputEdge in ctx.input.getEdges(inputPosition)) {
             if (inputEdge.label.terminal == null) {
-                log{"Epsilon terminal"}
+                log { "Epsilon terminal" }
                 handleTerminalOrEpsilonEdge(descriptor, sppfNode, null, descriptor.rsmState, inputEdge.head, 0)
                 continue
             }
-            log{"Compare terminal: current ${inputEdge.label.terminal}$"}
+            log { "Compare terminal: current ${inputEdge.label.terminal}$" }
             for ((edgeTerminal, targetStates) in terminalEdges) {
-                log{"edgeTerminal ${edgeTerminal}$"}
+                log { "edgeTerminal ${edgeTerminal}$" }
                 if (inputEdge.label.terminal == edgeTerminal) {
-                    log{"EQUALS!"}
+                    log { "EQUALS!" }
                     for (target in targetStates) {
                         handleTerminalOrEpsilonEdge(descriptor, sppfNode, edgeTerminal, target, inputEdge.head, 0)
                     }

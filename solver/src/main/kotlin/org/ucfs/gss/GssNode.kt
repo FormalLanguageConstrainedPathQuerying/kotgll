@@ -45,9 +45,7 @@ class GssNode<VertexType>(
     fun addEdge(rsmState: RsmState, sppfNode: SppfNode<VertexType>?, gssNode: GssNode<VertexType>): Boolean {
         val label = Pair(rsmState, sppfNode)
 
-        if (!edges.containsKey(label)) edges[label] = HashSet()
-
-        return edges.getValue(label).add(gssNode)
+        return edges.computeIfAbsent(label) { HashSet() }.add(gssNode)
     }
 
     override fun toString() = "GSSNode(nonterminal=$nonterminal, inputPosition=$inputPosition)"

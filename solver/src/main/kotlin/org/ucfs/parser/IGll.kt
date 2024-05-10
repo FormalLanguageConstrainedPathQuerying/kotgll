@@ -74,14 +74,11 @@ interface IGll<VertexType, LabelType : ILabel> {
         weight: Int,
     ): GssNode<VertexType> {
         val gssNode = GssNode(nonterminal, inputPosition, weight)
-
-        if (ctx.createdGssNodes.containsKey(gssNode)) {
-            if (ctx.createdGssNodes.getValue(gssNode).minWeightOfLeftPart > weight) {
-                ctx.createdGssNodes.getValue(gssNode).minWeightOfLeftPart = weight
-            }
-        } else ctx.createdGssNodes[gssNode] = gssNode
-
-        return ctx.createdGssNodes.getValue(gssNode)
+        val storedNode = ctx.createdGssNodes.computeIfAbsent(gssNode) { gssNode }
+        if (storedNode.minWeightOfLeftPart > weight) {
+            storedNode.minWeightOfLeftPart = weight
+        }
+        return storedNode
     }
 
     /**

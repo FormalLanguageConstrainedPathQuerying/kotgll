@@ -59,13 +59,8 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         }
         checkAcceptance(curSppfNode, leftExtent, rightExtent, nt)
 
-//        for (inputEdge in ctx.input.getEdges(pos)) {
-//            if (inputEdge.label.terminal == null) {
-//                handleTerminalOrEpsilonEdge(descriptor, curSppfNode, null, descriptor.rsmState, inputEdge.head, 0)
-//            }
-//        }
         callNtFuncs(nt, descriptor, curSppfNode)
-        // ntFuncs[nt.name]!!(descriptor, curSppfNode)
+       // ntFuncs[nt.name]!!(descriptor, curSppfNode)
     }
 
     protected fun handleTerminal(
