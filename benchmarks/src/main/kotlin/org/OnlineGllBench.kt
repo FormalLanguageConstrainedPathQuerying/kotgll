@@ -3,12 +3,12 @@ package org
 import kotlinx.benchmark.*
 import org.junit.Before
 import org.junit.Test
-import org.openjdk.jmh.annotations.Threads
 import org.ucfs.Java8
 import org.ucfs.input.LinearInput
 import org.ucfs.input.LinearInputLabel
 import org.ucfs.parser.Gll
 import org.ucfs.sppf.buildStringFromSppf
+import java.io.File
 
 
 @State(Scope.Benchmark)
@@ -25,8 +25,7 @@ class OnlineGllBench {
     @Setup
     @Before
     fun prepare() {
-        fileContents = OnlineGllBench::class.java.classLoader
-            .getResource(fileName)?.readText() ?: throw Exception("File $fileName does not exists")
+        fileContents = File(fileName).readText()
         tokens = getTokenStream(fileContents)
 //        val gll = Gll.gll(
 //            startState,

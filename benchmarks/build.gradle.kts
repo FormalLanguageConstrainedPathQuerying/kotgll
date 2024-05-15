@@ -1,4 +1,3 @@
-
 plugins {
     java
     kotlin("jvm") version "1.9.20"
@@ -32,16 +31,20 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
 }
 
-fun getArgs(): Array<String>{
-    val resourcesDir = sourceSets["main"].resources.srcDirs.first()
+fun getArgs(strFolder: String): Array<String> {
+    val resourcesDir = File(strFolder)
     val files = resourcesDir.listFiles()!!
-    return files.map { it.name }.sorted().toTypedArray()
+    return files.map { it.toString() }.sorted().toTypedArray()
 }
 
 benchmark {
     configurations {
-        named("main"){
-            param("fileName", *getArgs())
+        named("main") {
+            val dataset = "dataset"
+            if (!hasProperty(dataset)) {
+                throw Exception("Error! Set dataset folder by property '$dataset'")
+            }
+            param("fileName", *getArgs(property(dataset).toString()))
             this.reportFormat = "csv"
             iterations = 15
             iterationTime = 2000
@@ -50,10 +53,11 @@ benchmark {
             outputTimeUnit = "ms"
             mode = "avgt"
             val tools = "toolName"
-            if(hasProperty(tools)){
+            if (hasProperty(tools)) {
                 println("Run benchmarks for: .*${property(tools)}.*")
                 include(".*${property(tools)}.*")
             }
+
         }
     }
     targets {

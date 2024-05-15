@@ -1,10 +1,11 @@
 package org
 
+import kotlinx.benchmark.*
 import org.antlr.Java8Lexer
 import org.antlr.Java8Parser
-import kotlinx.benchmark.*
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import java.io.File
 
 
 @State(Scope.Benchmark)
@@ -17,9 +18,7 @@ class AntlrBench {
 
     @Setup
     fun prepare() {
-        fileContents = AntlrBench::class.java.classLoader
-            .getResource(fileName)?.readText()
-            ?: throw Exception("file $fileName does not exists")
+        fileContents = File(fileName).readText()
     }
 
     @Benchmark

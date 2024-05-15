@@ -4,6 +4,7 @@ import kotlinx.benchmark.*
 import org.junit.Before
 import org.junit.Test
 import org.ucfs.input.LinearInputLabel
+import java.io.File
 
 
 @State(Scope.Benchmark)
@@ -17,8 +18,7 @@ class OfflineGllBench {
     @Setup
     @Before
     fun prepare() {
-        fileContents = OfflineGllBench::class.java.classLoader
-            .getResource(fileName)?.readText() ?: throw Exception("File $fileName does not exists")
+        fileContents = File(fileName).readText()
     }
 
     @Benchmark
