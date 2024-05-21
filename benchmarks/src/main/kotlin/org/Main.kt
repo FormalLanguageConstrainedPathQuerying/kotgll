@@ -52,13 +52,18 @@ fun getAnrltTokens(file: String): Int{
     return stream.numberOfOnChannelTokens
 }
 fun calculateTokens(){
-    val pth = Main::class.java.getResource("/junit")
-    val resourcesDir = File(pth.toURI())
-    val stat = File("junit-tokens.csv").printWriter()
+    val resourcesDir = File("/home/olga/gllgen/dataset_black_box/too_little")
+    val stat = File("too-little-tokens.csv").printWriter()
     stat.println("Param: fileName,Line Count")
     for (file in resourcesDir.listFiles()!!){
-        // stat.println("${file.name},${getTokenStream(file.readText()).edges.size}")
-          stat.println("${file.name},${getAnrltTokens(file.readText())}")
+        try {
+            stat.println("${file.path},${getTokenStream(file.readText()).edges.size}")
+           // stat.println("${file.path},${getAnrltTokens(file.readText())}")
+
+        }
+        catch(e: Error){
+            println(file.name)
+        }
     }
     stat.close()
 }

@@ -78,7 +78,6 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
             pop(descriptor.gssNode, sppfNode ?: epsilonSppfNode, pos)
         }
 
-
         ctx.descriptors.addToHandled(descriptor)
 
         if (state.isStart && state.isFinal) {

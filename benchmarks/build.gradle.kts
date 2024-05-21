@@ -36,35 +36,42 @@ fun getArgs(strFolder: String): Array<String> {
     val files = resourcesDir.listFiles()!!
     return files.map { it.toString() }.sorted().toTypedArray()
 }
-
 benchmark {
     configurations {
-        named("main") {
-            val dataset = "dataset"
-            if (!hasProperty(dataset)) {
-                throw Exception("Error! Set dataset folder by property '$dataset'")
-            }
-            param("fileName", *getArgs(property(dataset).toString()))
-            this.reportFormat = "csv"
-            iterations = 15
-            iterationTime = 2000
-            iterationTimeUnit = "ms"
-            warmups = 5
-            outputTimeUnit = "ms"
-            mode = "avgt"
-            val tools = "toolName"
-            if (hasProperty(tools)) {
-                println("Run benchmarks for: .*${property(tools)}.*")
-                include(".*${property(tools)}.*")
-            }
-
+        named("main") {}
+        targets {
+            register("main")
         }
     }
-    targets {
-        register("main")
-    }
-
 }
+//benchmark {
+//    configurations {
+//        named("main") {
+//            val dataset = "dataset"
+//            if (!hasProperty(dataset)) {
+//                println("Error! Set dataset folder by property '$dataset'")
+//                throw Exception("Error! Set dataset folder by property '$dataset'")
+//            }
+//            param("fileName", *getArgs(property(dataset).toString()))
+//            this.reportFormat = "csv"
+//            iterations = 15
+//            iterationTime = 1000
+//            iterationTimeUnit = "ms"
+//            warmups = 5
+//            outputTimeUnit = "ms"
+//            mode = "avgt"
+//            val tools = "toolName"
+//            if (hasProperty(tools)) {
+//                println("Run benchmarks for: .*${property(tools)}.*")
+//                include(".*${property(tools)}.*")
+//            }
+//
+//        }
+//    }
+//    targets {
+//        register("main")
+//    }
+//}
 
 
 allOpen {

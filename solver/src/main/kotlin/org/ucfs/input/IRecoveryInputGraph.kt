@@ -58,7 +58,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param descriptor - current parsing stage
      * @return Map terminal -> (destination, weight)
      */
-    private fun createRecoveryEdges(descriptor: Descriptor<VertexType>): HashSet<RecoveryEdge<VertexType>> {
+    fun createRecoveryEdges(descriptor: Descriptor<VertexType>): HashSet<RecoveryEdge<VertexType>> {
         val inputPosition = descriptor.inputPosition
         val rsmState = descriptor.rsmState
         val terminalEdges = rsmState.terminalEdges
@@ -137,7 +137,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param handleTerminalOrEpsilonEdge - function to process error recovery edges
      * @param descriptor - current parsing stage
      */
-    private fun handleRecoveryEdges(
+    fun handleRecoveryEdges(
         errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
         handleTerminalOrEpsilonEdge: (
             descriptor: Descriptor<VertexType>,

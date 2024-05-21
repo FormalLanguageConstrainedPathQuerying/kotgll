@@ -5,21 +5,10 @@ import org.antlr.Java8Lexer
 import org.antlr.Java8Parser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import java.io.File
 
 
 @State(Scope.Benchmark)
-class AntlrBench {
-
-    @Param("Throwables.java")
-    var fileName: String = ""
-
-    lateinit var fileContents: String
-
-    @Setup
-    fun prepare() {
-        fileContents = File(fileName).readText()
-    }
+class Antlr : BaseBench(){
 
     @Benchmark
     fun measureAntlr(blackhole: Blackhole) {
