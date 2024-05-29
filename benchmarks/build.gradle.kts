@@ -18,7 +18,7 @@ dependencies {
     // 1. for ucfs
     implementation(project(":solver"))
     implementation(project(":generator"))
-
+    implementation(project(":examples"))
     // 2. for java_cup (?)
     implementation("java_cup:java_cup:0.9e")
     // 3. for antlr
@@ -36,49 +36,39 @@ fun getArgs(strFolder: String): Array<String> {
     val files = resourcesDir.listFiles()!!
     return files.map { it.toString() }.sorted().toTypedArray()
 }
+
 benchmark {
     configurations {
-        named("main") {}
-        targets {
-            register("main")
+        named("main") {
+            val dataset = "dataset"
+            if (!hasProperty(dataset)) {
+                println("BENCHMARKS FAILED! Set dataset folder by property '$dataset'")
+            }
+            else{
+                param("fileName", *getArgs(property(dataset).toString()))
+            }
+            this.reportFormat = "csv"
+            iterations = 15
+            iterationTime = 1000
+            iterationTimeUnit = "ms"
+            warmups = 5
+            outputTimeUnit = "ms"
+            mode = "avgt"
+            val tools = "toolName"
+            if (hasProperty(tools)) {
+                println("Run benchmarks for: .*${property(tools)}.*")
+                include(".*${property(tools)}.*")
+            }
+
         }
     }
+    targets {
+        register("main")
+    }
 }
-//benchmark {
-//    configurations {
-//        named("main") {
-//            val dataset = "dataset"
-//            if (!hasProperty(dataset)) {
-//                println("Error! Set dataset folder by property '$dataset'")
-//                throw Exception("Error! Set dataset folder by property '$dataset'")
-//            }
-//            param("fileName", *getArgs(property(dataset).toString()))
-//            this.reportFormat = "csv"
-//            iterations = 15
-//            iterationTime = 1000
-//            iterationTimeUnit = "ms"
-//            warmups = 5
-//            outputTimeUnit = "ms"
-//            mode = "avgt"
-//            val tools = "toolName"
-//            if (hasProperty(tools)) {
-//                println("Run benchmarks for: .*${property(tools)}.*")
-//                include(".*${property(tools)}.*")
-//            }
-//
-//        }
-//    }
-//    targets {
-//        register("main")
-//    }
-//}
-
 
 allOpen {
     annotation("org.openjdk.jmh.annotations.State")
 }
 
 kotlin { jvmToolchain(11) }
-
-
-

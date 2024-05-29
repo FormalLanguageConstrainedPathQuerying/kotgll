@@ -20,4 +20,4 @@ fun many(some: Regexp): Many {
 val Regexp.many: Many
     get() = Many(this)
 
-fun Some(exp: Regexp) = exp * Many(exp)
+fun some(exp: Regexp) = exp * Many(exp)

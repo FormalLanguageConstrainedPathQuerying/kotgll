@@ -5,31 +5,21 @@ import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.input.Edge
 import org.ucfs.input.IInputGraph
 import org.ucfs.input.ILabel
-import org.ucfs.input.IRecoveryInputGraph
-import org.ucfs.parser.context.Context
-import org.ucfs.parser.context.RecoveryContext
 import org.ucfs.rsm.RsmState
 import org.ucfs.rsm.symbol.ITerminal
 import org.ucfs.rsm.symbol.Nonterminal
 import org.ucfs.sppf.node.SppfNode
 
+
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     IGll<VertexType, LabelType> {
     abstract val grammar: Grammar
 
-    var input: IInputGraph<VertexType, LabelType>
-        get() {
-            return ctx.input
-        }
-        set(value) {
-            ctx = if(value is IRecoveryInputGraph){
-                RecoveryContext(grammar.rsm, value)
-            } else {
-                Context(grammar.rsm, value)
-            }
-        }
+    abstract var input: IInputGraph<VertexType, LabelType>
 
-    //protected abstract val ntFuncs: HashMap<String, (Descriptor<VertexType>, SppfNode<VertexType>?) -> Unit>
+    /**
+     * Processes faster than map from nonterminal to method (proved experimentally)
+     */
     protected abstract fun callNtFuncs(
         nt: Nonterminal,
         descriptor: Descriptor<VertexType>,
@@ -39,8 +29,6 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     override fun parse(descriptor: Descriptor<VertexType>) {
         val state = descriptor.rsmState
         val nt = state.nonterminal
-
-//        val handleEdges = ntFuncs[nt] ?: throw ParsingException("Nonterminal ${nt.name} is absent from the grammar!")
 
         val pos = descriptor.inputPosition
         val curSppfNode = descriptor.sppfNode
@@ -65,16 +53,6 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         checkAcceptance(curSppfNode, leftExtent, rightExtent, nt)
 
         callNtFuncs(nt, descriptor, curSppfNode)
-        val input = ctx.input
-        if(input is IRecoveryInputGraph){
-            val errorRecoveryEdges = input.createRecoveryEdges(descriptor)
-            input.handleRecoveryEdges(
-                errorRecoveryEdges,
-                this::handleTerminalOrEpsilonEdge,
-                descriptor
-            )
-        }
-       // ntFuncs[nt.name]!!(descriptor, curSppfNode)
     }
 
     protected fun handleTerminal(

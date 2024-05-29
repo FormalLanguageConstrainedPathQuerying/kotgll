@@ -7,8 +7,10 @@ import org.ucfs.IGeneratorFromGrammar
 import org.ucfs.descriptors.Descriptor
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.regexp.Nt
+import org.ucfs.input.IInputGraph
 import org.ucfs.input.ILabel
 import org.ucfs.nullable
+import org.ucfs.parser.context.Context
 import org.ucfs.parser.context.IContext
 import org.ucfs.rsm.RsmState
 import org.ucfs.rsm.symbol.ITerminal
@@ -18,30 +20,34 @@ import org.ucfs.suppressWarningTypes
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
 
-interface IParserGenerator : IGeneratorFromGrammar {
-    val grammar: Grammar
 
-    /**
-     * Define a way to store relation between nonterminal
-     * and their parsing method
-     */
-    fun mappingAsFunction(): Boolean = true
+abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>) : IGeneratorFromGrammar {
+    val grammar: Grammar = buildGrammar(grammarClazz)
 
     companion object {
-        private const val PARSER = "Parser"
+        /**
+         * Types
+         */
         val vertexType = TypeVariableName("VertexType")
         val labelType = TypeVariableName("LabelType", ILabel::class.java)
         val superClass = GeneratedParser::class.asTypeName().parameterizedBy(vertexType, labelType)
-        const val CTX_NAME = "ctx"
-        const val GRAMMAR_NAME = "grammar"
-        const val FUNCS_NAME = "ntFuncs"
         val descriptorType = Descriptor::class.asTypeName().parameterizedBy(vertexType)
         val sppfType = SppfNode::class.asTypeName().parameterizedBy(vertexType).nullable()
+
+        /**
+         * Variable identifiers
+         */
+        const val PARSER = "Parser"
+        const val RECOVERY = "Recovery"
+        const val VALUE_NAME = "value"
+        const val CTX_NAME = "ctx"
+        const val GRAMMAR_NAME = "grammar"
         const val DESCRIPTOR = "descriptor"
         const val SPPF_NODE = "curSppfNode"
         const val RSM_FIELD = "rsmState"
+        const val RSM_GRAMMAR_FIELD = "rsm"
         const val POS_FIELD = "inputPosition"
-        const val INPUT_FIELD = "input"
+        const val INPUT_NAME = "input"
         const val NONTERMINAL = "nonterm"
         const val GET_TERMINALS = "getTerminals"
         const val TERMINALS = "terminals"
@@ -50,26 +56,31 @@ interface IParserGenerator : IGeneratorFromGrammar {
         const val ID_FIELD_NAME = "id"
         const val POS_VAR_NAME = "pos"
         const val INPUT_EDGE_NAME = "inputEdge"
-        fun getParseFunName(nonterminalName: String): String = "parse${nonterminalName}"
-        fun getParserClassName(grammarSimpleName: String): String {
-            return grammarSimpleName + PARSER
-        }
-    }
+        const val MAIN_PARSE_FUNC = "parse"
 
+        /**
+         * Common methods
+         */
+
+        fun getParseFunName(nonterminalName: String): String = "parse${nonterminalName}"
+    }
 
     /**
      * Generate all parser properties and methods
      */
-    override fun generate(location: Path, pkg: String) {
+    fun generate(location: Path, pkg: String) {
         val file = getFileBuilder(pkg).build()
         file.writeTo(location)
     }
 
+    open fun getParserClassName(): String {
+        return grammarClazz.simpleName + PARSER
+    }
     /**
      * Build file builder
      */
-    fun getFileBuilder(pkg: String): FileSpec.Builder {
-        val fileName = getParserClassName(grammarClazz.simpleName)
+    protected open fun getFileBuilder(pkg: String): FileSpec.Builder {
+        val fileName = getParserClassName()
         val parserClass = ClassName(pkg, fileName).parameterizedBy(vertexType, labelType)
 
         val parserClassBuilder = TypeSpec.classBuilder(parserClass.rawType.simpleName)
@@ -91,28 +102,25 @@ interface IParserGenerator : IGeneratorFromGrammar {
     }
 
     fun TypeSpec.Builder.addNtMapping(): TypeSpec.Builder {
-        if (mappingAsFunction()) {
-            addFunction(generateCallNtFuncs())
-        } else {
-            addProperty(generateNtFuncsProperty())
-        }
+        addFunction(generateCallNtFuncs())
         return this
     }
 
     /**
      * Add properties in Parser class
      */
-    fun generateProperties(): Iterable<PropertySpec> {
+    open fun generateProperties(): Iterable<PropertySpec> {
         return listOf(
             generateCtxProperty(),
-            generateGrammarProperty(grammarClazz)
+            generateGrammarProperty(grammarClazz),
+            generateInputProperty()
         ) + generateNonterminalsSpec()
     }
 
     /**
      * Generate overriding of ctx property
      */
-    fun generateCtxProperty(): PropertySpec {
+    private fun generateCtxProperty(): PropertySpec {
         val ctxType = IContext::class.asTypeName().parameterizedBy(vertexType, labelType)
         return PropertySpec.builder(CTX_NAME, ctxType, KModifier.LATEINIT, KModifier.OVERRIDE)
             .mutable()
@@ -123,7 +131,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
      * Generate overriding of grammar property
      * Anr it's initialization of corresponding @Grammar class
      */
-    fun generateGrammarProperty(grammarClazz: Class<*>): PropertySpec {
+    private fun generateGrammarProperty(grammarClazz: Class<*>): PropertySpec {
         return PropertySpec
             .builder(GRAMMAR_NAME, grammarClazz, KModifier.OVERRIDE)
             .initializer(
@@ -132,7 +140,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
             .build()
     }
 
-    fun generateCallNtFuncs(): FunSpec {
+    private fun generateCallNtFuncs(): FunSpec {
         val funSpec = FunSpec.builder("callNtFuncs")
         funSpec.addModifiers(KModifier.OVERRIDE)
             .addParameter("nt", Nonterminal::class.asTypeName())
@@ -148,47 +156,18 @@ interface IParserGenerator : IGeneratorFromGrammar {
         return funSpec.build()
     }
 
-    /**
-     * Generate overriding of property that map nonterminal to it's handling function.
-     * And initialize it.
-     */
-    fun generateNtFuncsProperty(): PropertySpec {
-        val funcType = LambdaTypeName.get(
-            parameters = arrayOf(
-                ParameterSpec("descriptor", descriptorType),
-                ParameterSpec("sppf", sppfType.copy(nullable = true))
-            ),
-            returnType = Unit::class.asTypeName()
-        )
-        val mapType = HashMap::class
-            .asTypeName()
-            .parameterizedBy(String::class.asTypeName(), funcType)
-        val mapInitializer = CodeBlock.builder()
-            .addStatement("hashMapOf(")
-        for (nt in grammar.nonTerms) {
-            val ntName = nt.nonterm.name
-                ?: throw GeneratorException("Unnamed nonterminal in grammar ${grammarClazz.simpleName}")
-            mapInitializer.addStatement("%S to ::%L,", ntName, getParseFunName(ntName))
-        }
-        mapInitializer.addStatement(")")
-
-        return PropertySpec
-            .builder(FUNCS_NAME, mapType, KModifier.OVERRIDE)
-            .initializer(mapInitializer.build())
-            .build()
-    }
 
     /**
      * Generate Parse methods for all nonterminals
      */
-    fun generateParseFunctions(): Iterable<FunSpec> {
+    protected open fun generateParseFunctions(): Iterable<FunSpec> {
         return grammar.nonTerms.map { generateParseFunction(it) }
     }
 
     /**
      * Generate Parse method for concrete nonterminal
      */
-    fun generateParseFunction(nt: Nt): FunSpec {
+    private fun generateParseFunction(nt: Nt): FunSpec {
         val funSpec = FunSpec.builder(getParseFunName(nt.nonterm.name!!))
         funSpec.addModifiers(KModifier.PRIVATE)
             .addParameter(DESCRIPTOR, descriptorType)
@@ -220,14 +199,14 @@ interface IParserGenerator : IGeneratorFromGrammar {
     /**
      * Generate and add to funSpec method that parse all terminals edge from current state
      */
-    fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
+    private fun generateTerminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
         if (state.terminalEdges.isNotEmpty()) {
             funSpec.addComment("handle terminal edges")
             funSpec.beginControlFlow(
                 "for (%L in %L.%L.getEdges(%L))",
                 INPUT_EDGE_NAME,
                 CTX_NAME,
-                INPUT_FIELD,
+                INPUT_NAME,
                 POS_VAR_NAME
             )
             for (term in state.terminalEdges.keys) {
@@ -240,14 +219,14 @@ interface IParserGenerator : IGeneratorFromGrammar {
     /**
      * Generate code for handle one Edge with Terminal<*> label
      */
-    fun generateTerminalHandling(terminal: ITerminal): CodeBlock
+    abstract fun generateTerminalHandling(terminal: ITerminal): CodeBlock
 
 
     /**
      * Generate code for parsing all edges with Nonterminal label
      * from given @RsmState state
      */
-    fun generateNonterminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
+    private fun generateNonterminalParsing(state: RsmState, funSpec: FunSpec.Builder) {
         if (state.nonterminalEdges.isNotEmpty()) {
             funSpec.addComment("handle nonterminal edges")
             for (edge in state.nonterminalEdges) {
@@ -268,7 +247,7 @@ interface IParserGenerator : IGeneratorFromGrammar {
      * Generate definition and initialization for all Nonterminals
      * as parser fields (with correspond nonterminal names)
      */
-    fun generateNonterminalsSpec(): Iterable<PropertySpec> {
+    private fun generateNonterminalsSpec(): Iterable<PropertySpec> {
         return grammar.nonTerms.stream().map { generateNonterminalSpec(it) }.collect(toList())
     }
 
@@ -276,13 +255,44 @@ interface IParserGenerator : IGeneratorFromGrammar {
      * Generate definition and initialization for concrete Nonterminal
      * as parser field (with correspond nonterminal name)
      */
-    fun generateNonterminalSpec(nt: Nt): PropertySpec {
+    private fun generateNonterminalSpec(nt: Nt): PropertySpec {
         val ntName = nt.nonterm.name!!
         val propertyBuilder =
             PropertySpec.builder(ntName, Nonterminal::class.asTypeName())
                 .addModifiers(KModifier.PRIVATE)
                 .initializer("%L.%L.%L", GRAMMAR_NAME, ntName, NONTERMINAL)
         return propertyBuilder.build()
+    }
+
+    protected open fun generateInputProperty(): PropertySpec {
+        return generateInputProperty(
+            Context::class.asTypeName().parameterizedBy(vertexType, labelType)
+        )
+    }
+
+    protected fun generateInputProperty(ctxType: ParameterizedTypeName): PropertySpec {
+        val inputType = IInputGraph::class.asTypeName().parameterizedBy(vertexType, labelType)
+        return PropertySpec.builder(INPUT_NAME, inputType, KModifier.OVERRIDE)
+            .mutable()
+            .getter(
+                FunSpec.getterBuilder()
+                    .addStatement("return %L.%L", CTX_NAME, INPUT_NAME)
+                    .build()
+            )
+            .setter(
+                FunSpec.setterBuilder()
+                    .addParameter(VALUE_NAME, inputType)
+                    .addStatement(
+                        "%L = %L(%L.%L, %L)",
+                        CTX_NAME,
+                        ctxType.rawType,
+                        GRAMMAR_NAME,
+                        RSM_GRAMMAR_FIELD,
+                        VALUE_NAME
+                    )
+                    .build()
+            )
+            .build()
     }
 }
 

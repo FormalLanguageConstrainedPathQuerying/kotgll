@@ -34,7 +34,7 @@ class NodeClassesGenerator(override val grammarClazz: Class<*>) :
     /**
      * Generate class for each nonterminal in grammar
      */
-    override fun generate(location: Path, pkg: String) {
+    fun generate(location: Path, pkg: String) {
         for (nt in grammar.nonTerms) {
             val file = generateClassFile(nt, pkg)
             file.writeTo(location)

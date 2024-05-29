@@ -1,7 +1,7 @@
 package org
 
-import org.ucfs.JavaLexer
-import org.ucfs.JavaToken
+import java7.JavaLexer
+import java7.JavaToken
 import org.ucfs.input.*
 import org.ucfs.rsm.symbol.Term
 import java.io.StringReader
@@ -19,12 +19,6 @@ fun getResultPath(
 
 fun getTokenStream(input: String): LinearInput<Int, LinearInputLabel> {
     val graph = LinearInput<Int, LinearInputLabel>()
-    getTokenStream(input, graph)
-    return graph
-}
-
-fun getRecoveryTokenStream(input: String): RecoveryLinearInput<Int, LinearInputLabel> {
-    val graph = RecoveryLinearInput<Int, LinearInputLabel>()
     getTokenStream(input, graph)
     return graph
 }

@@ -1,8 +1,8 @@
-package org.ucfs
+package java7
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.regexp.*
 
-class Java8 : Grammar() {
+class Java7 : Grammar() {
     val CompilationUnit by Nt().asStart()
     val Identifier by Nt()
     val Literal by Nt()
@@ -238,7 +238,7 @@ class Java8 : Grammar() {
         InterfaceType /= ClassType
         TypeVariable /= Many(Annotation) * Identifier
         ArrayType /= PrimitiveType * Dims or ClassOrInterfaceType * Dims or TypeVariable * Dims
-        Dims /= Some(Many(Annotation) * JavaToken.BRACKETLEFT * JavaToken.BRACKETRIGHT)
+        Dims /= some(Many(Annotation) * JavaToken.BRACKETLEFT * JavaToken.BRACKETRIGHT)
         TypeParameter  /= Many(TypeParameterModifier) * Identifier * Option(TypeBound)
         TypeParameterModifier /= Annotation
         TypeBound /= JavaToken.EXTENDS * TypeVariable or JavaToken.EXTENDS * ClassOrInterfaceType * Many(AdditionalBound)
@@ -416,7 +416,7 @@ class Java8 : Grammar() {
         SwitchStatement /= JavaToken.SWITCH * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * SwitchBlock
         SwitchBlock /= JavaToken.CURLYLEFT * Many(SwitchBlockStatementGroup) * Many(SwitchLabel) * JavaToken.CURLYRIGHT
         SwitchBlockStatementGroup /= SwitchLabels * BlockStatements
-        SwitchLabels /= Some(SwitchLabel)
+        SwitchLabels /= some(SwitchLabel)
         SwitchLabel /= JavaToken.CASE * ConstantExpression * JavaToken.COLON or
                 JavaToken.CASE * EnumConstantName * JavaToken.COLON or JavaToken.DEFAULT * JavaToken.COLON
         EnumConstantName /= Identifier
@@ -438,7 +438,7 @@ class Java8 : Grammar() {
         ThrowStatement /= JavaToken.THROW * Expression * JavaToken.SEMICOLON
         SynchronizedStatement /= JavaToken.SYNCHRONIZED * JavaToken.PARENTHLEFT * Expression * JavaToken.PARENTHRIGHT * Block
         TryStatement /= JavaToken.TRY * Block * Catches or JavaToken.TRY * Block * Option(Catches) * Finally or TryWithResourcesStatement
-        Catches /= Some(CatchClause)
+        Catches /= some(CatchClause)
         CatchClause /= JavaToken.CATCH * JavaToken.PARENTHLEFT * CatchFormalParameter * JavaToken.PARENTHRIGHT * Block
         CatchFormalParameter /= Many(VariableModifier) * CatchType * VariableDeclaratorId
         CatchType /= UnannClassType * Many(JavaToken.ORBIT * ClassType)
@@ -489,7 +489,7 @@ class Java8 : Grammar() {
                 JavaToken.NEW * ClassOrInterfaceType * DimExprs * Option(Dims) or
                 JavaToken.NEW * PrimitiveType * Dims * ArrayInitializer or
                 JavaToken.NEW * ClassOrInterfaceType * Dims * ArrayInitializer
-        DimExprs /= Some(DimExpr)
+        DimExprs /= some(DimExpr)
         DimExpr /= Many(Annotation) * JavaToken.BRACKETLEFT * Expression * JavaToken.BRACKETRIGHT
         Expression /= LambdaExpression or AssignmentExpression
         LambdaExpression /= LambdaParameters * JavaToken.ARROW * LambdaBody

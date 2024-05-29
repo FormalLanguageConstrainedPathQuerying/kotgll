@@ -5,7 +5,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeName
 import org.ucfs.grammar.combinator.Grammar
-import java.nio.file.Path
 
 /**
  * Common logic for generators that use a Grammar class
@@ -27,8 +26,6 @@ interface IGeneratorFromGrammar {
         }
         throw GeneratorException(GeneratorException.GRAMMAR_EXPECTED)
     }
-
-    fun generate(location: Path, pkg: String)
 }
 
 internal fun FileSpec.Builder.suppressWarningTypes(vararg types: String) {

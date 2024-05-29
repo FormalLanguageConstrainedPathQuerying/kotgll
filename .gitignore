@@ -52,8 +52,6 @@ out/
 hs_err_pid*
 
 .gradle
-build/
-out/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -90,5 +88,6 @@ bin/
 /gen/
 /benchmarks/src/main/java/org/antlr/*
 !/benchmarks/src/main/java/org/antlr/Java8.g4
-/benchmarks/src/main/kotlin/org/ucfs/Java8Parser.kt
-/benchmarks/src/main/java/org/ucfs/JavaLexer.java
+/benchmarks/src/main/kotlin/org/ucfs/*
+/benchmarks/src/main/java/org/ucfs/*
+/benchmarks/logs/

@@ -1,21 +1,11 @@
 package org.ucfs.input
 
-import org.ucfs.descriptors.Descriptor
-import org.ucfs.parser.context.IContext
-import org.ucfs.rsm.RsmState
-import org.ucfs.rsm.symbol.ITerminal
-import org.ucfs.rsm.symbol.Nonterminal
-import org.ucfs.sppf.node.SppfNode
-
 /**
  * Input graph interface
  * @param VertexType - type of vertex in input graph
  * @param LabelType - type of label on edges in input graph
  */
 interface IInputGraph<VertexType, LabelType : ILabel> {
-    fun log(msg: () -> String) {
-        // println(msg)
-    }
 
     /**
      * Collection of all vertices in graph
@@ -95,59 +85,4 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
      */
     fun isFinal(vertex: VertexType): Boolean
 
-    /**
-     * Process outgoing edges from input position in given descriptor, according to processing logic, represented as
-     * separate functions for both outgoing terminal and nonterminal edges from rsmState in descriptor
-     * @param handleTerminalOrEpsilonEdge - function for processing terminal and epsilon edges in RSM
-     * @param handleNonterminalEdge - function for processing nonterminal edges in RSM
-     * @param ctx - configuration of Gll parser instance
-     * @param descriptor - descriptor, represents current parsing stage
-     * @param sppfNode - root node of derivation tree, corresponds to already parsed portion of input
-     */
-    fun handleEdges(
-        handleTerminalOrEpsilonEdge: (
-            descriptor: Descriptor<VertexType>,
-            sppfNode: SppfNode<VertexType>?,
-            terminal: ITerminal?,
-            targetState: RsmState,
-            targetVertex: VertexType,
-            targetWeight: Int,
-        ) -> Unit,
-        handleNonterminalEdge: (
-            descriptor: Descriptor<VertexType>,
-            nonterminal: Nonterminal,
-            targetStates: HashSet<RsmState>,
-            sppfNode: SppfNode<VertexType>?
-        ) -> Unit,
-        ctx: IContext<VertexType, LabelType>,
-        descriptor: Descriptor<VertexType>,
-        sppfNode: SppfNode<VertexType>?
-    ) {
-        val rsmState = descriptor.rsmState
-        val inputPosition = descriptor.inputPosition
-        val terminalEdges = rsmState.terminalEdges
-        val nonterminalEdges = rsmState.nonterminalEdges
-        log { "\n$descriptor" }
-        for (inputEdge in ctx.input.getEdges(inputPosition)) {
-            if (inputEdge.label.terminal == null) {
-                log { "Epsilon terminal" }
-                handleTerminalOrEpsilonEdge(descriptor, sppfNode, null, descriptor.rsmState, inputEdge.head, 0)
-                continue
-            }
-            log { "Compare terminal: current ${inputEdge.label.terminal}$" }
-            for ((edgeTerminal, targetStates) in terminalEdges) {
-                log { "edgeTerminal ${edgeTerminal}$" }
-                if (inputEdge.label.terminal == edgeTerminal) {
-                    log { "EQUALS!" }
-                    for (target in targetStates) {
-                        handleTerminalOrEpsilonEdge(descriptor, sppfNode, edgeTerminal, target, inputEdge.head, 0)
-                    }
-                }
-            }
-        }
-
-        for ((edgeNonterminal, targetStates) in nonterminalEdges) {
-            handleNonterminalEdge(descriptor, edgeNonterminal, targetStates, sppfNode)
-        }
-    }
 }

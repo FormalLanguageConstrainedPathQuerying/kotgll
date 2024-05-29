@@ -3,7 +3,9 @@ package org.ucfs.parser
 import org.ucfs.descriptors.Descriptor
 import org.ucfs.input.IInputGraph
 import org.ucfs.input.ILabel
-import org.ucfs.input.IRecoveryInputGraph
+import org.ucfs.intersection.IIntersectionEngine
+import org.ucfs.intersection.IntersectionEngine
+import org.ucfs.intersection.RecoveryIntersection
 import org.ucfs.parser.context.Context
 import org.ucfs.parser.context.IContext
 import org.ucfs.parser.context.RecoveryContext
@@ -17,7 +19,7 @@ import org.ucfs.sppf.node.SppfNode
  * @param LabelType - type of label on edges in input graph
  */
 class Gll<VertexType, LabelType : ILabel> private constructor(
-    override var ctx: IContext<VertexType, LabelType>,
+    override var ctx: IContext<VertexType, LabelType>, val engine: IIntersectionEngine
 ) : IGll<VertexType, LabelType> {
 
     companion object {
@@ -28,10 +30,9 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
          * @return default instance of gll parser
          */
         fun <VertexType, LabelType : ILabel> gll(
-            startState: RsmState,
-            inputGraph: IInputGraph<VertexType, LabelType>
+            startState: RsmState, inputGraph: IInputGraph<VertexType, LabelType>
         ): Gll<VertexType, LabelType> {
-            return Gll(Context(startState, inputGraph))
+            return Gll(Context(startState, inputGraph), IntersectionEngine)
         }
 
         /**
@@ -42,10 +43,9 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
          * @return recovery instance of gll parser
          */
         fun <VertexType, LabelType : ILabel> recoveryGll(
-            startState: RsmState,
-            inputGraph: IRecoveryInputGraph<VertexType, LabelType>
+            startState: RsmState, inputGraph: IInputGraph<VertexType, LabelType>
         ): Gll<VertexType, LabelType> {
-            return Gll(RecoveryContext(startState, inputGraph))
+            return Gll(RecoveryContext(startState, inputGraph), RecoveryIntersection)
         }
     }
 
@@ -81,17 +81,13 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
         ctx.descriptors.addToHandled(descriptor)
 
         if (state.isStart && state.isFinal) {
-            checkAcceptance(epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal)
+            checkAcceptance(
+                epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal
+            )
         }
         checkAcceptance(sppfNode, leftExtent, rightExtent, state.nonterminal)
 
-        ctx.input.handleEdges(
-            this::handleTerminalOrEpsilonEdge,
-            this::handleNonterminalEdge,
-            ctx,
-            descriptor,
-            sppfNode
-        )
+        engine.handleEdges(this, descriptor, sppfNode)
     }
 }
 

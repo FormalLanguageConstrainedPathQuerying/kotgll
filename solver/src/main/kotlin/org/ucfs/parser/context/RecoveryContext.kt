@@ -3,8 +3,8 @@ package org.ucfs.parser.context
 import org.ucfs.descriptors.Descriptor
 import org.ucfs.descriptors.RecoveringDescriptorsStorage
 import org.ucfs.gss.GssNode
+import org.ucfs.input.IInputGraph
 import org.ucfs.input.ILabel
-import org.ucfs.input.IRecoveryInputGraph
 import org.ucfs.rsm.RsmState
 import org.ucfs.sppf.RecoverySppf
 import org.ucfs.sppf.node.SppfNode
@@ -15,8 +15,7 @@ import org.ucfs.sppf.node.SppfNode
  * @param LabelType - type of label on edges in input graph
  */
 class RecoveryContext<VertexType, LabelType : ILabel>(
-    override val startState: RsmState,
-    override val input: IRecoveryInputGraph<VertexType, LabelType>
+    override val startState: RsmState, override val input: IInputGraph<VertexType, LabelType>
 ) : IContext<VertexType, LabelType> {
     override val descriptors: RecoveringDescriptorsStorage<VertexType> = RecoveringDescriptorsStorage()
     override val sppf: RecoverySppf<VertexType> = RecoverySppf()

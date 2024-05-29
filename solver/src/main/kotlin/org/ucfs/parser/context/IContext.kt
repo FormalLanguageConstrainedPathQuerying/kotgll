@@ -73,8 +73,9 @@ interface IContext<VertexType, LabelType : ILabel> {
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
-        if (parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal &&
-            input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)
+        if (parseResult == null && sppfNode is SymbolSppfNode<*> && state.nonterminal == startState.nonterminal && input.isStart(
+                leftExtent!!
+            ) && input.isFinal(rightExtent!!)
         ) {
             descriptors.removeFromHandled(descriptor)
         }

@@ -1,17 +1,17 @@
 package org
 
+import java7.Java7
 import kotlinx.benchmark.*
 import org.junit.Before
-import org.ucfs.Java8
 import org.ucfs.input.LinearInput
 import org.ucfs.input.LinearInputLabel
 import org.ucfs.parser.Gll
 
 
 @State(Scope.Benchmark)
-class OnlineGll : BaseBench(){
+class OnlineGll : BaseBench() {
 
-    val startState = Java8().rsm
+    val startState = Java7().rsm
     lateinit var tokens: LinearInput<Int, LinearInputLabel>
 
     @Setup

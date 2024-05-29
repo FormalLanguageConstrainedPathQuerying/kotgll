@@ -96,12 +96,9 @@ interface IGll<VertexType, LabelType : ILabel> {
         sppfNode: SppfNode<VertexType>?,
         inputPosition: VertexType,
     ): GssNode<VertexType> {
-        val newNode =
-            getOrCreateGssNode(
-                nonterminal,
-                inputPosition,
-                weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0)
-            )
+        val newNode = getOrCreateGssNode(
+            nonterminal, inputPosition, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0)
+        )
 
         if (newNode.addEdge(rsmState, sppfNode, gssNode)) {
             if (ctx.poppedGssNodes.containsKey(newNode)) {
@@ -155,15 +152,11 @@ interface IGll<VertexType, LabelType : ILabel> {
      * @param nonterminal - nonterminal, which defines language we check belonging to
      */
     fun checkAcceptance(
-        sppfNode: SppfNode<VertexType>?,
-        leftExtent: VertexType?,
-        rightExtent: VertexType?,
-        nonterminal: Nonterminal
+        sppfNode: SppfNode<VertexType>?, leftExtent: VertexType?, rightExtent: VertexType?, nonterminal: Nonterminal
     ) {
-        if (sppfNode is SymbolSppfNode<VertexType>
-            && nonterminal == ctx.startState.nonterminal
-            && ctx.input.isStart(leftExtent!!)
-            && ctx.input.isFinal(rightExtent!!)
+        if (sppfNode is SymbolSppfNode<VertexType> && nonterminal == ctx.startState.nonterminal && ctx.input.isStart(
+                leftExtent!!
+            ) && ctx.input.isFinal(rightExtent!!)
         ) {
             if (ctx.parseResult == null || ctx.parseResult!!.weight > sppfNode.weight) {
                 ctx.parseResult = sppfNode
@@ -173,12 +166,11 @@ interface IGll<VertexType, LabelType : ILabel> {
             val pair = Pair(leftExtent, rightExtent)
             val distance = ctx.sppf.minDistance(sppfNode)
 
-            ctx.reachabilityPairs[pair] =
-                if (ctx.reachabilityPairs.containsKey(pair)) {
-                    minOf(distance, ctx.reachabilityPairs[pair]!!)
-                } else {
-                    distance
-                }
+            ctx.reachabilityPairs[pair] = if (ctx.reachabilityPairs.containsKey(pair)) {
+                minOf(distance, ctx.reachabilityPairs[pair]!!)
+            } else {
+                distance
+            }
         }
     }
 
