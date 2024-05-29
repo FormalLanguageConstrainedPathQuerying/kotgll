@@ -7,9 +7,10 @@
 (2) Antlr V4
 (3) Jflex
 ```
-
+## Generate files
+Run `/scripts/generate_all.sh`
 ## Run benchmarks
-Run script `run_bench.sh` stored in root folder
+Set data-set folder and parser mode in script `/scripts/run_bench.sh` and run it
 
 ## Logging
 

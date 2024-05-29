@@ -91,3 +91,4 @@ bin/
 /benchmarks/src/main/kotlin/org/ucfs/*
 /benchmarks/src/main/java/org/ucfs/*
 /benchmarks/logs/
+/examples/src/main/java/java7/JavaLexer.java

@@ -4,7 +4,6 @@ import org.ucfs.parser.RecoveryParserGenerator
 import java.nio.file.Path
 class Generator
 fun main(args: Array<String>){
-    println(args.contentToString())
     if(args.size != 1){
         throw IllegalArgumentException("Set first argument as path to generation")
     }
