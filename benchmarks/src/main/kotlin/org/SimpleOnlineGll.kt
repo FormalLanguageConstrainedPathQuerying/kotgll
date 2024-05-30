@@ -9,7 +9,7 @@ import org.ucfs.parser.Gll
 
 
 @State(Scope.Benchmark)
-class OnlineGll : BaseBench() {
+class SimpleOnlineGll : BaseBench() {
 
     val startState = Java7().rsm
     lateinit var tokens: LinearInput<Int, LinearInputLabel>

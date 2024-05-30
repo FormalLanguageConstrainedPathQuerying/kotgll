@@ -14,6 +14,7 @@ class DyckGrammar : Grammar() {
     val Curly by Nt("{" * S * "}")
 
     init {
+        //recursive nonterminals initialize in `init` block
         S /= S * (Round or Quadrat or Curly) or Epsilon
     }
 }

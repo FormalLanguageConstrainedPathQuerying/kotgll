@@ -5,7 +5,7 @@ import org.ucfs.input.LinearInputLabel
 
 
 @State(Scope.Benchmark)
-class OfflineGll : BaseBench() {
+class SimpleOfflineGll : BaseBench() {
 
     @Benchmark
     fun measureGll(blackhole: Blackhole) {

@@ -26,6 +26,7 @@ Error recovery.
 ├── solver                  -- base ucfs logic
 ├── benchmarks              -- comparison with antlr4
 ├── generator               -- parser and ast node classes generator
+├── examples                -- examples of grammars
 └── test-shared             -- test cases 
     └── src
         └── test
@@ -54,21 +55,18 @@ S = A*
 ```kotlin 
 class AStar : Grammar() {    
         var A = Term("a")    
-        var S by NT()    
-    
-        init {    
-            setStart(S)    
-            S = Many(A)    
-        }    
+        val S by Nt().asStart(many(A))    
     }    
 ``` 
 ### Non-terminals
 
-`val S by NT()`
+`val S by Nt()`
 
-Non-terminals must be fields of the grammar class. Make sure to declare using delegation `by NT()`!
+Non-terminals must be fields of the grammar class. Make sure to declare using delegation `by Nt()`!
 
-Start non-terminal set with method `setStart(nt)`. Can be set only once for grammar.
+Start non-terminal set with method `setStart(nt)`. Or in initialization with Nt method `asStart`.
+
+ Can be set only once for grammar.
 
 ### Terminals
 
@@ -92,23 +90,22 @@ S3 = '{' S '}' S
 ``` 
 *DSL*
 ```kotlin 
-class DyckGrammar : Grammar() {    
-        var S by NT()    
-        var S1 by NT()    
-        var S2 by NT()    
-        var S3 by NT()    
-    
-        init {    
-            setStart(S)    
-            S = S1 or S2 or S3 or Epsilon    
-            S1 = Term("(") * S * Term(")") * S    
-            S2 = Term("[") * S * Term("]") * S    
-            S3 = Term("{") * S * Term("}") * S    
-        }    
-    }    
+class DyckGrammar : Grammar() {
+    val S       by Nt().asStart()
+    val Round   by Nt("(" * S * ")")
+    val Quadrat by Nt("[" * S * "]")
+    val Curly   by Nt("{" * S * "}")
+
+    init {
+        //recursive nonterminals initialize in `init` block
+        S /= S * (Round or Quadrat or Curly) or Epsilon
+    }
+}
 ``` 
 ### Production
-$A \Longrightarrow B \hspace{4pt} \overset{def}{=} \hspace{4pt} A = B$
+$A \Longrightarrow B \hspace{4pt} \overset{def}{=} \hspace{4pt} A$  \\= $B$
+
+$A \Longrightarrow B \hspace{4pt} \overset{def}{=} \hspace{4pt} A~by~Nt(B)$
 
 ### Concatenation
 $( \hspace{4pt} \cdot \hspace{4pt} ) : \sum_∗ \times \sum_∗ → \sum_∗$
@@ -121,20 +118,21 @@ $( \hspace{4pt} | \hspace{4pt} ) : \sum_∗ \times \sum_∗ → \sum_∗$
 $a \hspace{4pt} | \hspace{4pt} b \hspace{4pt} \overset{def}{=} \hspace{4pt} a \hspace{4pt} or \hspace{4pt} b$
 
 ### Kleene Star
-$( \hspace{4pt} ^* \hspace{4pt} ) : \sum→ \sum_∗$
+
+$( \hspace{4pt} * \hspace{4pt} ) : \sum \to \sum_∗$
 
 $a^* \hspace{4pt} \overset{def}{=} \hspace{4pt} \displaystyle\bigcup_{i = 0}^{\infty}a^i$
 
-$a^* \hspace{4pt} \overset{def}{=} \hspace{4pt} Many(a)$
+$a^* \hspace{4pt} \overset{def}{=} \hspace{4pt} many(a)$
 
-$a^+ \hspace{4pt} \overset{def}{=} \hspace{4pt} Some(a)$
+$a^+ \hspace{4pt} \overset{def}{=} \hspace{4pt} some(a)$
 
 ### Optional
 $a? \hspace{4pt} \overset{def}{=} \hspace{4pt} a \hspace{4pt} or \hspace{4pt} Epsilon$
 
 Epsilon -- constant terminal with behavior corresponding to the $\varepsilon$ -- terminal (empty string).
 
-$a? \hspace{4pt} \overset{def}{=} \hspace{4pt} Opt(a)$
+$a? \hspace{4pt} \overset{def}{=} \hspace{4pt} opt(a)$
 
 ### RSM
 DSL provides access to the RSM corresponding to the grammar using the `getRsm` method.    
