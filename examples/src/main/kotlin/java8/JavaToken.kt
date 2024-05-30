@@ -1,4 +1,4 @@
-package java7
+package java8
 
 import org.ucfs.parser.ParsingException
 import org.ucfs.rsm.symbol.ITerminal

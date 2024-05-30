@@ -1,8 +1,8 @@
-package java7
+package java8
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.regexp.*
 
-class Java7 : Grammar() {
+class Java8 : Grammar() {
     val CompilationUnit by Nt().asStart()
     val Identifier by Nt()
     val Literal by Nt()
