@@ -6,14 +6,7 @@ import org.ucfs.grammar.combinator.regexp.*
 import org.ucfs.rsm.symbol.Term
 
 class ScanerlessGrammarDsl: Grammar() {
-    var S by Nt()
-    var A by Nt()
-    var B by Nt()
-
-    init {
-        setStart(S)
-        S = "a" * B * "c" or A * "c"
-        A = "a" * "b"
-        B = Term("b")
-    }
+    val A by Nt("a" * "b")
+    val B by Nt(Term("b"))
+    val S by Nt("a" * B * "c" or A * "c").asStart()
 }

@@ -13,4 +13,5 @@ open class Node(
     open var left: Node? = null
     var right: Node? = null
     var children: ArrayList<Node> = ArrayList()
+    var isRecovered: Boolean = false
 }

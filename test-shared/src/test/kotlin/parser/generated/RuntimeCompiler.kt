@@ -5,7 +5,6 @@ import com.tschuchort.compiletesting.SourceFile
 import org.ucfs.GeneratorException
 import org.ucfs.input.LinearInputLabel
 import org.ucfs.parser.GeneratedParser
-import org.ucfs.parser.IParserGenerator
 import org.ucfs.parser.ParserGenerator
 import org.ucfs.parser.ScanerlessParserGenerator
 import parser.generated.GllGeneratedTest.Companion.DSL_FILE_NAME
@@ -38,20 +37,21 @@ object RuntimeCompiler {
     @Suppress("UNCHECKED_CAST")
     fun loadScanerlessParser(grammarFolderFile: File): Class<*> {
         val grammarName = grammarFolderFile.name
-        val parserName = IParserGenerator.getParserClassName(SCANERLESS_DSL_FILE_NAME)
+        //val parserName = ScanerlessParserGenerator().getParserClassName(SCANERLESS_DSL_FILE_NAME)
 
-        fun generateParserCode(): KotlinCompilation.Result {
+        fun generateParserCode(): Pair<KotlinCompilation.Result, String> {
             val grammar = getKtSource(grammarFolderFile, SCANERLESS_DSL_FILE_NAME)
             val compilationResult = compileClasses(listOf(grammar))
             val classLoader = compilationResult.classLoader
 
             val grammarClass = classLoader.loadFromGrammar(SCANERLESS_DSL_FILE_NAME, grammarName)
 
-            ScanerlessParserGenerator(grammarClass).generate(parsersFolder, getParserPkg(grammarName))
-            return compilationResult
+            val generator = ScanerlessParserGenerator(grammarClass)
+            generator.generate(parsersFolder, getParserPkg(grammarName))
+            return Pair(compilationResult, generator.getParserClassName())
         }
 
-        var compilationResult = generateParserCode()
+        var (compilationResult, parserName) = generateParserCode()
         val parser = getKtSource(generationPath.resolve(grammarName).toFile(), parserName)
 
         compilationResult = compileClasses(
@@ -76,9 +76,8 @@ object RuntimeCompiler {
     @Suppress("UNCHECKED_CAST")
     fun loadParser(grammarFolderFile: File): ParsingClasses {
         val grammarName = grammarFolderFile.name
-        val parserName = IParserGenerator.getParserClassName(DSL_FILE_NAME)
 
-        fun generateParserCode(): KotlinCompilation.Result {
+        fun generateParserCode(): Pair<KotlinCompilation.Result, String> {
             val token = getKtSource(grammarFolderFile, TOKENS)
             val grammar = getKtSource(grammarFolderFile, DSL_FILE_NAME)
             val compilationResult = compileClasses(listOf(token, grammar))
@@ -87,11 +86,12 @@ object RuntimeCompiler {
             val grammarClass = classLoader.loadFromGrammar(DSL_FILE_NAME, grammarName)
             val tokenClass = classLoader.loadFromGrammar(TOKENS, grammarName)
 
-            ParserGenerator(grammarClass, tokenClass).generate(parsersFolder, getParserPkg(grammarName))
-            return compilationResult
+            val generator = ParserGenerator(grammarClass, tokenClass)
+            generator.generate(parsersFolder, getParserPkg(grammarName))
+            return Pair(compilationResult, generator.getParserClassName())
         }
 
-        var compilationResult = generateParserCode()
+        var (compilationResult, parserName) = generateParserCode()
         val lexer = getKtSource(grammarFolderFile, LEXER_NAME)
         val parser = getKtSource(generationPath.resolve(grammarName).toFile(), parserName)
 
@@ -131,7 +131,7 @@ object RuntimeCompiler {
     /**
      * Compile all files for given sources
      */
-    fun compileClasses(sourceFiles: List<SourceFile>, classpath: List<File> = emptyList()): KotlinCompilation.Result {
+    private fun compileClasses(sourceFiles: List<SourceFile>, classpath: List<File> = emptyList()): KotlinCompilation.Result {
         val compileResult = KotlinCompilation().apply {
             sources = sourceFiles
             //use application classpath

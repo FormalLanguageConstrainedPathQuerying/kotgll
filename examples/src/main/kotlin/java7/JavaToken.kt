@@ -1,4 +1,4 @@
-package lexers
+package java7
 
 import org.ucfs.parser.ParsingException
 import org.ucfs.rsm.symbol.ITerminal

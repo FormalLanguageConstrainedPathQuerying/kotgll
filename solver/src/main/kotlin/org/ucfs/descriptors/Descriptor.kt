@@ -46,6 +46,10 @@ open class Descriptor<VertexType>(
 
         return true
     }
+
+    override fun toString(): String {
+        return "Descriptor(${rsmState.nonterminal}, inputPosition=$inputPosition)"
+    }
 }
 
 

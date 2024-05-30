@@ -1,56 +1,29 @@
-package org.ucfs.input
+package org.ucfs.intersection
 
 import org.ucfs.descriptors.Descriptor
-import org.ucfs.parser.context.IContext
+import org.ucfs.input.Edge
+import org.ucfs.input.ILabel
+import org.ucfs.input.RecoveryEdge
+import org.ucfs.parser.IGll
 import org.ucfs.rsm.RsmState
 import org.ucfs.rsm.symbol.ITerminal
-import org.ucfs.rsm.symbol.Nonterminal
 import org.ucfs.sppf.node.SppfNode
 
-/**
- * Part of error recovery mechanism.
- * Input graph interface with additional methods to support error recovery logic
- * @param VertexType - type of vertex in input graph
- * @param LabelType - type of label on edges in input graph
- */
-interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<VertexType, LabelType> {
+object RecoveryIntersection : IIntersectionEngine{
     /**
      * Process outgoing edges from input position in given descriptor, according to processing logic, represented as
      * separate functions for processing both  outgoing terminal and nonterminal edges from rsmState in descriptor.
      * Additionally, considers error recovering edges in input graph. Those are the edges that were not present in
      * initial graph, but could be useful later to successfully parse input
-     * @param handleTerminalOrEpsilonEdge - function for processing terminal and epsilon edges in RSM
-     * @param handleNonterminalEdge - function for processing nonterminal edges in RSM
-     * @param ctx - configuration of Gll parser instance
+     * @param gll - Gll parser instance
      * @param descriptor - descriptor, represents current parsing stage
      * @param sppfNode - root node of derivation tree, corresponds to already parsed portion of input
      */
-    override fun handleEdges(
-        handleTerminalOrEpsilonEdge: (
-            curDescriptor: Descriptor<VertexType>,
-            curSppfNode: SppfNode<VertexType>?,
-            terminal: ITerminal?,
-            targetState: RsmState,
-            targetVertex: VertexType,
-            targetWeight: Int,
-        ) -> Unit,
-        handleNonterminalEdge: (
-            descriptor: Descriptor<VertexType>,
-            nonterminal: Nonterminal,
-            targetStates: HashSet<RsmState>,
-            sppfNode: SppfNode<VertexType>?
-        ) -> Unit,
-        ctx: IContext<VertexType, LabelType>,
-        descriptor: Descriptor<VertexType>,
-        sppfNode: SppfNode<VertexType>?
+    override fun <VertexType, LabelType : ILabel> handleEdges(
+        gll: IGll<VertexType, LabelType>, descriptor: Descriptor<VertexType>, sppfNode: SppfNode<VertexType>?
     ) {
-        super.handleEdges(handleTerminalOrEpsilonEdge, handleNonterminalEdge, ctx, descriptor, sppfNode)
-        val errorRecoveryEdges = createRecoveryEdges(descriptor)
-        handleRecoveryEdges(
-            errorRecoveryEdges,
-            handleTerminalOrEpsilonEdge,
-            descriptor
-        )
+        IntersectionEngine.handleEdges(gll, descriptor, sppfNode)
+        handleRecoveryEdges(gll, descriptor)
     }
 
     /**
@@ -58,13 +31,15 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param descriptor - current parsing stage
      * @return Map terminal -> (destination, weight)
      */
-    private fun createRecoveryEdges(descriptor: Descriptor<VertexType>): HashSet<RecoveryEdge<VertexType>> {
+    private fun <VertexType, LabelType : ILabel> createRecoveryEdges(
+        gll: IGll<VertexType, LabelType>, descriptor: Descriptor<VertexType>
+    ): HashSet<RecoveryEdge<VertexType>> {
         val inputPosition = descriptor.inputPosition
         val rsmState = descriptor.rsmState
         val terminalEdges = rsmState.terminalEdges
 
         val errorRecoveryEdges = HashSet<RecoveryEdge<VertexType>>()
-        val currentEdges = getEdges(inputPosition)
+        val currentEdges = gll.ctx.input.getEdges(inputPosition)
 
         if (currentEdges.isNotEmpty()) {
             addTerminalRecoveryEdges(terminalEdges, errorRecoveryEdges, inputPosition, rsmState, currentEdges)
@@ -82,7 +57,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param inputPosition - current vertex in input graph
      * @param rsmState - current rsmState
      */
-    private fun addEpsilonRecoveryEdges(
+    private fun <VertexType> addEpsilonRecoveryEdges(
         terminalEdges: HashMap<ITerminal, HashSet<RsmState>>,
         errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
         inputPosition: VertexType,
@@ -103,7 +78,7 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
      * @param rsmState - current rsmState
      * @param currentEdges - outgoing edges from current vertex in input graph
      */
-    private fun addTerminalRecoveryEdges(
+    private fun <VertexType, LabelType : ILabel> addTerminalRecoveryEdges(
         terminalEdges: HashMap<ITerminal, HashSet<RsmState>>,
         errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
         inputPosition: VertexType,
@@ -126,29 +101,19 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
                     errorRecoveryEdges.add(RecoveryEdge(terminal, inputPosition, weight = 1))
                 }
             }
-
             errorRecoveryEdges.add(RecoveryEdge(null, currentEdge.head, weight = 1))
         }
     }
 
     /**
-     * Processes created error recovery edges and adds corresponding error recovery descriptors to handling
-     * @param errorRecoveryEdges - collection of created error recovery edges
-     * @param handleTerminalOrEpsilonEdge - function to process error recovery edges
+     * Creates and processes error recovery edges and adds corresponding error recovery descriptors to handling
+     * @param gll - GLL parser instance
      * @param descriptor - current parsing stage
      */
-    private fun handleRecoveryEdges(
-        errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>>,
-        handleTerminalOrEpsilonEdge: (
-            descriptor: Descriptor<VertexType>,
-            sppfNode: SppfNode<VertexType>?,
-            terminal: ITerminal?,
-            targetState: RsmState,
-            targetVertex: VertexType,
-            targetWeight: Int,
-        ) -> Unit,
-        descriptor: Descriptor<VertexType>
+    fun <VertexType, LabelType : ILabel> handleRecoveryEdges(
+        gll: IGll<VertexType, LabelType>, descriptor: Descriptor<VertexType>
     ) {
+        val errorRecoveryEdges: HashSet<RecoveryEdge<VertexType>> = createRecoveryEdges(gll, descriptor)
         val terminalEdges = descriptor.rsmState.terminalEdges
 
         for (errorRecoveryEdge in errorRecoveryEdges) {
@@ -157,29 +122,18 @@ interface IRecoveryInputGraph<VertexType, LabelType : ILabel> : IInputGraph<Vert
             val weight = errorRecoveryEdge.weight
 
             if (terminal == null) {
-                handleTerminalOrEpsilonEdge(
-                    descriptor,
-                    descriptor.sppfNode,
-                    null,
-                    descriptor.rsmState,
-                    head,
-                    weight
+                gll.handleTerminalOrEpsilonEdge(
+                    descriptor, descriptor.sppfNode, null, descriptor.rsmState, head, weight
                 )
             } else if (terminalEdges.containsKey(errorRecoveryEdge.label)) {
                 for (targetState in terminalEdges.getValue(terminal)) {
-                    handleTerminalOrEpsilonEdge(
-                        descriptor,
-                        descriptor.sppfNode,
-                        terminal,
-                        targetState,
-                        head,
-                        weight
+                    gll.handleTerminalOrEpsilonEdge(
+                        descriptor, descriptor.sppfNode, terminal, targetState, head, weight
                     )
                 }
             }
         }
 
     }
-
 
 }

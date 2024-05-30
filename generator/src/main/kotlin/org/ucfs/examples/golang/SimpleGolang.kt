@@ -1,4 +1,4 @@
-package org.ucfs.examples.golang
+package  org.ucfs.examples.golang
 
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.extension.StringExtension.or
@@ -8,16 +8,8 @@ import org.ucfs.grammar.combinator.regexp.Nt
 import org.ucfs.grammar.combinator.regexp.or
 
 class SimpleGolang : Grammar() {
-    var Program by Nt()
-    var Block by Nt()
-    var Statement by Nt()
-    var IntExpr by Nt()
-
-    init {
-        setStart(Program)
-        Program = Block
-        Block = Many(Statement)
-        Statement = IntExpr * ";" or "r" * IntExpr * ";"
-        IntExpr = "1" or "1" * "+" * "1"
-    }
+    val IntExpr by Nt("1" or "1" * "+" * "1")
+    val Statement by Nt(IntExpr * ";" or "r" * IntExpr * ";")
+    val Block by Nt(Many(Statement))
+    val Program by Nt(Block).asStart()
 }

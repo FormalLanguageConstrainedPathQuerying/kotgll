@@ -44,6 +44,7 @@ class AstExtractor(val pkg: String) {
                 val ctor = nodeClass.getConstructor(Node::class.java, Int::class.java)
 
                 val node: Node = ctor.newInstance(parent, getOffset(left, parent)) as Node
+                node.isRecovered = sppf.weight > 0
                 node.left = left
                 parent.children.add(node)
 
@@ -57,6 +58,7 @@ class AstExtractor(val pkg: String) {
 
             is TerminalSppfNode<*> -> {
                 val node = TerminalNode(parent, getOffset(left, parent), sppf.terminal, left)
+                node.isRecovered = sppf.weight > 0
                 parent.children.add(node)
                 parent.length += sppf.terminal.toString().length
                 return node

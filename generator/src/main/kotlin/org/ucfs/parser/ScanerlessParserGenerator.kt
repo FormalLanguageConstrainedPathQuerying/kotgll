@@ -5,16 +5,13 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.asTypeName
-import org.ucfs.grammar.combinator.Grammar
-import org.ucfs.parser.IParserGenerator.Companion.INPUT_EDGE_NAME
 import org.ucfs.rsm.symbol.ITerminal
 
 /**
  * Scanerless parser generator
  * Store @Grammar terminals as list of @Terminal<*> type
  */
-class ScanerlessParserGenerator(override val grammarClazz: Class<*>) : IParserGenerator {
-    override val grammar: Grammar = buildGrammar(grammarClazz)
+class ScanerlessParserGenerator(grammarClazz: Class<*>) : AbstractParserGenerator(grammarClazz) {
     private val terminals: List<ITerminal> = grammar.getTerminals().toList()
 
     override fun generateProperties(): Iterable<PropertySpec> {
@@ -26,13 +23,13 @@ class ScanerlessParserGenerator(override val grammarClazz: Class<*>) : IParserGe
     ): CodeBlock {
         return CodeBlock.of(
             "%L(%L[%L], %L, %L, %L, %L)",
-            IParserGenerator.HANDLE_TERMINAL,
-            IParserGenerator.TERMINALS,
+            HANDLE_TERMINAL,
+            TERMINALS,
             terminals.indexOf(terminal),
-            IParserGenerator.STATE_NAME,
+            STATE_NAME,
             INPUT_EDGE_NAME,
-            IParserGenerator.DESCRIPTOR,
-            IParserGenerator.SPPF_NODE
+            DESCRIPTOR,
+            SPPF_NODE
         )
     }
 
@@ -41,14 +38,17 @@ class ScanerlessParserGenerator(override val grammarClazz: Class<*>) : IParserGe
      * filed in parser
      */
     private fun generateTerminalsSpec(): PropertySpec {
-        val termListType = List::class.asTypeName()
-            .parameterizedBy(
-                ITerminal::class.asTypeName()
-            )
+        val termListType = List::class.asTypeName().parameterizedBy(
+            ITerminal::class.asTypeName()
+        )
         val propertyBuilder =
-            PropertySpec.builder(IParserGenerator.TERMINALS, termListType)
-                .addModifiers(KModifier.PRIVATE)
-                .initializer("%L.%L().%L()", IParserGenerator.GRAMMAR_NAME, IParserGenerator.GET_TERMINALS, "toList")
+            PropertySpec.builder(TERMINALS, termListType).addModifiers(KModifier.PRIVATE)
+                .initializer(
+                    "%L.%L().%L()",
+                    GRAMMAR_NAME,
+                    GET_TERMINALS,
+                    "toList"
+                )
         return propertyBuilder.build()
     }
 

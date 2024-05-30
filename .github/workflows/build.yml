@@ -18,15 +18,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Generate JFlex files
+      - name: Install JFlex
         run: |
           sudo apt-get install -y jflex
-          ./benchmarks/generate_lexers.sh
 
-      - name: Generate ANTLR4 files
+      - name: Install ANTLR4 files
         run: |
           sudo apt-get install antlr4
-          ./benchmarks/generate_antlr_classes.sh
+
+      - name: Generate files
+        run: |
+          ./scripts/generate_all.sh
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0

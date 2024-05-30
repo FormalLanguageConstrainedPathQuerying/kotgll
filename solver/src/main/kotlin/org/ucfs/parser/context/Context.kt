@@ -14,8 +14,7 @@ import org.ucfs.sppf.node.SppfNode
  * @param LabelType - type of label on edges in input graph
  */
 class Context<VertexType, LabelType : ILabel>(
-    override val startState: RsmState,
-    override val input: IInputGraph<VertexType, LabelType>
+    override val startState: RsmState, override val input: IInputGraph<VertexType, LabelType>
 ) : IContext<VertexType, LabelType> {
     override val descriptors: DescriptorsStorage<VertexType> = DescriptorsStorage()
     override val sppf: Sppf<VertexType> = Sppf()

@@ -3,29 +3,27 @@ package rsm.api
 import org.junit.jupiter.api.Test
 import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.regexp.Nt
-import org.ucfs.rsm.symbol.Term
 import org.ucfs.grammar.combinator.regexp.or
 import org.ucfs.grammar.combinator.regexp.times
+import org.ucfs.rsm.symbol.Term
 import rsm.RsmTest
 import kotlin.test.assertTrue
 
 class TerminalsEqualsTest : RsmTest {
     class AStarTerms : Grammar() {
-        var S by Nt()
+        val S by Nt().asStart()
 
         init {
-            setStart(S)
-            S = Term("a") or Term("a") * S or S * S
+            S /= Term("a") or Term("a") * S or S * S
         }
     }
 
     class AStar : Grammar() {
-        var S by Nt()
+        val S by Nt().asStart()
         val A = Term("a")
 
         init {
-            setStart(S)
-            S = A or A * S or S * S
+            S /= A or A * S or S * S
         }
     }
 

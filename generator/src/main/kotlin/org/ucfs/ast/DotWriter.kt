@@ -39,7 +39,12 @@ class DotWriter {
     private fun getNodeView(node: Node): StringBuilder {
         val view = StringBuilder("\n${getId(node)}  [ ${getNodeLabel(node)}")
         if (node is TerminalNode<*>) {
-            view.append(", color = green")
+            if(node.isRecovered) {
+                view.append(", color = red")
+            }
+            else{
+                view.append(", color = green")
+            }
         }
         view.append("]")
         return view

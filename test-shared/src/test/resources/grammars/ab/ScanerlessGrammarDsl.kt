@@ -4,11 +4,6 @@ import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.grammar.combinator.extension.StringExtension.times
 import org.ucfs.grammar.combinator.regexp.Nt
 
-class ScanerlessGrammarDsl: Grammar() {
-    var S by Nt()
-
-    init {
-        setStart(S)
-        S = "a" * "b"
-    }
+class ScanerlessGrammarDsl : Grammar() {
+    val S by Nt("a" * "b").asStart()
 }
