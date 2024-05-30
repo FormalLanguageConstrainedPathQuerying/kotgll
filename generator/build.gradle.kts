@@ -2,9 +2,6 @@ plugins {
     kotlin("jvm") version "1.9.20"
 }
 
-
-version = "unspecified"
-
 repositories {
     mavenCentral()
 }

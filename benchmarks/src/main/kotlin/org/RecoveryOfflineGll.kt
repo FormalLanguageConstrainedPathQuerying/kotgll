@@ -8,7 +8,7 @@ class RecoveryOfflineGll : BaseBench() {
 
     @Benchmark
     fun measureGll(blackhole: Blackhole) {
-        val parser = org.ucfs.Java7ParserRecovery<Int, LinearInputLabel>()
+        val parser = org.ucfs.Java8ParserRecovery<Int, LinearInputLabel>()
         parser.input = getTokenStream(fileContents)
         blackhole.consume(parser.parse())
     }
