@@ -3,7 +3,7 @@ shopt -s nullglob     #ingore failed patterns
 rootPrj=$(pwd)
 parserDest="../benchmarks/src/main/kotlin/"
 antlrSrc="benchmarks/src/main/java/org/antlr"
-lexerSrc="examples/src/main/java/java7"
+lexerSrc="examples/src/main/java/java8"
 
 printf "\n\nINSTALL PACKAGES\n"
 apt-get install jflex
