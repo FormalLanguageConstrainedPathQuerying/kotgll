@@ -34,6 +34,7 @@ jmh {
     warmup = "1s"
     iterations = 10
     timeOnIteration = "2s"
+    fork = 2
     verbosity = "NORMAL"
     benchmarkMode.addAll("AverageTime")
     failOnError = false
