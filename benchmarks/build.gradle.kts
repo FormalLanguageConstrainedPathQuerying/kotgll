@@ -39,9 +39,6 @@ jmh {
     failOnError = false
     resultFormat = "CSV"
     jvmArgs.addAll("-Xmx128g")
-    val buildDir = project.layout.buildDirectory.get().toString()
-    humanOutputFile = project.file("${buildDir}/reports/jmh/human.txt") // human-readable output file
-    resultsFile = project.file("${buildDir}/reports/jmh/results.txt") // results file
     profilers = listOf("gc")
 
 
@@ -52,6 +49,9 @@ jmh {
     } else {
         val params = objects.listProperty<String>().value(getArgs(property(dataset).toString()))
         benchmarkParameters.put("fileName", params)
+        val buildDir = project.layout.buildDirectory.get().toString()
+        humanOutputFile = project.file("${buildDir}/reports/jmh/$dataset/human.txt") // human-readable output file
+        resultsFile = project.file("${buildDir}/reports/jmh/$dataset/results.txt") // results file
     }
 
     //filter on tools
