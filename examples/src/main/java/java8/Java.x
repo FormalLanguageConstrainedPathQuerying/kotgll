@@ -1,4 +1,4 @@
-package java7;
+package java8;
 
 import java.io.*;
 
@@ -101,7 +101,6 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 "private"      { return JavaToken.PRIVATE; }
 "abstract"     { return JavaToken.ABSTRACT; }
 "final"        { return JavaToken.FINAL; }
-"const"        { return JavaToken.FINAL; }
 "strictfp"     { return JavaToken.STRICTFP; }
 "implements"   { return JavaToken.IMPLEMENTS; }
 "transient"    { return JavaToken.TRANSIENT; }

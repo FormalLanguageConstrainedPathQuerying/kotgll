@@ -1,6 +1,5 @@
 package org.ucfs.parser
 
-import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
@@ -18,20 +17,10 @@ class ScanerlessParserGenerator(grammarClazz: Class<*>) : AbstractParserGenerato
         return super.generateProperties() + generateTerminalsSpec()
     }
 
-    override fun generateTerminalHandling(
-        terminal: ITerminal,
-    ): CodeBlock {
-        return CodeBlock.of(
-            "%L(%L[%L], %L, %L, %L, %L)",
-            HANDLE_TERMINAL,
-            TERMINALS,
-            terminals.indexOf(terminal),
-            STATE_NAME,
-            INPUT_EDGE_NAME,
-            DESCRIPTOR,
-            SPPF_NODE
-        )
+    override fun getTerminalName(terminal: ITerminal): String {
+        return "$TERMINALS[${terminals.indexOf(terminal)}]"
     }
+
 
     /**
      * Generate definition and initialization for Terminals as

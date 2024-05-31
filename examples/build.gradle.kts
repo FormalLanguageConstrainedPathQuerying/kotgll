@@ -1,15 +1,11 @@
 plugins {
-
     java
     kotlin("jvm") version "1.9.20"
     application
 }
 
-group = "org.example"
-version = "unspecified"
-
 application{
-    mainClass = "java7.GeneratorKt"
+    mainClass = "java8.GeneratorKt"
 }
 repositories {
     mavenCentral()
@@ -20,3 +16,4 @@ dependencies {
     implementation(project(":generator"))
 }
 
+kotlin { jvmToolchain(11) }

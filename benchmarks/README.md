@@ -10,7 +10,7 @@
 ## Generate files
 Run `/scripts/generate_all.sh`
 ## Run benchmarks
-Set data-set folder and parser mode in script `/scripts/run_bench.sh` and run it
+From root project folder run `./gradlew :benchmarks:jmh -PtoolName=${toolRegexp} -Pdataset=${absolutePathToDatasetFolder}`
 
 ## Logging
 

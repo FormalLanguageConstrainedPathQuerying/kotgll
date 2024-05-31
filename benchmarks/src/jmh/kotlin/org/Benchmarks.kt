@@ -1,7 +1,7 @@
 package org
 
-import java7.JavaLexer
-import java7.JavaToken
+import java8.JavaLexer
+import java8.JavaToken
 import org.ucfs.input.*
 import org.ucfs.rsm.symbol.Term
 import java.io.StringReader

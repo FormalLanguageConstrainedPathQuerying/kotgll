@@ -52,7 +52,7 @@ class ScanerlessGllGeneratedTest : IOfflineGllTest {
         gll: GeneratedParser<Int, LinearInputLabel>
     ): DynamicNode {
         return DynamicTest.dynamicTest("[ok] $caseName") {
-            gll.input = LinearInput.buildFromString(input)
+            gll.setInput(LinearInput.buildFromString(input))
             val result = gll.parse().first
             assertNotNull(result)
             assertEquals(input.replace(SPACE, ""), buildStringFromSppf(result))

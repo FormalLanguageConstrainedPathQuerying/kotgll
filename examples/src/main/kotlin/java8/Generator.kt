@@ -1,4 +1,4 @@
-package java7
+package java8
 import org.ucfs.parser.ParserGenerator
 import org.ucfs.parser.RecoveryParserGenerator
 import java.nio.file.Path
@@ -15,13 +15,13 @@ fun main(args: Array<String>){
 
 fun generateJavaParser(path: Path) {
     ParserGenerator(
-        Java7::class.java,
+        Java8::class.java,
         JavaToken::class.java
     ).generate(path, "org.ucfs")
 }
 fun generateJavaRecoveryParser(path: Path) {
     RecoveryParserGenerator(
-        Java7::class.java,
+        Java8::class.java,
         JavaToken::class.java
     ).generate(path, "org.ucfs")
 }
