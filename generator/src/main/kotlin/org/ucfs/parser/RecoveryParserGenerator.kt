@@ -26,7 +26,7 @@ class RecoveryParserGenerator(grammarClazz: Class<*>, terminalsEnum: Class<*>) :
     private fun generateMainLoopFunction(): FunSpec {
         return FunSpec.builder(MAIN_PARSE_FUNC).addModifiers(KModifier.OVERRIDE).addParameter(
             DESCRIPTOR, descriptorType
-        ).addStatement("super.%L()", MAIN_PARSE_FUNC)
+        ).addStatement("super.%L(%L)", MAIN_PARSE_FUNC, DESCRIPTOR)
             .addStatement("%L.%L(this, %L)", recoveryEngineType, RECOVERY_METHOD_NAME, DESCRIPTOR).build()
     }
     override fun getParserClassName(): String {
