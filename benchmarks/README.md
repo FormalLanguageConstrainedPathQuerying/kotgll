@@ -8,7 +8,7 @@
 (3) Jflex
 ```
 ## Generate files
-Run `/scripts/generate_all.sh`
+Run `./scripts/generate_all.sh`
 ## Run benchmarks
 From root project folder run `./gradlew :benchmarks:jmh -PtoolName=${toolRegexp} -Pdataset=${absolutePathToDatasetFolder}`
 

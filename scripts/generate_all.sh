@@ -1,8 +1,8 @@
 #!/bin/bash
 shopt -s nullglob     #ingore failed patterns
 rootPrj=$(pwd)
-parserDest="../benchmarks/src/main/kotlin/"
-antlrSrc="benchmarks/src/main/java/org/antlr"
+parserDest="../benchmarks/src/jmh/kotlin/"
+antlrSrc="benchmarks/src/jmh/java/org/antlr"
 lexerSrc="examples/src/main/java/java8"
 
 printf "\n\nINSTALL PACKAGES\n"
