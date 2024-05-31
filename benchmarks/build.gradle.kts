@@ -34,7 +34,7 @@ jmh {
     warmup = "1s"
     iterations = 10
     timeOnIteration = "2s"
-    verbosity = "EXTRA"
+    verbosity = "NORMAL"
     benchmarkMode.addAll("AverageTime")
     failOnError = false
     resultFormat = "CSV"
@@ -47,11 +47,12 @@ jmh {
     if (!hasProperty(dataset)) {
         println("BENCHMARKS FAILED! Set dataset folder by property '$dataset'")
     } else {
-        val params = objects.listProperty<String>().value(getArgs(property(dataset).toString()))
+        val datasetName = property(dataset).toString()
+        val params = objects.listProperty<String>().value(getArgs(datasetName))
         benchmarkParameters.put("fileName", params)
         val buildDir = project.layout.buildDirectory.get().toString()
-        humanOutputFile = project.file("${buildDir}/reports/jmh/$dataset/human.txt") // human-readable output file
-        resultsFile = project.file("${buildDir}/reports/jmh/$dataset/results.txt") // results file
+        humanOutputFile = project.file("${buildDir}/reports/jmh/$datasetName/human.txt") // human-readable output file
+        resultsFile = project.file("${buildDir}/reports/jmh/$datasetName/results.txt") // results file
     }
 
     //filter on tools
