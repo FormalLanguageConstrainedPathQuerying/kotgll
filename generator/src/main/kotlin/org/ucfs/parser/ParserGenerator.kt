@@ -1,6 +1,5 @@
 package org.ucfs.parser
 
-import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import org.ucfs.rsm.symbol.ITerminal
 
@@ -10,12 +9,10 @@ import org.ucfs.rsm.symbol.ITerminal
  */
 open class ParserGenerator(grammarClazz: Class<*>, private val terminalsEnum: Class<*>) :
     AbstractParserGenerator(grammarClazz) {
-    override fun generateTerminalHandling(terminal: ITerminal): CodeBlock {
 
-        val terminalName = "${terminalsEnum.simpleName}.$terminal"
-        return CodeBlock.of(
-            "%L(%L, %L, %L, %L, %L)", HANDLE_TERMINAL, terminalName, STATE_NAME, INPUT_EDGE_NAME, DESCRIPTOR, SPPF_NODE
-        )
+
+    override fun getTerminalName(terminal: ITerminal): String {
+        return "${terminalsEnum.simpleName}.$terminal"
     }
 
     override fun getFileBuilder(pkg: String): FileSpec.Builder {

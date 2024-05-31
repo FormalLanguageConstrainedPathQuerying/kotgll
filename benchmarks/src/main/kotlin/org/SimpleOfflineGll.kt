@@ -10,7 +10,7 @@ class SimpleOfflineGll : BaseBench() {
     @Benchmark
     fun measureGll(blackhole: Blackhole) {
         val parser = org.ucfs.Java8Parser<Int, LinearInputLabel>()
-        parser.input = getTokenStream(fileContents)
+        parser.setInput(getTokenStream(fileContents))
         blackhole.consume(parser.parse())
     }
 }

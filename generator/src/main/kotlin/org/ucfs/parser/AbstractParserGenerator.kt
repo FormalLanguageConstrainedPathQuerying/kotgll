@@ -76,6 +76,7 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
     open fun getParserClassName(): String {
         return grammarClazz.simpleName + PARSER
     }
+
     /**
      * Build file builder
      */
@@ -89,7 +90,7 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
             .superclass(superClass)
             .addProperties(generateProperties())
             .addNtMapping()
-            .addFunctions(generateParseFunctions())
+            .addFunctions(generateMethods())
 
         val fileBuilder = FileSpec
             .builder(pkg, parserClass.rawType.simpleName)
@@ -111,9 +112,8 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
      */
     open fun generateProperties(): Iterable<PropertySpec> {
         return listOf(
-            generateCtxProperty(),
+            //  generateCtxProperty(),
             generateGrammarProperty(grammarClazz),
-            generateInputProperty()
         ) + generateNonterminalsSpec()
     }
 
@@ -133,7 +133,7 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
      */
     private fun generateGrammarProperty(grammarClazz: Class<*>): PropertySpec {
         return PropertySpec
-            .builder(GRAMMAR_NAME, grammarClazz, KModifier.OVERRIDE)
+            .builder(GRAMMAR_NAME, grammarClazz)
             .initializer(
                 CodeBlock.of("${grammarClazz.simpleName}()")
             )
@@ -156,6 +156,9 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
         return funSpec.build()
     }
 
+    private fun generateMethods(): Iterable<FunSpec> {
+        return generateParseFunctions() + generateInputSetter()
+    }
 
     /**
      * Generate Parse methods for all nonterminals
@@ -168,15 +171,20 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
      * Generate Parse method for concrete nonterminal
      */
     private fun generateParseFunction(nt: Nt): FunSpec {
+        val states = nt.nonterm.getStates()
         val funSpec = FunSpec.builder(getParseFunName(nt.nonterm.name!!))
         funSpec.addModifiers(KModifier.PRIVATE)
             .addParameter(DESCRIPTOR, descriptorType)
             .addParameter(SPPF_NODE, sppfType)
             .addStatement("val %L = %L.%L", STATE_NAME, DESCRIPTOR, RSM_FIELD)
-            .addStatement("val %L = %L.%L", POS_VAR_NAME, DESCRIPTOR, POS_FIELD)
-            .beginControlFlow("when(%L.%L)", STATE_NAME, "numId")
 
-        for (state in nt.nonterm.getStates()) {
+        if (states.any { state -> state.terminalEdges.isNotEmpty() }) {
+            funSpec.addStatement("val %L = %L.%L", POS_VAR_NAME, DESCRIPTOR, POS_FIELD)
+        }
+
+        funSpec.beginControlFlow("when(%L.%L)", STATE_NAME, "numId")
+
+        for (state in states.sortedBy { it.numId }) {
             generateParseForState(state, funSpec)
         }
 
@@ -209,18 +217,22 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
                 INPUT_NAME,
                 POS_VAR_NAME
             )
+
+            funSpec.beginControlFlow("when(%L.label.terminal)", INPUT_EDGE_NAME)
             for (term in state.terminalEdges.keys) {
-                funSpec.addStatement(generateTerminalHandling(term).toString())
+                val terminalName =  getTerminalName(term)
+                funSpec.addStatement("%L -> ", terminalName)
+                funSpec.addStatement("%L(%L, %L, %L, %L, %L)", HANDLE_TERMINAL, terminalName,
+                    STATE_NAME, INPUT_EDGE_NAME, DESCRIPTOR, SPPF_NODE)
             }
+            funSpec.addStatement("else -> {}")
+            funSpec.endControlFlow()
+
             funSpec.endControlFlow()
         }
     }
 
-    /**
-     * Generate code for handle one Edge with Terminal<*> label
-     */
-    abstract fun generateTerminalHandling(terminal: ITerminal): CodeBlock
-
+    abstract fun getTerminalName(terminal: ITerminal): String
 
     /**
      * Generate code for parsing all edges with Nonterminal label
@@ -264,33 +276,23 @@ abstract class AbstractParserGenerator(final override val grammarClazz: Class<*>
         return propertyBuilder.build()
     }
 
-    protected open fun generateInputProperty(): PropertySpec {
-        return generateInputProperty(
-            Context::class.asTypeName().parameterizedBy(vertexType, labelType)
-        )
+    protected open fun getContextType(): ParameterizedTypeName {
+        return Context::class.asTypeName().parameterizedBy(vertexType, labelType)
     }
 
-    protected fun generateInputProperty(ctxType: ParameterizedTypeName): PropertySpec {
+    private fun generateInputSetter(): FunSpec {
+        val ctxType = getContextType()
         val inputType = IInputGraph::class.asTypeName().parameterizedBy(vertexType, labelType)
-        return PropertySpec.builder(INPUT_NAME, inputType, KModifier.OVERRIDE)
-            .mutable()
-            .getter(
-                FunSpec.getterBuilder()
-                    .addStatement("return %L.%L", CTX_NAME, INPUT_NAME)
-                    .build()
-            )
-            .setter(
-                FunSpec.setterBuilder()
-                    .addParameter(VALUE_NAME, inputType)
-                    .addStatement(
-                        "%L = %L(%L.%L, %L)",
-                        CTX_NAME,
-                        ctxType.rawType,
-                        GRAMMAR_NAME,
-                        RSM_GRAMMAR_FIELD,
-                        VALUE_NAME
-                    )
-                    .build()
+        return FunSpec.builder("setInput")
+            .addModifiers(KModifier.OVERRIDE)
+            .addParameter(VALUE_NAME, inputType)
+            .addStatement(
+                "%L = %L(%L.%L, %L)",
+                CTX_NAME,
+                ctxType.rawType,
+                GRAMMAR_NAME,
+                RSM_GRAMMAR_FIELD,
+                VALUE_NAME
             )
             .build()
     }

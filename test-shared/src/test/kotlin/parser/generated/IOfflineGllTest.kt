@@ -20,7 +20,7 @@ interface IOfflineGllTest : IDynamicGllTest {
         input: IInputGraph<VertexType, LabelType>
     ): DynamicNode {
         return DynamicTest.dynamicTest("[fail] $caseName") {
-            gll.input = input
+            gll.setInput(input)
             val result = gll.parse().first
             Assertions.assertNull(result)
         }
@@ -36,7 +36,7 @@ interface IOfflineGllTest : IDynamicGllTest {
         input: IInputGraph<VertexType, LabelType>
     ): DynamicNode {
         return DynamicTest.dynamicTest("[ok] $caseName") {
-            gll.input = input
+            gll.setInput(input)
             val result = gll.parse()
             if (result.first == null) {
                 System.err.println("input: $input")

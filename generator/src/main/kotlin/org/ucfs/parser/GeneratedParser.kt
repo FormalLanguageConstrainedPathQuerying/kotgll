@@ -1,21 +1,21 @@
 package org.ucfs.parser
 
 import org.ucfs.descriptors.Descriptor
-import org.ucfs.grammar.combinator.Grammar
 import org.ucfs.input.Edge
 import org.ucfs.input.IInputGraph
 import org.ucfs.input.ILabel
+import org.ucfs.parser.context.IContext
 import org.ucfs.rsm.RsmState
 import org.ucfs.rsm.symbol.ITerminal
 import org.ucfs.rsm.symbol.Nonterminal
 import org.ucfs.sppf.node.SppfNode
 
-
+/**
+ * If overriding field uses -- 1.2 % longer parser operation (due to hashset initialisation)
+ */
 abstract class GeneratedParser<VertexType, LabelType : ILabel> :
     IGll<VertexType, LabelType> {
-    abstract val grammar: Grammar
-
-    abstract var input: IInputGraph<VertexType, LabelType>
+    override lateinit var ctx: IContext<VertexType, LabelType>
 
     /**
      * Processes faster than map from nonterminal to method (proved experimentally)
@@ -62,24 +62,17 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         descriptor: Descriptor<VertexType>,
         curSppfNode: SppfNode<VertexType>?
     ) {
-
-
-        if (inputEdge.label.terminal == terminal) {
-            val newStates = state.terminalEdges[terminal] ?: throw ParsingException(
-                "State $state does not contains edges " +
-                        "\nby terminal $terminal" +
-                        "\naccessible edges: ${state.terminalEdges}\n"
+        for (target in state.terminalEdges[terminal] ?: emptyList()) {
+            handleTerminalOrEpsilonEdge(
+                descriptor,
+                curSppfNode,
+                terminal,
+                target,
+                inputEdge.head,
+                0
             )
-            for (target in newStates) {
-                handleTerminalOrEpsilonEdge(
-                    descriptor,
-                    curSppfNode,
-                    terminal,
-                    target,
-                    inputEdge.head,
-                    0
-                )
-            }
         }
     }
+
+    abstract fun setInput(input: IInputGraph<VertexType, LabelType>)
 }
