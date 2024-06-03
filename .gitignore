@@ -1,9 +1,6 @@
 # Compiled class file
 *.class
 
-# Python scripts
-*.py
-
 # input file
 input.txt
 
