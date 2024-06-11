@@ -13,7 +13,7 @@ printf "\n\nGENERATE FILES\n"
 
 printf "\nGenerate ANTLR4 files"
 cd $antlrSrc
-antlr4 Java8.g4
+antlr4 -package spb.intern.ast.typesmanager.parser.idebnf.gen Java8.g4
 cd $rootPrj
 
 printf "\nGenerate lexers"
