@@ -19,5 +19,4 @@ class AntlrBenchmark: TimeParsingBenchmark() {
             )
         antlrParser.compilationUnit()
     }
-
 }

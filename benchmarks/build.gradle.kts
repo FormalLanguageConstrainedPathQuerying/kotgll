@@ -9,6 +9,8 @@ repositories {
 }
 
 dependencies {
+    // Other dependencies.
+    testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
     //compared projects
     // 1. for ucfs
@@ -22,4 +24,8 @@ dependencies {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
