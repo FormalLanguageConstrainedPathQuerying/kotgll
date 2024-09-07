@@ -1,4 +1,4 @@
-import java8.JavaToken
+import org.ucfs.JavaToken
 import org.ucfs.JavaLexer
 import org.ucfs.input.*
 import org.ucfs.rsm.symbol.Term

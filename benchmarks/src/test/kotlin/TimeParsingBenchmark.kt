@@ -11,12 +11,12 @@ import kotlin.io.path.name
 abstract class TimeParsingBenchmark {
     val version: String = LocalDateTime.now().format(
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-    private val repeatCount: Int = 5
+    private val repeatCount: Int = 1
     lateinit var file: File
 
 
     private fun initFolder(): DynamicTest {
-        val resultPath = Path.of("src", "test", "result")
+        val resultPath = Path.of("src", "test", "result", getShortName())
         return dynamicTest("initiation for ${getShortName()}") {
             Files.createDirectories(resultPath)
             file = File(resultPath.toString(), "${getShortName()}_$version.csv")
