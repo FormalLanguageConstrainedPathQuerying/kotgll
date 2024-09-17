@@ -13,7 +13,9 @@ import kotlin.io.path.name
 
 abstract class TimeParsingBenchmark {
     val version: String = LocalDateTime.now().format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    )
+    private val timePerTestCase: Long = 10
     private val repeatCount: Int = 1
     lateinit var file: File
 
@@ -32,23 +34,32 @@ abstract class TimeParsingBenchmark {
 
     abstract fun getShortName(): String
 
-    private fun runTimeTest(fileName: String, text: String) {
-        var result: Long = 0
-        for(i in 0..repeatCount) {
+    private fun getMeanTime(text: String): Double {
+        var result = 0.0
+        for (i in 0..repeatCount) {
             val startTime = System.currentTimeMillis()
-            try{
-                parse(text)
-            }
-            catch (e: Exception){
-                report(fileName, e.toString())
-            }
+            parse(text)
             result += System.currentTimeMillis() - startTime
         }
         result /= repeatCount
-        report(fileName, result.toString())
+        return result
     }
 
-    private fun report(fileName: String, result: String){
+    private fun measureTimeWithTimeout(fileName: String, text: String) {
+        Assertions.assertTimeoutPreemptively(ofSeconds(timePerTestCase), {
+            try {
+                report(fileName, getMeanTime(text).toString())
+            } catch (e: Exception) {
+                report(fileName, e.javaClass.name)
+                assert(false) { e.toString() }
+            }
+        }, {
+            report(fileName, "timeout")
+            "$fileName failed with timeout"
+        })
+    }
+
+    private fun report(fileName: String, result: String) {
         val message = "$fileName,$result"
         println(message)
         file.appendText("\n$message")
@@ -57,7 +68,7 @@ abstract class TimeParsingBenchmark {
     abstract fun parse(text: String)
 
     private fun getResourceFolder(): String = Path.of("test_for_test").toString()
-        //Path.of("java", "correct", "junit-4-12").toString()
+    //Path.of("java", "correct", "junit-4-12").toString()
 
 
     private fun getResource(resourceFolder: String): Path {
@@ -69,19 +80,14 @@ abstract class TimeParsingBenchmark {
     @TestFactory
     @Timeout(1)
     fun timeTest(): Collection<DynamicTest> {
-        return getTests(getResource(getResourceFolder()), ::runTimeTest)
+        return getTests(getResource(getResourceFolder()), ::measureTimeWithTimeout)
     }
 
     private fun getTests(folder: Path, run: (String, String) -> Unit): Collection<DynamicTest> {
         return listOf(initFolder()) + Files.list(folder).map { file ->
             dynamicTest(file.fileName.toString()) {
                 val source = file.toFile().readText()
-
-                Assertions.assertTimeoutPreemptively(
-                    ofSeconds(1)
-                ) { run(file.name, source) }
-
-                report(file.name, "timeout")
+                    run(file.name, source)
             }
         }.toList()
     }
