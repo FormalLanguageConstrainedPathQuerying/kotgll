@@ -3,7 +3,7 @@ import org.antlr.Java8Parser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 
-class AntlrBenchmark: TimeParsingBenchmark() {
+class AntlrBenchmark: ParsingBenchmarks() {
 
     override fun getShortName(): String = "Antlr"
 

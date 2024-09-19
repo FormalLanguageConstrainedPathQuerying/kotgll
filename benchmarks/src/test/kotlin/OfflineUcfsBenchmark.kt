@@ -1,6 +1,6 @@
 import org.ucfs.input.LinearInputLabel
 
-class OfflineUcfsBenchmark : TimeParsingBenchmark() {
+class OfflineUcfsBenchmark : ParsingBenchmarks() {
     override fun getShortName(): String = "UcfsOff"
 
     override fun parse(text: String) {

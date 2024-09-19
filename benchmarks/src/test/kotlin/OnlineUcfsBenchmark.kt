@@ -1,7 +1,7 @@
 import java8.Java8
 import org.ucfs.parser.Gll
 
-class OnlineUcfsBenchmark : TimeParsingBenchmark() {
+class OnlineUcfsBenchmark : ParsingBenchmarks() {
     override fun getShortName(): String = "UcfsOn"
 
     override fun parse(text: String) {

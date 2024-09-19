@@ -10,8 +10,9 @@ import java.time.Duration.ofSeconds
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.io.path.name
+import kotlin.math.max
 
-abstract class TimeParsingBenchmark {
+abstract class ParsingBenchmarks {
     val version: String = LocalDateTime.now().format(
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
     )
@@ -20,6 +21,8 @@ abstract class TimeParsingBenchmark {
     lateinit var file: File
     private val resourceFolder: Path = Path.of("java", "correct", "junit-4-12")
     private lateinit var csvFileName: String
+    private val memoryMeasurement = "Mb"
+    private val memoryDivider: Long = 1024 * 1024
 
     private fun initFolder(): DynamicTest {
         val resultPath = Path.of("src", "test", "result", getShortName())
@@ -29,40 +32,51 @@ abstract class TimeParsingBenchmark {
             file = File(resultPath.toString(), csvFileName)
             file.createNewFile()
             file.writeText("% Time benchmark for ${getShortName()} on dataset $resourceFolder at $version\n")
-            file.appendText("fileName,result(avg $repeatCount times)")
+            file.appendText("fileName,result(avg $repeatCount times)(millis), used heap memory ($memoryMeasurement)")
         }
     }
 
 
     abstract fun getShortName(): String
 
-    private fun getMeanTime(text: String): Double {
-        var result = 0.0
+    private fun getHeapSize(): Long = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
+
+    private fun getPrintableHeapSize(heapSize: Long? = null): String {
+        return String.format("%.2f", (heapSize ?: getHeapSize()) * 1.0/ memoryDivider)
+            .trimEnd('0').trimEnd('.')
+    }
+
+    private fun getMeanTime(text: String): Pair<Double, Long> {
+        var meanTimeResult = 0.0
+        var maxMemoryUsage: Long = 0
         for (i in 0..repeatCount) {
             val startTime = System.currentTimeMillis()
             parse(text)
-            result += System.currentTimeMillis() - startTime
+            meanTimeResult += System.currentTimeMillis() - startTime
+            maxMemoryUsage = max(maxMemoryUsage, getHeapSize())
         }
-        result /= repeatCount
-        return result
+
+        meanTimeResult /= repeatCount
+        return Pair(meanTimeResult, maxMemoryUsage)
     }
 
     private fun measureTimeWithTimeout(fileName: String, text: String) {
         Assertions.assertTimeoutPreemptively(ofSeconds(timePerTestCase), {
             try {
-                report(fileName, getMeanTime(text).toString())
+                val result = getMeanTime(text)
+                report(fileName, result.first.toString(), getPrintableHeapSize(result.second))
             } catch (e: Exception) {
-                report(fileName, e.javaClass.name)
+                report(fileName, e.javaClass.name, getPrintableHeapSize())
                 assert(false) { e.toString() }
             }
         }, {
-            report(fileName, "timeout")
+            report(fileName, "timeout", getPrintableHeapSize())
             "$fileName failed with timeout"
         })
     }
 
-    private fun report(fileName: String, result: String) {
-        val message = "$fileName,$result"
+    private fun report(fileName: String, result: String, usedMemory: String = "not measured") {
+        val message = "$fileName,$result,$usedMemory"
         println(message)
         file.appendText("\n$message")
     }
@@ -70,7 +84,7 @@ abstract class TimeParsingBenchmark {
     abstract fun parse(text: String)
 
     private fun getResource(resourceFolder: String): Path {
-        val res = TimeParsingBenchmark::class.java.getResource(resourceFolder)
+        val res = ParsingBenchmarks::class.java.getResource(resourceFolder)
             ?: throw RuntimeException("No resource '$resourceFolder'")
         return Path.of(res.toURI())
     }
@@ -82,10 +96,10 @@ abstract class TimeParsingBenchmark {
     }
 
     private fun getTests(folder: Path, run: (String, String) -> Unit): Collection<DynamicTest> {
-        return listOf(initFolder()) + Files.list(folder).map { file ->
+        return listOf(initFolder()) + Files.list(folder).sorted().map { file ->
             dynamicTest(file.fileName.toString()) {
                 val source = file.toFile().readText()
-                    run(file.name, source)
+                run(file.name, source)
             }
         }.toList()
     }
