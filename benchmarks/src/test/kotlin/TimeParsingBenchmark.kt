@@ -15,19 +15,21 @@ abstract class TimeParsingBenchmark {
     val version: String = LocalDateTime.now().format(
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
     )
-    private val timePerTestCase: Long = 10
-    private val repeatCount: Int = 1
+    private val timePerTestCase: Long = 30
+    private val repeatCount: Int = 5
     lateinit var file: File
-
-    private fun getFolderName() = "${getShortName()}_${getResourceFolder()}_$version.csv"
+    private val resourceFolder: Path = Path.of("java", "correct", "junit-4-12")
+    private lateinit var csvFileName: String
 
     private fun initFolder(): DynamicTest {
         val resultPath = Path.of("src", "test", "result", getShortName())
         return dynamicTest("initiation for ${getShortName()}") {
             Files.createDirectories(resultPath)
-            file = File(resultPath.toString(), getFolderName())
+            csvFileName = "${getShortName()}_${resourceFolder.joinToString("_")}.csv"
+            file = File(resultPath.toString(), csvFileName)
             file.createNewFile()
-            file.writeText("fileName,result(avg $repeatCount times)")
+            file.writeText("% Time benchmark for ${getShortName()} on dataset $resourceFolder at $version\n")
+            file.appendText("fileName,result(avg $repeatCount times)")
         }
     }
 
@@ -67,10 +69,6 @@ abstract class TimeParsingBenchmark {
 
     abstract fun parse(text: String)
 
-    private fun getResourceFolder(): String = Path.of("test_for_test").toString()
-    //Path.of("java", "correct", "junit-4-12").toString()
-
-
     private fun getResource(resourceFolder: String): Path {
         val res = TimeParsingBenchmark::class.java.getResource(resourceFolder)
             ?: throw RuntimeException("No resource '$resourceFolder'")
@@ -80,7 +78,7 @@ abstract class TimeParsingBenchmark {
     @TestFactory
     @Timeout(1)
     fun timeTest(): Collection<DynamicTest> {
-        return getTests(getResource(getResourceFolder()), ::measureTimeWithTimeout)
+        return getTests(getResource(resourceFolder.toString()), ::measureTimeWithTimeout)
     }
 
     private fun getTests(folder: Path, run: (String, String) -> Unit): Collection<DynamicTest> {
