@@ -87,4 +87,4 @@ bin/
 ### Generated files ###
 /gen/
 /benchmarks/logs/
-/benchmarks/src/test/resources/java/correct/junit-4-12/*
+/benchmarks/src/test/resources/java/correct/*
