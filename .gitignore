@@ -86,10 +86,5 @@ bin/
 
 ### Generated files ###
 /gen/
-/benchmarks/src/main/java/org/antlr/*
-!/benchmarks/src/main/java/org/antlr/Java8.g4
-/benchmarks/src/main/kotlin/org/ucfs/*
-/benchmarks/src/main/java/org/ucfs/*
 /benchmarks/logs/
-/examples/src/main/java/java8/JavaLexer.java
 /benchmarks/src/test/resources/java/correct/junit-4-12/*
