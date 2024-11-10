@@ -2,7 +2,11 @@
 shopt -s nullglob     #ingore failed patterns
 rootPrj=$(pwd)
 parserDest="../benchmarks/src/main/kotlin/"
-antlrSrc="benchmarks/src/main/java/org/antlr"
+antlrSrc="../benchmarks/src/main/java/org/antlr"
+fastAntlrSrc="../benchmarks/src/main/java/org/antlr/fast"
+antlrPackage="org.antlr"
+antlrFastPackage="org.antlr.fast"
+
 lexerSrc="examples/src/main/java/java8"
 
 printf "\n\nINSTALL PACKAGES\n"
@@ -13,7 +17,14 @@ printf "\n\nGENERATE FILES\n"
 
 printf "\nGenerate ANTLR4 files"
 cd $antlrSrc
-antlr4 Java8.g4
+antlr4 -package $antlrPackage Java8Lexer.g4
+antlr4 -package $antlrPackage Java8Parser.g4
+cd $rootPrj
+
+printf "\nGenerate fast ANTLR4 files"
+cd $fastAntlrSrc
+antlr4 -package $antlrFastPackage JavaLexer.g4
+antlr4 -package $antlrFastPackage JavaParser.g4
 cd $rootPrj
 
 printf "\nGenerate lexers"

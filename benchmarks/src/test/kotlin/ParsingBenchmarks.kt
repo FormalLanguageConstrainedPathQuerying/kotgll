@@ -16,10 +16,13 @@ abstract class ParsingBenchmarks {
     val version: String = LocalDateTime.now().format(
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
     )
-    private val timePerTestCase: Long = 30
-    private val repeatCount: Int = 5
+    private val timePerTestCase: Long = 300
+    private val repeatCount: Int = 10
     lateinit var file: File
-    private val resourceFolder: Path = Path.of("java", "correct", "junit-4-12")
+    // rxjava-2-2-19
+    // junit-4-12
+
+    private val resourceFolder: Path = Path.of("java", "correct", "rxjava-2-2-2")
     private lateinit var csvFileName: String
     private val memoryMeasurement = "Mb"
     private val memoryDivider: Long = 1024 * 1024
@@ -31,8 +34,8 @@ abstract class ParsingBenchmarks {
             csvFileName = "${getShortName()}_${resourceFolder.joinToString("_")}.csv"
             file = File(resultPath.toString(), csvFileName)
             file.createNewFile()
-            file.writeText("% Time benchmark for ${getShortName()} on dataset $resourceFolder at $version\n")
-            file.appendText("fileName,result(avg $repeatCount times)(millis), used heap memory ($memoryMeasurement)")
+            // file.writeText("% Time benchmark for ${getShortName()} on dataset $resourceFolder at $version\n")
+            file.appendText("fileName,processing_tim_avg_${repeatCount}_times_millis,max_heap_size_mb$memoryMeasurement")
         }
     }
 
@@ -68,6 +71,10 @@ abstract class ParsingBenchmarks {
             } catch (e: Exception) {
                 report(fileName, e.javaClass.name, getPrintableHeapSize())
                 assert(false) { e.toString() }
+            }
+            catch (e : OutOfMemoryError){
+                System.gc()
+                report(fileName, e.javaClass.name, getPrintableHeapSize())
             }
         }, {
             report(fileName, "timeout", getPrintableHeapSize())

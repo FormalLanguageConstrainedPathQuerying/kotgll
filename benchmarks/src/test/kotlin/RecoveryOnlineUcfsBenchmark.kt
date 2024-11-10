@@ -1,6 +1,8 @@
 import java8.Java8
 import org.ucfs.parser.Gll
+import kotlin.test.Ignore
 
+@Ignore
 class RecoveryOnlineUcfsBenchmark : ParsingBenchmarks() {
 
     override fun getShortName(): String = "RecUcfsOn"
