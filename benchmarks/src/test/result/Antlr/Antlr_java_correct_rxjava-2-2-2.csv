@@ -582,3 +582,7 @@ FlowableSkipLastTest.java,564.3,504.33
 FlowableSkipLastTimed.java,165.0,497.87
 FlowableSkipLastTimedTest.java,746.5,503.93
 FlowableSkipTest.java,572.6,500.54
+FlowableSkipTimedTest.java,821.6,485.41
+FlowableSkipUntil.java,386.6,482.24
+FlowableSkipUntilTest.java,2430.7,503.03
+FlowableSkipWhile.java,218.5,498.49
