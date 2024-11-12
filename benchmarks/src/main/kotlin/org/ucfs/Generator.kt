@@ -1,4 +1,4 @@
-package java8
+package org.ucfs
 import org.ucfs.ast.NodeClassesGenerator
 import org.ucfs.parser.ParserGenerator
 import org.ucfs.parser.RecoveryParserGenerator

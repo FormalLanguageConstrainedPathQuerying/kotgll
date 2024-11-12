@@ -1,4 +1,5 @@
-import java8.Java8
+
+import org.ucfs.Java8
 import org.ucfs.parser.Gll
 
 class OnlineUcfsBenchmark : ParsingBenchmarks() {
@@ -8,6 +9,6 @@ class OnlineUcfsBenchmark : ParsingBenchmarks() {
         val startState = Java8().rsm
         val tokens = getTokenStream(text)
         val gll = Gll.gll(startState, tokens)
-        gll.parse()
+        assert(gll.parse().first == null)
     }
 }

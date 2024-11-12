@@ -35,7 +35,7 @@ abstract class ParsingBenchmarks {
             file = File(resultPath.toString(), csvFileName)
             file.createNewFile()
             // file.writeText("% Time benchmark for ${getShortName()} on dataset $resourceFolder at $version\n")
-            file.appendText("fileName,processing_tim_avg_${repeatCount}_times_millis,max_heap_size_mb$memoryMeasurement")
+            file.writeText("fileName,processing_tim_avg_${repeatCount}_times_millis,max_heap_size_mb$memoryMeasurement")
         }
     }
 
@@ -52,7 +52,9 @@ abstract class ParsingBenchmarks {
     private fun getMeanTime(text: String): Pair<Double, Long> {
         var meanTimeResult = 0.0
         var maxMemoryUsage: Long = 0
+
         for (i in 0..repeatCount) {
+            System.gc()
             val startTime = System.currentTimeMillis()
             parse(text)
             meanTimeResult += System.currentTimeMillis() - startTime
@@ -73,8 +75,9 @@ abstract class ParsingBenchmarks {
                 assert(false) { e.toString() }
             }
             catch (e : OutOfMemoryError){
+                val heapSize = getPrintableHeapSize()
                 System.gc()
-                report(fileName, e.javaClass.name, getPrintableHeapSize())
+                report(fileName, e.javaClass.name, heapSize)
             }
         }, {
             report(fileName, "timeout", getPrintableHeapSize())
