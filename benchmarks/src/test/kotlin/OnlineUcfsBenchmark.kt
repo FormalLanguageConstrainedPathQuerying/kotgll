@@ -9,6 +9,6 @@ class OnlineUcfsBenchmark : ParsingBenchmarks() {
         val startState = Java8().rsm
         val tokens = getTokenStream(text)
         val gll = Gll.gll(startState, tokens)
-        assert(gll.parse().first == null)
+        assert(gll.parse().first != null)
     }
 }
