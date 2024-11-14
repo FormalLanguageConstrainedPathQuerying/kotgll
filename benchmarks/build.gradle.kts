@@ -1,6 +1,11 @@
 plugins {
     java
     kotlin("jvm") version "1.9.20"
+    application
+}
+
+application{
+    mainClass = "org.ucfs.GeneratorKt"
 }
 
 repositories {

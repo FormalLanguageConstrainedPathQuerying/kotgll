@@ -19,10 +19,11 @@ abstract class ParsingBenchmarks {
     private val timePerTestCase: Long = 300
     private val repeatCount: Int = 10
     lateinit var file: File
-    // rxjava-2-2-19
+    // rxjava-2-2-2
     // junit-4-12
+    val datasetName = "junit-4-12"
 
-    private val resourceFolder: Path = Path.of("java", "correct", "rxjava-2-2-2")
+    private val resourceFolder: Path = Path.of("java", "correct", datasetName)
     private lateinit var csvFileName: String
     private val memoryMeasurement = "Mb"
     private val memoryDivider: Long = 1024 * 1024

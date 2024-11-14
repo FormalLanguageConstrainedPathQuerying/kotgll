@@ -7,5 +7,6 @@ class OfflineUcfsBenchmark : ParsingBenchmarks() {
         val parser = org.ucfs.Java8Parser<Int, LinearInputLabel>()
         parser.setInput(getTokenStream(text))
         parser.parse()
+        assert(parser.parse().first != null)
     }
 }

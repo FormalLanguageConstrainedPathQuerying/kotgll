@@ -14,446 +14,446 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     GeneratedParser<VertexType, LabelType>() {
   public val grammar: Java8 = Java8()
 
-  private val CompilationUnit: Nonterminal = grammar.CompilationUnit.nonterm
+  private val compilationUnit: Nonterminal = grammar.compilationUnit.nonterm
 
-  private val Identifier: Nonterminal = grammar.Identifier.nonterm
+  private val identifier: Nonterminal = grammar.identifier.nonterm
 
-  private val Literal: Nonterminal = grammar.Literal.nonterm
+  private val literal: Nonterminal = grammar.literal.nonterm
 
-  private val Type: Nonterminal = grammar.Type.nonterm
+  private val type: Nonterminal = grammar.type.nonterm
 
-  private val PrimitiveType: Nonterminal = grammar.PrimitiveType.nonterm
+  private val primitiveType: Nonterminal = grammar.primitiveType.nonterm
 
-  private val ReferenceType: Nonterminal = grammar.ReferenceType.nonterm
+  private val referenceType: Nonterminal = grammar.referenceType.nonterm
 
-  private val Annotation: Nonterminal = grammar.Annotation.nonterm
+  private val `annotation`: Nonterminal = grammar.annotation.nonterm
 
-  private val NumericType: Nonterminal = grammar.NumericType.nonterm
+  private val numericType: Nonterminal = grammar.numericType.nonterm
 
-  private val IntegralType: Nonterminal = grammar.IntegralType.nonterm
+  private val integralType: Nonterminal = grammar.integralType.nonterm
 
-  private val FloatingPointType: Nonterminal = grammar.FloatingPointType.nonterm
+  private val floatingPointType: Nonterminal = grammar.floatingPointType.nonterm
 
-  private val ClassOrInterfaceType: Nonterminal = grammar.ClassOrInterfaceType.nonterm
+  private val classOrInterfaceType: Nonterminal = grammar.classOrInterfaceType.nonterm
 
-  private val TypeVariable: Nonterminal = grammar.TypeVariable.nonterm
+  private val typeVariable: Nonterminal = grammar.typeVariable.nonterm
 
-  private val ArrayType: Nonterminal = grammar.ArrayType.nonterm
+  private val arrayType: Nonterminal = grammar.arrayType.nonterm
 
-  private val ClassType: Nonterminal = grammar.ClassType.nonterm
+  private val classType: Nonterminal = grammar.classType.nonterm
 
-  private val InterfaceType: Nonterminal = grammar.InterfaceType.nonterm
+  private val interfaceType: Nonterminal = grammar.interfaceType.nonterm
 
-  private val TypeArguments: Nonterminal = grammar.TypeArguments.nonterm
+  private val typeArguments: Nonterminal = grammar.typeArguments.nonterm
 
-  private val Dims: Nonterminal = grammar.Dims.nonterm
+  private val dims: Nonterminal = grammar.dims.nonterm
 
-  private val TypeParameter: Nonterminal = grammar.TypeParameter.nonterm
+  private val typeParameter: Nonterminal = grammar.typeParameter.nonterm
 
-  private val TypeParameterModifier: Nonterminal = grammar.TypeParameterModifier.nonterm
+  private val typeParameterModifier: Nonterminal = grammar.typeParameterModifier.nonterm
 
-  private val TypeBound: Nonterminal = grammar.TypeBound.nonterm
+  private val typeBound: Nonterminal = grammar.typeBound.nonterm
 
-  private val AdditionalBound: Nonterminal = grammar.AdditionalBound.nonterm
+  private val additionalBound: Nonterminal = grammar.additionalBound.nonterm
 
-  private val TypeArgumentList: Nonterminal = grammar.TypeArgumentList.nonterm
+  private val typeArgumentList: Nonterminal = grammar.typeArgumentList.nonterm
 
-  private val TypeArgument: Nonterminal = grammar.TypeArgument.nonterm
+  private val typeArgument: Nonterminal = grammar.typeArgument.nonterm
 
-  private val Wildcard: Nonterminal = grammar.Wildcard.nonterm
+  private val wildcard: Nonterminal = grammar.wildcard.nonterm
 
-  private val WildcardBounds: Nonterminal = grammar.WildcardBounds.nonterm
+  private val wildcardBounds: Nonterminal = grammar.wildcardBounds.nonterm
 
-  private val TypeName: Nonterminal = grammar.TypeName.nonterm
+  private val typeName: Nonterminal = grammar.typeName.nonterm
 
-  private val PackageOrTypeName: Nonterminal = grammar.PackageOrTypeName.nonterm
+  private val packageOrTypeName: Nonterminal = grammar.packageOrTypeName.nonterm
 
-  private val ExpressionName: Nonterminal = grammar.ExpressionName.nonterm
+  private val expressionName: Nonterminal = grammar.expressionName.nonterm
 
-  private val AmbiguousName: Nonterminal = grammar.AmbiguousName.nonterm
+  private val ambiguousName: Nonterminal = grammar.ambiguousName.nonterm
 
-  private val MethodName: Nonterminal = grammar.MethodName.nonterm
+  private val methodName: Nonterminal = grammar.methodName.nonterm
 
-  private val PackageName: Nonterminal = grammar.PackageName.nonterm
+  private val packageName: Nonterminal = grammar.packageName.nonterm
 
-  private val Result: Nonterminal = grammar.Result.nonterm
+  private val result: Nonterminal = grammar.result.nonterm
 
-  private val PackageDeclaration: Nonterminal = grammar.PackageDeclaration.nonterm
+  private val packageDeclaration: Nonterminal = grammar.packageDeclaration.nonterm
 
-  private val ImportDeclaration: Nonterminal = grammar.ImportDeclaration.nonterm
+  private val importDeclaration: Nonterminal = grammar.importDeclaration.nonterm
 
-  private val TypeDeclaration: Nonterminal = grammar.TypeDeclaration.nonterm
+  private val typeDeclaration: Nonterminal = grammar.typeDeclaration.nonterm
 
-  private val PackageModifier: Nonterminal = grammar.PackageModifier.nonterm
+  private val packageModifier: Nonterminal = grammar.packageModifier.nonterm
 
-  private val SingleTypeImportDeclaration: Nonterminal = grammar.SingleTypeImportDeclaration.nonterm
+  private val singleTypeImportDeclaration: Nonterminal = grammar.singleTypeImportDeclaration.nonterm
 
-  private val TypeImportOnDemandDeclaration: Nonterminal =
-      grammar.TypeImportOnDemandDeclaration.nonterm
+  private val typeImportOnDemandDeclaration: Nonterminal =
+      grammar.typeImportOnDemandDeclaration.nonterm
 
-  private val SingleStaticImportDeclaration: Nonterminal =
-      grammar.SingleStaticImportDeclaration.nonterm
+  private val singleStaticImportDeclaration: Nonterminal =
+      grammar.singleStaticImportDeclaration.nonterm
 
-  private val StaticImportOnDemandDeclaration: Nonterminal =
-      grammar.StaticImportOnDemandDeclaration.nonterm
+  private val staticImportOnDemandDeclaration: Nonterminal =
+      grammar.staticImportOnDemandDeclaration.nonterm
 
-  private val ClassDeclaration: Nonterminal = grammar.ClassDeclaration.nonterm
+  private val classDeclaration: Nonterminal = grammar.classDeclaration.nonterm
 
-  private val InterfaceDeclaration: Nonterminal = grammar.InterfaceDeclaration.nonterm
+  private val interfaceDeclaration: Nonterminal = grammar.interfaceDeclaration.nonterm
 
-  private val Throws: Nonterminal = grammar.Throws.nonterm
+  private val throws: Nonterminal = grammar.throws.nonterm
 
-  private val NormalClassDeclaration: Nonterminal = grammar.NormalClassDeclaration.nonterm
+  private val normalClassDeclaration: Nonterminal = grammar.normalClassDeclaration.nonterm
 
-  private val EnumDeclaration: Nonterminal = grammar.EnumDeclaration.nonterm
+  private val enumDeclaration: Nonterminal = grammar.enumDeclaration.nonterm
 
-  private val ClassModifier: Nonterminal = grammar.ClassModifier.nonterm
+  private val classModifier: Nonterminal = grammar.classModifier.nonterm
 
-  private val TypeParameters: Nonterminal = grammar.TypeParameters.nonterm
+  private val typeParameters: Nonterminal = grammar.typeParameters.nonterm
 
-  private val Superclass: Nonterminal = grammar.Superclass.nonterm
+  private val superclass: Nonterminal = grammar.superclass.nonterm
 
-  private val Superinterfaces: Nonterminal = grammar.Superinterfaces.nonterm
+  private val superinterfaces: Nonterminal = grammar.superinterfaces.nonterm
 
-  private val ClassBody: Nonterminal = grammar.ClassBody.nonterm
+  private val classBody: Nonterminal = grammar.classBody.nonterm
 
-  private val TypeParameterList: Nonterminal = grammar.TypeParameterList.nonterm
+  private val typeParameterList: Nonterminal = grammar.typeParameterList.nonterm
 
-  private val InterfaceTypeList: Nonterminal = grammar.InterfaceTypeList.nonterm
+  private val interfaceTypeList: Nonterminal = grammar.interfaceTypeList.nonterm
 
-  private val ClassBodyDeclaration: Nonterminal = grammar.ClassBodyDeclaration.nonterm
+  private val classBodyDeclaration: Nonterminal = grammar.classBodyDeclaration.nonterm
 
-  private val ClassMemberDeclaration: Nonterminal = grammar.ClassMemberDeclaration.nonterm
+  private val classMemberDeclaration: Nonterminal = grammar.classMemberDeclaration.nonterm
 
-  private val InstanceInitializer: Nonterminal = grammar.InstanceInitializer.nonterm
+  private val instanceInitializer: Nonterminal = grammar.instanceInitializer.nonterm
 
-  private val StaticInitializer: Nonterminal = grammar.StaticInitializer.nonterm
+  private val staticInitializer: Nonterminal = grammar.staticInitializer.nonterm
 
-  private val ConstructorDeclaration: Nonterminal = grammar.ConstructorDeclaration.nonterm
+  private val constructorDeclaration: Nonterminal = grammar.constructorDeclaration.nonterm
 
-  private val FieldDeclaration: Nonterminal = grammar.FieldDeclaration.nonterm
+  private val fieldDeclaration: Nonterminal = grammar.fieldDeclaration.nonterm
 
-  private val MethodDeclaration: Nonterminal = grammar.MethodDeclaration.nonterm
+  private val methodDeclaration: Nonterminal = grammar.methodDeclaration.nonterm
 
-  private val FieldModifier: Nonterminal = grammar.FieldModifier.nonterm
+  private val fieldModifier: Nonterminal = grammar.fieldModifier.nonterm
 
-  private val UnannType: Nonterminal = grammar.UnannType.nonterm
+  private val unannType: Nonterminal = grammar.unannType.nonterm
 
-  private val VariableDeclaratorList: Nonterminal = grammar.VariableDeclaratorList.nonterm
+  private val variableDeclaratorList: Nonterminal = grammar.variableDeclaratorList.nonterm
 
-  private val VariableDeclarator: Nonterminal = grammar.VariableDeclarator.nonterm
+  private val variableDeclarator: Nonterminal = grammar.variableDeclarator.nonterm
 
-  private val VariableDeclaratorId: Nonterminal = grammar.VariableDeclaratorId.nonterm
+  private val variableDeclaratorId: Nonterminal = grammar.variableDeclaratorId.nonterm
 
-  private val VariableInitializer: Nonterminal = grammar.VariableInitializer.nonterm
+  private val variableInitializer: Nonterminal = grammar.variableInitializer.nonterm
 
-  private val Expression: Nonterminal = grammar.Expression.nonterm
+  private val expression: Nonterminal = grammar.expression.nonterm
 
-  private val ArrayInitializer: Nonterminal = grammar.ArrayInitializer.nonterm
+  private val arrayInitializer: Nonterminal = grammar.arrayInitializer.nonterm
 
-  private val UnannPrimitiveType: Nonterminal = grammar.UnannPrimitiveType.nonterm
+  private val unannPrimitiveType: Nonterminal = grammar.unannPrimitiveType.nonterm
 
-  private val UnannReferenceType: Nonterminal = grammar.UnannReferenceType.nonterm
+  private val unannReferenceType: Nonterminal = grammar.unannReferenceType.nonterm
 
-  private val UnannClassOrInterfaceType: Nonterminal = grammar.UnannClassOrInterfaceType.nonterm
+  private val unannClassOrInterfaceType: Nonterminal = grammar.unannClassOrInterfaceType.nonterm
 
-  private val UnannTypeVariable: Nonterminal = grammar.UnannTypeVariable.nonterm
+  private val unannTypeVariable: Nonterminal = grammar.unannTypeVariable.nonterm
 
-  private val UnannArrayType: Nonterminal = grammar.UnannArrayType.nonterm
+  private val unannArrayType: Nonterminal = grammar.unannArrayType.nonterm
 
-  private val UnannClassType: Nonterminal = grammar.UnannClassType.nonterm
+  private val unannClassType: Nonterminal = grammar.unannClassType.nonterm
 
-  private val UnannInterfaceType: Nonterminal = grammar.UnannInterfaceType.nonterm
+  private val unannInterfaceType: Nonterminal = grammar.unannInterfaceType.nonterm
 
-  private val MethodModifier: Nonterminal = grammar.MethodModifier.nonterm
+  private val methodModifier: Nonterminal = grammar.methodModifier.nonterm
 
-  private val MethodHeader: Nonterminal = grammar.MethodHeader.nonterm
+  private val methodHeader: Nonterminal = grammar.methodHeader.nonterm
 
-  private val MethodBody: Nonterminal = grammar.MethodBody.nonterm
+  private val methodBody: Nonterminal = grammar.methodBody.nonterm
 
-  private val MethodDeclarator: Nonterminal = grammar.MethodDeclarator.nonterm
+  private val methodDeclarator: Nonterminal = grammar.methodDeclarator.nonterm
 
-  private val FormalParameterList: Nonterminal = grammar.FormalParameterList.nonterm
+  private val formalParameterList: Nonterminal = grammar.formalParameterList.nonterm
 
-  private val ReceiverParameter: Nonterminal = grammar.ReceiverParameter.nonterm
+  private val receiverParameter: Nonterminal = grammar.receiverParameter.nonterm
 
-  private val FormalParameters: Nonterminal = grammar.FormalParameters.nonterm
+  private val formalParameters: Nonterminal = grammar.formalParameters.nonterm
 
-  private val LastFormalParameter: Nonterminal = grammar.LastFormalParameter.nonterm
+  private val lastFormalParameter: Nonterminal = grammar.lastFormalParameter.nonterm
 
-  private val FormalParameter: Nonterminal = grammar.FormalParameter.nonterm
+  private val formalParameter: Nonterminal = grammar.formalParameter.nonterm
 
-  private val VariableModifier: Nonterminal = grammar.VariableModifier.nonterm
+  private val variableModifier: Nonterminal = grammar.variableModifier.nonterm
 
-  private val ExceptionTypeList: Nonterminal = grammar.ExceptionTypeList.nonterm
+  private val exceptionTypeList: Nonterminal = grammar.exceptionTypeList.nonterm
 
-  private val ExceptionType: Nonterminal = grammar.ExceptionType.nonterm
+  private val exceptionType: Nonterminal = grammar.exceptionType.nonterm
 
-  private val Block: Nonterminal = grammar.Block.nonterm
+  private val block: Nonterminal = grammar.block.nonterm
 
-  private val ConstructorModifier: Nonterminal = grammar.ConstructorModifier.nonterm
+  private val constructorModifier: Nonterminal = grammar.constructorModifier.nonterm
 
-  private val ConstructorDeclarator: Nonterminal = grammar.ConstructorDeclarator.nonterm
+  private val constructorDeclarator: Nonterminal = grammar.constructorDeclarator.nonterm
 
-  private val ConstructorBody: Nonterminal = grammar.ConstructorBody.nonterm
+  private val constructorBody: Nonterminal = grammar.constructorBody.nonterm
 
-  private val SimpleTypeName: Nonterminal = grammar.SimpleTypeName.nonterm
+  private val simpleTypeName: Nonterminal = grammar.simpleTypeName.nonterm
 
-  private val ExplicitConstructorInvocation: Nonterminal =
-      grammar.ExplicitConstructorInvocation.nonterm
+  private val explicitConstructorInvocation: Nonterminal =
+      grammar.explicitConstructorInvocation.nonterm
 
-  private val EnumBody: Nonterminal = grammar.EnumBody.nonterm
+  private val enumBody: Nonterminal = grammar.enumBody.nonterm
 
-  private val EnumConstantList: Nonterminal = grammar.EnumConstantList.nonterm
+  private val enumConstantList: Nonterminal = grammar.enumConstantList.nonterm
 
-  private val EnumConstant: Nonterminal = grammar.EnumConstant.nonterm
+  private val enumConstant: Nonterminal = grammar.enumConstant.nonterm
 
-  private val EnumConstantModifier: Nonterminal = grammar.EnumConstantModifier.nonterm
+  private val enumConstantModifier: Nonterminal = grammar.enumConstantModifier.nonterm
 
-  private val EnumBodyDeclarations: Nonterminal = grammar.EnumBodyDeclarations.nonterm
+  private val enumBodyDeclarations: Nonterminal = grammar.enumBodyDeclarations.nonterm
 
-  private val BlockStatements: Nonterminal = grammar.BlockStatements.nonterm
+  private val blockStatements: Nonterminal = grammar.blockStatements.nonterm
 
-  private val ArgumentList: Nonterminal = grammar.ArgumentList.nonterm
+  private val argumentList: Nonterminal = grammar.argumentList.nonterm
 
-  private val Primary: Nonterminal = grammar.Primary.nonterm
+  private val primary: Nonterminal = grammar.primary.nonterm
 
-  private val NormalInterfaceDeclaration: Nonterminal = grammar.NormalInterfaceDeclaration.nonterm
+  private val normalInterfaceDeclaration: Nonterminal = grammar.normalInterfaceDeclaration.nonterm
 
-  private val InterfaceModifier: Nonterminal = grammar.InterfaceModifier.nonterm
+  private val interfaceModifier: Nonterminal = grammar.interfaceModifier.nonterm
 
-  private val ExtendsInterfaces: Nonterminal = grammar.ExtendsInterfaces.nonterm
+  private val extendsInterfaces: Nonterminal = grammar.extendsInterfaces.nonterm
 
-  private val InterfaceBody: Nonterminal = grammar.InterfaceBody.nonterm
+  private val interfaceBody: Nonterminal = grammar.interfaceBody.nonterm
 
-  private val InterfaceMemberDeclaration: Nonterminal = grammar.InterfaceMemberDeclaration.nonterm
+  private val interfaceMemberDeclaration: Nonterminal = grammar.interfaceMemberDeclaration.nonterm
 
-  private val ConstantDeclaration: Nonterminal = grammar.ConstantDeclaration.nonterm
+  private val constantDeclaration: Nonterminal = grammar.constantDeclaration.nonterm
 
-  private val ConstantModifier: Nonterminal = grammar.ConstantModifier.nonterm
+  private val constantModifier: Nonterminal = grammar.constantModifier.nonterm
 
-  private val AnnotationTypeDeclaration: Nonterminal = grammar.AnnotationTypeDeclaration.nonterm
+  private val annotationTypeDeclaration: Nonterminal = grammar.annotationTypeDeclaration.nonterm
 
-  private val AnnotationTypeBody: Nonterminal = grammar.AnnotationTypeBody.nonterm
+  private val annotationTypeBody: Nonterminal = grammar.annotationTypeBody.nonterm
 
-  private val AnnotationTypeMemberDeclaration: Nonterminal =
-      grammar.AnnotationTypeMemberDeclaration.nonterm
+  private val annotationTypeMemberDeclaration: Nonterminal =
+      grammar.annotationTypeMemberDeclaration.nonterm
 
-  private val AnnotationTypeElementDeclaration: Nonterminal =
-      grammar.AnnotationTypeElementDeclaration.nonterm
+  private val annotationTypeElementDeclaration: Nonterminal =
+      grammar.annotationTypeElementDeclaration.nonterm
 
-  private val DefaultValue: Nonterminal = grammar.DefaultValue.nonterm
+  private val defaultValue: Nonterminal = grammar.defaultValue.nonterm
 
-  private val NormalAnnotation: Nonterminal = grammar.NormalAnnotation.nonterm
+  private val normalAnnotation: Nonterminal = grammar.normalAnnotation.nonterm
 
-  private val ElementValuePairList: Nonterminal = grammar.ElementValuePairList.nonterm
+  private val elementValuePairList: Nonterminal = grammar.elementValuePairList.nonterm
 
-  private val ElementValuePair: Nonterminal = grammar.ElementValuePair.nonterm
+  private val elementValuePair: Nonterminal = grammar.elementValuePair.nonterm
 
-  private val ElementValue: Nonterminal = grammar.ElementValue.nonterm
+  private val elementValue: Nonterminal = grammar.elementValue.nonterm
 
-  private val ElementValueArrayInitializer: Nonterminal =
-      grammar.ElementValueArrayInitializer.nonterm
+  private val elementValueArrayInitializer: Nonterminal =
+      grammar.elementValueArrayInitializer.nonterm
 
-  private val ElementValueList: Nonterminal = grammar.ElementValueList.nonterm
+  private val elementValueList: Nonterminal = grammar.elementValueList.nonterm
 
-  private val MarkerAnnotation: Nonterminal = grammar.MarkerAnnotation.nonterm
+  private val markerAnnotation: Nonterminal = grammar.markerAnnotation.nonterm
 
-  private val SingleElementAnnotation: Nonterminal = grammar.SingleElementAnnotation.nonterm
+  private val singleElementAnnotation: Nonterminal = grammar.singleElementAnnotation.nonterm
 
-  private val InterfaceMethodDeclaration: Nonterminal = grammar.InterfaceMethodDeclaration.nonterm
+  private val interfaceMethodDeclaration: Nonterminal = grammar.interfaceMethodDeclaration.nonterm
 
-  private val AnnotationTypeElementModifier: Nonterminal =
-      grammar.AnnotationTypeElementModifier.nonterm
+  private val annotationTypeElementModifier: Nonterminal =
+      grammar.annotationTypeElementModifier.nonterm
 
-  private val ConditionalExpression: Nonterminal = grammar.ConditionalExpression.nonterm
+  private val conditionalExpression: Nonterminal = grammar.conditionalExpression.nonterm
 
-  private val VariableInitializerList: Nonterminal = grammar.VariableInitializerList.nonterm
+  private val variableInitializerList: Nonterminal = grammar.variableInitializerList.nonterm
 
-  private val BlockStatement: Nonterminal = grammar.BlockStatement.nonterm
+  private val blockStatement: Nonterminal = grammar.blockStatement.nonterm
 
-  private val LocalVariableDeclarationStatement: Nonterminal =
-      grammar.LocalVariableDeclarationStatement.nonterm
+  private val localVariableDeclarationStatement: Nonterminal =
+      grammar.localVariableDeclarationStatement.nonterm
 
-  private val LocalVariableDeclaration: Nonterminal = grammar.LocalVariableDeclaration.nonterm
+  private val localVariableDeclaration: Nonterminal = grammar.localVariableDeclaration.nonterm
 
-  private val Statement: Nonterminal = grammar.Statement.nonterm
+  private val statement: Nonterminal = grammar.statement.nonterm
 
-  private val StatementNoShortIf: Nonterminal = grammar.StatementNoShortIf.nonterm
+  private val statementNoShortIf: Nonterminal = grammar.statementNoShortIf.nonterm
 
-  private val StatementWithoutTrailingSubstatement: Nonterminal =
-      grammar.StatementWithoutTrailingSubstatement.nonterm
+  private val statementWithoutTrailingSubstatement: Nonterminal =
+      grammar.statementWithoutTrailingSubstatement.nonterm
 
-  private val EmptyStatement: Nonterminal = grammar.EmptyStatement.nonterm
+  private val emptyStatement: Nonterminal = grammar.emptyStatement.nonterm
 
-  private val LabeledStatement: Nonterminal = grammar.LabeledStatement.nonterm
+  private val labeledStatement: Nonterminal = grammar.labeledStatement.nonterm
 
-  private val LabeledStatementNoShortIf: Nonterminal = grammar.LabeledStatementNoShortIf.nonterm
+  private val labeledStatementNoShortIf: Nonterminal = grammar.labeledStatementNoShortIf.nonterm
 
-  private val ExpressionStatement: Nonterminal = grammar.ExpressionStatement.nonterm
+  private val expressionStatement: Nonterminal = grammar.expressionStatement.nonterm
 
-  private val StatementExpression: Nonterminal = grammar.StatementExpression.nonterm
+  private val statementExpression: Nonterminal = grammar.statementExpression.nonterm
 
-  private val IfThenStatement: Nonterminal = grammar.IfThenStatement.nonterm
+  private val ifThenStatement: Nonterminal = grammar.ifThenStatement.nonterm
 
-  private val IfThenElseStatement: Nonterminal = grammar.IfThenElseStatement.nonterm
+  private val ifThenElseStatement: Nonterminal = grammar.ifThenElseStatement.nonterm
 
-  private val IfThenElseStatementNoShortIf: Nonterminal =
-      grammar.IfThenElseStatementNoShortIf.nonterm
+  private val ifThenElseStatementNoShortIf: Nonterminal =
+      grammar.ifThenElseStatementNoShortIf.nonterm
 
-  private val AssertStatement: Nonterminal = grammar.AssertStatement.nonterm
+  private val assertStatement: Nonterminal = grammar.assertStatement.nonterm
 
-  private val SwitchStatement: Nonterminal = grammar.SwitchStatement.nonterm
+  private val switchStatement: Nonterminal = grammar.switchStatement.nonterm
 
-  private val SwitchBlock: Nonterminal = grammar.SwitchBlock.nonterm
+  private val switchBlock: Nonterminal = grammar.switchBlock.nonterm
 
-  private val SwitchBlockStatementGroup: Nonterminal = grammar.SwitchBlockStatementGroup.nonterm
+  private val switchBlockStatementGroup: Nonterminal = grammar.switchBlockStatementGroup.nonterm
 
-  private val SwitchLabels: Nonterminal = grammar.SwitchLabels.nonterm
+  private val switchLabels: Nonterminal = grammar.switchLabels.nonterm
 
-  private val SwitchLabel: Nonterminal = grammar.SwitchLabel.nonterm
+  private val switchLabel: Nonterminal = grammar.switchLabel.nonterm
 
-  private val EnumConstantName: Nonterminal = grammar.EnumConstantName.nonterm
+  private val enumConstantName: Nonterminal = grammar.enumConstantName.nonterm
 
-  private val WhileStatement: Nonterminal = grammar.WhileStatement.nonterm
+  private val whileStatement: Nonterminal = grammar.whileStatement.nonterm
 
-  private val WhileStatementNoShortIf: Nonterminal = grammar.WhileStatementNoShortIf.nonterm
+  private val whileStatementNoShortIf: Nonterminal = grammar.whileStatementNoShortIf.nonterm
 
-  private val DoStatement: Nonterminal = grammar.DoStatement.nonterm
+  private val doStatement: Nonterminal = grammar.doStatement.nonterm
 
-  private val InterfaceMethodModifier: Nonterminal = grammar.InterfaceMethodModifier.nonterm
+  private val interfaceMethodModifier: Nonterminal = grammar.interfaceMethodModifier.nonterm
 
-  private val ForStatement: Nonterminal = grammar.ForStatement.nonterm
+  private val forStatement: Nonterminal = grammar.forStatement.nonterm
 
-  private val ForStatementNoShortIf: Nonterminal = grammar.ForStatementNoShortIf.nonterm
+  private val forStatementNoShortIf: Nonterminal = grammar.forStatementNoShortIf.nonterm
 
-  private val BasicForStatement: Nonterminal = grammar.BasicForStatement.nonterm
+  private val basicForStatement: Nonterminal = grammar.basicForStatement.nonterm
 
-  private val BasicForStatementNoShortIf: Nonterminal = grammar.BasicForStatementNoShortIf.nonterm
+  private val basicForStatementNoShortIf: Nonterminal = grammar.basicForStatementNoShortIf.nonterm
 
-  private val ForInit: Nonterminal = grammar.ForInit.nonterm
+  private val forInit: Nonterminal = grammar.forInit.nonterm
 
-  private val ForUpdate: Nonterminal = grammar.ForUpdate.nonterm
+  private val forUpdate: Nonterminal = grammar.forUpdate.nonterm
 
-  private val StatementExpressionList: Nonterminal = grammar.StatementExpressionList.nonterm
+  private val statementExpressionList: Nonterminal = grammar.statementExpressionList.nonterm
 
-  private val EnhancedForStatement: Nonterminal = grammar.EnhancedForStatement.nonterm
+  private val enhancedForStatement: Nonterminal = grammar.enhancedForStatement.nonterm
 
-  private val EnhancedForStatementNoShortIf: Nonterminal =
-      grammar.EnhancedForStatementNoShortIf.nonterm
+  private val enhancedForStatementNoShortIf: Nonterminal =
+      grammar.enhancedForStatementNoShortIf.nonterm
 
-  private val BreakStatement: Nonterminal = grammar.BreakStatement.nonterm
+  private val breakStatement: Nonterminal = grammar.breakStatement.nonterm
 
-  private val ContinueStatement: Nonterminal = grammar.ContinueStatement.nonterm
+  private val continueStatement: Nonterminal = grammar.continueStatement.nonterm
 
-  private val ReturnStatement: Nonterminal = grammar.ReturnStatement.nonterm
+  private val returnStatement: Nonterminal = grammar.returnStatement.nonterm
 
-  private val ThrowStatement: Nonterminal = grammar.ThrowStatement.nonterm
+  private val throwStatement: Nonterminal = grammar.throwStatement.nonterm
 
-  private val SynchronizedStatement: Nonterminal = grammar.SynchronizedStatement.nonterm
+  private val synchronizedStatement: Nonterminal = grammar.synchronizedStatement.nonterm
 
-  private val TryStatement: Nonterminal = grammar.TryStatement.nonterm
+  private val tryStatement: Nonterminal = grammar.tryStatement.nonterm
 
-  private val Catches: Nonterminal = grammar.Catches.nonterm
+  private val catches: Nonterminal = grammar.catches.nonterm
 
-  private val CatchClause: Nonterminal = grammar.CatchClause.nonterm
+  private val catchClause: Nonterminal = grammar.catchClause.nonterm
 
-  private val CatchFormalParameter: Nonterminal = grammar.CatchFormalParameter.nonterm
+  private val catchFormalParameter: Nonterminal = grammar.catchFormalParameter.nonterm
 
-  private val CatchType: Nonterminal = grammar.CatchType.nonterm
+  private val catchType: Nonterminal = grammar.catchType.nonterm
 
-  private val Finally: Nonterminal = grammar.Finally.nonterm
+  private val `finally`: Nonterminal = grammar.finally.nonterm
 
-  private val TryWithResourcesStatement: Nonterminal = grammar.TryWithResourcesStatement.nonterm
+  private val tryWithResourcesStatement: Nonterminal = grammar.tryWithResourcesStatement.nonterm
 
-  private val ResourceSpecification: Nonterminal = grammar.ResourceSpecification.nonterm
+  private val resourceSpecification: Nonterminal = grammar.resourceSpecification.nonterm
 
-  private val ResourceList: Nonterminal = grammar.ResourceList.nonterm
+  private val resourceList: Nonterminal = grammar.resourceList.nonterm
 
-  private val Resource: Nonterminal = grammar.Resource.nonterm
+  private val resource: Nonterminal = grammar.resource.nonterm
 
-  private val PrimaryNoNewArray: Nonterminal = grammar.PrimaryNoNewArray.nonterm
+  private val primaryNoNewArray: Nonterminal = grammar.primaryNoNewArray.nonterm
 
-  private val ClassLiteral: Nonterminal = grammar.ClassLiteral.nonterm
+  private val classLiteral: Nonterminal = grammar.classLiteral.nonterm
 
   private val classOrInterfaceTypeToInstantiate: Nonterminal =
       grammar.classOrInterfaceTypeToInstantiate.nonterm
 
-  private val UnqualifiedClassInstanceCreationExpression: Nonterminal =
-      grammar.UnqualifiedClassInstanceCreationExpression.nonterm
+  private val unqualifiedClassInstanceCreationExpression: Nonterminal =
+      grammar.unqualifiedClassInstanceCreationExpression.nonterm
 
-  private val ClassInstanceCreationExpression: Nonterminal =
-      grammar.ClassInstanceCreationExpression.nonterm
+  private val classInstanceCreationExpression: Nonterminal =
+      grammar.classInstanceCreationExpression.nonterm
 
-  private val FieldAccess: Nonterminal = grammar.FieldAccess.nonterm
+  private val fieldAccess: Nonterminal = grammar.fieldAccess.nonterm
 
-  private val TypeArgumentsOrDiamond: Nonterminal = grammar.TypeArgumentsOrDiamond.nonterm
+  private val typeArgumentsOrDiamond: Nonterminal = grammar.typeArgumentsOrDiamond.nonterm
 
-  private val ArrayAccess: Nonterminal = grammar.ArrayAccess.nonterm
+  private val arrayAccess: Nonterminal = grammar.arrayAccess.nonterm
 
-  private val MethodInvocation: Nonterminal = grammar.MethodInvocation.nonterm
+  private val methodInvocation: Nonterminal = grammar.methodInvocation.nonterm
 
-  private val MethodReference: Nonterminal = grammar.MethodReference.nonterm
+  private val methodReference: Nonterminal = grammar.methodReference.nonterm
 
-  private val ArrayCreationExpression: Nonterminal = grammar.ArrayCreationExpression.nonterm
+  private val arrayCreationExpression: Nonterminal = grammar.arrayCreationExpression.nonterm
 
-  private val DimExprs: Nonterminal = grammar.DimExprs.nonterm
+  private val dimExprs: Nonterminal = grammar.dimExprs.nonterm
 
-  private val DimExpr: Nonterminal = grammar.DimExpr.nonterm
+  private val dimExpr: Nonterminal = grammar.dimExpr.nonterm
 
-  private val LambdaExpression: Nonterminal = grammar.LambdaExpression.nonterm
+  private val lambdaExpression: Nonterminal = grammar.lambdaExpression.nonterm
 
-  private val LambdaParameters: Nonterminal = grammar.LambdaParameters.nonterm
+  private val lambdaParameters: Nonterminal = grammar.lambdaParameters.nonterm
 
-  private val InferredFormalParameterList: Nonterminal = grammar.InferredFormalParameterList.nonterm
+  private val inferredFormalParameterList: Nonterminal = grammar.inferredFormalParameterList.nonterm
 
-  private val LambdaBody: Nonterminal = grammar.LambdaBody.nonterm
+  private val lambdaBody: Nonterminal = grammar.lambdaBody.nonterm
 
-  private val AssignmentExpression: Nonterminal = grammar.AssignmentExpression.nonterm
+  private val assignmentExpression: Nonterminal = grammar.assignmentExpression.nonterm
 
-  private val Assignment: Nonterminal = grammar.Assignment.nonterm
+  private val assignment: Nonterminal = grammar.assignment.nonterm
 
-  private val LeftHandSide: Nonterminal = grammar.LeftHandSide.nonterm
+  private val leftHandSide: Nonterminal = grammar.leftHandSide.nonterm
 
-  private val AssignmentOperator: Nonterminal = grammar.AssignmentOperator.nonterm
+  private val assignmentOperator: Nonterminal = grammar.assignmentOperator.nonterm
 
-  private val ConditionalOrExpression: Nonterminal = grammar.ConditionalOrExpression.nonterm
+  private val conditionalOrExpression: Nonterminal = grammar.conditionalOrExpression.nonterm
 
-  private val ConditionalAndExpression: Nonterminal = grammar.ConditionalAndExpression.nonterm
+  private val conditionalAndExpression: Nonterminal = grammar.conditionalAndExpression.nonterm
 
-  private val InclusiveOrExpression: Nonterminal = grammar.InclusiveOrExpression.nonterm
+  private val inclusiveOrExpression: Nonterminal = grammar.inclusiveOrExpression.nonterm
 
-  private val ExclusiveOrExpression: Nonterminal = grammar.ExclusiveOrExpression.nonterm
+  private val exclusiveOrExpression: Nonterminal = grammar.exclusiveOrExpression.nonterm
 
-  private val AndExpression: Nonterminal = grammar.AndExpression.nonterm
+  private val andExpression: Nonterminal = grammar.andExpression.nonterm
 
-  private val EqualityExpression: Nonterminal = grammar.EqualityExpression.nonterm
+  private val equalityExpression: Nonterminal = grammar.equalityExpression.nonterm
 
-  private val RelationalExpression: Nonterminal = grammar.RelationalExpression.nonterm
+  private val relationalExpression: Nonterminal = grammar.relationalExpression.nonterm
 
-  private val ShiftExpression: Nonterminal = grammar.ShiftExpression.nonterm
+  private val shiftExpression: Nonterminal = grammar.shiftExpression.nonterm
 
-  private val AdditiveExpression: Nonterminal = grammar.AdditiveExpression.nonterm
+  private val additiveExpression: Nonterminal = grammar.additiveExpression.nonterm
 
-  private val MultiplicativeExpression: Nonterminal = grammar.MultiplicativeExpression.nonterm
+  private val multiplicativeExpression: Nonterminal = grammar.multiplicativeExpression.nonterm
 
-  private val PreIncrementExpression: Nonterminal = grammar.PreIncrementExpression.nonterm
+  private val preIncrementExpression: Nonterminal = grammar.preIncrementExpression.nonterm
 
-  private val PreDecrementExpression: Nonterminal = grammar.PreDecrementExpression.nonterm
+  private val preDecrementExpression: Nonterminal = grammar.preDecrementExpression.nonterm
 
-  private val UnaryExpressionNotPlusMinus: Nonterminal = grammar.UnaryExpressionNotPlusMinus.nonterm
+  private val unaryExpressionNotPlusMinus: Nonterminal = grammar.unaryExpressionNotPlusMinus.nonterm
 
-  private val UnaryExpression: Nonterminal = grammar.UnaryExpression.nonterm
+  private val unaryExpression: Nonterminal = grammar.unaryExpression.nonterm
 
-  private val PostfixExpression: Nonterminal = grammar.PostfixExpression.nonterm
+  private val postfixExpression: Nonterminal = grammar.postfixExpression.nonterm
 
-  private val PostIncrementExpression: Nonterminal = grammar.PostIncrementExpression.nonterm
+  private val postIncrementExpression: Nonterminal = grammar.postIncrementExpression.nonterm
 
-  private val PostDecrementExpression: Nonterminal = grammar.PostDecrementExpression.nonterm
+  private val postDecrementExpression: Nonterminal = grammar.postDecrementExpression.nonterm
 
-  private val CastExpression: Nonterminal = grammar.CastExpression.nonterm
+  private val castExpression: Nonterminal = grammar.castExpression.nonterm
 
-  private val ConstantExpression: Nonterminal = grammar.ConstantExpression.nonterm
+  private val constantExpression: Nonterminal = grammar.constantExpression.nonterm
 
   override fun callNtFuncs(
     nt: Nonterminal,
@@ -461,262 +461,262 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     curSppfNode: SppfNode<VertexType>?,
   ) {
     when(nt.name) {
-      "CompilationUnit" -> parseCompilationUnit(descriptor, curSppfNode)
-      "Identifier" -> parseIdentifier(descriptor, curSppfNode)
-      "Literal" -> parseLiteral(descriptor, curSppfNode)
-      "Type" -> parseType(descriptor, curSppfNode)
-      "PrimitiveType" -> parsePrimitiveType(descriptor, curSppfNode)
-      "ReferenceType" -> parseReferenceType(descriptor, curSppfNode)
-      "Annotation" -> parseAnnotation(descriptor, curSppfNode)
-      "NumericType" -> parseNumericType(descriptor, curSppfNode)
-      "IntegralType" -> parseIntegralType(descriptor, curSppfNode)
-      "FloatingPointType" -> parseFloatingPointType(descriptor, curSppfNode)
-      "ClassOrInterfaceType" -> parseClassOrInterfaceType(descriptor, curSppfNode)
-      "TypeVariable" -> parseTypeVariable(descriptor, curSppfNode)
-      "ArrayType" -> parseArrayType(descriptor, curSppfNode)
-      "ClassType" -> parseClassType(descriptor, curSppfNode)
-      "InterfaceType" -> parseInterfaceType(descriptor, curSppfNode)
-      "TypeArguments" -> parseTypeArguments(descriptor, curSppfNode)
-      "Dims" -> parseDims(descriptor, curSppfNode)
-      "TypeParameter" -> parseTypeParameter(descriptor, curSppfNode)
-      "TypeParameterModifier" -> parseTypeParameterModifier(descriptor, curSppfNode)
-      "TypeBound" -> parseTypeBound(descriptor, curSppfNode)
-      "AdditionalBound" -> parseAdditionalBound(descriptor, curSppfNode)
-      "TypeArgumentList" -> parseTypeArgumentList(descriptor, curSppfNode)
-      "TypeArgument" -> parseTypeArgument(descriptor, curSppfNode)
-      "Wildcard" -> parseWildcard(descriptor, curSppfNode)
-      "WildcardBounds" -> parseWildcardBounds(descriptor, curSppfNode)
-      "TypeName" -> parseTypeName(descriptor, curSppfNode)
-      "PackageOrTypeName" -> parsePackageOrTypeName(descriptor, curSppfNode)
-      "ExpressionName" -> parseExpressionName(descriptor, curSppfNode)
-      "AmbiguousName" -> parseAmbiguousName(descriptor, curSppfNode)
-      "MethodName" -> parseMethodName(descriptor, curSppfNode)
-      "PackageName" -> parsePackageName(descriptor, curSppfNode)
-      "Result" -> parseResult(descriptor, curSppfNode)
-      "PackageDeclaration" -> parsePackageDeclaration(descriptor, curSppfNode)
-      "ImportDeclaration" -> parseImportDeclaration(descriptor, curSppfNode)
-      "TypeDeclaration" -> parseTypeDeclaration(descriptor, curSppfNode)
-      "PackageModifier" -> parsePackageModifier(descriptor, curSppfNode)
-      "SingleTypeImportDeclaration" -> parseSingleTypeImportDeclaration(descriptor, curSppfNode)
-      "TypeImportOnDemandDeclaration" -> parseTypeImportOnDemandDeclaration(descriptor, curSppfNode)
-      "SingleStaticImportDeclaration" -> parseSingleStaticImportDeclaration(descriptor, curSppfNode)
-      "StaticImportOnDemandDeclaration" -> parseStaticImportOnDemandDeclaration(descriptor,
+      "compilationUnit" -> parsecompilationUnit(descriptor, curSppfNode)
+      "identifier" -> parseidentifier(descriptor, curSppfNode)
+      "literal" -> parseliteral(descriptor, curSppfNode)
+      "type" -> parsetype(descriptor, curSppfNode)
+      "primitiveType" -> parseprimitiveType(descriptor, curSppfNode)
+      "referenceType" -> parsereferenceType(descriptor, curSppfNode)
+      "annotation" -> parseannotation(descriptor, curSppfNode)
+      "numericType" -> parsenumericType(descriptor, curSppfNode)
+      "integralType" -> parseintegralType(descriptor, curSppfNode)
+      "floatingPointType" -> parsefloatingPointType(descriptor, curSppfNode)
+      "classOrInterfaceType" -> parseclassOrInterfaceType(descriptor, curSppfNode)
+      "typeVariable" -> parsetypeVariable(descriptor, curSppfNode)
+      "arrayType" -> parsearrayType(descriptor, curSppfNode)
+      "classType" -> parseclassType(descriptor, curSppfNode)
+      "interfaceType" -> parseinterfaceType(descriptor, curSppfNode)
+      "typeArguments" -> parsetypeArguments(descriptor, curSppfNode)
+      "dims" -> parsedims(descriptor, curSppfNode)
+      "typeParameter" -> parsetypeParameter(descriptor, curSppfNode)
+      "typeParameterModifier" -> parsetypeParameterModifier(descriptor, curSppfNode)
+      "typeBound" -> parsetypeBound(descriptor, curSppfNode)
+      "additionalBound" -> parseadditionalBound(descriptor, curSppfNode)
+      "typeArgumentList" -> parsetypeArgumentList(descriptor, curSppfNode)
+      "typeArgument" -> parsetypeArgument(descriptor, curSppfNode)
+      "wildcard" -> parsewildcard(descriptor, curSppfNode)
+      "wildcardBounds" -> parsewildcardBounds(descriptor, curSppfNode)
+      "typeName" -> parsetypeName(descriptor, curSppfNode)
+      "packageOrTypeName" -> parsepackageOrTypeName(descriptor, curSppfNode)
+      "expressionName" -> parseexpressionName(descriptor, curSppfNode)
+      "ambiguousName" -> parseambiguousName(descriptor, curSppfNode)
+      "methodName" -> parsemethodName(descriptor, curSppfNode)
+      "packageName" -> parsepackageName(descriptor, curSppfNode)
+      "result" -> parseresult(descriptor, curSppfNode)
+      "packageDeclaration" -> parsepackageDeclaration(descriptor, curSppfNode)
+      "importDeclaration" -> parseimportDeclaration(descriptor, curSppfNode)
+      "typeDeclaration" -> parsetypeDeclaration(descriptor, curSppfNode)
+      "packageModifier" -> parsepackageModifier(descriptor, curSppfNode)
+      "singleTypeImportDeclaration" -> parsesingleTypeImportDeclaration(descriptor, curSppfNode)
+      "typeImportOnDemandDeclaration" -> parsetypeImportOnDemandDeclaration(descriptor, curSppfNode)
+      "singleStaticImportDeclaration" -> parsesingleStaticImportDeclaration(descriptor, curSppfNode)
+      "staticImportOnDemandDeclaration" -> parsestaticImportOnDemandDeclaration(descriptor,
           curSppfNode)
-      "ClassDeclaration" -> parseClassDeclaration(descriptor, curSppfNode)
-      "InterfaceDeclaration" -> parseInterfaceDeclaration(descriptor, curSppfNode)
-      "Throws" -> parseThrows(descriptor, curSppfNode)
-      "NormalClassDeclaration" -> parseNormalClassDeclaration(descriptor, curSppfNode)
-      "EnumDeclaration" -> parseEnumDeclaration(descriptor, curSppfNode)
-      "ClassModifier" -> parseClassModifier(descriptor, curSppfNode)
-      "TypeParameters" -> parseTypeParameters(descriptor, curSppfNode)
-      "Superclass" -> parseSuperclass(descriptor, curSppfNode)
-      "Superinterfaces" -> parseSuperinterfaces(descriptor, curSppfNode)
-      "ClassBody" -> parseClassBody(descriptor, curSppfNode)
-      "TypeParameterList" -> parseTypeParameterList(descriptor, curSppfNode)
-      "InterfaceTypeList" -> parseInterfaceTypeList(descriptor, curSppfNode)
-      "ClassBodyDeclaration" -> parseClassBodyDeclaration(descriptor, curSppfNode)
-      "ClassMemberDeclaration" -> parseClassMemberDeclaration(descriptor, curSppfNode)
-      "InstanceInitializer" -> parseInstanceInitializer(descriptor, curSppfNode)
-      "StaticInitializer" -> parseStaticInitializer(descriptor, curSppfNode)
-      "ConstructorDeclaration" -> parseConstructorDeclaration(descriptor, curSppfNode)
-      "FieldDeclaration" -> parseFieldDeclaration(descriptor, curSppfNode)
-      "MethodDeclaration" -> parseMethodDeclaration(descriptor, curSppfNode)
-      "FieldModifier" -> parseFieldModifier(descriptor, curSppfNode)
-      "UnannType" -> parseUnannType(descriptor, curSppfNode)
-      "VariableDeclaratorList" -> parseVariableDeclaratorList(descriptor, curSppfNode)
-      "VariableDeclarator" -> parseVariableDeclarator(descriptor, curSppfNode)
-      "VariableDeclaratorId" -> parseVariableDeclaratorId(descriptor, curSppfNode)
-      "VariableInitializer" -> parseVariableInitializer(descriptor, curSppfNode)
-      "Expression" -> parseExpression(descriptor, curSppfNode)
-      "ArrayInitializer" -> parseArrayInitializer(descriptor, curSppfNode)
-      "UnannPrimitiveType" -> parseUnannPrimitiveType(descriptor, curSppfNode)
-      "UnannReferenceType" -> parseUnannReferenceType(descriptor, curSppfNode)
-      "UnannClassOrInterfaceType" -> parseUnannClassOrInterfaceType(descriptor, curSppfNode)
-      "UnannTypeVariable" -> parseUnannTypeVariable(descriptor, curSppfNode)
-      "UnannArrayType" -> parseUnannArrayType(descriptor, curSppfNode)
-      "UnannClassType" -> parseUnannClassType(descriptor, curSppfNode)
-      "UnannInterfaceType" -> parseUnannInterfaceType(descriptor, curSppfNode)
-      "MethodModifier" -> parseMethodModifier(descriptor, curSppfNode)
-      "MethodHeader" -> parseMethodHeader(descriptor, curSppfNode)
-      "MethodBody" -> parseMethodBody(descriptor, curSppfNode)
-      "MethodDeclarator" -> parseMethodDeclarator(descriptor, curSppfNode)
-      "FormalParameterList" -> parseFormalParameterList(descriptor, curSppfNode)
-      "ReceiverParameter" -> parseReceiverParameter(descriptor, curSppfNode)
-      "FormalParameters" -> parseFormalParameters(descriptor, curSppfNode)
-      "LastFormalParameter" -> parseLastFormalParameter(descriptor, curSppfNode)
-      "FormalParameter" -> parseFormalParameter(descriptor, curSppfNode)
-      "VariableModifier" -> parseVariableModifier(descriptor, curSppfNode)
-      "ExceptionTypeList" -> parseExceptionTypeList(descriptor, curSppfNode)
-      "ExceptionType" -> parseExceptionType(descriptor, curSppfNode)
-      "Block" -> parseBlock(descriptor, curSppfNode)
-      "ConstructorModifier" -> parseConstructorModifier(descriptor, curSppfNode)
-      "ConstructorDeclarator" -> parseConstructorDeclarator(descriptor, curSppfNode)
-      "ConstructorBody" -> parseConstructorBody(descriptor, curSppfNode)
-      "SimpleTypeName" -> parseSimpleTypeName(descriptor, curSppfNode)
-      "ExplicitConstructorInvocation" -> parseExplicitConstructorInvocation(descriptor, curSppfNode)
-      "EnumBody" -> parseEnumBody(descriptor, curSppfNode)
-      "EnumConstantList" -> parseEnumConstantList(descriptor, curSppfNode)
-      "EnumConstant" -> parseEnumConstant(descriptor, curSppfNode)
-      "EnumConstantModifier" -> parseEnumConstantModifier(descriptor, curSppfNode)
-      "EnumBodyDeclarations" -> parseEnumBodyDeclarations(descriptor, curSppfNode)
-      "BlockStatements" -> parseBlockStatements(descriptor, curSppfNode)
-      "ArgumentList" -> parseArgumentList(descriptor, curSppfNode)
-      "Primary" -> parsePrimary(descriptor, curSppfNode)
-      "NormalInterfaceDeclaration" -> parseNormalInterfaceDeclaration(descriptor, curSppfNode)
-      "InterfaceModifier" -> parseInterfaceModifier(descriptor, curSppfNode)
-      "ExtendsInterfaces" -> parseExtendsInterfaces(descriptor, curSppfNode)
-      "InterfaceBody" -> parseInterfaceBody(descriptor, curSppfNode)
-      "InterfaceMemberDeclaration" -> parseInterfaceMemberDeclaration(descriptor, curSppfNode)
-      "ConstantDeclaration" -> parseConstantDeclaration(descriptor, curSppfNode)
-      "ConstantModifier" -> parseConstantModifier(descriptor, curSppfNode)
-      "AnnotationTypeDeclaration" -> parseAnnotationTypeDeclaration(descriptor, curSppfNode)
-      "AnnotationTypeBody" -> parseAnnotationTypeBody(descriptor, curSppfNode)
-      "AnnotationTypeMemberDeclaration" -> parseAnnotationTypeMemberDeclaration(descriptor,
+      "classDeclaration" -> parseclassDeclaration(descriptor, curSppfNode)
+      "interfaceDeclaration" -> parseinterfaceDeclaration(descriptor, curSppfNode)
+      "throws" -> parsethrows(descriptor, curSppfNode)
+      "normalClassDeclaration" -> parsenormalClassDeclaration(descriptor, curSppfNode)
+      "enumDeclaration" -> parseenumDeclaration(descriptor, curSppfNode)
+      "classModifier" -> parseclassModifier(descriptor, curSppfNode)
+      "typeParameters" -> parsetypeParameters(descriptor, curSppfNode)
+      "superclass" -> parsesuperclass(descriptor, curSppfNode)
+      "superinterfaces" -> parsesuperinterfaces(descriptor, curSppfNode)
+      "classBody" -> parseclassBody(descriptor, curSppfNode)
+      "typeParameterList" -> parsetypeParameterList(descriptor, curSppfNode)
+      "interfaceTypeList" -> parseinterfaceTypeList(descriptor, curSppfNode)
+      "classBodyDeclaration" -> parseclassBodyDeclaration(descriptor, curSppfNode)
+      "classMemberDeclaration" -> parseclassMemberDeclaration(descriptor, curSppfNode)
+      "instanceInitializer" -> parseinstanceInitializer(descriptor, curSppfNode)
+      "staticInitializer" -> parsestaticInitializer(descriptor, curSppfNode)
+      "constructorDeclaration" -> parseconstructorDeclaration(descriptor, curSppfNode)
+      "fieldDeclaration" -> parsefieldDeclaration(descriptor, curSppfNode)
+      "methodDeclaration" -> parsemethodDeclaration(descriptor, curSppfNode)
+      "fieldModifier" -> parsefieldModifier(descriptor, curSppfNode)
+      "unannType" -> parseunannType(descriptor, curSppfNode)
+      "variableDeclaratorList" -> parsevariableDeclaratorList(descriptor, curSppfNode)
+      "variableDeclarator" -> parsevariableDeclarator(descriptor, curSppfNode)
+      "variableDeclaratorId" -> parsevariableDeclaratorId(descriptor, curSppfNode)
+      "variableInitializer" -> parsevariableInitializer(descriptor, curSppfNode)
+      "expression" -> parseexpression(descriptor, curSppfNode)
+      "arrayInitializer" -> parsearrayInitializer(descriptor, curSppfNode)
+      "unannPrimitiveType" -> parseunannPrimitiveType(descriptor, curSppfNode)
+      "unannReferenceType" -> parseunannReferenceType(descriptor, curSppfNode)
+      "unannClassOrInterfaceType" -> parseunannClassOrInterfaceType(descriptor, curSppfNode)
+      "unannTypeVariable" -> parseunannTypeVariable(descriptor, curSppfNode)
+      "unannArrayType" -> parseunannArrayType(descriptor, curSppfNode)
+      "unannClassType" -> parseunannClassType(descriptor, curSppfNode)
+      "unannInterfaceType" -> parseunannInterfaceType(descriptor, curSppfNode)
+      "methodModifier" -> parsemethodModifier(descriptor, curSppfNode)
+      "methodHeader" -> parsemethodHeader(descriptor, curSppfNode)
+      "methodBody" -> parsemethodBody(descriptor, curSppfNode)
+      "methodDeclarator" -> parsemethodDeclarator(descriptor, curSppfNode)
+      "formalParameterList" -> parseformalParameterList(descriptor, curSppfNode)
+      "receiverParameter" -> parsereceiverParameter(descriptor, curSppfNode)
+      "formalParameters" -> parseformalParameters(descriptor, curSppfNode)
+      "lastFormalParameter" -> parselastFormalParameter(descriptor, curSppfNode)
+      "formalParameter" -> parseformalParameter(descriptor, curSppfNode)
+      "variableModifier" -> parsevariableModifier(descriptor, curSppfNode)
+      "exceptionTypeList" -> parseexceptionTypeList(descriptor, curSppfNode)
+      "exceptionType" -> parseexceptionType(descriptor, curSppfNode)
+      "block" -> parseblock(descriptor, curSppfNode)
+      "constructorModifier" -> parseconstructorModifier(descriptor, curSppfNode)
+      "constructorDeclarator" -> parseconstructorDeclarator(descriptor, curSppfNode)
+      "constructorBody" -> parseconstructorBody(descriptor, curSppfNode)
+      "simpleTypeName" -> parsesimpleTypeName(descriptor, curSppfNode)
+      "explicitConstructorInvocation" -> parseexplicitConstructorInvocation(descriptor, curSppfNode)
+      "enumBody" -> parseenumBody(descriptor, curSppfNode)
+      "enumConstantList" -> parseenumConstantList(descriptor, curSppfNode)
+      "enumConstant" -> parseenumConstant(descriptor, curSppfNode)
+      "enumConstantModifier" -> parseenumConstantModifier(descriptor, curSppfNode)
+      "enumBodyDeclarations" -> parseenumBodyDeclarations(descriptor, curSppfNode)
+      "blockStatements" -> parseblockStatements(descriptor, curSppfNode)
+      "argumentList" -> parseargumentList(descriptor, curSppfNode)
+      "primary" -> parseprimary(descriptor, curSppfNode)
+      "normalInterfaceDeclaration" -> parsenormalInterfaceDeclaration(descriptor, curSppfNode)
+      "interfaceModifier" -> parseinterfaceModifier(descriptor, curSppfNode)
+      "extendsInterfaces" -> parseextendsInterfaces(descriptor, curSppfNode)
+      "interfaceBody" -> parseinterfaceBody(descriptor, curSppfNode)
+      "interfaceMemberDeclaration" -> parseinterfaceMemberDeclaration(descriptor, curSppfNode)
+      "constantDeclaration" -> parseconstantDeclaration(descriptor, curSppfNode)
+      "constantModifier" -> parseconstantModifier(descriptor, curSppfNode)
+      "annotationTypeDeclaration" -> parseannotationTypeDeclaration(descriptor, curSppfNode)
+      "annotationTypeBody" -> parseannotationTypeBody(descriptor, curSppfNode)
+      "annotationTypeMemberDeclaration" -> parseannotationTypeMemberDeclaration(descriptor,
           curSppfNode)
-      "AnnotationTypeElementDeclaration" -> parseAnnotationTypeElementDeclaration(descriptor,
+      "annotationTypeElementDeclaration" -> parseannotationTypeElementDeclaration(descriptor,
           curSppfNode)
-      "DefaultValue" -> parseDefaultValue(descriptor, curSppfNode)
-      "NormalAnnotation" -> parseNormalAnnotation(descriptor, curSppfNode)
-      "ElementValuePairList" -> parseElementValuePairList(descriptor, curSppfNode)
-      "ElementValuePair" -> parseElementValuePair(descriptor, curSppfNode)
-      "ElementValue" -> parseElementValue(descriptor, curSppfNode)
-      "ElementValueArrayInitializer" -> parseElementValueArrayInitializer(descriptor, curSppfNode)
-      "ElementValueList" -> parseElementValueList(descriptor, curSppfNode)
-      "MarkerAnnotation" -> parseMarkerAnnotation(descriptor, curSppfNode)
-      "SingleElementAnnotation" -> parseSingleElementAnnotation(descriptor, curSppfNode)
-      "InterfaceMethodDeclaration" -> parseInterfaceMethodDeclaration(descriptor, curSppfNode)
-      "AnnotationTypeElementModifier" -> parseAnnotationTypeElementModifier(descriptor, curSppfNode)
-      "ConditionalExpression" -> parseConditionalExpression(descriptor, curSppfNode)
-      "VariableInitializerList" -> parseVariableInitializerList(descriptor, curSppfNode)
-      "BlockStatement" -> parseBlockStatement(descriptor, curSppfNode)
-      "LocalVariableDeclarationStatement" -> parseLocalVariableDeclarationStatement(descriptor,
+      "defaultValue" -> parsedefaultValue(descriptor, curSppfNode)
+      "normalAnnotation" -> parsenormalAnnotation(descriptor, curSppfNode)
+      "elementValuePairList" -> parseelementValuePairList(descriptor, curSppfNode)
+      "elementValuePair" -> parseelementValuePair(descriptor, curSppfNode)
+      "elementValue" -> parseelementValue(descriptor, curSppfNode)
+      "elementValueArrayInitializer" -> parseelementValueArrayInitializer(descriptor, curSppfNode)
+      "elementValueList" -> parseelementValueList(descriptor, curSppfNode)
+      "markerAnnotation" -> parsemarkerAnnotation(descriptor, curSppfNode)
+      "singleElementAnnotation" -> parsesingleElementAnnotation(descriptor, curSppfNode)
+      "interfaceMethodDeclaration" -> parseinterfaceMethodDeclaration(descriptor, curSppfNode)
+      "annotationTypeElementModifier" -> parseannotationTypeElementModifier(descriptor, curSppfNode)
+      "conditionalExpression" -> parseconditionalExpression(descriptor, curSppfNode)
+      "variableInitializerList" -> parsevariableInitializerList(descriptor, curSppfNode)
+      "blockStatement" -> parseblockStatement(descriptor, curSppfNode)
+      "localVariableDeclarationStatement" -> parselocalVariableDeclarationStatement(descriptor,
           curSppfNode)
-      "LocalVariableDeclaration" -> parseLocalVariableDeclaration(descriptor, curSppfNode)
-      "Statement" -> parseStatement(descriptor, curSppfNode)
-      "StatementNoShortIf" -> parseStatementNoShortIf(descriptor, curSppfNode)
-      "StatementWithoutTrailingSubstatement" ->
-          parseStatementWithoutTrailingSubstatement(descriptor, curSppfNode)
-      "EmptyStatement" -> parseEmptyStatement(descriptor, curSppfNode)
-      "LabeledStatement" -> parseLabeledStatement(descriptor, curSppfNode)
-      "LabeledStatementNoShortIf" -> parseLabeledStatementNoShortIf(descriptor, curSppfNode)
-      "ExpressionStatement" -> parseExpressionStatement(descriptor, curSppfNode)
-      "StatementExpression" -> parseStatementExpression(descriptor, curSppfNode)
-      "IfThenStatement" -> parseIfThenStatement(descriptor, curSppfNode)
-      "IfThenElseStatement" -> parseIfThenElseStatement(descriptor, curSppfNode)
-      "IfThenElseStatementNoShortIf" -> parseIfThenElseStatementNoShortIf(descriptor, curSppfNode)
-      "AssertStatement" -> parseAssertStatement(descriptor, curSppfNode)
-      "SwitchStatement" -> parseSwitchStatement(descriptor, curSppfNode)
-      "SwitchBlock" -> parseSwitchBlock(descriptor, curSppfNode)
-      "SwitchBlockStatementGroup" -> parseSwitchBlockStatementGroup(descriptor, curSppfNode)
-      "SwitchLabels" -> parseSwitchLabels(descriptor, curSppfNode)
-      "SwitchLabel" -> parseSwitchLabel(descriptor, curSppfNode)
-      "EnumConstantName" -> parseEnumConstantName(descriptor, curSppfNode)
-      "WhileStatement" -> parseWhileStatement(descriptor, curSppfNode)
-      "WhileStatementNoShortIf" -> parseWhileStatementNoShortIf(descriptor, curSppfNode)
-      "DoStatement" -> parseDoStatement(descriptor, curSppfNode)
-      "InterfaceMethodModifier" -> parseInterfaceMethodModifier(descriptor, curSppfNode)
-      "ForStatement" -> parseForStatement(descriptor, curSppfNode)
-      "ForStatementNoShortIf" -> parseForStatementNoShortIf(descriptor, curSppfNode)
-      "BasicForStatement" -> parseBasicForStatement(descriptor, curSppfNode)
-      "BasicForStatementNoShortIf" -> parseBasicForStatementNoShortIf(descriptor, curSppfNode)
-      "ForInit" -> parseForInit(descriptor, curSppfNode)
-      "ForUpdate" -> parseForUpdate(descriptor, curSppfNode)
-      "StatementExpressionList" -> parseStatementExpressionList(descriptor, curSppfNode)
-      "EnhancedForStatement" -> parseEnhancedForStatement(descriptor, curSppfNode)
-      "EnhancedForStatementNoShortIf" -> parseEnhancedForStatementNoShortIf(descriptor, curSppfNode)
-      "BreakStatement" -> parseBreakStatement(descriptor, curSppfNode)
-      "ContinueStatement" -> parseContinueStatement(descriptor, curSppfNode)
-      "ReturnStatement" -> parseReturnStatement(descriptor, curSppfNode)
-      "ThrowStatement" -> parseThrowStatement(descriptor, curSppfNode)
-      "SynchronizedStatement" -> parseSynchronizedStatement(descriptor, curSppfNode)
-      "TryStatement" -> parseTryStatement(descriptor, curSppfNode)
-      "Catches" -> parseCatches(descriptor, curSppfNode)
-      "CatchClause" -> parseCatchClause(descriptor, curSppfNode)
-      "CatchFormalParameter" -> parseCatchFormalParameter(descriptor, curSppfNode)
-      "CatchType" -> parseCatchType(descriptor, curSppfNode)
-      "Finally" -> parseFinally(descriptor, curSppfNode)
-      "TryWithResourcesStatement" -> parseTryWithResourcesStatement(descriptor, curSppfNode)
-      "ResourceSpecification" -> parseResourceSpecification(descriptor, curSppfNode)
-      "ResourceList" -> parseResourceList(descriptor, curSppfNode)
-      "Resource" -> parseResource(descriptor, curSppfNode)
-      "PrimaryNoNewArray" -> parsePrimaryNoNewArray(descriptor, curSppfNode)
-      "ClassLiteral" -> parseClassLiteral(descriptor, curSppfNode)
+      "localVariableDeclaration" -> parselocalVariableDeclaration(descriptor, curSppfNode)
+      "statement" -> parsestatement(descriptor, curSppfNode)
+      "statementNoShortIf" -> parsestatementNoShortIf(descriptor, curSppfNode)
+      "statementWithoutTrailingSubstatement" ->
+          parsestatementWithoutTrailingSubstatement(descriptor, curSppfNode)
+      "emptyStatement" -> parseemptyStatement(descriptor, curSppfNode)
+      "labeledStatement" -> parselabeledStatement(descriptor, curSppfNode)
+      "labeledStatementNoShortIf" -> parselabeledStatementNoShortIf(descriptor, curSppfNode)
+      "expressionStatement" -> parseexpressionStatement(descriptor, curSppfNode)
+      "statementExpression" -> parsestatementExpression(descriptor, curSppfNode)
+      "ifThenStatement" -> parseifThenStatement(descriptor, curSppfNode)
+      "ifThenElseStatement" -> parseifThenElseStatement(descriptor, curSppfNode)
+      "ifThenElseStatementNoShortIf" -> parseifThenElseStatementNoShortIf(descriptor, curSppfNode)
+      "assertStatement" -> parseassertStatement(descriptor, curSppfNode)
+      "switchStatement" -> parseswitchStatement(descriptor, curSppfNode)
+      "switchBlock" -> parseswitchBlock(descriptor, curSppfNode)
+      "switchBlockStatementGroup" -> parseswitchBlockStatementGroup(descriptor, curSppfNode)
+      "switchLabels" -> parseswitchLabels(descriptor, curSppfNode)
+      "switchLabel" -> parseswitchLabel(descriptor, curSppfNode)
+      "enumConstantName" -> parseenumConstantName(descriptor, curSppfNode)
+      "whileStatement" -> parsewhileStatement(descriptor, curSppfNode)
+      "whileStatementNoShortIf" -> parsewhileStatementNoShortIf(descriptor, curSppfNode)
+      "doStatement" -> parsedoStatement(descriptor, curSppfNode)
+      "interfaceMethodModifier" -> parseinterfaceMethodModifier(descriptor, curSppfNode)
+      "forStatement" -> parseforStatement(descriptor, curSppfNode)
+      "forStatementNoShortIf" -> parseforStatementNoShortIf(descriptor, curSppfNode)
+      "basicForStatement" -> parsebasicForStatement(descriptor, curSppfNode)
+      "basicForStatementNoShortIf" -> parsebasicForStatementNoShortIf(descriptor, curSppfNode)
+      "forInit" -> parseforInit(descriptor, curSppfNode)
+      "forUpdate" -> parseforUpdate(descriptor, curSppfNode)
+      "statementExpressionList" -> parsestatementExpressionList(descriptor, curSppfNode)
+      "enhancedForStatement" -> parseenhancedForStatement(descriptor, curSppfNode)
+      "enhancedForStatementNoShortIf" -> parseenhancedForStatementNoShortIf(descriptor, curSppfNode)
+      "breakStatement" -> parsebreakStatement(descriptor, curSppfNode)
+      "continueStatement" -> parsecontinueStatement(descriptor, curSppfNode)
+      "returnStatement" -> parsereturnStatement(descriptor, curSppfNode)
+      "throwStatement" -> parsethrowStatement(descriptor, curSppfNode)
+      "synchronizedStatement" -> parsesynchronizedStatement(descriptor, curSppfNode)
+      "tryStatement" -> parsetryStatement(descriptor, curSppfNode)
+      "catches" -> parsecatches(descriptor, curSppfNode)
+      "catchClause" -> parsecatchClause(descriptor, curSppfNode)
+      "catchFormalParameter" -> parsecatchFormalParameter(descriptor, curSppfNode)
+      "catchType" -> parsecatchType(descriptor, curSppfNode)
+      "finally" -> parsefinally(descriptor, curSppfNode)
+      "tryWithResourcesStatement" -> parsetryWithResourcesStatement(descriptor, curSppfNode)
+      "resourceSpecification" -> parseresourceSpecification(descriptor, curSppfNode)
+      "resourceList" -> parseresourceList(descriptor, curSppfNode)
+      "resource" -> parseresource(descriptor, curSppfNode)
+      "primaryNoNewArray" -> parseprimaryNoNewArray(descriptor, curSppfNode)
+      "classLiteral" -> parseclassLiteral(descriptor, curSppfNode)
       "classOrInterfaceTypeToInstantiate" -> parseclassOrInterfaceTypeToInstantiate(descriptor,
           curSppfNode)
-      "UnqualifiedClassInstanceCreationExpression" ->
-          parseUnqualifiedClassInstanceCreationExpression(descriptor, curSppfNode)
-      "ClassInstanceCreationExpression" -> parseClassInstanceCreationExpression(descriptor,
+      "unqualifiedClassInstanceCreationExpression" ->
+          parseunqualifiedClassInstanceCreationExpression(descriptor, curSppfNode)
+      "classInstanceCreationExpression" -> parseclassInstanceCreationExpression(descriptor,
           curSppfNode)
-      "FieldAccess" -> parseFieldAccess(descriptor, curSppfNode)
-      "TypeArgumentsOrDiamond" -> parseTypeArgumentsOrDiamond(descriptor, curSppfNode)
-      "ArrayAccess" -> parseArrayAccess(descriptor, curSppfNode)
-      "MethodInvocation" -> parseMethodInvocation(descriptor, curSppfNode)
-      "MethodReference" -> parseMethodReference(descriptor, curSppfNode)
-      "ArrayCreationExpression" -> parseArrayCreationExpression(descriptor, curSppfNode)
-      "DimExprs" -> parseDimExprs(descriptor, curSppfNode)
-      "DimExpr" -> parseDimExpr(descriptor, curSppfNode)
-      "LambdaExpression" -> parseLambdaExpression(descriptor, curSppfNode)
-      "LambdaParameters" -> parseLambdaParameters(descriptor, curSppfNode)
-      "InferredFormalParameterList" -> parseInferredFormalParameterList(descriptor, curSppfNode)
-      "LambdaBody" -> parseLambdaBody(descriptor, curSppfNode)
-      "AssignmentExpression" -> parseAssignmentExpression(descriptor, curSppfNode)
-      "Assignment" -> parseAssignment(descriptor, curSppfNode)
-      "LeftHandSide" -> parseLeftHandSide(descriptor, curSppfNode)
-      "AssignmentOperator" -> parseAssignmentOperator(descriptor, curSppfNode)
-      "ConditionalOrExpression" -> parseConditionalOrExpression(descriptor, curSppfNode)
-      "ConditionalAndExpression" -> parseConditionalAndExpression(descriptor, curSppfNode)
-      "InclusiveOrExpression" -> parseInclusiveOrExpression(descriptor, curSppfNode)
-      "ExclusiveOrExpression" -> parseExclusiveOrExpression(descriptor, curSppfNode)
-      "AndExpression" -> parseAndExpression(descriptor, curSppfNode)
-      "EqualityExpression" -> parseEqualityExpression(descriptor, curSppfNode)
-      "RelationalExpression" -> parseRelationalExpression(descriptor, curSppfNode)
-      "ShiftExpression" -> parseShiftExpression(descriptor, curSppfNode)
-      "AdditiveExpression" -> parseAdditiveExpression(descriptor, curSppfNode)
-      "MultiplicativeExpression" -> parseMultiplicativeExpression(descriptor, curSppfNode)
-      "PreIncrementExpression" -> parsePreIncrementExpression(descriptor, curSppfNode)
-      "PreDecrementExpression" -> parsePreDecrementExpression(descriptor, curSppfNode)
-      "UnaryExpressionNotPlusMinus" -> parseUnaryExpressionNotPlusMinus(descriptor, curSppfNode)
-      "UnaryExpression" -> parseUnaryExpression(descriptor, curSppfNode)
-      "PostfixExpression" -> parsePostfixExpression(descriptor, curSppfNode)
-      "PostIncrementExpression" -> parsePostIncrementExpression(descriptor, curSppfNode)
-      "PostDecrementExpression" -> parsePostDecrementExpression(descriptor, curSppfNode)
-      "CastExpression" -> parseCastExpression(descriptor, curSppfNode)
-      "ConstantExpression" -> parseConstantExpression(descriptor, curSppfNode)
+      "fieldAccess" -> parsefieldAccess(descriptor, curSppfNode)
+      "typeArgumentsOrDiamond" -> parsetypeArgumentsOrDiamond(descriptor, curSppfNode)
+      "arrayAccess" -> parsearrayAccess(descriptor, curSppfNode)
+      "methodInvocation" -> parsemethodInvocation(descriptor, curSppfNode)
+      "methodReference" -> parsemethodReference(descriptor, curSppfNode)
+      "arrayCreationExpression" -> parsearrayCreationExpression(descriptor, curSppfNode)
+      "dimExprs" -> parsedimExprs(descriptor, curSppfNode)
+      "dimExpr" -> parsedimExpr(descriptor, curSppfNode)
+      "lambdaExpression" -> parselambdaExpression(descriptor, curSppfNode)
+      "lambdaParameters" -> parselambdaParameters(descriptor, curSppfNode)
+      "inferredFormalParameterList" -> parseinferredFormalParameterList(descriptor, curSppfNode)
+      "lambdaBody" -> parselambdaBody(descriptor, curSppfNode)
+      "assignmentExpression" -> parseassignmentExpression(descriptor, curSppfNode)
+      "assignment" -> parseassignment(descriptor, curSppfNode)
+      "leftHandSide" -> parseleftHandSide(descriptor, curSppfNode)
+      "assignmentOperator" -> parseassignmentOperator(descriptor, curSppfNode)
+      "conditionalOrExpression" -> parseconditionalOrExpression(descriptor, curSppfNode)
+      "conditionalAndExpression" -> parseconditionalAndExpression(descriptor, curSppfNode)
+      "inclusiveOrExpression" -> parseinclusiveOrExpression(descriptor, curSppfNode)
+      "exclusiveOrExpression" -> parseexclusiveOrExpression(descriptor, curSppfNode)
+      "andExpression" -> parseandExpression(descriptor, curSppfNode)
+      "equalityExpression" -> parseequalityExpression(descriptor, curSppfNode)
+      "relationalExpression" -> parserelationalExpression(descriptor, curSppfNode)
+      "shiftExpression" -> parseshiftExpression(descriptor, curSppfNode)
+      "additiveExpression" -> parseadditiveExpression(descriptor, curSppfNode)
+      "multiplicativeExpression" -> parsemultiplicativeExpression(descriptor, curSppfNode)
+      "preIncrementExpression" -> parsepreIncrementExpression(descriptor, curSppfNode)
+      "preDecrementExpression" -> parsepreDecrementExpression(descriptor, curSppfNode)
+      "unaryExpressionNotPlusMinus" -> parseunaryExpressionNotPlusMinus(descriptor, curSppfNode)
+      "unaryExpression" -> parseunaryExpression(descriptor, curSppfNode)
+      "postfixExpression" -> parsepostfixExpression(descriptor, curSppfNode)
+      "postIncrementExpression" -> parsepostIncrementExpression(descriptor, curSppfNode)
+      "postDecrementExpression" -> parsepostDecrementExpression(descriptor, curSppfNode)
+      "castExpression" -> parsecastExpression(descriptor, curSppfNode)
+      "constantExpression" -> parseconstantExpression(descriptor, curSppfNode)
     }
   }
 
-  private fun parseCompilationUnit(descriptor: Descriptor<VertexType>,
+  private fun parsecompilationUnit(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ImportDeclaration,
-            state.nonterminalEdges[ImportDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, TypeDeclaration,
-            state.nonterminalEdges[TypeDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, PackageDeclaration,
-            state.nonterminalEdges[PackageDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, packageDeclaration,
+            state.nonterminalEdges[packageDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeDeclaration,
+            state.nonterminalEdges[typeDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, importDeclaration,
+            state.nonterminalEdges[importDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ImportDeclaration,
-            state.nonterminalEdges[ImportDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, TypeDeclaration,
-            state.nonterminalEdges[TypeDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeDeclaration,
+            state.nonterminalEdges[typeDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, importDeclaration,
+            state.nonterminalEdges[importDeclaration]!!, curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeDeclaration,
-            state.nonterminalEdges[TypeDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeDeclaration,
+            state.nonterminalEdges[typeDeclaration]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseIdentifier(descriptor: Descriptor<VertexType>,
+  private fun parseidentifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -726,8 +726,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ID -> 
-            handleTerminal(JavaToken.ID, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.IDENTIFIER -> 
+            handleTerminal(JavaToken.IDENTIFIER, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -738,7 +738,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLiteral(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parseliteral(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -747,18 +747,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.FLOATINGLIT -> 
-            handleTerminal(JavaToken.FLOATINGLIT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.BOOLEANLIT -> 
-            handleTerminal(JavaToken.BOOLEANLIT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CHARLIT -> 
-            handleTerminal(JavaToken.CHARLIT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.INTEGERLIT -> 
-            handleTerminal(JavaToken.INTEGERLIT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRINGLIT -> 
-            handleTerminal(JavaToken.STRINGLIT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.NULLLIT -> 
-            handleTerminal(JavaToken.NULLLIT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.BOOLEAN_LITERAL -> 
+            handleTerminal(JavaToken.BOOLEAN_LITERAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.INTEGER_LITERAL -> 
+            handleTerminal(JavaToken.INTEGER_LITERAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRING_LITERAL -> 
+            handleTerminal(JavaToken.STRING_LITERAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.FLOATING_POINT_LITERAL -> 
+            handleTerminal(JavaToken.FLOATING_POINT_LITERAL, state, inputEdge, descriptor,
+                curSppfNode)
+            JavaToken.CHARACTER_LITERAL -> 
+            handleTerminal(JavaToken.CHARACTER_LITERAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.NULL_LITERAL -> 
+            handleTerminal(JavaToken.NULL_LITERAL, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -769,15 +770,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseType(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parsetype(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PrimitiveType, state.nonterminalEdges[PrimitiveType]!!,
+        handleNonterminalEdge(descriptor, referenceType, state.nonterminalEdges[referenceType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ReferenceType, state.nonterminalEdges[ReferenceType]!!,
+        handleNonterminalEdge(descriptor, primitiveType, state.nonterminalEdges[primitiveType]!!,
             curSppfNode)
       }
       1 -> 
@@ -786,7 +787,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePrimitiveType(descriptor: Descriptor<VertexType>,
+  private fun parseprimitiveType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -802,9 +803,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, NumericType, state.nonterminalEdges[NumericType]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, numericType, state.nonterminalEdges[numericType]!!,
             curSppfNode)
       }
       1 -> 
@@ -813,19 +814,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseReferenceType(descriptor: Descriptor<VertexType>,
+  private fun parsereferenceType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArrayType, state.nonterminalEdges[ArrayType]!!,
+        handleNonterminalEdge(descriptor, typeVariable, state.nonterminalEdges[typeVariable]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeVariable, state.nonterminalEdges[TypeVariable]!!,
+        handleNonterminalEdge(descriptor, arrayType, state.nonterminalEdges[arrayType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassOrInterfaceType,
-            state.nonterminalEdges[ClassOrInterfaceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classOrInterfaceType,
+            state.nonterminalEdges[classOrInterfaceType]!!, curSppfNode)
       }
       1 -> 
        {
@@ -833,19 +834,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAnnotation(descriptor: Descriptor<VertexType>,
+  private fun parseannotation(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, MarkerAnnotation,
-            state.nonterminalEdges[MarkerAnnotation]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, SingleElementAnnotation,
-            state.nonterminalEdges[SingleElementAnnotation]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, NormalAnnotation,
-            state.nonterminalEdges[NormalAnnotation]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, singleElementAnnotation,
+            state.nonterminalEdges[singleElementAnnotation]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, normalAnnotation,
+            state.nonterminalEdges[normalAnnotation]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, markerAnnotation,
+            state.nonterminalEdges[markerAnnotation]!!, curSppfNode)
       }
       1 -> 
        {
@@ -853,17 +854,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseNumericType(descriptor: Descriptor<VertexType>,
+  private fun parsenumericType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, IntegralType, state.nonterminalEdges[IntegralType]!!,
+        handleNonterminalEdge(descriptor, floatingPointType,
+            state.nonterminalEdges[floatingPointType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, integralType, state.nonterminalEdges[integralType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, FloatingPointType,
-            state.nonterminalEdges[FloatingPointType]!!, curSppfNode)
       }
       1 -> 
        {
@@ -871,7 +872,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseIntegralType(descriptor: Descriptor<VertexType>,
+  private fun parseintegralType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -881,16 +882,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CHAR -> 
-            handleTerminal(JavaToken.CHAR, state, inputEdge, descriptor, curSppfNode)
             JavaToken.BYTE -> 
             handleTerminal(JavaToken.BYTE, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.INT -> 
-            handleTerminal(JavaToken.INT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.LONG -> 
             handleTerminal(JavaToken.LONG, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SHORT -> 
             handleTerminal(JavaToken.SHORT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.INT -> 
+            handleTerminal(JavaToken.INT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.CHAR -> 
+            handleTerminal(JavaToken.CHAR, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -901,7 +902,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseFloatingPointType(descriptor: Descriptor<VertexType>,
+  private fun parsefloatingPointType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -925,16 +926,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassOrInterfaceType(descriptor: Descriptor<VertexType>,
+  private fun parseclassOrInterfaceType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceType, state.nonterminalEdges[InterfaceType]!!,
+        handleNonterminalEdge(descriptor, interfaceType, state.nonterminalEdges[interfaceType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassType, state.nonterminalEdges[ClassType]!!,
+        handleNonterminalEdge(descriptor, classType, state.nonterminalEdges[classType]!!,
             curSppfNode)
       }
       1 -> 
@@ -943,16 +944,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeVariable(descriptor: Descriptor<VertexType>,
+  private fun parsetypeVariable(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -961,24 +962,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseArrayType(descriptor: Descriptor<VertexType>,
+  private fun parsearrayType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeVariable, state.nonterminalEdges[TypeVariable]!!,
+        handleNonterminalEdge(descriptor, typeVariable, state.nonterminalEdges[typeVariable]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, PrimitiveType, state.nonterminalEdges[PrimitiveType]!!,
+        handleNonterminalEdge(descriptor, classOrInterfaceType,
+            state.nonterminalEdges[classOrInterfaceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, primitiveType, state.nonterminalEdges[primitiveType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassOrInterfaceType,
-            state.nonterminalEdges[ClassOrInterfaceType]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
       }
       2 -> 
        {
@@ -986,7 +987,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassType(descriptor: Descriptor<VertexType>,
+  private fun parseclassType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -994,25 +995,25 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassOrInterfaceType,
-            state.nonterminalEdges[ClassOrInterfaceType]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, classOrInterfaceType,
+            state.nonterminalEdges[classOrInterfaceType]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
       }
       3 -> 
@@ -1032,14 +1033,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceType(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassType, state.nonterminalEdges[ClassType]!!,
+        handleNonterminalEdge(descriptor, classType, state.nonterminalEdges[classType]!!,
             curSppfNode)
       }
       1 -> 
@@ -1048,7 +1049,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeArguments(descriptor: Descriptor<VertexType>,
+  private fun parsetypeArguments(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1067,8 +1068,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArgumentList,
-            state.nonterminalEdges[TypeArgumentList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeArgumentList,
+            state.nonterminalEdges[typeArgumentList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -1087,7 +1088,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseDims(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parsedims(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -1096,13 +1097,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETLEFT -> 
-            handleTerminal(JavaToken.BRACKETLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACK -> 
+            handleTerminal(JavaToken.LBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -1110,8 +1111,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETRIGHT -> 
-            handleTerminal(JavaToken.BRACKETRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACK -> 
+            handleTerminal(JavaToken.RBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -1121,34 +1122,34 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETLEFT -> 
-            handleTerminal(JavaToken.BRACKETLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACK -> 
+            handleTerminal(JavaToken.LBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseTypeParameter(descriptor: Descriptor<VertexType>,
+  private fun parsetypeParameter(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeParameterModifier,
-            state.nonterminalEdges[TypeParameterModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeParameterModifier,
+            state.nonterminalEdges[typeParameterModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeBound, state.nonterminalEdges[TypeBound]!!,
+        handleNonterminalEdge(descriptor, typeBound, state.nonterminalEdges[typeBound]!!,
             curSppfNode)
       }
       2 -> 
@@ -1157,14 +1158,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeParameterModifier(descriptor: Descriptor<VertexType>,
+  private fun parsetypeParameterModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -1173,7 +1174,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeBound(descriptor: Descriptor<VertexType>,
+  private fun parsetypeBound(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1192,10 +1193,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeVariable, state.nonterminalEdges[TypeVariable]!!,
+        handleNonterminalEdge(descriptor, typeVariable, state.nonterminalEdges[typeVariable]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassOrInterfaceType,
-            state.nonterminalEdges[ClassOrInterfaceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classOrInterfaceType,
+            state.nonterminalEdges[classOrInterfaceType]!!, curSppfNode)
       }
       2 -> 
        {
@@ -1203,13 +1204,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AdditionalBound,
-            state.nonterminalEdges[AdditionalBound]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, additionalBound,
+            state.nonterminalEdges[additionalBound]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseAdditionalBound(descriptor: Descriptor<VertexType>,
+  private fun parseadditionalBound(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1219,8 +1220,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ANDBIT -> 
-            handleTerminal(JavaToken.ANDBIT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.AND -> 
+            handleTerminal(JavaToken.AND, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -1228,7 +1229,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceType, state.nonterminalEdges[InterfaceType]!!,
+        handleNonterminalEdge(descriptor, interfaceType, state.nonterminalEdges[interfaceType]!!,
             curSppfNode)
       }
       2 -> 
@@ -1237,7 +1238,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeArgumentList(descriptor: Descriptor<VertexType>,
+  private fun parsetypeArgumentList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1245,7 +1246,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArgument, state.nonterminalEdges[TypeArgument]!!,
+        handleNonterminalEdge(descriptor, typeArgument, state.nonterminalEdges[typeArgument]!!,
             curSppfNode)
       }
       1 -> 
@@ -1262,16 +1263,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeArgument(descriptor: Descriptor<VertexType>,
+  private fun parsetypeArgument(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Wildcard, state.nonterminalEdges[Wildcard]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ReferenceType, state.nonterminalEdges[ReferenceType]!!,
+        handleNonterminalEdge(descriptor, referenceType, state.nonterminalEdges[referenceType]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, wildcard, state.nonterminalEdges[wildcard]!!, curSppfNode)
       }
       1 -> 
        {
@@ -1279,7 +1280,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseWildcard(descriptor: Descriptor<VertexType>,
+  private fun parsewildcard(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1289,19 +1290,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.QUESTIONMARK -> 
-            handleTerminal(JavaToken.QUESTIONMARK, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.QUESTION -> 
+            handleTerminal(JavaToken.QUESTION, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, WildcardBounds, state.nonterminalEdges[WildcardBounds]!!,
+        handleNonterminalEdge(descriptor, wildcardBounds, state.nonterminalEdges[wildcardBounds]!!,
             curSppfNode)
       }
       2 -> 
@@ -1310,7 +1311,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseWildcardBounds(descriptor: Descriptor<VertexType>,
+  private fun parsewildcardBounds(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1320,10 +1321,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.SUPER -> 
-            handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
             JavaToken.EXTENDS -> 
             handleTerminal(JavaToken.EXTENDS, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SUPER -> 
+            handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -1331,7 +1332,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ReferenceType, state.nonterminalEdges[ReferenceType]!!,
+        handleNonterminalEdge(descriptor, referenceType, state.nonterminalEdges[referenceType]!!,
             curSppfNode)
       }
       2 -> 
@@ -1340,7 +1341,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeName(descriptor: Descriptor<VertexType>,
+  private fun parsetypeName(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1348,9 +1349,81 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PackageOrTypeName,
-            state.nonterminalEdges[PackageOrTypeName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, packageOrTypeName,
+            state.nonterminalEdges[packageOrTypeName]!!, curSppfNode)
+      }
+      1 -> 
+       {
+      }
+      2 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.DOT -> 
+            handleTerminal(JavaToken.DOT, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      3 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+      }
+    }
+  }
+
+  private fun parsepackageOrTypeName(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, packageOrTypeName,
+            state.nonterminalEdges[packageOrTypeName]!!, curSppfNode)
+      }
+      1 -> 
+       {
+      }
+      2 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.DOT -> 
+            handleTerminal(JavaToken.DOT, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      3 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+      }
+    }
+  }
+
+  private fun parseexpressionName(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, ambiguousName, state.nonterminalEdges[ambiguousName]!!,
             curSppfNode)
       }
       1 -> 
@@ -1370,13 +1443,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parsePackageOrTypeName(descriptor: Descriptor<VertexType>,
+  private fun parseambiguousName(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1384,9 +1457,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PackageOrTypeName,
-            state.nonterminalEdges[PackageOrTypeName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, ambiguousName, state.nonterminalEdges[ambiguousName]!!,
             curSppfNode)
       }
       1 -> 
@@ -1406,13 +1479,29 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseExpressionName(descriptor: Descriptor<VertexType>,
+  private fun parsemethodName(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
+            curSppfNode)
+      }
+      1 -> 
+       {
+      }
+    }
+  }
+
+  private fun parsepackageName(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1420,9 +1509,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, AmbiguousName, state.nonterminalEdges[AmbiguousName]!!,
+        handleNonterminalEdge(descriptor, packageName, state.nonterminalEdges[packageName]!!,
             curSppfNode)
       }
       1 -> 
@@ -1442,101 +1531,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseAmbiguousName(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
-            curSppfNode)
-        handleNonterminalEdge(descriptor, AmbiguousName, state.nonterminalEdges[AmbiguousName]!!,
-            curSppfNode)
-      }
-      1 -> 
-       {
-      }
-      2 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.DOT -> 
-            handleTerminal(JavaToken.DOT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      3 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
-            curSppfNode)
-      }
-    }
-  }
-
-  private fun parseMethodName(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
-            curSppfNode)
-      }
-      1 -> 
-       {
-      }
-    }
-  }
-
-  private fun parsePackageName(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
-            curSppfNode)
-        handleNonterminalEdge(descriptor, PackageName, state.nonterminalEdges[PackageName]!!,
-            curSppfNode)
-      }
-      1 -> 
-       {
-      }
-      2 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.DOT -> 
-            handleTerminal(JavaToken.DOT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      3 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
-            curSppfNode)
-      }
-    }
-  }
-
-  private fun parseResult(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parseresult(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -1551,7 +1552,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
       }
       1 -> 
@@ -1560,7 +1561,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePackageDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsepackageDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1576,13 +1577,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PackageModifier,
-            state.nonterminalEdges[PackageModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, packageModifier,
+            state.nonterminalEdges[packageModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
@@ -1604,21 +1605,21 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseImportDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseimportDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeImportOnDemandDeclaration,
-            state.nonterminalEdges[TypeImportOnDemandDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, SingleTypeImportDeclaration,
-            state.nonterminalEdges[SingleTypeImportDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, SingleStaticImportDeclaration,
-            state.nonterminalEdges[SingleStaticImportDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, StaticImportOnDemandDeclaration,
-            state.nonterminalEdges[StaticImportOnDemandDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, singleTypeImportDeclaration,
+            state.nonterminalEdges[singleTypeImportDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, staticImportOnDemandDeclaration,
+            state.nonterminalEdges[staticImportOnDemandDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, singleStaticImportDeclaration,
+            state.nonterminalEdges[singleStaticImportDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeImportOnDemandDeclaration,
+            state.nonterminalEdges[typeImportOnDemandDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -1626,7 +1627,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsetypeDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1642,10 +1643,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassDeclaration,
-            state.nonterminalEdges[ClassDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, InterfaceDeclaration,
-            state.nonterminalEdges[InterfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceDeclaration,
+            state.nonterminalEdges[interfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classDeclaration,
+            state.nonterminalEdges[classDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -1653,14 +1654,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePackageModifier(descriptor: Descriptor<VertexType>,
+  private fun parsepackageModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -1669,7 +1670,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSingleTypeImportDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsesingleTypeImportDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1688,7 +1689,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
       }
       2 -> 
        {
@@ -1707,7 +1708,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeImportOnDemandDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsetypeImportOnDemandDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1726,8 +1727,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PackageOrTypeName,
-            state.nonterminalEdges[PackageOrTypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, packageOrTypeName,
+            state.nonterminalEdges[packageOrTypeName]!!, curSppfNode)
       }
       2 -> 
        {
@@ -1745,8 +1746,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.STAR -> 
-            handleTerminal(JavaToken.STAR, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MULT -> 
+            handleTerminal(JavaToken.MULT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -1768,7 +1769,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSingleStaticImportDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsesingleStaticImportDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1798,7 +1799,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
       }
       3 -> 
        {
@@ -1814,7 +1815,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       5 -> 
@@ -1834,7 +1835,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStaticImportOnDemandDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsestaticImportOnDemandDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1864,7 +1865,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
       }
       3 -> 
        {
@@ -1882,8 +1883,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.STAR -> 
-            handleTerminal(JavaToken.STAR, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MULT -> 
+            handleTerminal(JavaToken.MULT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -1905,17 +1906,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseclassDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, NormalClassDeclaration,
-            state.nonterminalEdges[NormalClassDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, EnumDeclaration,
-            state.nonterminalEdges[EnumDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumDeclaration,
+            state.nonterminalEdges[enumDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, normalClassDeclaration,
+            state.nonterminalEdges[normalClassDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -1923,17 +1924,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AnnotationTypeDeclaration,
-            state.nonterminalEdges[AnnotationTypeDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, NormalInterfaceDeclaration,
-            state.nonterminalEdges[NormalInterfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, annotationTypeDeclaration,
+            state.nonterminalEdges[annotationTypeDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, normalInterfaceDeclaration,
+            state.nonterminalEdges[normalInterfaceDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -1941,7 +1942,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseThrows(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parsethrows(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -1959,8 +1960,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ExceptionTypeList,
-            state.nonterminalEdges[ExceptionTypeList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, exceptionTypeList,
+            state.nonterminalEdges[exceptionTypeList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -1968,7 +1969,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseNormalClassDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsenormalClassDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -1984,49 +1985,49 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassModifier, state.nonterminalEdges[ClassModifier]!!,
+        handleNonterminalEdge(descriptor, classModifier, state.nonterminalEdges[classModifier]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Superclass, state.nonterminalEdges[Superclass]!!,
+        handleNonterminalEdge(descriptor, superinterfaces,
+            state.nonterminalEdges[superinterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, superclass, state.nonterminalEdges[superclass]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeParameters, state.nonterminalEdges[TypeParameters]!!,
+        handleNonterminalEdge(descriptor, classBody, state.nonterminalEdges[classBody]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Superinterfaces,
-            state.nonterminalEdges[Superinterfaces]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassBody, state.nonterminalEdges[ClassBody]!!,
+        handleNonterminalEdge(descriptor, typeParameters, state.nonterminalEdges[typeParameters]!!,
             curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Superclass, state.nonterminalEdges[Superclass]!!,
+        handleNonterminalEdge(descriptor, superinterfaces,
+            state.nonterminalEdges[superinterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, superclass, state.nonterminalEdges[superclass]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Superinterfaces,
-            state.nonterminalEdges[Superinterfaces]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassBody, state.nonterminalEdges[ClassBody]!!,
+        handleNonterminalEdge(descriptor, classBody, state.nonterminalEdges[classBody]!!,
             curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Superinterfaces,
-            state.nonterminalEdges[Superinterfaces]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassBody, state.nonterminalEdges[ClassBody]!!,
+        handleNonterminalEdge(descriptor, superinterfaces,
+            state.nonterminalEdges[superinterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classBody, state.nonterminalEdges[classBody]!!,
             curSppfNode)
       }
       5 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassBody, state.nonterminalEdges[ClassBody]!!,
+        handleNonterminalEdge(descriptor, classBody, state.nonterminalEdges[classBody]!!,
             curSppfNode)
       }
       6 -> 
@@ -2035,7 +2036,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseenumDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2051,26 +2052,26 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassModifier, state.nonterminalEdges[ClassModifier]!!,
+        handleNonterminalEdge(descriptor, classModifier, state.nonterminalEdges[classModifier]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumBody, state.nonterminalEdges[EnumBody]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Superinterfaces,
-            state.nonterminalEdges[Superinterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, superinterfaces,
+            state.nonterminalEdges[superinterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumBody, state.nonterminalEdges[enumBody]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumBody, state.nonterminalEdges[EnumBody]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumBody, state.nonterminalEdges[enumBody]!!, curSppfNode)
       }
       4 -> 
        {
@@ -2078,7 +2079,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassModifier(descriptor: Descriptor<VertexType>,
+  private fun parseclassModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2088,25 +2089,25 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PUBLIC -> 
             handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
             JavaToken.ABSTRACT -> 
             handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.FINAL -> 
             handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -2115,7 +2116,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeParameters(descriptor: Descriptor<VertexType>,
+  private fun parsetypeParameters(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2134,8 +2135,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeParameterList,
-            state.nonterminalEdges[TypeParameterList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeParameterList,
+            state.nonterminalEdges[typeParameterList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2154,7 +2155,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSuperclass(descriptor: Descriptor<VertexType>,
+  private fun parsesuperclass(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2173,7 +2174,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassType, state.nonterminalEdges[ClassType]!!,
+        handleNonterminalEdge(descriptor, classType, state.nonterminalEdges[classType]!!,
             curSppfNode)
       }
       2 -> 
@@ -2182,7 +2183,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSuperinterfaces(descriptor: Descriptor<VertexType>,
+  private fun parsesuperinterfaces(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2201,8 +2202,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceTypeList,
-            state.nonterminalEdges[InterfaceTypeList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceTypeList,
+            state.nonterminalEdges[interfaceTypeList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2210,7 +2211,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassBody(descriptor: Descriptor<VertexType>,
+  private fun parseclassBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2220,8 +2221,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2231,14 +2232,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassBodyDeclaration,
-            state.nonterminalEdges[ClassBodyDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classBodyDeclaration,
+            state.nonterminalEdges[classBodyDeclaration]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2246,7 +2247,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeParameterList(descriptor: Descriptor<VertexType>,
+  private fun parsetypeParameterList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2254,7 +2255,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeParameter, state.nonterminalEdges[TypeParameter]!!,
+        handleNonterminalEdge(descriptor, typeParameter, state.nonterminalEdges[typeParameter]!!,
             curSppfNode)
       }
       1 -> 
@@ -2271,7 +2272,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceTypeList(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceTypeList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2279,7 +2280,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceType, state.nonterminalEdges[InterfaceType]!!,
+        handleNonterminalEdge(descriptor, interfaceType, state.nonterminalEdges[interfaceType]!!,
             curSppfNode)
       }
       1 -> 
@@ -2296,21 +2297,21 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassBodyDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseclassBodyDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StaticInitializer,
-            state.nonterminalEdges[StaticInitializer]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConstructorDeclaration,
-            state.nonterminalEdges[ConstructorDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, InstanceInitializer,
-            state.nonterminalEdges[InstanceInitializer]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassMemberDeclaration,
-            state.nonterminalEdges[ClassMemberDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classMemberDeclaration,
+            state.nonterminalEdges[classMemberDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, staticInitializer,
+            state.nonterminalEdges[staticInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, instanceInitializer,
+            state.nonterminalEdges[instanceInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constructorDeclaration,
+            state.nonterminalEdges[constructorDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2318,7 +2319,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassMemberDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseclassMemberDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2334,14 +2335,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassDeclaration,
-            state.nonterminalEdges[ClassDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MethodDeclaration,
-            state.nonterminalEdges[MethodDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, InterfaceDeclaration,
-            state.nonterminalEdges[InterfaceDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, FieldDeclaration,
-            state.nonterminalEdges[FieldDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, methodDeclaration,
+            state.nonterminalEdges[methodDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceDeclaration,
+            state.nonterminalEdges[interfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, fieldDeclaration,
+            state.nonterminalEdges[fieldDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classDeclaration,
+            state.nonterminalEdges[classDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2349,14 +2350,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInstanceInitializer(descriptor: Descriptor<VertexType>,
+  private fun parseinstanceInitializer(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2364,7 +2365,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStaticInitializer(descriptor: Descriptor<VertexType>,
+  private fun parsestaticInitializer(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2383,7 +2384,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2391,30 +2392,30 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConstructorDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseconstructorDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConstructorDeclarator,
-            state.nonterminalEdges[ConstructorDeclarator]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConstructorModifier,
-            state.nonterminalEdges[ConstructorModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constructorDeclarator,
+            state.nonterminalEdges[constructorDeclarator]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constructorModifier,
+            state.nonterminalEdges[constructorModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConstructorBody,
-            state.nonterminalEdges[ConstructorBody]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Throws, state.nonterminalEdges[Throws]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, throws, state.nonterminalEdges[throws]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constructorBody,
+            state.nonterminalEdges[constructorBody]!!, curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConstructorBody,
-            state.nonterminalEdges[ConstructorBody]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constructorBody,
+            state.nonterminalEdges[constructorBody]!!, curSppfNode)
       }
       3 -> 
        {
@@ -2422,7 +2423,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseFieldDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsefieldDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2430,16 +2431,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, fieldModifier, state.nonterminalEdges[fieldModifier]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, FieldModifier, state.nonterminalEdges[FieldModifier]!!,
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorList,
-            state.nonterminalEdges[VariableDeclaratorList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorList,
+            state.nonterminalEdges[variableDeclaratorList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2458,22 +2459,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsemethodDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, MethodModifier, state.nonterminalEdges[MethodModifier]!!,
+        handleNonterminalEdge(descriptor, methodHeader, state.nonterminalEdges[methodHeader]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, MethodHeader, state.nonterminalEdges[MethodHeader]!!,
+        handleNonterminalEdge(descriptor, methodModifier, state.nonterminalEdges[methodModifier]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, MethodBody, state.nonterminalEdges[MethodBody]!!,
+        handleNonterminalEdge(descriptor, methodBody, state.nonterminalEdges[methodBody]!!,
             curSppfNode)
       }
       2 -> 
@@ -2482,7 +2483,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseFieldModifier(descriptor: Descriptor<VertexType>,
+  private fun parsefieldModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2492,25 +2493,25 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.TRANSIENT -> 
-            handleTerminal(JavaToken.TRANSIENT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.VOLATILE -> 
             handleTerminal(JavaToken.VOLATILE, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STATIC -> 
             handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.FINAL -> 
-            handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PROTECTED -> 
             handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.FINAL -> 
+            handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.TRANSIENT -> 
+            handleTerminal(JavaToken.TRANSIENT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -2519,17 +2520,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannType(descriptor: Descriptor<VertexType>,
+  private fun parseunannType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannPrimitiveType,
-            state.nonterminalEdges[UnannPrimitiveType]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannReferenceType,
-            state.nonterminalEdges[UnannReferenceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannReferenceType,
+            state.nonterminalEdges[unannReferenceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannPrimitiveType,
+            state.nonterminalEdges[unannPrimitiveType]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2537,7 +2538,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseVariableDeclaratorList(descriptor: Descriptor<VertexType>,
+  private fun parsevariableDeclaratorList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2545,8 +2546,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclarator,
-            state.nonterminalEdges[VariableDeclarator]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclarator,
+            state.nonterminalEdges[variableDeclarator]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2562,7 +2563,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseVariableDeclarator(descriptor: Descriptor<VertexType>,
+  private fun parsevariableDeclarator(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2570,16 +2571,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ASSIGN -> 
-            handleTerminal(JavaToken.ASSIGN, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.EQ -> 
+            handleTerminal(JavaToken.EQ, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2587,8 +2588,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableInitializer,
-            state.nonterminalEdges[VariableInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableInitializer,
+            state.nonterminalEdges[variableInitializer]!!, curSppfNode)
       }
       3 -> 
        {
@@ -2596,20 +2597,20 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseVariableDeclaratorId(descriptor: Descriptor<VertexType>,
+  private fun parsevariableDeclaratorId(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2617,17 +2618,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseVariableInitializer(descriptor: Descriptor<VertexType>,
+  private fun parsevariableInitializer(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ArrayInitializer,
-            state.nonterminalEdges[ArrayInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, arrayInitializer,
+            state.nonterminalEdges[arrayInitializer]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2635,17 +2636,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseExpression(descriptor: Descriptor<VertexType>,
+  private fun parseexpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AssignmentExpression,
-            state.nonterminalEdges[AssignmentExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, LambdaExpression,
-            state.nonterminalEdges[LambdaExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, lambdaExpression,
+            state.nonterminalEdges[lambdaExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, assignmentExpression,
+            state.nonterminalEdges[assignmentExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2653,7 +2654,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseArrayInitializer(descriptor: Descriptor<VertexType>,
+  private fun parsearrayInitializer(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2663,8 +2664,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2676,14 +2677,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           when(inputEdge.label.terminal) {
             JavaToken.COMMA -> 
             handleTerminal(JavaToken.COMMA, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableInitializerList,
-            state.nonterminalEdges[VariableInitializerList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableInitializerList,
+            state.nonterminalEdges[variableInitializerList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2692,8 +2693,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           when(inputEdge.label.terminal) {
             JavaToken.COMMA -> 
             handleTerminal(JavaToken.COMMA, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2703,8 +2704,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2715,7 +2716,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannPrimitiveType(descriptor: Descriptor<VertexType>,
+  private fun parseunannPrimitiveType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2731,7 +2732,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, NumericType, state.nonterminalEdges[NumericType]!!,
+        handleNonterminalEdge(descriptor, numericType, state.nonterminalEdges[numericType]!!,
             curSppfNode)
       }
       1 -> 
@@ -2740,19 +2741,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannReferenceType(descriptor: Descriptor<VertexType>,
+  private fun parseunannReferenceType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannClassOrInterfaceType,
-            state.nonterminalEdges[UnannClassOrInterfaceType]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannArrayType, state.nonterminalEdges[UnannArrayType]!!,
+        handleNonterminalEdge(descriptor, unannTypeVariable,
+            state.nonterminalEdges[unannTypeVariable]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannArrayType, state.nonterminalEdges[unannArrayType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, UnannTypeVariable,
-            state.nonterminalEdges[UnannTypeVariable]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannClassOrInterfaceType,
+            state.nonterminalEdges[unannClassOrInterfaceType]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2760,16 +2761,32 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannClassOrInterfaceType(descriptor: Descriptor<VertexType>,
+  private fun parseunannClassOrInterfaceType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannInterfaceType,
-            state.nonterminalEdges[UnannInterfaceType]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannClassType, state.nonterminalEdges[UnannClassType]!!,
+        handleNonterminalEdge(descriptor, unannClassType, state.nonterminalEdges[unannClassType]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, unannInterfaceType,
+            state.nonterminalEdges[unannInterfaceType]!!, curSppfNode)
+      }
+      1 -> 
+       {
+      }
+    }
+  }
+
+  private fun parseunannTypeVariable(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -2778,40 +2795,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannTypeVariable(descriptor: Descriptor<VertexType>,
+  private fun parseunannArrayType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
-            curSppfNode)
-      }
-      1 -> 
-       {
-      }
-    }
-  }
-
-  private fun parseUnannArrayType(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannClassOrInterfaceType,
-            state.nonterminalEdges[UnannClassOrInterfaceType]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannPrimitiveType,
-            state.nonterminalEdges[UnannPrimitiveType]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannTypeVariable,
-            state.nonterminalEdges[UnannTypeVariable]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannTypeVariable,
+            state.nonterminalEdges[unannTypeVariable]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannPrimitiveType,
+            state.nonterminalEdges[unannPrimitiveType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannClassOrInterfaceType,
+            state.nonterminalEdges[unannClassOrInterfaceType]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
       }
       2 -> 
        {
@@ -2819,7 +2820,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannClassType(descriptor: Descriptor<VertexType>,
+  private fun parseunannClassType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2827,15 +2828,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, UnannClassOrInterfaceType,
-            state.nonterminalEdges[UnannClassOrInterfaceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannClassOrInterfaceType,
+            state.nonterminalEdges[unannClassOrInterfaceType]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
       }
       2 -> 
@@ -2852,9 +2853,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       4 -> 
@@ -2863,14 +2864,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnannInterfaceType(descriptor: Descriptor<VertexType>,
+  private fun parseunannInterfaceType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannClassType, state.nonterminalEdges[UnannClassType]!!,
+        handleNonterminalEdge(descriptor, unannClassType, state.nonterminalEdges[unannClassType]!!,
             curSppfNode)
       }
       1 -> 
@@ -2879,7 +2880,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodModifier(descriptor: Descriptor<VertexType>,
+  private fun parsemethodModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2889,29 +2890,29 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.NATIVE -> 
-            handleTerminal(JavaToken.NATIVE, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ABSTRACT -> 
-            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.FINAL -> 
-            handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.SYNCHRONIZED -> 
-            handleTerminal(JavaToken.SYNCHRONIZED, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PRIVATE -> 
             handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.ABSTRACT -> 
+            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SYNCHRONIZED -> 
+            handleTerminal(JavaToken.SYNCHRONIZED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.NATIVE -> 
+            handleTerminal(JavaToken.NATIVE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.FINAL -> 
+            handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -2920,34 +2921,34 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodHeader(descriptor: Descriptor<VertexType>,
+  private fun parsemethodHeader(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeParameters, state.nonterminalEdges[TypeParameters]!!,
+        handleNonterminalEdge(descriptor, result, state.nonterminalEdges[result]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeParameters, state.nonterminalEdges[typeParameters]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Result, state.nonterminalEdges[Result]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, MethodDeclarator,
-            state.nonterminalEdges[MethodDeclarator]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, methodDeclarator,
+            state.nonterminalEdges[methodDeclarator]!!, curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, result, state.nonterminalEdges[result]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Result, state.nonterminalEdges[Result]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Throws, state.nonterminalEdges[Throws]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, throws, state.nonterminalEdges[throws]!!, curSppfNode)
       }
       4 -> 
        {
@@ -2955,7 +2956,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodBody(descriptor: Descriptor<VertexType>,
+  private fun parsemethodBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2971,7 +2972,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       1 -> 
        {
@@ -2979,7 +2980,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodDeclarator(descriptor: Descriptor<VertexType>,
+  private fun parsemethodDeclarator(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -2987,7 +2988,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -2995,8 +2996,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3006,22 +3007,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, FormalParameterList,
-            state.nonterminalEdges[FormalParameterList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameterList,
+            state.nonterminalEdges[formalParameterList]!!, curSppfNode)
       }
       3 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3029,7 +3030,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
       }
       5 -> 
        {
@@ -3037,7 +3038,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseFormalParameterList(descriptor: Descriptor<VertexType>,
+  private fun parseformalParameterList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3045,12 +3046,12 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ReceiverParameter,
-            state.nonterminalEdges[ReceiverParameter]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, LastFormalParameter,
-            state.nonterminalEdges[LastFormalParameter]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, FormalParameters,
-            state.nonterminalEdges[FormalParameters]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, receiverParameter,
+            state.nonterminalEdges[receiverParameter]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameters,
+            state.nonterminalEdges[formalParameters]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, lastFormalParameter,
+            state.nonterminalEdges[lastFormalParameter]!!, curSppfNode)
       }
       1 -> 
        {
@@ -3069,13 +3070,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, LastFormalParameter,
-            state.nonterminalEdges[LastFormalParameter]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, lastFormalParameter,
+            state.nonterminalEdges[lastFormalParameter]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseReceiverParameter(descriptor: Descriptor<VertexType>,
+  private fun parsereceiverParameter(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3083,9 +3084,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
       }
       1 -> 
@@ -3099,7 +3100,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
@@ -3130,7 +3131,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseFormalParameters(descriptor: Descriptor<VertexType>,
+  private fun parseformalParameters(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3138,10 +3139,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, FormalParameter,
-            state.nonterminalEdges[FormalParameter]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ReceiverParameter,
-            state.nonterminalEdges[ReceiverParameter]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, receiverParameter,
+            state.nonterminalEdges[receiverParameter]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameter,
+            state.nonterminalEdges[formalParameter]!!, curSppfNode)
       }
       1 -> 
        {
@@ -3157,13 +3158,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, FormalParameter,
-            state.nonterminalEdges[FormalParameter]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameter,
+            state.nonterminalEdges[formalParameter]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseLastFormalParameter(descriptor: Descriptor<VertexType>,
+  private fun parselastFormalParameter(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3171,20 +3172,20 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, FormalParameter,
-            state.nonterminalEdges[FormalParameter]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameter,
+            state.nonterminalEdges[formalParameter]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
       }
       2 -> 
        {
@@ -3197,7 +3198,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       3 -> 
@@ -3206,29 +3207,29 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseFormalParameter(descriptor: Descriptor<VertexType>,
+  private fun parseformalParameter(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
       2 -> 
        {
@@ -3236,7 +3237,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseVariableModifier(descriptor: Descriptor<VertexType>,
+  private fun parsevariableModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3252,7 +3253,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -3261,7 +3262,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseExceptionTypeList(descriptor: Descriptor<VertexType>,
+  private fun parseexceptionTypeList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3269,7 +3270,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ExceptionType, state.nonterminalEdges[ExceptionType]!!,
+        handleNonterminalEdge(descriptor, exceptionType, state.nonterminalEdges[exceptionType]!!,
             curSppfNode)
       }
       1 -> 
@@ -3286,16 +3287,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseExceptionType(descriptor: Descriptor<VertexType>,
+  private fun parseexceptionType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeVariable, state.nonterminalEdges[TypeVariable]!!,
+        handleNonterminalEdge(descriptor, typeVariable, state.nonterminalEdges[typeVariable]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassType, state.nonterminalEdges[ClassType]!!,
+        handleNonterminalEdge(descriptor, classType, state.nonterminalEdges[classType]!!,
             curSppfNode)
       }
       1 -> 
@@ -3304,7 +3305,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseBlock(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parseblock(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -3313,8 +3314,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3324,22 +3325,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BlockStatements,
-            state.nonterminalEdges[BlockStatements]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, blockStatements,
+            state.nonterminalEdges[blockStatements]!!, curSppfNode)
       }
       2 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3350,7 +3351,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConstructorModifier(descriptor: Descriptor<VertexType>,
+  private fun parseconstructorModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3360,17 +3361,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PUBLIC -> 
             handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PROTECTED -> 
             handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -3379,7 +3380,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConstructorDeclarator(descriptor: Descriptor<VertexType>,
+  private fun parseconstructorDeclarator(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3387,15 +3388,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeParameters, state.nonterminalEdges[TypeParameters]!!,
+        handleNonterminalEdge(descriptor, simpleTypeName, state.nonterminalEdges[simpleTypeName]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, SimpleTypeName, state.nonterminalEdges[SimpleTypeName]!!,
+        handleNonterminalEdge(descriptor, typeParameters, state.nonterminalEdges[typeParameters]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SimpleTypeName, state.nonterminalEdges[SimpleTypeName]!!,
+        handleNonterminalEdge(descriptor, simpleTypeName, state.nonterminalEdges[simpleTypeName]!!,
             curSppfNode)
       }
       2 -> 
@@ -3403,8 +3404,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3414,22 +3415,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, FormalParameterList,
-            state.nonterminalEdges[FormalParameterList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameterList,
+            state.nonterminalEdges[formalParameterList]!!, curSppfNode)
       }
       4 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3440,7 +3441,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConstructorBody(descriptor: Descriptor<VertexType>,
+  private fun parseconstructorBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3450,8 +3451,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3461,38 +3462,38 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ExplicitConstructorInvocation,
-            state.nonterminalEdges[ExplicitConstructorInvocation]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, BlockStatements,
-            state.nonterminalEdges[BlockStatements]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, blockStatements,
+            state.nonterminalEdges[blockStatements]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, explicitConstructorInvocation,
+            state.nonterminalEdges[explicitConstructorInvocation]!!, curSppfNode)
       }
       2 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BlockStatements,
-            state.nonterminalEdges[BlockStatements]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, blockStatements,
+            state.nonterminalEdges[blockStatements]!!, curSppfNode)
       }
       3 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3503,14 +3504,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSimpleTypeName(descriptor: Descriptor<VertexType>,
+  private fun parsesimpleTypeName(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -3519,7 +3520,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseExplicitConstructorInvocation(descriptor: Descriptor<VertexType>,
+  private fun parseexplicitConstructorInvocation(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3529,29 +3530,29 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.THIS -> 
-            handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SUPER -> 
             handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.THIS -> 
+            handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Primary, state.nonterminalEdges[Primary]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, primary, state.nonterminalEdges[primary]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.THIS -> 
-            handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SUPER -> 
             handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.THIS -> 
+            handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3561,8 +3562,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3589,7 +3590,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
       }
       5 -> 
@@ -3608,13 +3609,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArgumentList, state.nonterminalEdges[ArgumentList]!!,
+        handleNonterminalEdge(descriptor, argumentList, state.nonterminalEdges[argumentList]!!,
             curSppfNode)
       }
       7 -> 
@@ -3622,8 +3623,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3645,7 +3646,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumBody(descriptor: Descriptor<VertexType>,
+  private fun parseenumBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3655,8 +3656,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3668,16 +3669,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           when(inputEdge.label.terminal) {
             JavaToken.COMMA -> 
             handleTerminal(JavaToken.COMMA, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumConstantList,
-            state.nonterminalEdges[EnumConstantList]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, EnumBodyDeclarations,
-            state.nonterminalEdges[EnumBodyDeclarations]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumConstantList,
+            state.nonterminalEdges[enumConstantList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumBodyDeclarations,
+            state.nonterminalEdges[enumBodyDeclarations]!!, curSppfNode)
       }
       2 -> 
        {
@@ -3686,36 +3687,36 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           when(inputEdge.label.terminal) {
             JavaToken.COMMA -> 
             handleTerminal(JavaToken.COMMA, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumBodyDeclarations,
-            state.nonterminalEdges[EnumBodyDeclarations]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumBodyDeclarations,
+            state.nonterminalEdges[enumBodyDeclarations]!!, curSppfNode)
       }
       3 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumBodyDeclarations,
-            state.nonterminalEdges[EnumBodyDeclarations]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumBodyDeclarations,
+            state.nonterminalEdges[enumBodyDeclarations]!!, curSppfNode)
       }
       4 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3726,7 +3727,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumConstantList(descriptor: Descriptor<VertexType>,
+  private fun parseenumConstantList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3734,7 +3735,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumConstant, state.nonterminalEdges[EnumConstant]!!,
+        handleNonterminalEdge(descriptor, enumConstant, state.nonterminalEdges[enumConstant]!!,
             curSppfNode)
       }
       1 -> 
@@ -3751,7 +3752,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumConstant(descriptor: Descriptor<VertexType>,
+  private fun parseenumConstant(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3759,18 +3760,18 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumConstantModifier,
-            state.nonterminalEdges[EnumConstantModifier]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, enumConstantModifier,
+            state.nonterminalEdges[enumConstantModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3780,13 +3781,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArgumentList, state.nonterminalEdges[ArgumentList]!!,
+        handleNonterminalEdge(descriptor, argumentList, state.nonterminalEdges[argumentList]!!,
             curSppfNode)
       }
       3 -> 
@@ -3794,8 +3795,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3803,7 +3804,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassBody, state.nonterminalEdges[ClassBody]!!,
+        handleNonterminalEdge(descriptor, classBody, state.nonterminalEdges[classBody]!!,
             curSppfNode)
       }
       5 -> 
@@ -3812,14 +3813,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumConstantModifier(descriptor: Descriptor<VertexType>,
+  private fun parseenumConstantModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -3828,7 +3829,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumBodyDeclarations(descriptor: Descriptor<VertexType>,
+  private fun parseenumBodyDeclarations(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3847,32 +3848,32 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassBodyDeclaration,
-            state.nonterminalEdges[ClassBodyDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classBodyDeclaration,
+            state.nonterminalEdges[classBodyDeclaration]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseBlockStatements(descriptor: Descriptor<VertexType>,
+  private fun parseblockStatements(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BlockStatement, state.nonterminalEdges[BlockStatement]!!,
+        handleNonterminalEdge(descriptor, blockStatement, state.nonterminalEdges[blockStatement]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BlockStatement, state.nonterminalEdges[BlockStatement]!!,
+        handleNonterminalEdge(descriptor, blockStatement, state.nonterminalEdges[blockStatement]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseArgumentList(descriptor: Descriptor<VertexType>,
+  private fun parseargumentList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3880,7 +3881,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       1 -> 
@@ -3897,16 +3898,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePrimary(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parseprimary(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PrimaryNoNewArray,
-            state.nonterminalEdges[PrimaryNoNewArray]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ArrayCreationExpression,
-            state.nonterminalEdges[ArrayCreationExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, primaryNoNewArray,
+            state.nonterminalEdges[primaryNoNewArray]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, arrayCreationExpression,
+            state.nonterminalEdges[arrayCreationExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -3914,7 +3915,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseNormalInterfaceDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parsenormalInterfaceDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3930,37 +3931,37 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceModifier,
-            state.nonterminalEdges[InterfaceModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceModifier,
+            state.nonterminalEdges[interfaceModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceBody, state.nonterminalEdges[InterfaceBody]!!,
+        handleNonterminalEdge(descriptor, interfaceBody, state.nonterminalEdges[interfaceBody]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeParameters, state.nonterminalEdges[TypeParameters]!!,
+        handleNonterminalEdge(descriptor, extendsInterfaces,
+            state.nonterminalEdges[extendsInterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeParameters, state.nonterminalEdges[typeParameters]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ExtendsInterfaces,
-            state.nonterminalEdges[ExtendsInterfaces]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceBody, state.nonterminalEdges[InterfaceBody]!!,
+        handleNonterminalEdge(descriptor, interfaceBody, state.nonterminalEdges[interfaceBody]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ExtendsInterfaces,
-            state.nonterminalEdges[ExtendsInterfaces]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, extendsInterfaces,
+            state.nonterminalEdges[extendsInterfaces]!!, curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceBody, state.nonterminalEdges[InterfaceBody]!!,
+        handleNonterminalEdge(descriptor, interfaceBody, state.nonterminalEdges[interfaceBody]!!,
             curSppfNode)
       }
       5 -> 
@@ -3969,7 +3970,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceModifier(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -3979,23 +3980,23 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ABSTRACT -> 
-            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PRIVATE -> 
             handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.ABSTRACT -> 
+            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -4004,7 +4005,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseExtendsInterfaces(descriptor: Descriptor<VertexType>,
+  private fun parseextendsInterfaces(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4023,8 +4024,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceTypeList,
-            state.nonterminalEdges[InterfaceTypeList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceTypeList,
+            state.nonterminalEdges[interfaceTypeList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4032,7 +4033,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceBody(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4042,8 +4043,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4053,14 +4054,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceMemberDeclaration,
-            state.nonterminalEdges[InterfaceMemberDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceMemberDeclaration,
+            state.nonterminalEdges[interfaceMemberDeclaration]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4068,7 +4069,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceMemberDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceMemberDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4084,14 +4085,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceMethodDeclaration,
-            state.nonterminalEdges[InterfaceMethodDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassDeclaration,
-            state.nonterminalEdges[ClassDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConstantDeclaration,
-            state.nonterminalEdges[ConstantDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, InterfaceDeclaration,
-            state.nonterminalEdges[InterfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceDeclaration,
+            state.nonterminalEdges[interfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constantDeclaration,
+            state.nonterminalEdges[constantDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceMethodDeclaration,
+            state.nonterminalEdges[interfaceMethodDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classDeclaration,
+            state.nonterminalEdges[classDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4099,7 +4100,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConstantDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseconstantDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4107,16 +4108,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConstantModifier,
-            state.nonterminalEdges[ConstantModifier]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, constantModifier,
+            state.nonterminalEdges[constantModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorList,
-            state.nonterminalEdges[VariableDeclaratorList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorList,
+            state.nonterminalEdges[variableDeclaratorList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4135,7 +4136,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConstantModifier(descriptor: Descriptor<VertexType>,
+  private fun parseconstantModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4145,17 +4146,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PUBLIC -> 
             handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.FINAL -> 
             handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -4164,7 +4165,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAnnotationTypeDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseannotationTypeDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4180,8 +4181,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceModifier,
-            state.nonterminalEdges[InterfaceModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceModifier,
+            state.nonterminalEdges[interfaceModifier]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4197,14 +4198,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AnnotationTypeBody,
-            state.nonterminalEdges[AnnotationTypeBody]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, annotationTypeBody,
+            state.nonterminalEdges[annotationTypeBody]!!, curSppfNode)
       }
       4 -> 
        {
@@ -4212,7 +4213,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAnnotationTypeBody(descriptor: Descriptor<VertexType>,
+  private fun parseannotationTypeBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4222,8 +4223,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4233,14 +4234,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AnnotationTypeMemberDeclaration,
-            state.nonterminalEdges[AnnotationTypeMemberDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, annotationTypeMemberDeclaration,
+            state.nonterminalEdges[annotationTypeMemberDeclaration]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4248,7 +4249,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAnnotationTypeMemberDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseannotationTypeMemberDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4264,14 +4265,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AnnotationTypeElementDeclaration,
-            state.nonterminalEdges[AnnotationTypeElementDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassDeclaration,
-            state.nonterminalEdges[ClassDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConstantDeclaration,
-            state.nonterminalEdges[ConstantDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, InterfaceDeclaration,
-            state.nonterminalEdges[InterfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceDeclaration,
+            state.nonterminalEdges[interfaceDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, annotationTypeElementDeclaration,
+            state.nonterminalEdges[annotationTypeElementDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constantDeclaration,
+            state.nonterminalEdges[constantDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classDeclaration,
+            state.nonterminalEdges[classDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4279,7 +4280,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAnnotationTypeElementDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseannotationTypeElementDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4287,15 +4288,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, annotationTypeElementModifier,
+            state.nonterminalEdges[annotationTypeElementModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, AnnotationTypeElementModifier,
-            state.nonterminalEdges[AnnotationTypeElementModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
@@ -4303,8 +4304,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4314,8 +4315,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4331,9 +4332,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, DefaultValue, state.nonterminalEdges[DefaultValue]!!,
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, defaultValue, state.nonterminalEdges[defaultValue]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
       }
       5 -> 
        {
@@ -4346,7 +4347,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, DefaultValue, state.nonterminalEdges[DefaultValue]!!,
+        handleNonterminalEdge(descriptor, defaultValue, state.nonterminalEdges[defaultValue]!!,
             curSppfNode)
       }
       6 -> 
@@ -4366,7 +4367,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseDefaultValue(descriptor: Descriptor<VertexType>,
+  private fun parsedefaultValue(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4385,7 +4386,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValue, state.nonterminalEdges[ElementValue]!!,
+        handleNonterminalEdge(descriptor, elementValue, state.nonterminalEdges[elementValue]!!,
             curSppfNode)
       }
       2 -> 
@@ -4394,7 +4395,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseNormalAnnotation(descriptor: Descriptor<VertexType>,
+  private fun parsenormalAnnotation(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4413,15 +4414,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
       }
       2 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4431,22 +4432,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValuePairList,
-            state.nonterminalEdges[ElementValuePairList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, elementValuePairList,
+            state.nonterminalEdges[elementValuePairList]!!, curSppfNode)
       }
       4 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4457,7 +4458,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseElementValuePairList(descriptor: Descriptor<VertexType>,
+  private fun parseelementValuePairList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4465,8 +4466,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValuePair,
-            state.nonterminalEdges[ElementValuePair]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, elementValuePair,
+            state.nonterminalEdges[elementValuePair]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4482,7 +4483,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseElementValuePair(descriptor: Descriptor<VertexType>,
+  private fun parseelementValuePair(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4490,7 +4491,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -4498,8 +4499,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ASSIGN -> 
-            handleTerminal(JavaToken.ASSIGN, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.EQ -> 
+            handleTerminal(JavaToken.EQ, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4507,7 +4508,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValue, state.nonterminalEdges[ElementValue]!!,
+        handleNonterminalEdge(descriptor, elementValue, state.nonterminalEdges[elementValue]!!,
             curSppfNode)
       }
       3 -> 
@@ -4516,19 +4517,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseElementValue(descriptor: Descriptor<VertexType>,
+  private fun parseelementValue(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValueArrayInitializer,
-            state.nonterminalEdges[ElementValueArrayInitializer]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConditionalExpression,
-            state.nonterminalEdges[ConditionalExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, elementValueArrayInitializer,
+            state.nonterminalEdges[elementValueArrayInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, conditionalExpression,
+            state.nonterminalEdges[conditionalExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4536,7 +4537,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseElementValueArrayInitializer(descriptor: Descriptor<VertexType>,
+  private fun parseelementValueArrayInitializer(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4546,8 +4547,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4559,14 +4560,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           when(inputEdge.label.terminal) {
             JavaToken.COMMA -> 
             handleTerminal(JavaToken.COMMA, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValueList,
-            state.nonterminalEdges[ElementValueList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, elementValueList,
+            state.nonterminalEdges[elementValueList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4575,8 +4576,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           when(inputEdge.label.terminal) {
             JavaToken.COMMA -> 
             handleTerminal(JavaToken.COMMA, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4586,8 +4587,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4598,7 +4599,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseElementValueList(descriptor: Descriptor<VertexType>,
+  private fun parseelementValueList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4606,7 +4607,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValue, state.nonterminalEdges[ElementValue]!!,
+        handleNonterminalEdge(descriptor, elementValue, state.nonterminalEdges[elementValue]!!,
             curSppfNode)
       }
       1 -> 
@@ -4623,7 +4624,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMarkerAnnotation(descriptor: Descriptor<VertexType>,
+  private fun parsemarkerAnnotation(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4642,7 +4643,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4650,7 +4651,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSingleElementAnnotation(descriptor: Descriptor<VertexType>,
+  private fun parsesingleElementAnnotation(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4669,15 +4670,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
       }
       2 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4685,7 +4686,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ElementValue, state.nonterminalEdges[ElementValue]!!,
+        handleNonterminalEdge(descriptor, elementValue, state.nonterminalEdges[elementValue]!!,
             curSppfNode)
       }
       4 -> 
@@ -4693,8 +4694,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4705,22 +4706,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceMethodDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceMethodDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InterfaceMethodModifier,
-            state.nonterminalEdges[InterfaceMethodModifier]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MethodHeader, state.nonterminalEdges[MethodHeader]!!,
+        handleNonterminalEdge(descriptor, methodHeader, state.nonterminalEdges[methodHeader]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, interfaceMethodModifier,
+            state.nonterminalEdges[interfaceMethodModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, MethodBody, state.nonterminalEdges[MethodBody]!!,
+        handleNonterminalEdge(descriptor, methodBody, state.nonterminalEdges[methodBody]!!,
             curSppfNode)
       }
       2 -> 
@@ -4729,7 +4730,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAnnotationTypeElementModifier(descriptor: Descriptor<VertexType>,
+  private fun parseannotationTypeElementModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4747,7 +4748,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -4756,7 +4757,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConditionalExpression(descriptor: Descriptor<VertexType>,
+  private fun parseconditionalExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4764,16 +4765,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConditionalOrExpression,
-            state.nonterminalEdges[ConditionalOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, conditionalOrExpression,
+            state.nonterminalEdges[conditionalOrExpression]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.QUESTIONMARK -> 
-            handleTerminal(JavaToken.QUESTIONMARK, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.QUESTION -> 
+            handleTerminal(JavaToken.QUESTION, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4781,7 +4782,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -4798,10 +4799,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConditionalExpression,
-            state.nonterminalEdges[ConditionalExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, LambdaExpression,
-            state.nonterminalEdges[LambdaExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, lambdaExpression,
+            state.nonterminalEdges[lambdaExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, conditionalExpression,
+            state.nonterminalEdges[conditionalExpression]!!, curSppfNode)
       }
       5 -> 
        {
@@ -4809,7 +4810,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseVariableInitializerList(descriptor: Descriptor<VertexType>,
+  private fun parsevariableInitializerList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4817,8 +4818,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableInitializer,
-            state.nonterminalEdges[VariableInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableInitializer,
+            state.nonterminalEdges[variableInitializer]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4834,19 +4835,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseBlockStatement(descriptor: Descriptor<VertexType>,
+  private fun parseblockStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassDeclaration,
-            state.nonterminalEdges[ClassDeclaration]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
+        handleNonterminalEdge(descriptor, localVariableDeclarationStatement,
+            state.nonterminalEdges[localVariableDeclarationStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, LocalVariableDeclarationStatement,
-            state.nonterminalEdges[LocalVariableDeclarationStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classDeclaration,
+            state.nonterminalEdges[classDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4854,7 +4855,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLocalVariableDeclarationStatement(descriptor: Descriptor<VertexType>,
+  private fun parselocalVariableDeclarationStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -4862,8 +4863,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, LocalVariableDeclaration,
-            state.nonterminalEdges[LocalVariableDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, localVariableDeclaration,
+            state.nonterminalEdges[localVariableDeclaration]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4882,23 +4883,23 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLocalVariableDeclaration(descriptor: Descriptor<VertexType>,
+  private fun parselocalVariableDeclaration(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorList,
-            state.nonterminalEdges[VariableDeclaratorList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorList,
+            state.nonterminalEdges[variableDeclaratorList]!!, curSppfNode)
       }
       2 -> 
        {
@@ -4906,25 +4907,25 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStatement(descriptor: Descriptor<VertexType>,
+  private fun parsestatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, LabeledStatement,
-            state.nonterminalEdges[LabeledStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, StatementWithoutTrailingSubstatement,
-            state.nonterminalEdges[StatementWithoutTrailingSubstatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, IfThenElseStatement,
-            state.nonterminalEdges[IfThenElseStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, WhileStatement, state.nonterminalEdges[WhileStatement]!!,
+        handleNonterminalEdge(descriptor, whileStatement, state.nonterminalEdges[whileStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ForStatement, state.nonterminalEdges[ForStatement]!!,
+        handleNonterminalEdge(descriptor, labeledStatement,
+            state.nonterminalEdges[labeledStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, forStatement, state.nonterminalEdges[forStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, IfThenStatement,
-            state.nonterminalEdges[IfThenStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementWithoutTrailingSubstatement,
+            state.nonterminalEdges[statementWithoutTrailingSubstatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, ifThenElseStatement,
+            state.nonterminalEdges[ifThenElseStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, ifThenStatement,
+            state.nonterminalEdges[ifThenStatement]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4932,23 +4933,23 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStatementNoShortIf(descriptor: Descriptor<VertexType>,
+  private fun parsestatementNoShortIf(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, WhileStatementNoShortIf,
-            state.nonterminalEdges[WhileStatementNoShortIf]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, StatementWithoutTrailingSubstatement,
-            state.nonterminalEdges[StatementWithoutTrailingSubstatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, LabeledStatementNoShortIf,
-            state.nonterminalEdges[LabeledStatementNoShortIf]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, IfThenElseStatementNoShortIf,
-            state.nonterminalEdges[IfThenElseStatementNoShortIf]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ForStatementNoShortIf,
-            state.nonterminalEdges[ForStatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, whileStatementNoShortIf,
+            state.nonterminalEdges[whileStatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, labeledStatementNoShortIf,
+            state.nonterminalEdges[labeledStatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, forStatementNoShortIf,
+            state.nonterminalEdges[forStatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementWithoutTrailingSubstatement,
+            state.nonterminalEdges[statementWithoutTrailingSubstatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, ifThenElseStatementNoShortIf,
+            state.nonterminalEdges[ifThenElseStatementNoShortIf]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4956,36 +4957,36 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStatementWithoutTrailingSubstatement(descriptor: Descriptor<VertexType>,
+  private fun parsestatementWithoutTrailingSubstatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BreakStatement, state.nonterminalEdges[BreakStatement]!!,
+        handleNonterminalEdge(descriptor, emptyStatement, state.nonterminalEdges[emptyStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, SwitchStatement,
-            state.nonterminalEdges[SwitchStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, DoStatement, state.nonterminalEdges[DoStatement]!!,
+        handleNonterminalEdge(descriptor, tryStatement, state.nonterminalEdges[tryStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TryStatement, state.nonterminalEdges[TryStatement]!!,
+        handleNonterminalEdge(descriptor, doStatement, state.nonterminalEdges[doStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionStatement,
-            state.nonterminalEdges[ExpressionStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, EmptyStatement, state.nonterminalEdges[EmptyStatement]!!,
+        handleNonterminalEdge(descriptor, throwStatement, state.nonterminalEdges[throwStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, AssertStatement,
-            state.nonterminalEdges[AssertStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ReturnStatement,
-            state.nonterminalEdges[ReturnStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ThrowStatement, state.nonterminalEdges[ThrowStatement]!!,
+        handleNonterminalEdge(descriptor, assertStatement,
+            state.nonterminalEdges[assertStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, breakStatement, state.nonterminalEdges[breakStatement]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, SynchronizedStatement,
-            state.nonterminalEdges[SynchronizedStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ContinueStatement,
-            state.nonterminalEdges[ContinueStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, expressionStatement,
+            state.nonterminalEdges[expressionStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, continueStatement,
+            state.nonterminalEdges[continueStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, returnStatement,
+            state.nonterminalEdges[returnStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, switchStatement,
+            state.nonterminalEdges[switchStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, synchronizedStatement,
+            state.nonterminalEdges[synchronizedStatement]!!, curSppfNode)
       }
       1 -> 
        {
@@ -4993,7 +4994,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEmptyStatement(descriptor: Descriptor<VertexType>,
+  private fun parseemptyStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5015,7 +5016,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLabeledStatement(descriptor: Descriptor<VertexType>,
+  private fun parselabeledStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5023,7 +5024,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -5040,7 +5041,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
             curSppfNode)
       }
       3 -> 
@@ -5049,7 +5050,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLabeledStatementNoShortIf(descriptor: Descriptor<VertexType>,
+  private fun parselabeledStatementNoShortIf(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5057,7 +5058,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -5074,8 +5075,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
       }
       3 -> 
        {
@@ -5083,7 +5084,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseExpressionStatement(descriptor: Descriptor<VertexType>,
+  private fun parseexpressionStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5091,8 +5092,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementExpression,
-            state.nonterminalEdges[StatementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementExpression,
+            state.nonterminalEdges[statementExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -5111,27 +5112,27 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStatementExpression(descriptor: Descriptor<VertexType>,
+  private fun parsestatementExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Assignment, state.nonterminalEdges[Assignment]!!,
+        handleNonterminalEdge(descriptor, classInstanceCreationExpression,
+            state.nonterminalEdges[classInstanceCreationExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, assignment, state.nonterminalEdges[assignment]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, PostIncrementExpression,
-            state.nonterminalEdges[PostIncrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, PreDecrementExpression,
-            state.nonterminalEdges[PreDecrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, PreIncrementExpression,
-            state.nonterminalEdges[PreIncrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, PostDecrementExpression,
-            state.nonterminalEdges[PostDecrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MethodInvocation,
-            state.nonterminalEdges[MethodInvocation]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassInstanceCreationExpression,
-            state.nonterminalEdges[ClassInstanceCreationExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, methodInvocation,
+            state.nonterminalEdges[methodInvocation]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, preDecrementExpression,
+            state.nonterminalEdges[preDecrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, preIncrementExpression,
+            state.nonterminalEdges[preIncrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, postIncrementExpression,
+            state.nonterminalEdges[postIncrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, postDecrementExpression,
+            state.nonterminalEdges[postDecrementExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -5139,7 +5140,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseIfThenStatement(descriptor: Descriptor<VertexType>,
+  private fun parseifThenStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5160,8 +5161,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5169,7 +5170,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -5177,8 +5178,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5186,7 +5187,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
             curSppfNode)
       }
       5 -> 
@@ -5195,7 +5196,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseIfThenElseStatement(descriptor: Descriptor<VertexType>,
+  private fun parseifThenElseStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5216,8 +5217,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5225,7 +5226,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -5233,8 +5234,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5242,81 +5243,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
-      }
-      5 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.ELSE -> 
-            handleTerminal(JavaToken.ELSE, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      6 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
-            curSppfNode)
-      }
-      7 -> 
-       {
-      }
-    }
-  }
-
-  private fun parseIfThenElseStatementNoShortIf(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.IF -> 
-            handleTerminal(JavaToken.IF, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      1 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      2 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
-            curSppfNode)
-      }
-      3 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      4 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
       }
       5 -> 
        {
@@ -5332,8 +5260,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       6 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
+            curSppfNode)
       }
       7 -> 
        {
@@ -5341,7 +5269,80 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAssertStatement(descriptor: Descriptor<VertexType>,
+  private fun parseifThenElseStatementNoShortIf(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.IF -> 
+            handleTerminal(JavaToken.IF, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      1 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      2 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
+            curSppfNode)
+      }
+      3 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      4 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
+      }
+      5 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.ELSE -> 
+            handleTerminal(JavaToken.ELSE, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      6 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
+      }
+      7 -> 
+       {
+      }
+    }
+  }
+
+  private fun parseassertStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5360,7 +5361,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       2 -> 
@@ -5368,10 +5369,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.SEMICOLON -> 
-            handleTerminal(JavaToken.SEMICOLON, state, inputEdge, descriptor, curSppfNode)
             JavaToken.COLON -> 
             handleTerminal(JavaToken.COLON, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SEMICOLON -> 
+            handleTerminal(JavaToken.SEMICOLON, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5382,7 +5383,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       5 -> 
@@ -5399,7 +5400,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSwitchStatement(descriptor: Descriptor<VertexType>,
+  private fun parseswitchStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5420,8 +5421,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5429,7 +5430,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -5437,8 +5438,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5446,7 +5447,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SwitchBlock, state.nonterminalEdges[SwitchBlock]!!,
+        handleNonterminalEdge(descriptor, switchBlock, state.nonterminalEdges[switchBlock]!!,
             curSppfNode)
       }
       5 -> 
@@ -5455,7 +5456,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSwitchBlock(descriptor: Descriptor<VertexType>,
+  private fun parseswitchBlock(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5465,8 +5466,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYLEFT -> 
-            handleTerminal(JavaToken.CURLYLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACE -> 
+            handleTerminal(JavaToken.LBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5476,29 +5477,29 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SwitchLabel, state.nonterminalEdges[SwitchLabel]!!,
+        handleNonterminalEdge(descriptor, switchBlockStatementGroup,
+            state.nonterminalEdges[switchBlockStatementGroup]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, switchLabel, state.nonterminalEdges[switchLabel]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, SwitchBlockStatementGroup,
-            state.nonterminalEdges[SwitchBlockStatementGroup]!!, curSppfNode)
       }
       2 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.CURLYRIGHT -> 
-            handleTerminal(JavaToken.CURLYRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACE -> 
+            handleTerminal(JavaToken.RBRACE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SwitchLabel, state.nonterminalEdges[SwitchLabel]!!,
+        handleNonterminalEdge(descriptor, switchLabel, state.nonterminalEdges[switchLabel]!!,
             curSppfNode)
       }
       3 -> 
@@ -5507,21 +5508,21 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSwitchBlockStatementGroup(descriptor: Descriptor<VertexType>,
+  private fun parseswitchBlockStatementGroup(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SwitchLabels, state.nonterminalEdges[SwitchLabels]!!,
+        handleNonterminalEdge(descriptor, switchLabels, state.nonterminalEdges[switchLabels]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BlockStatements,
-            state.nonterminalEdges[BlockStatements]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, blockStatements,
+            state.nonterminalEdges[blockStatements]!!, curSppfNode)
       }
       2 -> 
        {
@@ -5529,26 +5530,26 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSwitchLabels(descriptor: Descriptor<VertexType>,
+  private fun parseswitchLabels(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SwitchLabel, state.nonterminalEdges[SwitchLabel]!!,
+        handleNonterminalEdge(descriptor, switchLabel, state.nonterminalEdges[switchLabel]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, SwitchLabel, state.nonterminalEdges[SwitchLabel]!!,
+        handleNonterminalEdge(descriptor, switchLabel, state.nonterminalEdges[switchLabel]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseSwitchLabel(descriptor: Descriptor<VertexType>,
+  private fun parseswitchLabel(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5569,10 +5570,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EnumConstantName,
-            state.nonterminalEdges[EnumConstantName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConstantExpression,
-            state.nonterminalEdges[ConstantExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enumConstantName,
+            state.nonterminalEdges[enumConstantName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, constantExpression,
+            state.nonterminalEdges[constantExpression]!!, curSppfNode)
       }
       2 -> 
        {
@@ -5591,14 +5592,14 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnumConstantName(descriptor: Descriptor<VertexType>,
+  private fun parseenumConstantName(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -5607,63 +5608,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseWhileStatement(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.WHILE -> 
-            handleTerminal(JavaToken.WHILE, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      1 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      2 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
-            curSppfNode)
-      }
-      3 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      4 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
-            curSppfNode)
-      }
-      5 -> 
-       {
-      }
-    }
-  }
-
-  private fun parseWhileStatementNoShortIf(descriptor: Descriptor<VertexType>,
+  private fun parsewhileStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5684,8 +5629,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5693,7 +5638,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -5701,8 +5646,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5710,8 +5655,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
+            curSppfNode)
       }
       5 -> 
        {
@@ -5719,7 +5664,63 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseDoStatement(descriptor: Descriptor<VertexType>,
+  private fun parsewhileStatementNoShortIf(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.WHILE -> 
+            handleTerminal(JavaToken.WHILE, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      1 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      2 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
+            curSppfNode)
+      }
+      3 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      4 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
+      }
+      5 -> 
+       {
+      }
+    }
+  }
+
+  private fun parsedoStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5738,7 +5739,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
             curSppfNode)
       }
       2 -> 
@@ -5757,8 +5758,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5766,7 +5767,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       5 -> 
@@ -5774,8 +5775,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5797,7 +5798,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInterfaceMethodModifier(descriptor: Descriptor<VertexType>,
+  private fun parseinterfaceMethodModifier(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5807,21 +5808,21 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.DEFAULT -> 
-            handleTerminal(JavaToken.DEFAULT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PUBLIC -> 
             handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ABSTRACT -> 
-            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STRICTFP -> 
             handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.DEFAULT -> 
+            handleTerminal(JavaToken.DEFAULT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.ABSTRACT -> 
+            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
@@ -5830,17 +5831,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseForStatement(descriptor: Descriptor<VertexType>,
+  private fun parseforStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BasicForStatement,
-            state.nonterminalEdges[BasicForStatement]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, EnhancedForStatement,
-            state.nonterminalEdges[EnhancedForStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enhancedForStatement,
+            state.nonterminalEdges[enhancedForStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, basicForStatement,
+            state.nonterminalEdges[basicForStatement]!!, curSppfNode)
       }
       1 -> 
        {
@@ -5848,17 +5849,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseForStatementNoShortIf(descriptor: Descriptor<VertexType>,
+  private fun parseforStatementNoShortIf(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, BasicForStatementNoShortIf,
-            state.nonterminalEdges[BasicForStatementNoShortIf]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, EnhancedForStatementNoShortIf,
-            state.nonterminalEdges[EnhancedForStatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, basicForStatementNoShortIf,
+            state.nonterminalEdges[basicForStatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, enhancedForStatementNoShortIf,
+            state.nonterminalEdges[enhancedForStatementNoShortIf]!!, curSppfNode)
       }
       1 -> 
        {
@@ -5866,7 +5867,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseBasicForStatement(descriptor: Descriptor<VertexType>,
+  private fun parsebasicForStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -5887,8 +5888,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5904,7 +5905,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ForInit, state.nonterminalEdges[ForInit]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, forInit, state.nonterminalEdges[forInit]!!, curSppfNode)
       }
       3 -> 
        {
@@ -5928,7 +5929,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       5 -> 
@@ -5936,13 +5937,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ForUpdate, state.nonterminalEdges[ForUpdate]!!,
+        handleNonterminalEdge(descriptor, forUpdate, state.nonterminalEdges[forUpdate]!!,
             curSppfNode)
       }
       6 -> 
@@ -5961,8 +5962,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5970,7 +5971,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       8 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
             curSppfNode)
       }
       9 -> 
@@ -5979,7 +5980,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseBasicForStatementNoShortIf(descriptor: Descriptor<VertexType>,
+  private fun parsebasicForStatementNoShortIf(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6000,8 +6001,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6017,7 +6018,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ForInit, state.nonterminalEdges[ForInit]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, forInit, state.nonterminalEdges[forInit]!!, curSppfNode)
       }
       3 -> 
        {
@@ -6041,7 +6042,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       5 -> 
@@ -6049,13 +6050,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ForUpdate, state.nonterminalEdges[ForUpdate]!!,
+        handleNonterminalEdge(descriptor, forUpdate, state.nonterminalEdges[forUpdate]!!,
             curSppfNode)
       }
       6 -> 
@@ -6074,8 +6075,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6083,8 +6084,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       8 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
       }
       9 -> 
        {
@@ -6092,16 +6093,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseForInit(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parseforInit(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementExpressionList,
-            state.nonterminalEdges[StatementExpressionList]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, LocalVariableDeclaration,
-            state.nonterminalEdges[LocalVariableDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, localVariableDeclaration,
+            state.nonterminalEdges[localVariableDeclaration]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementExpressionList,
+            state.nonterminalEdges[statementExpressionList]!!, curSppfNode)
       }
       1 -> 
        {
@@ -6109,15 +6110,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseForUpdate(descriptor: Descriptor<VertexType>,
+  private fun parseforUpdate(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementExpressionList,
-            state.nonterminalEdges[StatementExpressionList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementExpressionList,
+            state.nonterminalEdges[statementExpressionList]!!, curSppfNode)
       }
       1 -> 
        {
@@ -6125,7 +6126,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseStatementExpressionList(descriptor: Descriptor<VertexType>,
+  private fun parsestatementExpressionList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6133,8 +6134,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementExpression,
-            state.nonterminalEdges[StatementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementExpression,
+            state.nonterminalEdges[statementExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -6150,7 +6151,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnhancedForStatement(descriptor: Descriptor<VertexType>,
+  private fun parseenhancedForStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6171,8 +6172,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6180,16 +6181,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
       4 -> 
        {
@@ -6205,7 +6206,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       5 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       6 -> 
@@ -6213,8 +6214,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6222,7 +6223,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       7 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Statement, state.nonterminalEdges[Statement]!!,
+        handleNonterminalEdge(descriptor, statement, state.nonterminalEdges[statement]!!,
             curSppfNode)
       }
       8 -> 
@@ -6231,7 +6232,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseEnhancedForStatementNoShortIf(descriptor: Descriptor<VertexType>,
+  private fun parseenhancedForStatementNoShortIf(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6252,8 +6253,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6261,16 +6262,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
       4 -> 
        {
@@ -6286,7 +6287,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       5 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       6 -> 
@@ -6294,8 +6295,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6303,8 +6304,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       7 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, StatementNoShortIf,
-            state.nonterminalEdges[StatementNoShortIf]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, statementNoShortIf,
+            state.nonterminalEdges[statementNoShortIf]!!, curSppfNode)
       }
       8 -> 
        {
@@ -6312,7 +6313,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseBreakStatement(descriptor: Descriptor<VertexType>,
+  private fun parsebreakStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6339,7 +6340,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
@@ -6359,7 +6360,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseContinueStatement(descriptor: Descriptor<VertexType>,
+  private fun parsecontinueStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6386,7 +6387,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       2 -> 
@@ -6406,7 +6407,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseReturnStatement(descriptor: Descriptor<VertexType>,
+  private fun parsereturnStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6433,7 +6434,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       2 -> 
@@ -6453,7 +6454,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseThrowStatement(descriptor: Descriptor<VertexType>,
+  private fun parsethrowStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6472,7 +6473,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       2 -> 
@@ -6492,7 +6493,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseSynchronizedStatement(descriptor: Descriptor<VertexType>,
+  private fun parsesynchronizedStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6513,8 +6514,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6522,7 +6523,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -6530,8 +6531,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6539,7 +6540,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       5 -> 
        {
@@ -6547,7 +6548,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTryStatement(descriptor: Descriptor<VertexType>,
+  private fun parsetryStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6563,13 +6564,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TryWithResourcesStatement,
-            state.nonterminalEdges[TryWithResourcesStatement]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, tryWithResourcesStatement,
+            state.nonterminalEdges[tryWithResourcesStatement]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       2 -> 
        {
@@ -6577,36 +6578,36 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Catches, state.nonterminalEdges[Catches]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Finally, state.nonterminalEdges[Finally]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, finally, state.nonterminalEdges[finally]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, catches, state.nonterminalEdges[catches]!!, curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Finally, state.nonterminalEdges[Finally]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, finally, state.nonterminalEdges[finally]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseCatches(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parsecatches(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, CatchClause, state.nonterminalEdges[CatchClause]!!,
+        handleNonterminalEdge(descriptor, catchClause, state.nonterminalEdges[catchClause]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, CatchClause, state.nonterminalEdges[CatchClause]!!,
+        handleNonterminalEdge(descriptor, catchClause, state.nonterminalEdges[catchClause]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseCatchClause(descriptor: Descriptor<VertexType>,
+  private fun parsecatchClause(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6627,8 +6628,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6636,16 +6637,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, CatchFormalParameter,
-            state.nonterminalEdges[CatchFormalParameter]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, catchFormalParameter,
+            state.nonterminalEdges[catchFormalParameter]!!, curSppfNode)
       }
       3 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6653,7 +6654,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       5 -> 
        {
@@ -6661,23 +6662,23 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseCatchFormalParameter(descriptor: Descriptor<VertexType>,
+  private fun parsecatchFormalParameter(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, CatchType, state.nonterminalEdges[CatchType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, catchType, state.nonterminalEdges[catchType]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
       2 -> 
        {
@@ -6685,7 +6686,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseCatchType(descriptor: Descriptor<VertexType>,
+  private fun parsecatchType(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6693,7 +6694,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannClassType, state.nonterminalEdges[UnannClassType]!!,
+        handleNonterminalEdge(descriptor, unannClassType, state.nonterminalEdges[unannClassType]!!,
             curSppfNode)
       }
       1 -> 
@@ -6701,8 +6702,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ORBIT -> 
-            handleTerminal(JavaToken.ORBIT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.OR -> 
+            handleTerminal(JavaToken.OR, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6710,13 +6711,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassType, state.nonterminalEdges[ClassType]!!,
+        handleNonterminalEdge(descriptor, classType, state.nonterminalEdges[classType]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseFinally(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parsefinally(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -6734,7 +6735,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       2 -> 
        {
@@ -6742,7 +6743,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTryWithResourcesStatement(descriptor: Descriptor<VertexType>,
+  private fun parsetryWithResourcesStatement(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6761,24 +6762,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ResourceSpecification,
-            state.nonterminalEdges[ResourceSpecification]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, resourceSpecification,
+            state.nonterminalEdges[resourceSpecification]!!, curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Catches, state.nonterminalEdges[Catches]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Finally, state.nonterminalEdges[Finally]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, finally, state.nonterminalEdges[finally]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, catches, state.nonterminalEdges[catches]!!, curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Finally, state.nonterminalEdges[Finally]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, finally, state.nonterminalEdges[finally]!!, curSppfNode)
       }
       5 -> 
        {
@@ -6786,7 +6787,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseResourceSpecification(descriptor: Descriptor<VertexType>,
+  private fun parseresourceSpecification(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6796,8 +6797,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6805,7 +6806,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ResourceList, state.nonterminalEdges[ResourceList]!!,
+        handleNonterminalEdge(descriptor, resourceList, state.nonterminalEdges[resourceList]!!,
             curSppfNode)
       }
       2 -> 
@@ -6813,10 +6814,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SEMICOLON -> 
             handleTerminal(JavaToken.SEMICOLON, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6826,8 +6827,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6838,7 +6839,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseResourceList(descriptor: Descriptor<VertexType>,
+  private fun parseresourceList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6846,7 +6847,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Resource, state.nonterminalEdges[Resource]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, resource, state.nonterminalEdges[resource]!!, curSppfNode)
       }
       1 -> 
        {
@@ -6862,7 +6863,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseResource(descriptor: Descriptor<VertexType>,
+  private fun parseresource(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6870,24 +6871,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnannType, state.nonterminalEdges[UnannType]!!,
+        handleNonterminalEdge(descriptor, variableModifier,
+            state.nonterminalEdges[variableModifier]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unannType, state.nonterminalEdges[unannType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, VariableModifier,
-            state.nonterminalEdges[VariableModifier]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, VariableDeclaratorId,
-            state.nonterminalEdges[VariableDeclaratorId]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, variableDeclaratorId,
+            state.nonterminalEdges[variableDeclaratorId]!!, curSppfNode)
       }
       2 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ASSIGN -> 
-            handleTerminal(JavaToken.ASSIGN, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.EQ -> 
+            handleTerminal(JavaToken.EQ, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6895,7 +6896,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       4 -> 
@@ -6904,7 +6905,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePrimaryNoNewArray(descriptor: Descriptor<VertexType>,
+  private fun parseprimaryNoNewArray(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -6914,28 +6915,28 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             JavaToken.THIS -> 
             handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ArrayAccess, state.nonterminalEdges[ArrayAccess]!!,
+        handleNonterminalEdge(descriptor, classInstanceCreationExpression,
+            state.nonterminalEdges[classInstanceCreationExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, methodInvocation,
+            state.nonterminalEdges[methodInvocation]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, fieldAccess, state.nonterminalEdges[fieldAccess]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Literal, state.nonterminalEdges[Literal]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassInstanceCreationExpression,
-            state.nonterminalEdges[ClassInstanceCreationExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MethodInvocation,
-            state.nonterminalEdges[MethodInvocation]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MethodReference,
-            state.nonterminalEdges[MethodReference]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassLiteral, state.nonterminalEdges[ClassLiteral]!!,
+        handleNonterminalEdge(descriptor, methodReference,
+            state.nonterminalEdges[methodReference]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, classLiteral, state.nonterminalEdges[classLiteral]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, FieldAccess, state.nonterminalEdges[FieldAccess]!!,
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, arrayAccess, state.nonterminalEdges[arrayAccess]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, literal, state.nonterminalEdges[literal]!!, curSppfNode)
       }
       1 -> 
        {
@@ -6954,7 +6955,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       4 -> 
@@ -6962,8 +6963,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6982,7 +6983,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassLiteral(descriptor: Descriptor<VertexType>,
+  private fun parseclassLiteral(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7000,17 +7001,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, NumericType, state.nonterminalEdges[NumericType]!!,
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, numericType, state.nonterminalEdges[numericType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETLEFT -> 
-            handleTerminal(JavaToken.BRACKETLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACK -> 
+            handleTerminal(JavaToken.LBRACK, state, inputEdge, descriptor, curSppfNode)
             JavaToken.DOT -> 
             handleTerminal(JavaToken.DOT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
@@ -7047,8 +7048,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETRIGHT -> 
-            handleTerminal(JavaToken.BRACKETRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACK -> 
+            handleTerminal(JavaToken.RBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7064,9 +7065,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -7080,8 +7081,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArgumentsOrDiamond,
-            state.nonterminalEdges[TypeArgumentsOrDiamond]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeArgumentsOrDiamond,
+            state.nonterminalEdges[typeArgumentsOrDiamond]!!, curSppfNode)
       }
       2 -> 
        {
@@ -7089,7 +7090,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnqualifiedClassInstanceCreationExpression(descriptor: Descriptor<VertexType>,
+  private fun parseunqualifiedClassInstanceCreationExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7108,10 +7109,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
+            curSppfNode)
         handleNonterminalEdge(descriptor, classOrInterfaceTypeToInstantiate,
             state.nonterminalEdges[classOrInterfaceTypeToInstantiate]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
-            curSppfNode)
       }
       2 -> 
        {
@@ -7124,8 +7125,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7135,13 +7136,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArgumentList, state.nonterminalEdges[ArgumentList]!!,
+        handleNonterminalEdge(descriptor, argumentList, state.nonterminalEdges[argumentList]!!,
             curSppfNode)
       }
       5 -> 
@@ -7149,8 +7150,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7158,7 +7159,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       6 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ClassBody, state.nonterminalEdges[ClassBody]!!,
+        handleNonterminalEdge(descriptor, classBody, state.nonterminalEdges[classBody]!!,
             curSppfNode)
       }
       7 -> 
@@ -7167,7 +7168,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseClassInstanceCreationExpression(descriptor: Descriptor<VertexType>,
+  private fun parseclassInstanceCreationExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7175,11 +7176,11 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnqualifiedClassInstanceCreationExpression,
-            state.nonterminalEdges[UnqualifiedClassInstanceCreationExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Primary, state.nonterminalEdges[Primary]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, unqualifiedClassInstanceCreationExpression,
+            state.nonterminalEdges[unqualifiedClassInstanceCreationExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, primary, state.nonterminalEdges[primary]!!, curSppfNode)
       }
       1 -> 
        {
@@ -7198,13 +7199,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnqualifiedClassInstanceCreationExpression,
-            state.nonterminalEdges[UnqualifiedClassInstanceCreationExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unqualifiedClassInstanceCreationExpression,
+            state.nonterminalEdges[unqualifiedClassInstanceCreationExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseFieldAccess(descriptor: Descriptor<VertexType>,
+  private fun parsefieldAccess(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7220,8 +7221,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Primary, state.nonterminalEdges[Primary]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, primary, state.nonterminalEdges[primary]!!, curSppfNode)
       }
       1 -> 
        {
@@ -7259,7 +7260,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       5 -> 
@@ -7268,7 +7269,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseTypeArgumentsOrDiamond(descriptor: Descriptor<VertexType>,
+  private fun parsetypeArgumentsOrDiamond(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7284,7 +7285,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
       }
       1 -> 
@@ -7304,7 +7305,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseArrayAccess(descriptor: Descriptor<VertexType>,
+  private fun parsearrayAccess(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7312,18 +7313,18 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PrimaryNoNewArray,
-            state.nonterminalEdges[PrimaryNoNewArray]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, primaryNoNewArray,
+            state.nonterminalEdges[primaryNoNewArray]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETLEFT -> 
-            handleTerminal(JavaToken.BRACKETLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACK -> 
+            handleTerminal(JavaToken.LBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7331,7 +7332,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -7339,8 +7340,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETRIGHT -> 
-            handleTerminal(JavaToken.BRACKETRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACK -> 
+            handleTerminal(JavaToken.RBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7351,7 +7352,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodInvocation(descriptor: Descriptor<VertexType>,
+  private fun parsemethodInvocation(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7367,20 +7368,20 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Primary, state.nonterminalEdges[Primary]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MethodName, state.nonterminalEdges[MethodName]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, methodName, state.nonterminalEdges[methodName]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, primary, state.nonterminalEdges[primary]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7410,15 +7411,15 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       5 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       6 -> 
@@ -7432,9 +7433,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       7 -> 
@@ -7442,13 +7443,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArgumentList, state.nonterminalEdges[ArgumentList]!!,
+        handleNonterminalEdge(descriptor, argumentList, state.nonterminalEdges[argumentList]!!,
             curSppfNode)
       }
       8 -> 
@@ -7456,8 +7457,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7468,7 +7469,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseMethodReference(descriptor: Descriptor<VertexType>,
+  private fun parsemethodReference(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7484,24 +7485,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArrayType, state.nonterminalEdges[ArrayType]!!,
+        handleNonterminalEdge(descriptor, arrayType, state.nonterminalEdges[arrayType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeName, state.nonterminalEdges[TypeName]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Primary, state.nonterminalEdges[Primary]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ClassType, state.nonterminalEdges[ClassType]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ReferenceType, state.nonterminalEdges[ReferenceType]!!,
+        handleNonterminalEdge(descriptor, typeName, state.nonterminalEdges[typeName]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, referenceType, state.nonterminalEdges[referenceType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, classType, state.nonterminalEdges[classType]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, primary, state.nonterminalEdges[primary]!!, curSppfNode)
       }
       1 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.DOUBLECOLON -> 
-            handleTerminal(JavaToken.DOUBLECOLON, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.COLONCOLON -> 
+            handleTerminal(JavaToken.COLONCOLON, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7522,8 +7523,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.DOUBLECOLON -> 
-            handleTerminal(JavaToken.DOUBLECOLON, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.COLONCOLON -> 
+            handleTerminal(JavaToken.COLONCOLON, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7533,8 +7534,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.DOUBLECOLON -> 
-            handleTerminal(JavaToken.DOUBLECOLON, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.COLONCOLON -> 
+            handleTerminal(JavaToken.COLONCOLON, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7564,7 +7565,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
       }
       8 -> 
@@ -7581,21 +7582,21 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       9 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, typeArguments, state.nonterminalEdges[typeArguments]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, TypeArguments, state.nonterminalEdges[TypeArguments]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       10 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseArrayCreationExpression(descriptor: Descriptor<VertexType>,
+  private fun parsearrayCreationExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7614,27 +7615,27 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PrimitiveType, state.nonterminalEdges[PrimitiveType]!!,
+        handleNonterminalEdge(descriptor, classOrInterfaceType,
+            state.nonterminalEdges[classOrInterfaceType]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, primitiveType, state.nonterminalEdges[primitiveType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ClassOrInterfaceType,
-            state.nonterminalEdges[ClassOrInterfaceType]!!, curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, DimExprs, state.nonterminalEdges[DimExprs]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dimExprs, state.nonterminalEdges[dimExprs]!!, curSppfNode)
       }
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Dims, state.nonterminalEdges[Dims]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dims, state.nonterminalEdges[dims]!!, curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArrayInitializer,
-            state.nonterminalEdges[ArrayInitializer]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, arrayInitializer,
+            state.nonterminalEdges[arrayInitializer]!!, curSppfNode)
       }
       5 -> 
        {
@@ -7642,24 +7643,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseDimExprs(descriptor: Descriptor<VertexType>,
+  private fun parsedimExprs(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, DimExpr, state.nonterminalEdges[DimExpr]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dimExpr, state.nonterminalEdges[dimExpr]!!, curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, DimExpr, state.nonterminalEdges[DimExpr]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, dimExpr, state.nonterminalEdges[dimExpr]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseDimExpr(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
+  private fun parsedimExpr(descriptor: Descriptor<VertexType>, curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
     when(state.numId) {
@@ -7668,19 +7669,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETLEFT -> 
-            handleTerminal(JavaToken.BRACKETLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LBRACK -> 
+            handleTerminal(JavaToken.LBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Annotation, state.nonterminalEdges[Annotation]!!,
+        handleNonterminalEdge(descriptor, annotation, state.nonterminalEdges[annotation]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       2 -> 
@@ -7688,8 +7689,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.BRACKETRIGHT -> 
-            handleTerminal(JavaToken.BRACKETRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RBRACK -> 
+            handleTerminal(JavaToken.RBRACK, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7700,7 +7701,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLambdaExpression(descriptor: Descriptor<VertexType>,
+  private fun parselambdaExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7708,8 +7709,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, LambdaParameters,
-            state.nonterminalEdges[LambdaParameters]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, lambdaParameters,
+            state.nonterminalEdges[lambdaParameters]!!, curSppfNode)
       }
       1 -> 
        {
@@ -7725,7 +7726,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, LambdaBody, state.nonterminalEdges[LambdaBody]!!,
+        handleNonterminalEdge(descriptor, lambdaBody, state.nonterminalEdges[lambdaBody]!!,
             curSppfNode)
       }
       3 -> 
@@ -7734,7 +7735,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLambdaParameters(descriptor: Descriptor<VertexType>,
+  private fun parselambdaParameters(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7744,13 +7745,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -7761,24 +7762,24 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, FormalParameterList,
-            state.nonterminalEdges[FormalParameterList]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, InferredFormalParameterList,
-            state.nonterminalEdges[InferredFormalParameterList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, inferredFormalParameterList,
+            state.nonterminalEdges[inferredFormalParameterList]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, formalParameterList,
+            state.nonterminalEdges[formalParameterList]!!, curSppfNode)
       }
       3 -> 
        {
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7786,7 +7787,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseInferredFormalParameterList(descriptor: Descriptor<VertexType>,
+  private fun parseinferredFormalParameterList(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7794,7 +7795,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Identifier, state.nonterminalEdges[Identifier]!!,
+        handleNonterminalEdge(descriptor, identifier, state.nonterminalEdges[identifier]!!,
             curSppfNode)
       }
       1 -> 
@@ -7811,16 +7812,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLambdaBody(descriptor: Descriptor<VertexType>,
+  private fun parselambdaBody(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, Block, state.nonterminalEdges[Block]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, block, state.nonterminalEdges[block]!!, curSppfNode)
       }
       1 -> 
        {
@@ -7828,17 +7829,17 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAssignmentExpression(descriptor: Descriptor<VertexType>,
+  private fun parseassignmentExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Assignment, state.nonterminalEdges[Assignment]!!,
+        handleNonterminalEdge(descriptor, conditionalExpression,
+            state.nonterminalEdges[conditionalExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, assignment, state.nonterminalEdges[assignment]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ConditionalExpression,
-            state.nonterminalEdges[ConditionalExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -7846,26 +7847,26 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAssignment(descriptor: Descriptor<VertexType>,
+  private fun parseassignment(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, LeftHandSide, state.nonterminalEdges[LeftHandSide]!!,
+        handleNonterminalEdge(descriptor, leftHandSide, state.nonterminalEdges[leftHandSide]!!,
             curSppfNode)
       }
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AssignmentOperator,
-            state.nonterminalEdges[AssignmentOperator]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, assignmentOperator,
+            state.nonterminalEdges[assignmentOperator]!!, curSppfNode)
       }
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       3 -> 
@@ -7874,18 +7875,18 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseLeftHandSide(descriptor: Descriptor<VertexType>,
+  private fun parseleftHandSide(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ArrayAccess, state.nonterminalEdges[ArrayAccess]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, FieldAccess, state.nonterminalEdges[FieldAccess]!!,
+        handleNonterminalEdge(descriptor, fieldAccess, state.nonterminalEdges[fieldAccess]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, arrayAccess, state.nonterminalEdges[arrayAccess]!!,
             curSppfNode)
       }
       1 -> 
@@ -7894,7 +7895,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseAssignmentOperator(descriptor: Descriptor<VertexType>,
+  private fun parseassignmentOperator(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7904,30 +7905,30 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PERCENTASSIGN -> 
-            handleTerminal(JavaToken.PERCENTASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ORASSIGN -> 
-            handleTerminal(JavaToken.ORASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STARASSIGN -> 
-            handleTerminal(JavaToken.STARASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.SLASHASSIGN -> 
-            handleTerminal(JavaToken.SLASHASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PLUSASSIGN -> 
-            handleTerminal(JavaToken.PLUSASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.USRIGHTSHIFTASSIGN -> 
-            handleTerminal(JavaToken.USRIGHTSHIFTASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.MINUSASSIGN -> 
-            handleTerminal(JavaToken.MINUSASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.SHIFTLEFTASSIGN -> 
-            handleTerminal(JavaToken.SHIFTLEFTASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ANDASSIGN -> 
-            handleTerminal(JavaToken.ANDASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ASSIGN -> 
-            handleTerminal(JavaToken.ASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.SHIFTRIGHTASSIGN -> 
-            handleTerminal(JavaToken.SHIFTRIGHTASSIGN, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.XORASSIGN -> 
-            handleTerminal(JavaToken.XORASSIGN, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MINUSEQ -> 
+            handleTerminal(JavaToken.MINUSEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.ANDEQ -> 
+            handleTerminal(JavaToken.ANDEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.XOREQ -> 
+            handleTerminal(JavaToken.XOREQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RSHIFTEQ -> 
+            handleTerminal(JavaToken.RSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.DIVEQ -> 
+            handleTerminal(JavaToken.DIVEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PLUSEQ -> 
+            handleTerminal(JavaToken.PLUSEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MULTEQ -> 
+            handleTerminal(JavaToken.MULTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.URSHIFTEQ -> 
+            handleTerminal(JavaToken.URSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.OREQ -> 
+            handleTerminal(JavaToken.OREQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MODEQ -> 
+            handleTerminal(JavaToken.MODEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LSHIFTEQ -> 
+            handleTerminal(JavaToken.LSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.EQ -> 
+            handleTerminal(JavaToken.EQ, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7938,7 +7939,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseConditionalOrExpression(descriptor: Descriptor<VertexType>,
+  private fun parseconditionalOrExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7946,10 +7947,82 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConditionalAndExpression,
-            state.nonterminalEdges[ConditionalAndExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConditionalOrExpression,
-            state.nonterminalEdges[ConditionalOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, conditionalOrExpression,
+            state.nonterminalEdges[conditionalOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, conditionalAndExpression,
+            state.nonterminalEdges[conditionalAndExpression]!!, curSppfNode)
+      }
+      1 -> 
+       {
+      }
+      2 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.OROR -> 
+            handleTerminal(JavaToken.OROR, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      3 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, conditionalAndExpression,
+            state.nonterminalEdges[conditionalAndExpression]!!, curSppfNode)
+      }
+    }
+  }
+
+  private fun parseconditionalAndExpression(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, inclusiveOrExpression,
+            state.nonterminalEdges[inclusiveOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, conditionalAndExpression,
+            state.nonterminalEdges[conditionalAndExpression]!!, curSppfNode)
+      }
+      1 -> 
+       {
+      }
+      2 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.ANDAND -> 
+            handleTerminal(JavaToken.ANDAND, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      3 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, inclusiveOrExpression,
+            state.nonterminalEdges[inclusiveOrExpression]!!, curSppfNode)
+      }
+    }
+  }
+
+  private fun parseinclusiveOrExpression(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, exclusiveOrExpression,
+            state.nonterminalEdges[exclusiveOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, inclusiveOrExpression,
+            state.nonterminalEdges[inclusiveOrExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -7968,13 +8041,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ConditionalAndExpression,
-            state.nonterminalEdges[ConditionalAndExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, exclusiveOrExpression,
+            state.nonterminalEdges[exclusiveOrExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseConditionalAndExpression(descriptor: Descriptor<VertexType>,
+  private fun parseexclusiveOrExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -7982,10 +8055,46 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InclusiveOrExpression,
-            state.nonterminalEdges[InclusiveOrExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ConditionalAndExpression,
-            state.nonterminalEdges[ConditionalAndExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, andExpression, state.nonterminalEdges[andExpression]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, exclusiveOrExpression,
+            state.nonterminalEdges[exclusiveOrExpression]!!, curSppfNode)
+      }
+      1 -> 
+       {
+      }
+      2 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.XOR -> 
+            handleTerminal(JavaToken.XOR, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      3 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, andExpression, state.nonterminalEdges[andExpression]!!,
+            curSppfNode)
+      }
+    }
+  }
+
+  private fun parseandExpression(descriptor: Descriptor<VertexType>,
+      curSppfNode: SppfNode<VertexType>?) {
+    val state = descriptor.rsmState
+    val pos = descriptor.inputPosition
+    when(state.numId) {
+      0 -> 
+       {
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, andExpression, state.nonterminalEdges[andExpression]!!,
+            curSppfNode)
+        handleNonterminalEdge(descriptor, equalityExpression,
+            state.nonterminalEdges[equalityExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8004,13 +8113,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InclusiveOrExpression,
-            state.nonterminalEdges[InclusiveOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, equalityExpression,
+            state.nonterminalEdges[equalityExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseInclusiveOrExpression(descriptor: Descriptor<VertexType>,
+  private fun parseequalityExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8018,10 +8127,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, InclusiveOrExpression,
-            state.nonterminalEdges[InclusiveOrExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ExclusiveOrExpression,
-            state.nonterminalEdges[ExclusiveOrExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, relationalExpression,
+            state.nonterminalEdges[relationalExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, equalityExpression,
+            state.nonterminalEdges[equalityExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8031,116 +8140,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.ORBIT -> 
-            handleTerminal(JavaToken.ORBIT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      3 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ExclusiveOrExpression,
-            state.nonterminalEdges[ExclusiveOrExpression]!!, curSppfNode)
-      }
-    }
-  }
-
-  private fun parseExclusiveOrExpression(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AndExpression, state.nonterminalEdges[AndExpression]!!,
-            curSppfNode)
-        handleNonterminalEdge(descriptor, ExclusiveOrExpression,
-            state.nonterminalEdges[ExclusiveOrExpression]!!, curSppfNode)
-      }
-      1 -> 
-       {
-      }
-      2 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.XORBIT -> 
-            handleTerminal(JavaToken.XORBIT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      3 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AndExpression, state.nonterminalEdges[AndExpression]!!,
-            curSppfNode)
-      }
-    }
-  }
-
-  private fun parseAndExpression(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AndExpression, state.nonterminalEdges[AndExpression]!!,
-            curSppfNode)
-        handleNonterminalEdge(descriptor, EqualityExpression,
-            state.nonterminalEdges[EqualityExpression]!!, curSppfNode)
-      }
-      1 -> 
-       {
-      }
-      2 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.ANDBIT -> 
-            handleTerminal(JavaToken.ANDBIT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      3 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, EqualityExpression,
-            state.nonterminalEdges[EqualityExpression]!!, curSppfNode)
-      }
-    }
-  }
-
-  private fun parseEqualityExpression(descriptor: Descriptor<VertexType>,
-      curSppfNode: SppfNode<VertexType>?) {
-    val state = descriptor.rsmState
-    val pos = descriptor.inputPosition
-    when(state.numId) {
-      0 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, RelationalExpression,
-            state.nonterminalEdges[RelationalExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, EqualityExpression,
-            state.nonterminalEdges[EqualityExpression]!!, curSppfNode)
-      }
-      1 -> 
-       {
-      }
-      2 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.EQ -> 
-            handleTerminal(JavaToken.EQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.EQEQ -> 
+            handleTerminal(JavaToken.EQEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.NOTEQ -> 
             handleTerminal(JavaToken.NOTEQ, state, inputEdge, descriptor, curSppfNode)
             else -> {}
@@ -8150,13 +8151,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, RelationalExpression,
-            state.nonterminalEdges[RelationalExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, relationalExpression,
+            state.nonterminalEdges[relationalExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseRelationalExpression(descriptor: Descriptor<VertexType>,
+  private fun parserelationalExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8164,10 +8165,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, RelationalExpression,
-            state.nonterminalEdges[RelationalExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ShiftExpression,
-            state.nonterminalEdges[ShiftExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, shiftExpression,
+            state.nonterminalEdges[shiftExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, relationalExpression,
+            state.nonterminalEdges[relationalExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8177,16 +8178,16 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.LESSEQ -> 
-            handleTerminal(JavaToken.LESSEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.GTEQ -> 
+            handleTerminal(JavaToken.GTEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.INSTANCEOF -> 
             handleTerminal(JavaToken.INSTANCEOF, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.GREATEQ -> 
-            handleTerminal(JavaToken.GREATEQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.GT -> 
-            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.LT -> 
             handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LTEQ -> 
+            handleTerminal(JavaToken.LTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.GT -> 
+            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -8194,19 +8195,19 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ShiftExpression,
-            state.nonterminalEdges[ShiftExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, shiftExpression,
+            state.nonterminalEdges[shiftExpression]!!, curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, ReferenceType, state.nonterminalEdges[ReferenceType]!!,
+        handleNonterminalEdge(descriptor, referenceType, state.nonterminalEdges[referenceType]!!,
             curSppfNode)
       }
     }
   }
 
-  private fun parseShiftExpression(descriptor: Descriptor<VertexType>,
+  private fun parseshiftExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8214,10 +8215,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AdditiveExpression,
-            state.nonterminalEdges[AdditiveExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ShiftExpression,
-            state.nonterminalEdges[ShiftExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, shiftExpression,
+            state.nonterminalEdges[shiftExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, additiveExpression,
+            state.nonterminalEdges[additiveExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8227,60 +8228,26 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.GT -> 
-            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.LT -> 
-            handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LSHIFT -> 
+            handleTerminal(JavaToken.LSHIFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RSHIFT -> 
+            handleTerminal(JavaToken.RSHIFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.URSHIFT -> 
+            handleTerminal(JavaToken.URSHIFT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
       }
       3 -> 
        {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.LT -> 
-            handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      4 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.GT -> 
-            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
-      }
-      5 -> 
-       {
-        // handle terminal edges
-        for (inputEdge in ctx.input.getEdges(pos)) {
-          when(inputEdge.label.terminal) {
-            JavaToken.GT -> 
-            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
-            else -> {}
-          }
-        }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AdditiveExpression,
-            state.nonterminalEdges[AdditiveExpression]!!, curSppfNode)
-      }
-      6 -> 
-       {
-        // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AdditiveExpression,
-            state.nonterminalEdges[AdditiveExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, additiveExpression,
+            state.nonterminalEdges[additiveExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseAdditiveExpression(descriptor: Descriptor<VertexType>,
+  private fun parseadditiveExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8288,10 +8255,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AdditiveExpression,
-            state.nonterminalEdges[AdditiveExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MultiplicativeExpression,
-            state.nonterminalEdges[MultiplicativeExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, additiveExpression,
+            state.nonterminalEdges[additiveExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, multiplicativeExpression,
+            state.nonterminalEdges[multiplicativeExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8312,13 +8279,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, MultiplicativeExpression,
-            state.nonterminalEdges[MultiplicativeExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, multiplicativeExpression,
+            state.nonterminalEdges[multiplicativeExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseMultiplicativeExpression(descriptor: Descriptor<VertexType>,
+  private fun parsemultiplicativeExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8326,10 +8293,10 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, MultiplicativeExpression,
-            state.nonterminalEdges[MultiplicativeExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, multiplicativeExpression,
+            state.nonterminalEdges[multiplicativeExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8339,12 +8306,12 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.SLASH -> 
-            handleTerminal(JavaToken.SLASH, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PERCENT -> 
-            handleTerminal(JavaToken.PERCENT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STAR -> 
-            handleTerminal(JavaToken.STAR, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.DIV -> 
+            handleTerminal(JavaToken.DIV, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MULT -> 
+            handleTerminal(JavaToken.MULT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MOD -> 
+            handleTerminal(JavaToken.MOD, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -8352,13 +8319,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       3 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parsePreIncrementExpression(descriptor: Descriptor<VertexType>,
+  private fun parsepreIncrementExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8377,8 +8344,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
       2 -> 
        {
@@ -8386,7 +8353,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePreDecrementExpression(descriptor: Descriptor<VertexType>,
+  private fun parsepreDecrementExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8405,8 +8372,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
       2 -> 
        {
@@ -8414,7 +8381,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseUnaryExpressionNotPlusMinus(descriptor: Descriptor<VertexType>,
+  private fun parseunaryExpressionNotPlusMinus(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8424,18 +8391,18 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.EXCLAMATIONMARK -> 
-            handleTerminal(JavaToken.EXCLAMATIONMARK, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.TILDA -> 
-            handleTerminal(JavaToken.TILDA, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.NOT -> 
+            handleTerminal(JavaToken.NOT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.COMP -> 
+            handleTerminal(JavaToken.COMP, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PostfixExpression,
-            state.nonterminalEdges[PostfixExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, CastExpression, state.nonterminalEdges[CastExpression]!!,
+        handleNonterminalEdge(descriptor, castExpression, state.nonterminalEdges[castExpression]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, postfixExpression,
+            state.nonterminalEdges[postfixExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8443,13 +8410,13 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseUnaryExpression(descriptor: Descriptor<VertexType>,
+  private fun parseunaryExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8467,12 +8434,12 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PreDecrementExpression,
-            state.nonterminalEdges[PreDecrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, UnaryExpressionNotPlusMinus,
-            state.nonterminalEdges[UnaryExpressionNotPlusMinus]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, PreIncrementExpression,
-            state.nonterminalEdges[PreIncrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpressionNotPlusMinus,
+            state.nonterminalEdges[unaryExpressionNotPlusMinus]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, preDecrementExpression,
+            state.nonterminalEdges[preDecrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, preIncrementExpression,
+            state.nonterminalEdges[preIncrementExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8480,26 +8447,26 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       2 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parsePostfixExpression(descriptor: Descriptor<VertexType>,
+  private fun parsepostfixExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PostIncrementExpression,
-            state.nonterminalEdges[PostIncrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, Primary, state.nonterminalEdges[Primary]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, PostDecrementExpression,
-            state.nonterminalEdges[PostDecrementExpression]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, ExpressionName, state.nonterminalEdges[ExpressionName]!!,
+        handleNonterminalEdge(descriptor, expressionName, state.nonterminalEdges[expressionName]!!,
             curSppfNode)
+        handleNonterminalEdge(descriptor, postIncrementExpression,
+            state.nonterminalEdges[postIncrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, postDecrementExpression,
+            state.nonterminalEdges[postDecrementExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, primary, state.nonterminalEdges[primary]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8507,7 +8474,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePostIncrementExpression(descriptor: Descriptor<VertexType>,
+  private fun parsepostIncrementExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8515,8 +8482,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PostfixExpression,
-            state.nonterminalEdges[PostfixExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, postfixExpression,
+            state.nonterminalEdges[postfixExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8535,7 +8502,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parsePostDecrementExpression(descriptor: Descriptor<VertexType>,
+  private fun parsepostDecrementExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8543,8 +8510,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PostfixExpression,
-            state.nonterminalEdges[PostfixExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, postfixExpression,
+            state.nonterminalEdges[postfixExpression]!!, curSppfNode)
       }
       1 -> 
        {
@@ -8563,7 +8530,7 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  private fun parseCastExpression(descriptor: Descriptor<VertexType>,
+  private fun parsecastExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     val pos = descriptor.inputPosition
@@ -8573,8 +8540,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHLEFT -> 
-            handleTerminal(JavaToken.PARENTHLEFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -8582,9 +8549,9 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       1 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, PrimitiveType, state.nonterminalEdges[PrimitiveType]!!,
+        handleNonterminalEdge(descriptor, referenceType, state.nonterminalEdges[referenceType]!!,
             curSppfNode)
-        handleNonterminalEdge(descriptor, ReferenceType, state.nonterminalEdges[ReferenceType]!!,
+        handleNonterminalEdge(descriptor, primitiveType, state.nonterminalEdges[primitiveType]!!,
             curSppfNode)
       }
       2 -> 
@@ -8592,8 +8559,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -8603,22 +8570,22 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PARENTHRIGHT -> 
-            handleTerminal(JavaToken.PARENTHRIGHT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RPAREN -> 
+            handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, AdditionalBound,
-            state.nonterminalEdges[AdditionalBound]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, additionalBound,
+            state.nonterminalEdges[additionalBound]!!, curSppfNode)
       }
       4 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpressionNotPlusMinus,
-            state.nonterminalEdges[UnaryExpressionNotPlusMinus]!!, curSppfNode)
-        handleNonterminalEdge(descriptor, LambdaExpression,
-            state.nonterminalEdges[LambdaExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpressionNotPlusMinus,
+            state.nonterminalEdges[unaryExpressionNotPlusMinus]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, lambdaExpression,
+            state.nonterminalEdges[lambdaExpression]!!, curSppfNode)
       }
       5 -> 
        {
@@ -8626,20 +8593,20 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
       6 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, UnaryExpression,
-            state.nonterminalEdges[UnaryExpression]!!, curSppfNode)
+        handleNonterminalEdge(descriptor, unaryExpression,
+            state.nonterminalEdges[unaryExpression]!!, curSppfNode)
       }
     }
   }
 
-  private fun parseConstantExpression(descriptor: Descriptor<VertexType>,
+  private fun parseconstantExpression(descriptor: Descriptor<VertexType>,
       curSppfNode: SppfNode<VertexType>?) {
     val state = descriptor.rsmState
     when(state.numId) {
       0 -> 
        {
         // handle nonterminal edges
-        handleNonterminalEdge(descriptor, Expression, state.nonterminalEdges[Expression]!!,
+        handleNonterminalEdge(descriptor, expression, state.nonterminalEdges[expression]!!,
             curSppfNode)
       }
       1 -> 

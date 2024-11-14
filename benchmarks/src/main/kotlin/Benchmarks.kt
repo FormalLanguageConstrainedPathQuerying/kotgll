@@ -1,5 +1,5 @@
 import org.ucfs.JavaToken
-import org.ucfs.JavaLexer
+import org.ucfs.Scanner
 import org.ucfs.input.*
 import org.ucfs.rsm.symbol.Term
 import java.io.StringReader
@@ -24,7 +24,7 @@ fun getTokenStream(input: String): LinearInput<Int, LinearInputLabel> {
 
 
 fun <G : IInputGraph<Int, LinearInputLabel>> getTokenStream(input: String, inputGraph: G): G {
-    val lexer = JavaLexer(StringReader(input))
+    val lexer = Scanner(StringReader(input))
     var token: JavaToken
     var vertexId = 1
 
