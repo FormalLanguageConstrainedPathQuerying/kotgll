@@ -7,7 +7,7 @@ fastAntlrSrc="../benchmarks/src/main/java/org/antlr/fast"
 antlrPackage="org.antlr"
 antlrFastPackage="org.antlr.fast"
 
-lexerSrc="examples/src/main/java/java8"
+lexerSrc="../benchmarks/src/main/java/org/ucfs"
 
 printf "\n\nINSTALL PACKAGES\n"
 apt-get install jflex
