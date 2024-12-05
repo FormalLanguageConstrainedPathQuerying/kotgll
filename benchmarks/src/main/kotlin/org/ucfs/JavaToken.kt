@@ -109,9 +109,9 @@ enum class JavaToken : ITerminal {
     OR,
     XOR,
     MOD,  //%
-    LSHIFT,  // <<
-    RSHIFT,  // >>
-    URSHIFT, // >>>
+   // LSHIFT,  // <<
+   // RSHIFT,  // >>
+  //  URSHIFT, // >>>
     PLUSEQ,
     MINUSEQ,
     MULTEQ,

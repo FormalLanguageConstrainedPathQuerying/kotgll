@@ -7,6 +7,6 @@ class RecoveryOfflineUcfsBenchmark : ParsingBenchmarks() {
     override fun parse(text: String) {
         val parser = org.ucfs.Java8ParserRecovery<Int, LinearInputLabel>()
         parser.setInput(getTokenStream(text))
-        parser.parse()
+        assert(parser.parse().first!= null){"can't build sppf"}
     }
 }

@@ -35,7 +35,7 @@ open class Sppf<VertexType> {
 
         return if (rsmState.isStart && rsmState.isFinal) {
             // if nonterminal accepts epsilon
-            getParentNode(
+            getParentNodeAfterTerminal(
                 rsmState,
                 sppfNode,
                 getOrCreateIntermediateSppfNode(rsmState, inputPosition, inputPosition, weight = 0)
@@ -67,11 +67,12 @@ open class Sppf<VertexType> {
      * @param nextSppfNode - right subtree
      * @return ParentNode, which has combined subtree as alternative derivation
      */
-    open fun getParentNode(
+    open fun getParentNodeAfterTerminal(
         rsmState: RsmState,
         sppfNode: SppfNode<VertexType>?,
         nextSppfNode: SppfNode<VertexType>,
     ): SppfNode<VertexType> {
+        //there can't be only right extent by definition?
         val leftExtent = sppfNode?.leftExtent ?: nextSppfNode.leftExtent
         val rightExtent = nextSppfNode.rightExtent
 
@@ -90,6 +91,29 @@ open class Sppf<VertexType> {
         }
 
         return parent
+    }
+
+
+    /**
+     *#TODO fix it for cases S = a | bc | abc
+     */
+    private fun hasCommonSymbolInLeftExtend(
+        symbolSppfInLeft: SppfNode<VertexType>?,
+        rsmState: RsmState,
+        packedNode: PackedSppfNode<VertexType>
+    ): NonterminalSppfNode<VertexType>? {
+        if(symbolSppfInLeft is SymbolSppfNode && rsmState.isFinal){
+            val commonNodes = symbolSppfInLeft.children.filter { packed -> packed.rsmState.targetStates.contains(rsmState) }
+            for(node in commonNodes){
+                if(node.rightSppfNode == null){
+                   // node.rightSppfNode =
+                }
+                symbolSppfInLeft.children.remove(node)
+               // node.
+
+            }
+        }
+        return null
     }
 
     /**

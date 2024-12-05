@@ -8,4 +8,5 @@ interface ITerminal : Symbol, DerivedSymbol{
      * Can't use Comparable interface here because we can't implement if for Enums
      */
     fun getComparator(): Comparator<ITerminal>
+
 }

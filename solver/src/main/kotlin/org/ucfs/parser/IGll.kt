@@ -104,7 +104,7 @@ interface IGll<VertexType, LabelType : ILabel> {
             if (ctx.poppedGssNodes.containsKey(newNode)) {
                 for (popped in ctx.poppedGssNodes[newNode]!!) {
                     val descriptor = Descriptor(
-                        rsmState, gssNode, ctx.sppf.getParentNode(rsmState, sppfNode, popped!!), popped.rightExtent
+                        rsmState, gssNode, ctx.sppf.getParentNodeAfterTerminal(rsmState, sppfNode, popped!!), popped.rightExtent
                     )
                     addDescriptor(descriptor)
                 }
@@ -136,7 +136,7 @@ interface IGll<VertexType, LabelType : ILabel> {
         for ((label, target) in gssNode.edges) {
             for (node in target) {
                 val descriptor = Descriptor(
-                    label.first, node, ctx.sppf.getParentNode(label.first, label.second, sppfNode!!), inputPosition
+                    label.first, node, ctx.sppf.getParentNodeAfterTerminal(label.first, label.second, sppfNode!!), inputPosition
                 )
                 addDescriptor(descriptor)
             }
@@ -216,13 +216,9 @@ interface IGll<VertexType, LabelType : ILabel> {
         targetVertex: VertexType,
         targetWeight: Int,
     ) {
-        val newDescriptor = Descriptor(
-            targetState, descriptor.gssNode, ctx.sppf.getParentNode(
-                targetState, sppfNode, ctx.sppf.getOrCreateTerminalSppfNode(
-                    terminal, descriptor.inputPosition, targetVertex, targetWeight
-                )
-            ), targetVertex
-        )
+        val terminalNode = ctx.sppf.getOrCreateTerminalSppfNode(terminal, descriptor.inputPosition, targetVertex, targetWeight)
+        val parentNode = ctx.sppf.getParentNodeAfterTerminal(targetState, sppfNode, terminalNode)
+        val newDescriptor = Descriptor(targetState, descriptor.gssNode, parentNode, targetVertex)
         addDescriptor(newDescriptor)
     }
 }

@@ -747,17 +747,17 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
+            JavaToken.FLOATING_POINT_LITERAL -> 
+            handleTerminal(JavaToken.FLOATING_POINT_LITERAL, state, inputEdge, descriptor,
+                curSppfNode)
             JavaToken.BOOLEAN_LITERAL -> 
             handleTerminal(JavaToken.BOOLEAN_LITERAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.CHARACTER_LITERAL -> 
+            handleTerminal(JavaToken.CHARACTER_LITERAL, state, inputEdge, descriptor, curSppfNode)
             JavaToken.INTEGER_LITERAL -> 
             handleTerminal(JavaToken.INTEGER_LITERAL, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STRING_LITERAL -> 
             handleTerminal(JavaToken.STRING_LITERAL, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.FLOATING_POINT_LITERAL -> 
-            handleTerminal(JavaToken.FLOATING_POINT_LITERAL, state, inputEdge, descriptor,
-                curSppfNode)
-            JavaToken.CHARACTER_LITERAL -> 
-            handleTerminal(JavaToken.CHARACTER_LITERAL, state, inputEdge, descriptor, curSppfNode)
             JavaToken.NULL_LITERAL -> 
             handleTerminal(JavaToken.NULL_LITERAL, state, inputEdge, descriptor, curSppfNode)
             else -> {}
@@ -882,16 +882,16 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
+            JavaToken.CHAR -> 
+            handleTerminal(JavaToken.CHAR, state, inputEdge, descriptor, curSppfNode)
             JavaToken.BYTE -> 
             handleTerminal(JavaToken.BYTE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.INT -> 
+            handleTerminal(JavaToken.INT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.LONG -> 
             handleTerminal(JavaToken.LONG, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SHORT -> 
             handleTerminal(JavaToken.SHORT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.INT -> 
-            handleTerminal(JavaToken.INT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.CHAR -> 
-            handleTerminal(JavaToken.CHAR, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -1321,10 +1321,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.EXTENDS -> 
-            handleTerminal(JavaToken.EXTENDS, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SUPER -> 
             handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.EXTENDS -> 
+            handleTerminal(JavaToken.EXTENDS, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2089,20 +2089,20 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STATIC -> 
             handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.ABSTRACT -> 
             handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.FINAL -> 
             handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2493,20 +2493,20 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.TRANSIENT -> 
+            handleTerminal(JavaToken.TRANSIENT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.VOLATILE -> 
             handleTerminal(JavaToken.VOLATILE, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STATIC -> 
             handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.FINAL -> 
             handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.TRANSIENT -> 
-            handleTerminal(JavaToken.TRANSIENT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -2890,24 +2890,24 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ABSTRACT -> 
-            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.SYNCHRONIZED -> 
-            handleTerminal(JavaToken.SYNCHRONIZED, state, inputEdge, descriptor, curSppfNode)
             JavaToken.NATIVE -> 
             handleTerminal(JavaToken.NATIVE, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.ABSTRACT -> 
+            handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.FINAL -> 
             handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SYNCHRONIZED -> 
+            handleTerminal(JavaToken.SYNCHRONIZED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3361,12 +3361,12 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PUBLIC -> 
             handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PROTECTED -> 
             handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3530,10 +3530,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.SUPER -> 
-            handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
             JavaToken.THIS -> 
             handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SUPER -> 
+            handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3549,10 +3549,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.SUPER -> 
-            handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
             JavaToken.THIS -> 
             handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SUPER -> 
+            handleTerminal(JavaToken.SUPER, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -3980,18 +3980,18 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PRIVATE -> 
-            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STATIC -> 
             handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.PROTECTED -> 
-            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.ABSTRACT -> 
             handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PROTECTED -> 
+            handleTerminal(JavaToken.PROTECTED, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PRIVATE -> 
+            handleTerminal(JavaToken.PRIVATE, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -4146,10 +4146,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.STATIC -> 
             handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.FINAL -> 
             handleTerminal(JavaToken.FINAL, state, inputEdge, descriptor, curSppfNode)
             else -> {}
@@ -5369,10 +5369,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.COLON -> 
-            handleTerminal(JavaToken.COLON, state, inputEdge, descriptor, curSppfNode)
             JavaToken.SEMICOLON -> 
             handleTerminal(JavaToken.SEMICOLON, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.COLON -> 
+            handleTerminal(JavaToken.COLON, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -5808,16 +5808,16 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.PUBLIC -> 
-            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STRICTFP -> 
-            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.STATIC -> 
-            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.DEFAULT -> 
             handleTerminal(JavaToken.DEFAULT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STATIC -> 
+            handleTerminal(JavaToken.STATIC, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.PUBLIC -> 
+            handleTerminal(JavaToken.PUBLIC, state, inputEdge, descriptor, curSppfNode)
             JavaToken.ABSTRACT -> 
             handleTerminal(JavaToken.ABSTRACT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.STRICTFP -> 
+            handleTerminal(JavaToken.STRICTFP, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6814,10 +6814,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.SEMICOLON -> 
-            handleTerminal(JavaToken.SEMICOLON, state, inputEdge, descriptor, curSppfNode)
             JavaToken.RPAREN -> 
             handleTerminal(JavaToken.RPAREN, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.SEMICOLON -> 
+            handleTerminal(JavaToken.SEMICOLON, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -6915,10 +6915,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.LPAREN -> 
-            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             JavaToken.THIS -> 
             handleTerminal(JavaToken.THIS, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LPAREN -> 
+            handleTerminal(JavaToken.LPAREN, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -7905,30 +7905,30 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.MINUSEQ -> 
-            handleTerminal(JavaToken.MINUSEQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.ANDEQ -> 
-            handleTerminal(JavaToken.ANDEQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.XOREQ -> 
-            handleTerminal(JavaToken.XOREQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.RSHIFTEQ -> 
-            handleTerminal(JavaToken.RSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MODEQ -> 
+            handleTerminal(JavaToken.MODEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.OREQ -> 
+            handleTerminal(JavaToken.OREQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MULTEQ -> 
+            handleTerminal(JavaToken.MULTEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.DIVEQ -> 
             handleTerminal(JavaToken.DIVEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.PLUSEQ -> 
             handleTerminal(JavaToken.PLUSEQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.MULTEQ -> 
-            handleTerminal(JavaToken.MULTEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.URSHIFTEQ -> 
             handleTerminal(JavaToken.URSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.OREQ -> 
-            handleTerminal(JavaToken.OREQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.MODEQ -> 
-            handleTerminal(JavaToken.MODEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MINUSEQ -> 
+            handleTerminal(JavaToken.MINUSEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.LSHIFTEQ -> 
             handleTerminal(JavaToken.LSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.ANDEQ -> 
+            handleTerminal(JavaToken.ANDEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.EQ -> 
             handleTerminal(JavaToken.EQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.RSHIFTEQ -> 
+            handleTerminal(JavaToken.RSHIFTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.XOREQ -> 
+            handleTerminal(JavaToken.XOREQ, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -8178,16 +8178,16 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.GTEQ -> 
-            handleTerminal(JavaToken.GTEQ, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.INSTANCEOF -> 
-            handleTerminal(JavaToken.INSTANCEOF, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.LT -> 
-            handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.LTEQ -> 
             handleTerminal(JavaToken.LTEQ, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.INSTANCEOF -> 
+            handleTerminal(JavaToken.INSTANCEOF, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.GTEQ -> 
+            handleTerminal(JavaToken.GTEQ, state, inputEdge, descriptor, curSppfNode)
             JavaToken.GT -> 
             handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LT -> 
+            handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
@@ -8228,17 +8228,51 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
         // handle terminal edges
         for (inputEdge in ctx.input.getEdges(pos)) {
           when(inputEdge.label.terminal) {
-            JavaToken.LSHIFT -> 
-            handleTerminal(JavaToken.LSHIFT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.RSHIFT -> 
-            handleTerminal(JavaToken.RSHIFT, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.URSHIFT -> 
-            handleTerminal(JavaToken.URSHIFT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.GT -> 
+            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.LT -> 
+            handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }
       }
       3 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.LT -> 
+            handleTerminal(JavaToken.LT, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      4 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.GT -> 
+            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+      }
+      5 -> 
+       {
+        // handle terminal edges
+        for (inputEdge in ctx.input.getEdges(pos)) {
+          when(inputEdge.label.terminal) {
+            JavaToken.GT -> 
+            handleTerminal(JavaToken.GT, state, inputEdge, descriptor, curSppfNode)
+            else -> {}
+          }
+        }
+        // handle nonterminal edges
+        handleNonterminalEdge(descriptor, additiveExpression,
+            state.nonterminalEdges[additiveExpression]!!, curSppfNode)
+      }
+      6 -> 
        {
         // handle nonterminal edges
         handleNonterminalEdge(descriptor, additiveExpression,
@@ -8308,10 +8342,10 @@ public class Java8Parser<VertexType, LabelType : ILabel> : GeneratedParser<Verte
           when(inputEdge.label.terminal) {
             JavaToken.DIV -> 
             handleTerminal(JavaToken.DIV, state, inputEdge, descriptor, curSppfNode)
-            JavaToken.MULT -> 
-            handleTerminal(JavaToken.MULT, state, inputEdge, descriptor, curSppfNode)
             JavaToken.MOD -> 
             handleTerminal(JavaToken.MOD, state, inputEdge, descriptor, curSppfNode)
+            JavaToken.MULT -> 
+            handleTerminal(JavaToken.MULT, state, inputEdge, descriptor, curSppfNode)
             else -> {}
           }
         }

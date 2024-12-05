@@ -10,11 +10,13 @@ import org.ucfs.grammar.combinator.regexp.times
 class DyckGrammar : Grammar() {
     val S by Nt().asStart()
     val Round by Nt("(" * S * ")")
-    val Quadrat by Nt("[" * S * "]")
+    val Quadrat by Nt()
     val Curly by Nt("{" * S * "}")
 
     init {
-        //recursive nonterminals initialize in `init` block
-        S /= S * (Round or Quadrat or Curly) or Epsilon
+        S       /= S * (Round or Quadrat or Curly) or Epsilon
+        Round   /= "(" * S * ")"
+        Quadrat /= "[" * S * "]"
+        Curly   /= "{" * S * "}"
     }
 }

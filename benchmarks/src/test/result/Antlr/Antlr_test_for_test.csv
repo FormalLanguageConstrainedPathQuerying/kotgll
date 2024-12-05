@@ -1,5 +1,0 @@
-% Time benchmark for Antlr on dataset test_for_test at 2024-09-19 08:33
-fileName,result(avg 50 times)
-ActiveTestSuite.java,timeout
-Parallel.java,timeout
-Wrong.java,0.28

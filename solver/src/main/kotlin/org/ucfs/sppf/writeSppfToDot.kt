@@ -70,19 +70,19 @@ fun printEdge(x: Int, y: Int): String {
 fun printNode(nodeId: Int, node: ISppfNode): String {
     return when (node) {
         is TerminalSppfNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${getColor(node.weight)}]"
+            "${nodeId} [label = \"Terminal ${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${getColor(node.weight)}]"
         }
 
         is SymbolSppfNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${getColor(node.weight)}]"
+            "${nodeId} [label = \"Symbol ${nodeId} ; ${node.symbol.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = octagon, color = ${getColor(node.weight)}]"
         }
 
         is IntermediateSppfNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${getColor(node.weight)}]"
+            "${nodeId} [label = \"Intermediate ${nodeId} ; RSM: ${node.rsmState.nonterminal.name}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = rectangle, color = ${getColor(node.weight)}]"
         }
 
         is PackedSppfNode<*> -> {
-            "${nodeId} [label = \"${nodeId} ; Weight: ${node.weight}\", shape = point, width = 0.5, color = ${getColor(node.weight)}]"
+            "${nodeId} [label = \"Packed ${nodeId} ; Weight: ${node.weight}\", shape = point, width = 0.5, color = ${getColor(node.weight)}]"
         }
 
         else -> ""

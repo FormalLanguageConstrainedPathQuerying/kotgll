@@ -887,9 +887,9 @@ class Java8 : Grammar() {
                 relationalExpression * INSTANCEOF * referenceType
 
         shiftExpression /= additiveExpression or
-                shiftExpression * LSHIFT * additiveExpression or
-                shiftExpression * RSHIFT * additiveExpression or
-                shiftExpression * URSHIFT * additiveExpression
+                shiftExpression * LT * LT * additiveExpression or
+                shiftExpression * GT * GT * additiveExpression or
+                shiftExpression * GT * GT * GT * additiveExpression
 
         additiveExpression /= multiplicativeExpression or
                 additiveExpression * PLUS * multiplicativeExpression or

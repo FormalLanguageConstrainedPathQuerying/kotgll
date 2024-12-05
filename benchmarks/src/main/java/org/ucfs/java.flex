@@ -30,7 +30,6 @@ package org.ucfs;
 
 
 %{
-  StringBuilder string = new StringBuilder();
 
   /**
    * assumes correct representation of a long value for
@@ -137,6 +136,7 @@ SingleCharacter = [^\r\n\'\\]
   "try"                          { return JavaToken.TRY; }
   "volatile"                     { return JavaToken.VOLATILE; }
   "strictfp"                     { return JavaToken.STRICTFP; }
+  "enum"                         { return JavaToken.ENUM; }
   "@"                            { return JavaToken.AT; }
 
   /* boolean literals */
@@ -185,9 +185,6 @@ SingleCharacter = [^\r\n\'\\]
   "|"                            { return JavaToken.OR; }
   "^"                            { return JavaToken.XOR; }
   "%"                            { return JavaToken.MOD; }
-  "<<"                           { return JavaToken.LSHIFT; }
-  ">>"                           { return JavaToken.RSHIFT; }
-  ">>>"                          { return JavaToken.URSHIFT; }
   "+="                           { return JavaToken.PLUSEQ; }
   "-="                           { return JavaToken.MINUSEQ; }
   "*="                           { return JavaToken.MULTEQ; }
@@ -201,7 +198,7 @@ SingleCharacter = [^\r\n\'\\]
   ">>>="                         { return JavaToken.URSHIFTEQ; }
 
   /* string literal */
-  \"                             { yybegin(STRING); string.setLength(0); }
+  \"                             { yybegin(STRING); }
 
   /* character literal */
   \'                             { yybegin(CHARLITERAL); }
@@ -238,17 +235,19 @@ SingleCharacter = [^\r\n\'\\]
 <STRING> {
   \"                             { yybegin(YYINITIAL); return JavaToken.STRING_LITERAL; }
 
-  {StringCharacter}+             { string.append( yytext() ); }
+  {StringCharacter}+             {  }
 
   /* escape sequences */
-  "\\b"                          { string.append( '\b' ); }
-  "\\t"                          { string.append( '\t' ); }
-  "\\n"                          { string.append( '\n' ); }
-  "\\f"                          { string.append( '\f' ); }
-  "\\r"                          { string.append( '\r' ); }
-  "\\\""                         { string.append( '\"' ); }
-  "\\'"                          { string.append( '\'' ); }
-  "\\\\"                         { string.append( '\\' ); }
+  "\\b"                          {  }
+  "\\t"                          {  }
+  "\\n"                          { }
+  "\\f"                          { }
+  "\\r"                          {  }
+  "\\u"                          {  }
+  "\\u000C"                          {  }
+  "\\\""                         {  }
+  "\\'"                          {  }
+  "\\\\"                         {  }
   \\[0-3]?{OctDigit}?{OctDigit}  {  }
 
   /* error cases */
@@ -269,7 +268,6 @@ SingleCharacter = [^\r\n\'\\]
   "\\'"\'                        { yybegin(YYINITIAL); return JavaToken.CHARACTER_LITERAL;}
   "\\\\"\'                       { yybegin(YYINITIAL); return JavaToken.CHARACTER_LITERAL; }
   \\[0-3]?{OctDigit}?{OctDigit}\' { yybegin(YYINITIAL);
-			                              int val = Integer.parseInt(yytext().substring(1,yylength()-1),8);
 			                            return JavaToken.CHARACTER_LITERAL; }
 
   /* error cases */

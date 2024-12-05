@@ -4,7 +4,8 @@ import org.ucfs.rsm.symbol.ITerminal
 import java.util.*
 
 /**
- * Terminal sppfNode. Only terminal sppfNodes can be leaves of the derivation tree
+ * A Terminal node to represent a matched edge label.
+ * Only terminal sppfNodes can be leaves of the derivation tree
  */
 class TerminalSppfNode<VertexType>(
     /**

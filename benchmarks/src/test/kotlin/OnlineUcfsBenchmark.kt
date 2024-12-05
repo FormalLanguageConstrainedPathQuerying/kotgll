@@ -2,6 +2,8 @@
 import org.junit.jupiter.api.Test
 import org.ucfs.Java8
 import org.ucfs.parser.Gll
+import org.ucfs.sppf.writeSppfToDot
+import java.io.File
 
 class OnlineUcfsBenchmark : ParsingBenchmarks() {
     override fun getShortName(): String = "UcfsOn"
@@ -10,17 +12,20 @@ class OnlineUcfsBenchmark : ParsingBenchmarks() {
         val startState = Java8().rsm
         val tokens = getTokenStream(text)
         val gll = Gll.gll(startState, tokens)
-        assert(gll.parse().first != null)
+        assert(gll.parse().first != null) { "can't build sppf" }
     }
 
-    @Test
-    fun parseOne(){
-        parse(sourceCode)
+
+   // @Test
+    fun parseOne() {
+        val startState = Java8().rsm
+        val tokens = getTokenStream(sourceCode)
+        val gll = Gll.gll(startState, tokens)
+        val sppf = gll.parse().first
+        assert(sppf != null){ "can't build sppf" }
+        writeSppfToDot(sppf!!, "beeb.dot")
     }
 
-    val sourceCode: String = """
-      final class OpenHashSet {
-        double i = 12.1;
-      }
-    """.trimIndent()
+    val sourceCode: String =
+        File("/home/olga/UCFS/benchmarks/src/main/java/org/antlr/beb.jaba").readText()
 }
