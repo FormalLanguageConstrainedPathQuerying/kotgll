@@ -18,12 +18,12 @@ class RecoverySppf<VertexType> : Sppf<VertexType>() {
      * @param nextSppfNode - right subtree
      * @return ParentNode, which has combined subtree as alternative derivation
      */
-    override fun getParentNode(
+    override fun getParentNodeAfterTerminal(
         rsmState: RsmState,
         sppfNode: SppfNode<VertexType>?,
         nextSppfNode: SppfNode<VertexType>,
     ): SppfNode<VertexType> {
-        val parent = super.getParentNode(rsmState, sppfNode, nextSppfNode)
+        val parent = super.getParentNodeAfterTerminal(rsmState, sppfNode, nextSppfNode)
         updateWeights(parent)
         return parent
     }

@@ -4,7 +4,11 @@ import org.ucfs.rsm.RsmState
 import java.util.*
 
 /**
- * Intermediate node in sppf. Ensures that the resulting derivation tree has at most cubic complexity
+ * An Intermediate node which corresponds to the intermediate
+ * point used in the path index. This node has two children,
+ * both are range nodes.
+ * <p>
+ *     Ensures that the resulting derivation tree has at most cubic complexity
  * @param VertexType - type of vertex in input graph
  */
 class IntermediateSppfNode<VertexType>(

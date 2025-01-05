@@ -24,16 +24,18 @@ object IntersectionEngine : IIntersectionEngine {
         val terminalEdges = rsmState.terminalEdges
         val nonterminalEdges = rsmState.nonterminalEdges
 
+        //input contains only terminal edges
         for (inputEdge in gll.ctx.input.getEdges(inputPosition)) {
             val terminal = inputEdge.label.terminal
             if (terminal == null) {
                 gll.handleTerminalOrEpsilonEdge(descriptor, sppfNode, null, descriptor.rsmState, inputEdge.head, 0)
-                continue
             }
-            val targetStates = terminalEdges[inputEdge.label.terminal]
-            if (targetStates != null) {
-                for (targetState in targetStates) {
-                    gll.handleTerminalOrEpsilonEdge(descriptor, sppfNode, terminal, targetState, inputEdge.head, 0)
+            else{
+                val targetStates = terminalEdges[inputEdge.label.terminal]
+                if (targetStates != null) {
+                    for (targetState in targetStates) {
+                        gll.handleTerminalOrEpsilonEdge(descriptor, sppfNode, terminal, targetState, inputEdge.head, 0)
+                    }
                 }
             }
         }

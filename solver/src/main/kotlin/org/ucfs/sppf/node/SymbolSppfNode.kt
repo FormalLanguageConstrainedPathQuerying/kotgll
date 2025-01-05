@@ -4,8 +4,9 @@ import org.ucfs.rsm.symbol.Nonterminal
 import java.util.*
 
 /**
- * Symbol sppfNode. The corresponding tree with Symbol sppfNode as root represents derivation subtree for
- * subrange, recognized by nonterminal
+ * Symbol sppfNode to represent the root of the subtree which
+ * corresponds to paths can be derived from the respective
+ * nonterminal.
  */
 class SymbolSppfNode<VertexType>(
     /**
