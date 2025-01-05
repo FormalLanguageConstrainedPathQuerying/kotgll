@@ -1,5 +1,3 @@
-
-import org.junit.jupiter.api.Test
 import org.ucfs.Java8
 import org.ucfs.parser.Gll
 import org.ucfs.sppf.writeSppfToDot
@@ -16,14 +14,13 @@ class OnlineUcfsBenchmark : ParsingBenchmarks() {
     }
 
 
-   // @Test
     fun parseOne() {
         val startState = Java8().rsm
         val tokens = getTokenStream(sourceCode)
         val gll = Gll.gll(startState, tokens)
         val sppf = gll.parse().first
-        assert(sppf != null){ "can't build sppf" }
-        writeSppfToDot(sppf!!, "beeb.dot")
+        assert(sppf != null) { "can't build sppf" }
+        writeSppfToDot(sppf!!, "sppf.dot")
     }
 
     val sourceCode: String =

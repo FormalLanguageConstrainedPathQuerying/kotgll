@@ -10,24 +10,24 @@ import org.junit.jupiter.api.Timeout
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.test.Ignore
 
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     try {
         AntlrFastBenchmark().parse(File(args[0]).readText())
-    }
-    catch (e: Throwable){
+    } catch (e: Throwable) {
         println(e)
         System.exit(1)
     }
 }
-class AntlrFastBenchmark: ParsingBenchmarks() {
+
+class AntlrFastBenchmark : ParsingBenchmarks() {
 
     override fun getShortName(): String = "AntlrFast"
 
-    fun main(args: Array<String>){
+    fun main(args: Array<String>) {
         parse(File(args[0]).readText())
     }
+
     @Override
     override fun parse(text: String) {
         val antlrParser =
@@ -40,8 +40,7 @@ class AntlrFastBenchmark: ParsingBenchmarks() {
             )
         try {
             var compilationUnit = antlrParser.compilationUnit()
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             print(e)
         }
     }
@@ -58,6 +57,7 @@ class AntlrFastBenchmark: ParsingBenchmarks() {
 
     var sum_count: Int = 0
     val fileName = "tokens_count.csv"
+
     @TestFactory
     @Timeout(100)
     fun getTokensCount(): Collection<DynamicTest> {

@@ -1,8 +1,5 @@
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.TestFactory
-import org.junit.jupiter.api.Timeout
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,10 +16,9 @@ abstract class ParsingBenchmarks {
     private val timePerTestCase: Long = 400
     private val repeatCount: Int = 10
     lateinit var file: File
-    // rxjava-2-2-2
-    // junit-4-12
+
     val datasetName = "junit-4-12"
-   //val datasetName = "rxjava-2-2-2"
+    //val datasetName = "rxjava-2-2-2"
 
     val resourceFolder: Path = Path.of("java", "correct", datasetName)
     private lateinit var csvFileName: String
@@ -47,7 +43,7 @@ abstract class ParsingBenchmarks {
     private fun getHeapSize(): Long = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
 
     private fun getPrintableHeapSize(heapSize: Long? = null): String {
-        return String.format("%.2f", (heapSize ?: getHeapSize()) * 1.0/ memoryDivider)
+        return String.format("%.2f", (heapSize ?: getHeapSize()) * 1.0 / memoryDivider)
             .trimEnd('0').trimEnd('.')
     }
 
@@ -75,8 +71,7 @@ abstract class ParsingBenchmarks {
             } catch (e: Exception) {
                 report(fileName, e.javaClass.name, getPrintableHeapSize())
                 assert(false) { e.toString() }
-            }
-            catch (e : OutOfMemoryError){
+            } catch (e: OutOfMemoryError) {
                 System.gc()
                 report(fileName, e.javaClass.name, "OOM")
             }
@@ -100,6 +95,8 @@ abstract class ParsingBenchmarks {
         return Path.of(res.toURI())
     }
 
+    // Disable for running on CI
+    @Disabled
     @TestFactory
     @Timeout(100)
     fun timeTest(): Collection<DynamicTest> {

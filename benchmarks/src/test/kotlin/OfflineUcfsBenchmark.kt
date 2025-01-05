@@ -1,21 +1,22 @@
 import org.ucfs.input.LinearInputLabel
 import java.io.File
 
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     try {
         OfflineUcfsBenchmark().parse(File(args[0]).readText())
-    }
-    catch (e: Throwable){
+    } catch (e: Throwable) {
         println(e)
         System.exit(1)
     }
 }
+
 class OfflineUcfsBenchmark : ParsingBenchmarks() {
     override fun getShortName(): String = "UcfsOff"
 
-    fun main(args: Array<String>){
+    fun main(args: Array<String>) {
         parse(File(args[0]).readText())
     }
+
     override fun parse(text: String) {
         val parser = org.ucfs.Java8Parser<Int, LinearInputLabel>()
         parser.setInput(getTokenStream(text))
