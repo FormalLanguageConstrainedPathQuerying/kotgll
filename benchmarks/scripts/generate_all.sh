@@ -2,13 +2,13 @@
 shopt -s nullglob     #ingore failed patterns
 rootPrj=$(pwd)
 
-parserDest="src/main/kotlin/org/ucfs"
-antlrSrc="src/main/java/org/antlr"
-fastAntlrSrc="src/main/java/org/antlr/fast"
+parserDest="../src/main/kotlin/org/ucfs"
+antlrSrc="../src/main/java/org/antlr"
+fastAntlrSrc="../src/main/java/org/antlr/fast"
 antlrPackage="org.antlr"
 antlrFastPackage="org.antlr.fast"
 
-lexerSrc="src/main/java/org/ucfs"
+lexerSrc="../src/main/java/org/ucfs"
 
 printf "\n\nINSTALL PACKAGES\n"
 apt-get install jflex
@@ -17,6 +17,7 @@ apt-get install antlr4
 printf "\n\nGENERATE FILES\n"
 
 printf "\nGenerate ANTLR4 files"
+
 cd $antlrSrc
 antlr4 -package $antlrPackage Java8Lexer.g4
 antlr4 -package $antlrPackage Java8Parser.g4
@@ -39,4 +40,3 @@ cd $rootPrj
 printf  $(pwd)
 printf "\nGenerate UCFS parser files at"
 echo $parserDest
-./gradlew :benchmarks:run
