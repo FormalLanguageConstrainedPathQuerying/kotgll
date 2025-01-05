@@ -3,8 +3,7 @@
 
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+**/build/
 
 ### IntelliJ IDEA ###
 .idea
@@ -18,8 +17,14 @@
 ### Generated files ###
 /benchmarks/gen/
 /benchmarks/logs/
+
+### Antlr parsers ###
 /benchmarks/src/main/java/org/antlr/*
 !/benchmarks/src/main/java/org/antlr/*.g4
+
+### Jflex scanner ###
+/benchmarks/src/main/java/org/ucfs/scanner/*
+!/benchmarks/src/main/java/org/ucfs/scanner/*.flex
 
 ### Large datasets ###
 /benchmarks/src/test/resources/java/correct/*

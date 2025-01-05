@@ -2,13 +2,13 @@
 shopt -s nullglob     #ingore failed patterns
 rootPrj=$(pwd)
 
-parserDest="../src/main/kotlin/org/ucfs"
-antlrSrc="../src/main/java/org/antlr"
-fastAntlrSrc="../src/main/java/org/antlr/fast"
+parserDest="benchmarks/src/main/kotlin/org/ucfs"
+antlrSrc="benchmarks/src/main/java/org/antlr"
+fastAntlrSrc="benchmarks/src/main/java/org/antlr/fast"
 antlrPackage="org.antlr"
 antlrFastPackage="org.antlr.fast"
 
-lexerSrc="../src/main/java/org/ucfs"
+lexerSrc="benchmarks/src/main/java/org/ucfs/scanner"
 
 printf "\n\nINSTALL PACKAGES\n"
 apt-get install jflex
