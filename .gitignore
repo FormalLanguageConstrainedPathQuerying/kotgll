@@ -9,8 +9,7 @@ input.txt
 
 # Benchmarks
 /benchmarks/build/
-/benchmarks/src/jmh/kotlin/antlr4/*
-!/benchmarks/src/jmh/kotlin/antlr4/*.g4
+!/benchmarks/src/main/java/org/antlr4/*.g4
 
 # Lexers
 /benchmarks/src/jmh/kotlin/lexers/*.java
@@ -20,12 +19,6 @@ solver/build/
 build/
 out/
 
-# No idea wtf is this
-*.attach*
-
-# Graphs
-*.dot
-*.pdf
 
 # Profiling
 /visualvm_217
@@ -35,9 +28,6 @@ out/
 
 # BlueJ files
 *.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 # Package Files #
 *.jar
@@ -71,13 +61,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
 ### VS Code ###
 .vscode/
 
@@ -85,6 +68,6 @@ bin/
 .DS_Store
 
 ### Generated files ###
-/gen/
+/benchmarks/gen/
 /benchmarks/logs/
 /benchmarks/src/test/resources/java/correct/*
