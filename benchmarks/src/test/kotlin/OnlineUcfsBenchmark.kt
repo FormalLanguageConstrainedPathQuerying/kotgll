@@ -14,7 +14,7 @@ class OnlineUcfsBenchmark : ParsingBenchmarks() {
     }
 
 
-    fun parseOne() {
+    fun parseOne(sourceCode: String) {
         val startState = Java8().rsm
         val tokens = getTokenStream(sourceCode)
         val gll = Gll.gll(startState, tokens)
@@ -23,6 +23,6 @@ class OnlineUcfsBenchmark : ParsingBenchmarks() {
         writeSppfToDot(sppf!!, "sppf.dot")
     }
 
-    val sourceCode: String =
-        File("/home/olga/UCFS/benchmarks/src/main/java/org/antlr/beb.jaba").readText()
+    fun getSourceCode(path : String): String =
+        File(path).readText()
 }

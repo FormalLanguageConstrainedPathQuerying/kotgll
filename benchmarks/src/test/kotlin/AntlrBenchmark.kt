@@ -2,7 +2,6 @@ import org.antlr.Java8Lexer
 import org.antlr.Java8Parser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import org.junit.jupiter.api.Disabled
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -35,11 +34,6 @@ class AntlrBenchmark : ParsingBenchmarks() {
                 print(e)
             }
         }
-    }
-
-    @Disabled
-    fun testOne() {
-        parse("")
     }
 }
 

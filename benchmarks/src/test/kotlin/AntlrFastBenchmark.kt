@@ -3,6 +3,7 @@ import org.antlr.fast.JavaLexer
 import org.antlr.fast.JavaParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
@@ -58,6 +59,7 @@ class AntlrFastBenchmark : ParsingBenchmarks() {
     var sum_count: Int = 0
     val fileName = "tokens_count.csv"
 
+    @Disabled
     @TestFactory
     @Timeout(100)
     fun getTokensCount(): Collection<DynamicTest> {

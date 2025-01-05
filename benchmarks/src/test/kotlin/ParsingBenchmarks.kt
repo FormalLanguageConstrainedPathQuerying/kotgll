@@ -95,8 +95,7 @@ abstract class ParsingBenchmarks {
         return Path.of(res.toURI())
     }
 
-    // Disable for running on CI
-    @Disabled
+    @Disabled("Disable for running on CI")
     @TestFactory
     @Timeout(100)
     fun timeTest(): Collection<DynamicTest> {
