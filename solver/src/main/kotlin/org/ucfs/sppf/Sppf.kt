@@ -28,22 +28,13 @@ open class Sppf<VertexType> {
      * @param descriptor - current parsing stage
      * @return created epsilonNode
      */
-    fun getEpsilonSppfNode(descriptor: Descriptor<VertexType>): SppfNode<VertexType>? {
-        val rsmState = descriptor.rsmState
-        val sppfNode = descriptor.sppfNode
-        val inputPosition = descriptor.inputPosition
-
-        return if (rsmState.isStart && rsmState.isFinal) {
-            // if nonterminal accepts epsilon
-            getParentNodeAfterTerminal(
-                rsmState,
-                sppfNode,
-                getOrCreateIntermediateSppfNode(rsmState, inputPosition, inputPosition, weight = 0)
-            )
-        } else {
-            sppfNode
-        }
-    }
+    fun getEpsilonSppfNode(descriptor: Descriptor<VertexType>): SppfNode<VertexType> =
+        getOrCreateIntermediateSppfNode(
+            descriptor.rsmState,
+            descriptor.inputPosition,
+            descriptor.inputPosition,
+            weight = 0
+        )
 
     /**
      * Part of incrementality mechanism.
@@ -59,15 +50,15 @@ open class Sppf<VertexType> {
     }
 
     /**
-     * Receives two subtrees of SPPF and connects them via PackedNode.
-     * If given subtrees repesent derivation tree for nonterminal and state is final, then retrieves or creates
+     * Receives two subtrees of SPPF where second one is terminal, and connects them via PackedNode.
+     * If given subtrees represent derivation tree for nonterminal and state is final, then retrieves or creates
      * Symbol sppfNode, otherwise retrieves or creates Intermediate sppfNode
      * @param rsmState - current rsmState
      * @param sppfNode - left subtree
      * @param nextSppfNode - right subtree
      * @return ParentNode, which has combined subtree as alternative derivation
      */
-    open fun getParentNodeAfterTerminal(
+    open fun getOrCreateIntermediateNode(
         rsmState: RsmState,
         sppfNode: SppfNode<VertexType>?,
         nextSppfNode: SppfNode<VertexType>,
@@ -76,44 +67,17 @@ open class Sppf<VertexType> {
         val leftExtent = sppfNode?.leftExtent ?: nextSppfNode.leftExtent
         val rightExtent = nextSppfNode.rightExtent
 
-        val packedNode = PackedSppfNode(nextSppfNode.leftExtent, rsmState, sppfNode, nextSppfNode)
+        val packedNode = PackedSppfNode(nextSppfNode.leftExtent, sppfNode, nextSppfNode)
 
         val parent: NonterminalSppfNode<VertexType> =
-            if (rsmState.isFinal) getOrCreateSymbolSppfNode(rsmState.nonterminal, leftExtent, rightExtent, packedNode.weight)
-            else getOrCreateIntermediateSppfNode(rsmState, leftExtent, rightExtent, packedNode.weight)
+             getOrCreateIntermediateSppfNode(rsmState, leftExtent, rightExtent, packedNode.weight)
+        sppfNode?.parents?.add(packedNode)
+        nextSppfNode.parents.add(packedNode)
+        packedNode.parents.add(parent)
 
-        if (sppfNode != null || parent != nextSppfNode) { // Restrict SPPF from creating loops PARENT -> PACKED -> PARENT
-            sppfNode?.parents?.add(packedNode)
-            nextSppfNode.parents.add(packedNode)
-            packedNode.parents.add(parent)
-
-            parent.children.add(packedNode)
-        }
+        parent.children.add(packedNode)
 
         return parent
-    }
-
-
-    /**
-     *#TODO fix it for cases S = a | bc | abc
-     */
-    private fun hasCommonSymbolInLeftExtend(
-        symbolSppfInLeft: SppfNode<VertexType>?,
-        rsmState: RsmState,
-        packedNode: PackedSppfNode<VertexType>
-    ): NonterminalSppfNode<VertexType>? {
-        if(symbolSppfInLeft is SymbolSppfNode && rsmState.isFinal){
-            val commonNodes = symbolSppfInLeft.children.filter { packed -> packed.rsmState.targetStates.contains(rsmState) }
-            for(node in commonNodes){
-                if(node.rightSppfNode == null){
-                   // node.rightSppfNode =
-                }
-                symbolSppfInLeft.children.remove(node)
-               // node.
-
-            }
-        }
-        return null
     }
 
     /**
@@ -167,28 +131,54 @@ open class Sppf<VertexType> {
         return createdSppfNodes[node]!! as IntermediateSppfNode
     }
 
-    /**
-     * Creates or retrieves Symbol sppfNode with given parameters
-     * @param nonterminal - nonterminal
-     * @param leftExtent - left limit of subrange
-     * @param rightExtent - right limit of subrange
-     * @param weight - weight of the node, default value is Int.MAX_VALUE
-     */
-    fun getOrCreateSymbolSppfNode(
-        nonterminal: Nonterminal,
-        leftExtent: VertexType,
-        rightExtent: VertexType,
-        weight: Int = Int.MAX_VALUE,
-    ): SymbolSppfNode<VertexType> {
-        val node = SymbolSppfNode(nonterminal, leftExtent, rightExtent)
-
-        node.weight = weight
-
+    fun getUniqueSppfNode(node: SppfNode<VertexType>): SppfNode<VertexType> {
         if (!createdSppfNodes.containsKey(node)) {
             createdSppfNodes[node] = node
         }
 
-        return createdSppfNodes[node]!! as SymbolSppfNode
+        return createdSppfNodes[node]!!
+    }
+
+    /**
+     * Creates or retrieves Intermediate sppfNode with one child sppfNode.
+     */
+    fun getOrCreateIntermediateSppfNode(rsmState: RsmState, sppfNode: SppfNode<VertexType>): SymbolSppfNode<VertexType> {
+        val symbolNode = getOrCreateIntermediateNode(rsmState, null, sppfNode)
+        val packedNode = PackedSppfNode(sppfNode.leftExtent, null, sppfNode)
+        symbolNode.children.add(packedNode)
+        return symbolNode
+    }
+
+    /**
+     * Creates or retrieves Symbol sppfNode from given sppfNode.
+     * If given sppfNode is intermediate then we add its children to symbol node,
+     * otherwise, add given sppfNode as child.
+     */
+    fun getOrCreateSymbolSppfNode(nonterminal: Nonterminal, sppfNode: SppfNode<VertexType>): SymbolSppfNode<VertexType> {
+        val intermediateSppfNode = when(sppfNode) {
+            is IntermediateSppfNode<VertexType> ->  {
+                sppfNode
+            }
+            else -> {
+                getOrCreateIntermediateNode(nonterminal.startState, null, sppfNode)
+            }
+        }
+        val node = SymbolSppfNode(nonterminal, sppfNode)
+
+        node.weight = weight
+
+        return getUniqueSppfNode(node) as SymbolSppfNode
+        val symbolNode = getOrCreateSymbolSppfNode(nonterminal, sppfNode.leftExtent, sppfNode.rightExtent, sppfNode.weight)
+        when(sppfNode) {
+            is IntermediateSppfNode<VertexType> ->  {
+                symbolNode.children.addAll(sppfNode.children)
+            }
+            else -> {
+                val packedNode = PackedSppfNode(sppfNode.leftExtent, null, sppfNode)
+                symbolNode.children.add(packedNode)
+            }
+        }
+        return symbolNode
     }
 
     /**

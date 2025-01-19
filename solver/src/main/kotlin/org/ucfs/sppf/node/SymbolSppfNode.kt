@@ -16,12 +16,12 @@ class SymbolSppfNode<VertexType>(
     /**
      * Left limit of the subrange
      */
-    leftExtent: VertexType,
-    /**
-     * Right limit of the subrange
-     */
-    rightExtent: VertexType,
-) : NonterminalSppfNode<VertexType>(leftExtent, rightExtent) {
+    private val intermediateNode: IntermediateSppfNode<VertexType>
+) : NonterminalSppfNode<VertexType>(intermediateNode.leftExtent, intermediateNode.rightExtent) {
+
+    override val children: HashSet<PackedSppfNode<VertexType>>
+        get() = intermediateNode.children
+
     override fun toString() = "SymbolSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, symbol=$symbol)"
 
     override fun equals(other: Any?): Boolean {

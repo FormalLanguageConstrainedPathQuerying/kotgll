@@ -2,7 +2,6 @@
 
 package org.ucfs
 
-import org.ucfs.JavaToken
 import org.ucfs.descriptors.Descriptor
 import org.ucfs.input.IInputGraph
 import org.ucfs.input.ILabel
@@ -8649,8 +8648,8 @@ public class Java8ParserRecovery<VertexType, LabelType : ILabel> :
     }
   }
 
-  override fun parse(descriptor: Descriptor<VertexType>) {
-    super.parse(descriptor)
+  override fun handleDescriptor(descriptor: Descriptor<VertexType>) {
+    super.handleDescriptor(descriptor)
     org.ucfs.intersection.RecoveryIntersection.handleRecoveryEdges(this, descriptor)
   }
 

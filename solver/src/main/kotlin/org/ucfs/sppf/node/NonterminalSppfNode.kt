@@ -18,5 +18,5 @@ abstract class NonterminalSppfNode<VertexType>(
     /**
      * Set of all children nodes
      */
-    val children: HashSet<PackedSppfNode<VertexType>> = HashSet()
+    abstract val children: HashSet<PackedSppfNode<VertexType>>
 }

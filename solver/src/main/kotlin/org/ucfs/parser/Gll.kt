@@ -66,26 +66,25 @@ class Gll<VertexType, LabelType : ILabel> private constructor(
      * Processes descriptor
      * @param descriptor - descriptor to process
      */
-    override fun parse(descriptor: Descriptor<VertexType>) {
+    override fun handleDescriptor(descriptor: Descriptor<VertexType>) {
         val state = descriptor.rsmState
         val pos = descriptor.inputPosition
         val sppfNode = descriptor.sppfNode
-        val epsilonSppfNode = ctx.sppf.getEpsilonSppfNode(descriptor)
         val leftExtent = sppfNode?.leftExtent
         val rightExtent = sppfNode?.rightExtent
 
         if (state.isFinal) {
-            pop(descriptor.gssNode, sppfNode ?: epsilonSppfNode, pos)
+            pop(descriptor.gssNode, sppfNode ?: ctx.sppf.getEpsilonSppfNode(descriptor), pos)
         }
 
         ctx.descriptors.addToHandled(descriptor)
-
-        if (state.isStart && state.isFinal) {
-            checkAcceptance(
-                epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal
-            )
-        }
-        checkAcceptance(sppfNode, leftExtent, rightExtent, state.nonterminal)
+//
+//        if (state.isStart && state.isFinal) {
+//            checkAcceptance(
+//                epsilonSppfNode, epsilonSppfNode!!.leftExtent, epsilonSppfNode!!.rightExtent, state.nonterminal
+//            )
+//        }
+//      checkAcceptance(sppfNode, leftExtent, rightExtent, state.nonterminal)
 
         engine.handleEdges(this, descriptor, sppfNode)
     }

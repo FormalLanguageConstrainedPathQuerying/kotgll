@@ -26,31 +26,19 @@ abstract class GeneratedParser<VertexType, LabelType : ILabel> :
         curSppfNode: SppfNode<VertexType>?
     ): Unit
 
-    override fun parse(descriptor: Descriptor<VertexType>) {
+    override fun handleDescriptor(descriptor: Descriptor<VertexType>) {
         val state = descriptor.rsmState
         val nt = state.nonterminal
 
         val pos = descriptor.inputPosition
         val curSppfNode = descriptor.sppfNode
         val epsilonSppfNode = ctx.sppf.getEpsilonSppfNode(descriptor)
-        val leftExtent = curSppfNode?.leftExtent
-        val rightExtent = curSppfNode?.rightExtent
 
         if (state.isFinal) {
             pop(descriptor.gssNode, curSppfNode ?: epsilonSppfNode, pos)
         }
 
         ctx.descriptors.addToHandled(descriptor)
-
-        if (state.isStart && state.isFinal) {
-            checkAcceptance(
-                epsilonSppfNode,
-                epsilonSppfNode!!.leftExtent,
-                epsilonSppfNode!!.rightExtent,
-                nt
-            )
-        }
-        checkAcceptance(curSppfNode, leftExtent, rightExtent, nt)
 
         callNtFuncs(nt, descriptor, curSppfNode)
     }

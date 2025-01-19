@@ -2,6 +2,7 @@ package org.ucfs.sppf.node
 
 import org.ucfs.rsm.RsmState
 import java.util.*
+import kotlin.collections.HashSet
 
 /**
  * An Intermediate node which corresponds to the intermediate
@@ -23,8 +24,10 @@ class IntermediateSppfNode<VertexType>(
     /**
      * Right limit of the subrange
      */
-    rightExtent: VertexType,
+    rightExtent: VertexType
 ) : NonterminalSppfNode<VertexType>(leftExtent, rightExtent) {
+    override val children: HashSet<PackedSppfNode<VertexType>> = HashSet()
+
     override fun toString() = "IntermediateSppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"
 
     override fun equals(other: Any?): Boolean {
@@ -38,4 +41,6 @@ class IntermediateSppfNode<VertexType>(
 
     override val hashCode: Int = Objects.hash(leftExtent, rightExtent, rsmState)
     override fun hashCode() = hashCode
+    override val parents: HashSet<ISppfNode>
+        get() = TODO("Not yet implemented")
 }
