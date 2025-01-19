@@ -31,11 +31,6 @@ abstract class SppfNode<VertexType>(
     override var weight: Int,
     override var id: Int = SppfNodeId.getFirstFreeSppfNodeId(),
 ) : ISppfNode {
-    /**
-     * Set of all node that have current one as a child
-     */
-    override val parents: HashSet<ISppfNode> = HashSet()
-
     override fun toString() = "SppfNode(leftExtent=$leftExtent, rightExtent=$rightExtent)"
 
     override fun equals(other: Any?): Boolean {

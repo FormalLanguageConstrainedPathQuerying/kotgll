@@ -28,7 +28,7 @@ class GssNode<VertexType>(
     /**
      * Maps edge label (rsmState, sppfNode) to destination gssNode
      */
-    val edges: HashMap<Pair<RsmState, SppfNode<VertexType>?>, HashSet<GssNode<VertexType>>> = HashMap()
+    val edges: HashMap<Pair<RsmState, SppfNode<VertexType>?>, GssNode<VertexType>> = HashMap()
 
     /**
      * Stores handled descriptors, which contained current gssNode as value of corresponding field
@@ -40,12 +40,10 @@ class GssNode<VertexType>(
      * @param rsmState - rsmState to store on the edge
      * @param sppfNode - sppfNode to store on the edge
      * @param gssNode - destination gssNode
-     * @return true if creation was successful, false otherwise
      */
     fun addEdge(rsmState: RsmState, sppfNode: SppfNode<VertexType>?, gssNode: GssNode<VertexType>): Boolean {
         val label = Pair(rsmState, sppfNode)
-
-        return edges.computeIfAbsent(label) { HashSet() }.add(gssNode)
+        return edges.put(label, gssNode) == null
     }
 
     override fun toString() = "GSSNode(nonterminal=$nonterminal, inputPosition=$inputPosition)"

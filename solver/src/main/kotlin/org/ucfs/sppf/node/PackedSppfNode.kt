@@ -1,6 +1,5 @@
 package org.ucfs.sppf.node
 
-import org.ucfs.rsm.RsmState
 import java.util.*
 
 /**
@@ -13,10 +12,6 @@ open class PackedSppfNode<VertexType>(
      * Divides subrange leftExtent - rightExtent into two subranges leftExtent - pivot, pivot - rightExtent
      */
     val pivot: VertexType,
-    /**
-     * rsmState, corresponding to grammar slot in CFS
-     */
-    val rsmState: RsmState,
     /**
      * Left child
      */
@@ -40,19 +35,18 @@ open class PackedSppfNode<VertexType>(
     override var weight: Int = (leftSppfNode?.weight ?: 0) + (rightSppfNode?.weight ?: 0)
 
     override fun toString() =
-        "PackedSppfNode(pivot=$pivot, rsmState=$rsmState, leftSppfNode=$leftSppfNode, rightSppfNode=$rightSppfNode)"
+        "PackedSppfNode(pivot=$pivot, leftSppfNode=$leftSppfNode, rightSppfNode=$rightSppfNode)"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is PackedSppfNode<*>) return false
         if (pivot != other.pivot) return false
-        if (rsmState != other.rsmState) return false
         if (leftSppfNode != other.leftSppfNode) return false
         if (rightSppfNode != other.rightSppfNode) return false
 
         return true
     }
 
-    val hashCode: Int = Objects.hash(pivot, rsmState, leftSppfNode, rightSppfNode)
+    val hashCode: Int = Objects.hash(pivot, leftSppfNode, rightSppfNode)
     override fun hashCode() = hashCode
 }
