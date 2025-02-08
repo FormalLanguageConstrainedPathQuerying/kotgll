@@ -16,6 +16,7 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("org.antlr:antlr4:4.13.1")
 }
 
 kotlin { jvmToolchain(11) }

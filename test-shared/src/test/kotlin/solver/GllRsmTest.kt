@@ -10,7 +10,7 @@ import org.ucfs.IDynamicGllTest.Companion.getFile
 import org.ucfs.IDynamicGllTest.Companion.getLines
 import org.ucfs.IDynamicGllTest.Companion.getTestName
 import org.ucfs.input.LinearInput
-import org.ucfs.input.LinearInputLabel
+import org.ucfs.input.TerminalInputLabel
 import org.ucfs.parser.Gll
 import org.ucfs.parser.IGll
 import org.ucfs.rsm.RsmState
@@ -24,7 +24,7 @@ class GllRsmTest : IDynamicGllTest {
         get() = "grammar.rsm"
 
 
-    private fun getGll(input: String, rsm: RsmState): Gll<Int, LinearInputLabel> {
+    private fun getGll(input: String, rsm: RsmState): Gll<Int, TerminalInputLabel> {
         return Gll.gll(rsm, LinearInput.buildFromString(input))
     }
 
@@ -49,7 +49,7 @@ class GllRsmTest : IDynamicGllTest {
      * Test for any type of incorrect input
      * Gll should be parametrized by it's input!
      */
-    private fun getIncorrectTestContainer(caseName: String, gll: IGll<Int, LinearInputLabel>): DynamicNode {
+    private fun getIncorrectTestContainer(caseName: String, gll: IGll<Int, TerminalInputLabel>): DynamicNode {
         return DynamicTest.dynamicTest(caseName) {
             val result = gll.parse().first
             Assertions.assertNull(result)
@@ -60,7 +60,7 @@ class GllRsmTest : IDynamicGllTest {
      * Test for any type of correct input
      * Gll should be parametrized by it's input!
      */
-    private fun getCorrectTestContainer(caseName: String, gll: IGll<Int, LinearInputLabel>): DynamicNode {
+    private fun getCorrectTestContainer(caseName: String, gll: IGll<Int, TerminalInputLabel>): DynamicNode {
         return DynamicTest.dynamicTest(caseName) {
             val result = gll.parse().first
             //TODO add check for parsing result quality

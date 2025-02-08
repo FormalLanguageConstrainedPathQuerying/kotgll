@@ -6,31 +6,10 @@ package org.ucfs.input
  * @param LabelType - type of label on edges in input graph
  */
 interface IInputGraph<VertexType, LabelType : ILabel> {
-
-    /**
-     * Collection of all vertices in graph
-     */
-    val vertices: MutableSet<VertexType>
-
-    /**
-     * Maps vertex to edges, outgoing from it
-     */
-    val edges: MutableMap<VertexType, MutableList<Edge<VertexType, LabelType>>>
-
-    /**
-     * Collection of all starting vertices, used to create initial descriptors to begin parsing
-     */
-    val startVertices: MutableSet<VertexType>
-
     /**
      * @return collection of all starting vertices
      */
     fun getInputStartVertices(): MutableSet<VertexType>
-
-    /**
-     * @return Collection of all vertices
-     */
-    fun getAllVertices(): MutableSet<VertexType>
 
     /**
      * Adds passed vertex both to collection of starting vertices and collection of all vertices
@@ -44,11 +23,6 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
      */
     fun addVertex(vertex: VertexType)
 
-    /**
-     * Removes vertex both from collection of starting vertices and collection of all vertices
-     * @param vertex - vertex to remove
-     */
-    fun removeVertex(vertex: VertexType)
 
     /**
      * Returns all outgoing edges from given vertex
@@ -85,4 +59,5 @@ interface IInputGraph<VertexType, LabelType : ILabel> {
      */
     fun isFinal(vertex: VertexType): Boolean
 
+    fun removeVertex(vertex: VertexType)
 }

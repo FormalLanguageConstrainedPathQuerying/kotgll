@@ -15,15 +15,15 @@ fun getResultPath(
 }
 
 
-fun getTokenStream(input: String): LinearInput<Int, LinearInputLabel> {
-    val graph = LinearInput<Int, LinearInputLabel>()
+fun getTokenStream(input: String): LinearInput<Int, TerminalInputLabel> {
+    val graph = LinearInput<Int, TerminalInputLabel>()
     getTokenStream(input, graph)
     return graph
 }
 
 
 
-fun <G : IInputGraph<Int, LinearInputLabel>> getTokenStream(input: String, inputGraph: G): G {
+fun <G : IInputGraph<Int, TerminalInputLabel>> getTokenStream(input: String, inputGraph: G): G {
     val lexer = Scanner(StringReader(input))
     var token: JavaToken
     var vertexId = 1
@@ -34,21 +34,21 @@ fun <G : IInputGraph<Int, LinearInputLabel>> getTokenStream(input: String, input
     while (true) {
         token = lexer.yylex() as JavaToken
         if (token == JavaToken.EOF) break
-        inputGraph.addEdge(vertexId, LinearInputLabel(token), ++vertexId)
+        inputGraph.addEdge(vertexId, TerminalInputLabel(token), ++vertexId)
     }
 
     return inputGraph
 }
 
-fun getCharStream(input: String): LinearInput<Int, LinearInputLabel> {
-    val inputGraph = LinearInput<Int, LinearInputLabel>()
+fun getCharStream(input: String): LinearInput<Int, TerminalInputLabel> {
+    val inputGraph = LinearInput<Int, TerminalInputLabel>()
     var vertexId = 1
 
     inputGraph.addVertex(vertexId)
     inputGraph.addStartVertex(vertexId)
 
     for (ch in input) {
-        inputGraph.addEdge(vertexId, LinearInputLabel(Term(ch.toString())), ++vertexId)
+        inputGraph.addEdge(vertexId, TerminalInputLabel(Term(ch.toString())), ++vertexId)
         inputGraph.addVertex(vertexId)
     }
 
