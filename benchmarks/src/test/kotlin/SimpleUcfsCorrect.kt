@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test
 import org.ucfs.input.IInputGraph
 import org.ucfs.input.LinearInput
-import org.ucfs.input.LinearInputLabel
+import org.ucfs.input.TerminalInputLabel
 import org.ucfs.parser.Gll
 import org.ucfs.rsm.symbol.Term
 import org.ucfs.rsm.writeRsmToDot
@@ -25,14 +25,14 @@ class SimpleUcfsCorrect {
     }
 
 
-    fun getTokenStream(input: List<Term<String>>): IInputGraph<Int, LinearInputLabel> {
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
+    fun getTokenStream(input: List<Term<String>>): IInputGraph<Int, TerminalInputLabel> {
+        val inputGraph = LinearInput<Int, TerminalInputLabel>()
         var vertexId = 1
 
         inputGraph.addVertex(vertexId)
         inputGraph.addStartVertex(vertexId)
         for (term in input) {
-            inputGraph.addEdge(vertexId, LinearInputLabel(term), ++vertexId)
+            inputGraph.addEdge(vertexId, TerminalInputLabel(term), ++vertexId)
         }
 
         return inputGraph

@@ -1,0 +1,5 @@
+digraph Input {
+    start -> 0;
+    0 -> 0 [label = "("];
+    0 -> 0 [label = ")"];
+}

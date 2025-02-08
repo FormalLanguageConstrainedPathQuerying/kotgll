@@ -3,7 +3,7 @@ package parser.generated
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import org.ucfs.GeneratorException
-import org.ucfs.input.LinearInputLabel
+import org.ucfs.input.TerminalInputLabel
 import org.ucfs.parser.GeneratedParser
 import org.ucfs.parser.ParserGenerator
 import org.ucfs.parser.ScanerlessParserGenerator
@@ -107,12 +107,12 @@ object RuntimeCompiler {
         )
     }
 
-    fun instantiateParser(parserClass: Class<*>): GeneratedParser<Int, LinearInputLabel> {
+    fun instantiateParser(parserClass: Class<*>): GeneratedParser<Int, TerminalInputLabel> {
         val parser = parserClass.getConstructor().newInstance()
         if (parser !is (GeneratedParser<*, *>)) {
             throw Exception("Loader exception: the generated parser is not inherited from the ${GeneratedParser::class} ")
         }
-        return parser as (GeneratedParser<Int, LinearInputLabel>)
+        return parser as (GeneratedParser<Int, TerminalInputLabel>)
     }
 
 

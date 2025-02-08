@@ -7,7 +7,7 @@ import org.ucfs.IDynamicGllTest.Companion.getFiles
 import org.ucfs.IDynamicGllTest.Companion.getLines
 import org.ucfs.IDynamicGllTest.Companion.readFile
 import org.ucfs.input.LinearInput
-import org.ucfs.input.LinearInputLabel
+import org.ucfs.input.TerminalInputLabel
 import org.ucfs.parser.ParsingException
 import org.ucfs.rsm.symbol.ITerminal
 import java.io.File
@@ -24,8 +24,8 @@ open class GllGeneratedTest : IOfflineGllTest {
     override val mainFileName: String
         get() = "$DSL_FILE_NAME.kt"
 
-    private fun tokenizeInput(input: String, lexerClass: Class<*>): LinearInput<Int, LinearInputLabel> {
-        val inputGraph = LinearInput<Int, LinearInputLabel>()
+    private fun tokenizeInput(input: String, lexerClass: Class<*>): LinearInput<Int, TerminalInputLabel> {
+        val inputGraph = LinearInput<Int, TerminalInputLabel>()
 
         //equals to `val lexer = Lexer(input.reader())`
         val lexer = lexerClass.getConstructor(Reader::class.java).newInstance(input.reader())
@@ -47,7 +47,7 @@ open class GllGeneratedTest : IOfflineGllTest {
                 throw ParsingException("Lexer exception: $e")
             }
             if (token.toString() == "EOF") break
-            inputGraph.addEdge(vertexId, LinearInputLabel(token), ++vertexId)
+            inputGraph.addEdge(vertexId, TerminalInputLabel(token), ++vertexId)
             inputGraph.addVertex(vertexId)
         }
         return inputGraph

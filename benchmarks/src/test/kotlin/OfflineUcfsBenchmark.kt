@@ -1,5 +1,4 @@
-import org.junit.jupiter.api.Disabled
-import org.ucfs.input.LinearInputLabel
+import org.ucfs.input.TerminalInputLabel
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -19,7 +18,7 @@ class OfflineUcfsBenchmark : ParsingBenchmarks() {
     }
 
     override fun parse(text: String) {
-        val parser = org.ucfs.Java8Parser<Int, LinearInputLabel>()
+        val parser = org.ucfs.Java8Parser<Int, TerminalInputLabel>()
         parser.setInput(getTokenStream(text))
         parser.parse()
         assert(parser.parse().first != null)
